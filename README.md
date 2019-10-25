@@ -1,4 +1,4 @@
-[6:04 pm, 25/10/2019] : # Project 23 - Conference Management Tool
+# Project 23 - Conference Management Tool
 
 ## Project Team (Students):
 (1) Muhammad Kamran, s8mukamr@stud.uni-saarland.de

@@ -9,13 +9,13 @@
  *     <ul>
  *      <li>  Each attendee tells the organiser that it wishes to attend the conference<br>
  *      <li>  A user name is generated in a simple manner from the attendees data. Example: LastName'.'FirstName<br>
- *      <li>  The organiser generates a random 'password' of reasonable size (ex. 15 characters). This password gets handed out t the attendee at the entrance<br>
+ *      <li>  The organiser generates a random 'password' of reasonable size (ex. 15 characters). This password gets handed out to the attendee at the entrance<br>
  *      <li>  The attendee logs in with the username and the password.<br>
  *          <ul>
- *          <li>  If the password was already used, the server send out a warning notifying the user and the organizer of a possible identity theft. In this case all login data of the account gets blocked<br>
+ *          <li>  If the password was already used, the server sends out a warning notifying the user and the organizer of a possible identity theft. In this case all login data of the account gets blocked<br>
  *          <li>  Else the server sends back a secure token (length at least 512 characters) and invalidates the password.<br>
  *          </ul>
- *      <li>  At each request the username and the token (<b>not</b> the password) gets send with the request. This serves as identification<br>
+ *      <li>  At each request the username and the token (<b>not</b> the password) gets sent with the request. This serves as identification<br>
  *       </ul>
  *<br>
  * Logging in a second device:<br>
@@ -33,7 +33,7 @@
  *  <h2>1.2 Guarantees</h2><br>
  *  Both password and token stealing are concerns. However, there is a trade-off between usability and security:<br>
  *   <ul>
- *   <li> If on goes extremely restrictive, i.e. blocks an account after a single sending of a wrong password/token then it is easy to perform a DOS attack<br>
+ *   <li> If one goes extremely restrictive, i.e. blocks an account after a single sending of a wrong password/token then it is easy to perform a DOS attack<br>
  *   <li> On the other hand making the policy to lenient makes it easy to brute force an account.<br>
  *   <li> Recommended values for the password:<br>
  *       <ul>

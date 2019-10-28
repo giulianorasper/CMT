@@ -39,7 +39,7 @@
  *       <ul>
  *      <li> assume alnum charset and that each login attempt gets stretched out to at least 4 seconds<br>
  *      <li> block the account after 1000 unsuccessful login attempts.<br>
- *      <li> This leads to a probability of cracking the password in the order of 2000/ (62^15) which is approx 10^{<li>21} %.
+ *      <li> This leads to a probability of cracking the password in the order of 2000/ (62^15) which is approx 10^{-21} %.
  *      <br>
  *      <li> If one tries to DOS the account one also needs two hours before one can successfully block the account<br>
  *         </ul>

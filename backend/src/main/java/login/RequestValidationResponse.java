@@ -1,5 +1,5 @@
 package login;
 
 public enum RequestValidationResponse {
-    Valid, WrongToken, UserDoesNotExist, AccountBlocked
+    Valid, WrongToken, UserDoesNotExist, AccountBlocked, InvalidRequestContent
 }

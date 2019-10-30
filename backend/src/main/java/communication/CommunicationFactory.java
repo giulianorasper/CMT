@@ -25,9 +25,10 @@ public interface CommunicationFactory {
      * A function that the communication system can use to check if a login is valid
      * @param username - the username provided by the request
      * @param password - the password provided by the request
-     * @return - A pair consisting of a {@link LoginResponse} and the token. If the request is not valid the token will be
-     * null.
+     * @return - A pair consisting of a {@link LoginResponse}, a token, and the number of seconds until the token
+     * should expire.
+     * If the {@link LoginResponse} is not Valid then the second argument will be null
      */
-    Pair<LoginResponse, String> checkLogin(String username, String password);
+    Pair<LoginResponse, Pair<String,Integer>> checkLogin(String username, String password);
 
 }

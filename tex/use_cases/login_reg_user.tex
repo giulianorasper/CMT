@@ -1,0 +1,69 @@
+\documentclass{article}
+
+
+\usepackage{indentfirst}
+\usepackage[utf8]{inputenc}
+\usepackage{titlesec}
+%\titlespacing*{\section} {0pt}{3.5ex plus 1ex minus .2ex}{1ex plus .2ex}
+%\titlespacing*{\subsection} {0pt}{1.5ex plus 0ex minus 2ex}{-2ex plus .25ex}
+%\titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{proof}[thm]{Proof}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Use cases}
+\lhead{Project 23}
+\rfoot{\thepage}
+
+\usepackage{tocloft}
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+\renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
+
+\usepackage[]{algorithm2e}
+\usepackage{enumitem}
+\usepackage{pgfplots}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{rotating}
+\usetikzlibrary{automata, positioning, arrows}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+
+\begin{document}
+
+\section*{Regular user login}
+\subsection*{Id: login\_reg\_user}
+\noindent
+\textbf{Remarks:}\\
+ The \underline{underlined} text presents actions which happen outside the application. \\
+ The \textbf{bold} text represents pparts which reveal the internal working of the app and that are not visible to the users / admins.
+\begin{enumerate}
+	\item \underline{The user gets invited by an admin. The admin registers the user with some data which he collects}
+	\item \textbf{The app registers the user and generates a secret token}
+	\item The admin gets feedback about the successful registration
+	\item \underline{The user joins the conference}
+	\item The admin uses a function to display the user data
+	\item \underline{The user is prompted to check his data, as only admins can edit it}
+	\item \underline{The user tells the admin that there is a typo somewhere}
+	\item The admin uses a function to edit the incorrect data.
+	\item The admin uses a function to generate a password. \textbf{The app generates a password and stores it. It also stores that the password is unused and that the user is currently loged in on 0 devices}
+	\item \underline{The user gets the password (either as text or an qr code) from the admin. The user uses it to login} 
+	\item \textbf{The app checks the password, send out the token, marks the password as used in order to prevent multiple logins and increments the device count of the user}
+	\item \underline{The user decides to log in on a second device}
+	\item The user presses a button in order to receive a new password
+	\item \textbf{The app generates a new password and sends it to the user}
+	\item The password gets displayed on the first device and can be used to log in on the second device
+	\item \textbf{Step 6 gets repeated. The same token gets sent}
+\end{enumerate}
+
+\end{document}

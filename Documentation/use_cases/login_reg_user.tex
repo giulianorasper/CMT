@@ -46,19 +46,19 @@
 \noindent
 \textbf{Remarks:}\\
  The \underline{underlined} text presents actions which happen outside the application. \\
- The \textbf{bold} text represents pparts which reveal the internal working of the app and that are not visible to the users / admins.
+ The \textbf{bold} text represents parts which reveal the internal working of the app and that are not visible to the users / admins.
 \begin{enumerate}
 	\item \underline{The user gets invited by an admin. The admin registers the user with some data which he collects}
-	\item \textbf{The app registers the user. It does not jet generate the secret token}
+	\item \textbf{The app registers the user. It does not yet generate the secret token}
 	\item The admin gets feedback about the successful registration
 	\item \underline{The user joins the conference}
 	\item The admin uses a function to display the user data
 	\item \underline{The user is prompted to check his data, as only admins can edit it}
 	\item \underline{The user tells the admin that there is a typo somewhere}
 	\item The admin uses a function to edit the incorrect data.
-	\item The admin uses a function to generate a password. \textbf{The app generates a secret token and a password and stores them. It also stores that the password is unused and that the user is currently loged in on 0 devices}
+	\item The admin uses a function to generate a password. \textbf{The app generates a secret token and a password and stores them. It also stores that the password is unused and that the user is currently logged in on 0 devices}
 	\item \underline{The user gets the password (either as text or an qr code) from the admin. The user uses it to login} 
-	\item \textbf{The app checks the password, send out the token, marks the password as used in order to prevent multiple logins and increments the device count of the user}
+	\item \textbf{The app checks the password, sends out the token, marks the password as used in order to prevent multiple logins and increments the device count of the user}
 	\item \underline{The user decides to log in on a second device}
 	\item The user presses a button in order to receive a new password
 	\item \textbf{The app generates a new password and sends it to the user}

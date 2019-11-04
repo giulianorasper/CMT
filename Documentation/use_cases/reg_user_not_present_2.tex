@@ -1,0 +1,56 @@
+\documentclass{article}
+
+
+\usepackage{indentfirst}
+\usepackage[utf8]{inputenc}
+\usepackage{titlesec}
+%\titlespacing*{\section} {0pt}{3.5ex plus 1ex minus .2ex}{1ex plus .2ex}
+%\titlespacing*{\subsection} {0pt}{1.5ex plus 0ex minus 2ex}{-2ex plus .25ex}
+%\titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{proof}[thm]{Proof}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Use cases}
+\lhead{Project 23}
+\rfoot{\thepage}
+
+\usepackage{tocloft}
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+\renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
+
+\usepackage[]{algorithm2e}
+\usepackage{enumitem}
+\usepackage{pgfplots}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{rotating}
+\usetikzlibrary{automata, positioning, arrows}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+
+\begin{document}
+
+\section*{Registration - user not present 2}
+\subsection*{Id: reg\_user\_not\_present\_2}
+\noindent
+\textbf{Remarks:}\\
+ The \underline{underlined} text presents actions which happen outside the application. \\
+ The \textbf{bold} text represents parts which reveal the internal working of the app and that are not visible to the users / admins.
+\begin{enumerate}
+	\item \underline{The attendees join the conference as usual}
+	\item At any point the admin can use a function to check which of the registered users have not logged in jet (despite not having announced that they would be unable to attend)
+	\item The admin can now decide how to threat those users (delete their data, block further logins and voting, etc.)
+\end{enumerate}
+
+\end{document}

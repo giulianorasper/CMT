@@ -1,0 +1,59 @@
+\documentclass{article}
+
+
+\usepackage{indentfirst}
+\usepackage[utf8]{inputenc}
+\usepackage{titlesec}
+%\titlespacing*{\section} {0pt}{3.5ex plus 1ex minus .2ex}{1ex plus .2ex}
+%\titlespacing*{\subsection} {0pt}{1.5ex plus 0ex minus 2ex}{-2ex plus .25ex}
+%\titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{proof}[thm]{Proof}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Use cases}
+\lhead{Project 23}
+\rfoot{\thepage}
+
+\usepackage{tocloft}
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+\renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
+
+\usepackage[]{algorithm2e}
+\usepackage{enumitem}
+\usepackage{pgfplots}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{rotating}
+\usetikzlibrary{automata, positioning, arrows}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+
+\begin{document}
+
+\section*{Voting - System failure}
+\subsection*{Id: voting\_sys\_fail}
+\noindent
+\textbf{Remarks:}\\
+ The \underline{underlined} text presents actions which happen outside the application. \\
+ The \textbf{bold} text represents parts which reveal the internal working of the app and that are not visible to the users / admins.
+\begin{enumerate}
+	\item The admin starts a vote.
+	\item The voting panel gets opened on each device
+	\item \underline{A failure of the wifi router leads to general confusion and prevents some people from voting}
+	\item The vote gets closed as the voting time expires
+	\item \underline{The admins decide to redo the vote}
+	\item The admins can chose whether they want to destroy all data of the prev. vote or keep it but start redo the vote
+\end{enumerate}
+
+\end{document}

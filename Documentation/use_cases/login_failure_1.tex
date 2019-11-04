@@ -1,0 +1,63 @@
+\documentclass{article}
+
+
+\usepackage{indentfirst}
+\usepackage[utf8]{inputenc}
+\usepackage{titlesec}
+%\titlespacing*{\section} {0pt}{3.5ex plus 1ex minus .2ex}{1ex plus .2ex}
+%\titlespacing*{\subsection} {0pt}{1.5ex plus 0ex minus 2ex}{-2ex plus .25ex}
+%\titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{proof}[thm]{Proof}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Use cases}
+\lhead{Project 23}
+\rfoot{\thepage}
+
+\usepackage{tocloft}
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+\renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
+
+\usepackage[]{algorithm2e}
+\usepackage{enumitem}
+\usepackage{pgfplots}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{rotating}
+\usetikzlibrary{automata, positioning, arrows}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+
+\begin{document}
+
+\section*{Login failure - password in use}
+\subsection*{Id: login\_failure\_1}
+\noindent
+\textbf{Remarks:}\\
+ The \underline{underlined} text presents actions which happen outside the application. \\
+ The \textbf{bold} text represents parts which reveal the internal working of the app and that are not visible to the users / admins.
+\begin{enumerate}
+	\item \underline{The user registers for a conference and recives a password as usual}
+	\item The user tries to log in.
+	\item \textbf{The app notices that the password has already been used}
+	\item The admins gets feedback telling him that there were multiple login attempts with the same password for the same user name. By default the account gets blocked.
+	\item TODO Should the app automatically protocol every attempt at double password usage or should the admins decide whether or not to protocol this?
+	\item The user gets notified to visit a service desk immediately \footnote{It is best if the client (Timo) provides the exact text the user should see }
+	\item \underline{The user goes to the service desk}
+	\item If the user says that he accidentally used the password twice, then the admin can just unblock the account.
+	\item If the user says that he never used the password before the admin can delete the data and re-register the user (There should be a button that allows for automatic re-registration, which leaves everything except the login data unchanged).
+
+\end{enumerate}
+
+\end{document}

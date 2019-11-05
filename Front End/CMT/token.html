@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form by Colorlib</title>
+	
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="main">
+
+        <section class="signup">
+            <!-- <img src="images/signup-bg.jpg" alt=""> -->
+            <div class="container">
+                <div class="signup-content">
+                    
+                        <h2 class="form-title">Token</h2>
+                        <div class="form-group">
+                            <span id="code">ADX2345%A32X0$0</span>
+							<button type="button" class="btn-my" onclick="myFunction()">Copy</button>
+                        </div>  
+                        <div class="form-group">
+                            <button  name="button" id="button" class="form-submit" onclick="window.location.href = 'login.html'"/>Next</button>
+                        </div>
+                    
+
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+	
+	<script>
+
+	function myFunction() {
+		globalValue =  document.getElementById("code").innerText;
+		var textArea = document.createElement("textarea");
+		textArea.value = document.getElementById("code").innerText;
+		console.log(textArea.value)
+		document.body.appendChild(textArea);
+		textArea.select();
+		document.execCommand("Copy");
+		textArea.remove();
+
+		
+	}
+</script>
+</body>
+</html>

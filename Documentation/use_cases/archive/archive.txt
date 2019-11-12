@@ -1,0 +1,14 @@
+This folder contains use-cases which have been removed.
+In the following there is a list of removed use cases and why exactly they were removed.
+
+votings_sys_failure:
+Since there are no requirements specified in the contract, there is no 
+need for the application to handle system failures as described.
+
+login_reg_user:
+This use case will be refined entirely focusing just on the "regular login" aspect.
+Since login on secondary devices is a may have it should not be shown in use cases.
+For the refinded version:
+  - state explicitly that the described token is an auth token, not a login token
+  - state explicitly that a user may login before the conference (or an additional use case for that)
+

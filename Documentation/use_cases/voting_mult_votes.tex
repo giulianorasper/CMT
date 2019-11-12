@@ -50,7 +50,7 @@
 \begin{enumerate}
 	\item The admin starts a vote.
 	\item The backend notices that there are two incoming votes from the same user.
-	\item The system drops both votes and notifies the admins (but not the users)
+	\item These votes are classified as malicious, since the attendees interface doesent allow multiple votes for the same vote. The system drops both votes and notifies the admins (but not the users). The admins do see who sent multiple votes but do not see what the user voted for. 
 	\item The admins can chose how to react to this (ex. redo the vote, block the account of that user etc.)
 \end{enumerate}
 

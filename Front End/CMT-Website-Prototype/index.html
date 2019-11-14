@@ -24,7 +24,13 @@
     <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/slicknav.css">
     <link rel="stylesheet" href="css/style.css">
+
+
+
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
+
+
+
 
     <!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
     <!--<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
@@ -126,11 +132,13 @@
                                         <!--<form action="home.html">-->
                                             <div class="row">
                                                 <div class="col-xl-12 col-md-12">
-                                                    <input type="email" placeholder="Enter email">
+                                                    <input type="email" placeholder="Enter email" required>
                                                 </div>
                                                 <div class="col-xl-12 col-md-12">
-                                                    <input type="password" placeholder="Password">
+                                                    <input type="password" placeholder="Password" id="name" required>
+                                                     <span id='message'></span>
                                                 </div>
+
                                                 <div class="col-xl-12">
                                                     <button type="submit" class="boxed_btn_green">Sign in</button>
                                                 </div>
@@ -148,6 +156,7 @@
 
             </div>
             </div>
+
 
             <!--</div>-->
 
@@ -902,17 +911,33 @@
 
 
 <script>
-    $( document ).ready(function() {
-    var link = document.createElement('a');
-    link.href = "#test-form";
-    document.body.appendChild(link);
-    link.class = "login popup-with-form";
-    link.click();
+    <!--$( document ).ready(function() {-->
+    <!--var link = document.createElement('a');-->
+    <!--link.href = "#test-form";-->
+    <!--document.body.appendChild(link);-->
+    <!--link.class = "login popup-with-form";-->
+    <!--link.click();-->
 
-    console.log( "ready!" );
-    console.log(link);
-});
+    <!--console.log( "ready!" );-->
+    <!--console.log(link);-->
+<!--});-->
 
+            $("#test-form").submit(function (e) {
+
+                var textValue = document.getElementById("name").value
+
+				console.log(textValue);
+                if (textValue !== "project23") {
+                    console.log(textValue);
+                    $("#name").focus();
+                    <!--$('#message').html('Passwords need to match').css('color', 'red');-->
+                    $('#message').html('Incorrect password').css('color', 'red');
+                    e.preventDefault();
+                        return false;
+
+                }
+
+            });
 
 </script>
 

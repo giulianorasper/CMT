@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/index.html" line="116" />
   </component>
@@ -12,22 +7,6 @@
     <list default="true" id="e01ff772-b260-492f-a707-d14bc3aef2bb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/home.html" afterDir="false" />
     </list>
-<<<<<<< HEAD
-=======
-=======
-  <component name="ChangeListManager">
-    <list default="true" id="e01ff772-b260-492f-a707-d14bc3aef2bb" name="Default Changelist" comment="" />
->>>>>>> website prototype
-=======
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/index.html" line="116" />
-  </component>
-  <component name="ChangeListManager">
-    <list default="true" id="e01ff772-b260-492f-a707-d14bc3aef2bb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/home.html" afterDir="false" />
-    </list>
->>>>>>> website prototype latest
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,183 +14,29 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
-            <state relative-caret-position="271">
-              <caret line="122" column="95" lean-forward="true" selection-start-line="122" selection-start-column="95" selection-end-line="122" selection-end-column="95" />
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <state relative-caret-position="271">
-              <caret line="122" column="95" lean-forward="true" selection-start-line="122" selection-start-column="95" selection-end-line="122" selection-end-column="95" />
-=======
-            <state relative-caret-position="322">
-              <caret line="82" column="81" selection-start-line="82" selection-start-column="66" selection-end-line="82" selection-end-column="81" />
-              <folding>
-                <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#footer#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
->>>>>>> website prototype
-=======
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-12181">
-              <caret line="44" column="6" selection-start-line="44" selection-start-column="6" selection-end-line="44" selection-end-column="6" />
->>>>>>> changed layout and some options in website-prototype
-=======
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="271">
               <caret line="122" column="95" lean-forward="true" selection-start-line="122" selection-start-column="95" selection-end-line="122" selection-end-column="95" />
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> make changes in website-prototype/home.html
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
         <entry file="file://$PROJECT_DIR$/home.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="340">
               <caret line="129" column="64" selection-start-line="129" selection-start-column="64" selection-end-line="129" selection-end-column="64" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-<<<<<<< HEAD
-              </folding>
-=======
-<<<<<<< HEAD
-=======
-        <entry file="file://$PROJECT_DIR$/contact_process.php">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/conference_2.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1360">
-              <caret line="80" column="55" selection-start-line="80" selection-start-column="55" selection-end-line="80" selection-end-column="55" />
-=======
-            <state relative-caret-position="2635">
-              <caret line="155" column="57" selection-start-line="155" selection-start-column="57" selection-end-line="155" selection-end-column="57" />
->>>>>>> website prototype latest
-              <folding>
-                <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-=======
-            <state relative-caret-position="1372">
-              <caret line="155" column="57" selection-start-line="155" selection-start-column="57" selection-end-line="155" selection-end-column="57" />
->>>>>>> updated prototype
-=======
-        <entry file="file://$PROJECT_DIR$/home.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="629">
-              <caret line="139" column="42" selection-start-line="139" selection-start-column="42" selection-end-line="139" selection-end-column="42" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#li#0;n#ol#0;n#div#0;n#ol#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#li#0;n#ol#0;n#div#0;n#ol#0;n#div#0;n#ol#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#li#1;n#ol#0;n#div#0;n#ol#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
->>>>>>> changed layout and some options in website-prototype
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/home.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="417">
-              <caret line="123" column="43" selection-start-line="123" selection-start-column="43" selection-end-line="123" selection-end-column="43" />
-=======
-        <entry file="file://$PROJECT_DIR$/change_request.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="36" column="76" selection-start-line="36" selection-start-column="76" selection-end-line="36" selection-end-column="76" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
->>>>>>> changed layout and some options in website-prototype
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/profile.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="83" column="28" lean-forward="true" selection-start-line="83" selection-start-column="28" selection-end-line="88" selection-end-column="42" />
-              <folding>
-<<<<<<< HEAD
-<<<<<<< HEAD
-                <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#footer#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> website prototype
-=======
-                <element signature="n#style#0;n#div#1;n#form#0;n#div#1;n#div#1;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> website prototype latest
-=======
-                <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> updated prototype
-=======
-        <entry file="file://$PROJECT_DIR$/vote.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="106" column="14" lean-forward="true" selection-start-line="104" selection-start-column="3" selection-end-line="106" selection-end-column="14" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> changed layout and some options in website-prototype
-=======
->>>>>>> make changes in website-prototype/home.html
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-      <file pinned="false" current-in-tab="false">
->>>>>>> make changes in website-prototype/home.html
         <entry file="file://$PROJECT_DIR$/vote.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="678">
@@ -223,148 +48,15 @@
                 <element signature="n#style#0;n#input#0;n#div#0;n#div#1;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#5;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-=======
-        <entry file="file://$PROJECT_DIR$/search.html">
-=======
-=======
-      <file pinned="false" current-in-tab="true">
->>>>>>> updated prototype
-        <entry file="file://$PROJECT_DIR$/documents.html">
->>>>>>> website prototype latest
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="164" selection-start-line="164" selection-end-line="172" selection-end-column="38" />
-=======
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/profile.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="66">
-              <caret line="156" column="76" selection-start-line="156" selection-start-column="76" selection-end-line="156" selection-end-column="76" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
->>>>>>> changed layout and some options in website-prototype
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/vote.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="628">
-              <caret line="83" column="26" lean-forward="true" selection-start-line="83" selection-start-column="26" selection-end-line="88" selection-end-column="42" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-=======
-        <entry file="file://$PROJECT_DIR$/speak_request.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="36" column="75" selection-start-line="36" selection-start-column="75" selection-end-line="36" selection-end-column="75" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> changed layout and some options in website-prototype
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/speak_request.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="83" column="31" selection-start-line="83" selection-start-column="31" selection-end-line="88" selection-end-column="42" />
-=======
-        <entry file="file://$PROJECT_DIR$/css/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="916">
-              <caret line="1441" column="15" selection-start-line="1441" selection-start-column="15" selection-end-line="1441" selection-end-column="15" />
->>>>>>> changed layout and some options in website-prototype
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/change_request.html">
-          <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
-            <state relative-caret-position="102">
-              <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-              <folding>
-<<<<<<< HEAD
-                <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#2;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#3;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#4;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#button#0;n#div#5;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#button#0;n#div#6;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> website prototype
-=======
-                <element signature="n#style#0;n#div#1;n#form#0;n#div#1;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> website prototype latest
-              </folding>
-=======
-            <state relative-caret-position="1105">
-              <caret line="123" column="37" lean-forward="true" selection-start-line="123" selection-start-column="37" selection-end-line="123" selection-end-column="37" />
->>>>>>> updated prototype
-=======
-        <entry file="file://$PROJECT_DIR$/documents.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="581">
-              <caret line="117" column="22" selection-start-line="117" selection-start-column="22" selection-end-line="125" selection-end-column="38" />
-=======
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
-        <entry file="file://$PROJECT_DIR$/vote.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="678">
-              <caret line="266" column="66" selection-start-line="266" selection-start-column="66" selection-end-line="266" selection-end-column="66" />
-<<<<<<< HEAD
-=======
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
-              <folding>
-                <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#0;n#div#0;n#div#1;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#5;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-<<<<<<< HEAD
-=======
->>>>>>> changed layout and some options in website-prototype
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
-<<<<<<< HEAD
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-=======
-<<<<<<< HEAD
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
       <find>main</find>
       <find>banner</find>
       <find>bradcam</find>
@@ -395,128 +87,19 @@
       <find>list</find>
       <find>Free</find>
       <find>test-form</find>
-<<<<<<< HEAD
-=======
-=======
-      <find>Details</find>
-      <find>go</find>
-=======
->>>>>>> updated prototype
-      <find>dedicated_support support_bg</find>
-=======
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
->>>>>>> added javascript function for login in website prototype
-      <find>pop</find>
-      <find>Sign</find>
-      <find>popup-with-form</find>
-      <find>form3</find>
-      <find>registration</find>
-      <find>24</find>
-=======
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-<<<<<<< HEAD
->>>>>>> changed layout and some options in website-prototype
-      <find>speci</find>
-      <find>home</find>
-      <find>liv</find>
-      <find>live ch</find>
-      <find>live</find>
-      <find>get</find>
-      <find>#test-form</find>
-<<<<<<< HEAD
->>>>>>> website prototype
-=======
-      <find>url</find>
-      <find>bradcam2</find>
-=======
->>>>>>> website-prototype V2.0
-      <find>main</find>
-      <find>banner</find>
-      <find>bradcam</find>
-      <find>slider_area</find>
-      <find>contac</find>
-      <find>col-xl-6 col-md-6</find>
-      <find>support_bg</find>
-      <find>CMT</find>
-      <find>hostza</find>
-      <find>check</find>
-<<<<<<< HEAD
->>>>>>> website prototype latest
-=======
-      <find>request</find>
-      <find>cust</find>
-      <find>saar</find>
-<<<<<<< HEAD
->>>>>>> updated prototype
-=======
-      <find>Request</find>
-<<<<<<< HEAD
->>>>>>> added javascript function for login in website prototype
-=======
-      <find>Sign in</find>
-      <find>conference</find>
-      <find>li</find>
-      <find>ul</find>
-      <find>ol</find>
-      <find>script</find>
-      <find>contact</find>
-      <find>form</find>
-      <find>is wor</find>
-      <find>faq_area</find>
-      <find>info</find>
-      <find>flaticon-info</find>
-      <find>f10a</find>
-      <find>list</find>
-<<<<<<< HEAD
->>>>>>> changed layout and some options in website-prototype
-=======
-      <find>Free</find>
-      <find>test-form</find>
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
     </findStrings>
     <replaceStrings>
       <replace>Detail</replace>
       <replace>col-xl-6 col-md-6</replace>
       <replace>col-xl-12 col-md-12</replace>
-<<<<<<< HEAD
       <replace>Log in</replace>
       <replace>ol</replace>
       <replace>ul</replace>
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-      <replace>Log in</replace>
-      <replace>ol</replace>
-      <replace>ul</replace>
-<<<<<<< HEAD
-=======
-      <replace>Log in</replace>
-      <replace>ol</replace>
->>>>>>> changed layout and some options in website-prototype
-=======
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
     </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-    </replaceStrings>
-  </component>
->>>>>>> website prototype
-=======
->>>>>>> website prototype latest
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -531,16 +114,7 @@
         <option value="$PROJECT_DIR$/contact.html" />
         <option value="$PROJECT_DIR$/about.html" />
         <option value="$PROJECT_DIR$/elements.html" />
-<<<<<<< HEAD
         <option value="$PROJECT_DIR$/index.html" />
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <option value="$PROJECT_DIR$/index.html" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
         <option value="$PROJECT_DIR$/documents.html" />
         <option value="$PROJECT_DIR$/profile.html" />
         <option value="$PROJECT_DIR$/change_request.html" />
@@ -549,101 +123,16 @@
         <option value="$USER_HOME$/Desktop/hostza/index.html" />
         <option value="$PROJECT_DIR$/vote.html" />
         <option value="$PROJECT_DIR$/home.html" />
-<<<<<<< HEAD
-=======
-=======
->>>>>>> website prototype
-=======
-        <option value="$PROJECT_DIR$/home.html" />
-=======
->>>>>>> updated prototype
-=======
->>>>>>> added javascript function for login in website prototype
-=======
-        <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/documents.html" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <option value="$PROJECT_DIR$/vote.html" />
->>>>>>> changed layout and some options in website-prototype
-        <option value="$PROJECT_DIR$/change_request.html" />
-        <option value="$PROJECT_DIR$/speak_request.html" />
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> website prototype latest
-=======
-        <option value="$PROJECT_DIR$/home.html" />
-        <option value="$PROJECT_DIR$/documents.html" />
-<<<<<<< HEAD
->>>>>>> updated prototype
-=======
-        <option value="$PROJECT_DIR$/css/style.css" />
-        <option value="$PROJECT_DIR$/vote.html" />
-        <option value="$PROJECT_DIR$/index.html" />
->>>>>>> added javascript function for login in website prototype
-=======
-        <option value="$PROJECT_DIR$/profile.html" />
-        <option value="$PROJECT_DIR$/css/style.css" />
-        <option value="$PROJECT_DIR$/home.html" />
->>>>>>> changed layout and some options in website-prototype
-=======
-        <option value="$PROJECT_DIR$/home.html" />
-=======
->>>>>>> make changes in website-prototype/home.html
-        <option value="$PROJECT_DIR$/profile.html" />
-        <option value="$PROJECT_DIR$/change_request.html" />
-        <option value="$PROJECT_DIR$/speak_request.html" />
-        <option value="$PROJECT_DIR$/css/style.css" />
-        <option value="$USER_HOME$/Desktop/hostza/index.html" />
-        <option value="$PROJECT_DIR$/vote.html" />
-<<<<<<< HEAD
->>>>>>> website-prototype V2.0
-=======
-        <option value="$PROJECT_DIR$/home.html" />
->>>>>>> make changes in website-prototype/home.html
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
     <option name="x" value="-1549" />
     <option name="y" value="178" />
     <option name="width" value="1380" />
     <option name="height" value="742" />
-<<<<<<< HEAD
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-=======
-<<<<<<< HEAD
-  </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-=======
-    <option name="x" value="-1687" />
-    <option name="width" value="854" />
-    <option name="height" value="1017" />
-=======
-    <option name="x" value="-1688" />
-    <option name="y" value="-8" />
-    <option name="width" value="1696" />
-    <option name="height" value="1026" />
->>>>>>> changed layout and some options in website-prototype
-=======
->>>>>>> website-prototype V2.0
-  </component>
-<<<<<<< HEAD
->>>>>>> website prototype
-=======
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
->>>>>>> website prototype latest
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -657,35 +146,11 @@
               <item name="CMT-Website-Prototype" type="b2602c69:ProjectViewProjectNode" />
               <item name="CMT-Website-Prototype" type="462c0819:PsiDirectoryNode" />
             </path>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> website prototype latest
-=======
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
             <path>
               <item name="CMT-Website-Prototype" type="b2602c69:ProjectViewProjectNode" />
               <item name="CMT-Website-Prototype" type="462c0819:PsiDirectoryNode" />
               <item name="css" type="462c0819:PsiDirectoryNode" />
             </path>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> website prototype
-=======
->>>>>>> website prototype latest
-=======
->>>>>>> changed layout and some options in website-prototype
-=======
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
           </expand>
           <select />
         </subPane>
@@ -724,23 +189,7 @@
     <frame x="-1688" y="-8" width="1696" height="1026" extended-state="6" />
     <editor active="true" />
     <layout>
-<<<<<<< HEAD
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14414957" />
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14414957" />
-=======
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1562123" />
->>>>>>> website prototype
-=======
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17852835" />
->>>>>>> changed layout and some options in website-prototype
-=======
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14414957" />
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -771,31 +220,6 @@
         </state>
       </provider>
     </entry>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    <entry file="file://$PROJECT_DIR$/css/font-awesome.min.css">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/flaticon.css">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/bootstrap.min.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-31" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/animate.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1122" />
-      </provider>
-    </entry>
->>>>>>> website prototype
-=======
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
     <entry file="file://$PROJECT_DIR$/css/owl.carousel.min.css">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -809,25 +233,6 @@
         <state relative-caret-position="-3542" />
       </provider>
     </entry>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    <entry file="file://$PROJECT_DIR$/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1102" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/theme-default.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-31" />
-      </provider>
-    </entry>
->>>>>>> website prototype
-=======
->>>>>>> website prototype latest
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
     <entry file="file://$PROJECT_DIR$/css/themify-icons.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-371">
@@ -835,20 +240,6 @@
         </state>
       </provider>
     </entry>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    <entry file="file://$PROJECT_DIR$/css/gijgo.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-31" />
-      </provider>
-    </entry>
->>>>>>> website prototype
-=======
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
     <entry file="file://$PROJECT_DIR$/css/magnific-popup.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-31" />
@@ -862,11 +253,6 @@
     <entry file="file://$PROJECT_DIR$/main.html" />
     <entry file="file://$PROJECT_DIR$/blog.html" />
     <entry file="file://$PROJECT_DIR$/conference 2.html" />
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/contact_process.php" />
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/contact_process.php" />
     <entry file="file://$PROJECT_DIR$/conference.html" />
     <entry file="file://$PROJECT_DIR$/downloads.html" />
@@ -877,280 +263,6 @@
     <entry file="file://$PROJECT_DIR$/search.html" />
     <entry file="file://$PROJECT_DIR$/contact.html" />
     <entry file="file://$PROJECT_DIR$/profile.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="867">
-          <caret line="51" column="47" selection-start-line="51" selection-start-column="47" selection-end-line="51" selection-end-column="47" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-=======
-    <entry file="file://$PROJECT_DIR$/index.html">
-=======
-    <entry file="file://$PROJECT_DIR$/contact_process.php" />
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/conference.html">
->>>>>>> website prototype latest
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1360">
-          <caret line="80" column="58" selection-start-line="80" selection-start-column="58" selection-end-line="80" selection-end-column="58" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-<<<<<<< HEAD
-            <element signature="n#footer#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> website prototype
-=======
->>>>>>> website prototype latest
-          </folding>
-        </state>
-      </provider>
-    </entry>
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/documents.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="811">
-          <caret line="117" column="22" selection-start-line="117" selection-start-column="22" selection-end-line="125" selection-end-column="38" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-=======
-    <entry file="file://$PROJECT_DIR$/conference_2.html">
-=======
-    <entry file="file://$PROJECT_DIR$/downloads.html">
->>>>>>> website prototype latest
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1360">
-          <caret line="80" column="54" selection-start-line="80" selection-start-column="54" selection-end-line="80" selection-end-column="54" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#div#4;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#footer#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-<<<<<<< HEAD
-            <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#2;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#3;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#4;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#div#5;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#div#6;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> website prototype
-=======
->>>>>>> website prototype latest
-          </folding>
-        </state>
-      </provider>
-    </entry>
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/change_request.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="658">
-          <caret line="1257" column="4" selection-start-line="1257" selection-start-column="4" selection-end-line="1288" selection-end-column="9" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#1;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#2;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#script#24;n#body#0;n#html#0;n#!!top" />
-=======
-    <entry file="file://$PROJECT_DIR$/conference.html">
-=======
-    <entry file="file://$PROJECT_DIR$/Support.html">
->>>>>>> website prototype latest
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5236">
-          <caret line="308" column="54" selection-start-line="308" selection-start-column="50" selection-end-line="308" selection-end-column="54" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-<<<<<<< HEAD
->>>>>>> website prototype
-=======
-            <element signature="n#footer#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> website prototype latest
-          </folding>
-        </state>
-      </provider>
-    </entry>
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/css/bootstrap.min.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1989" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/animate.css">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/theme-default.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="229" column="18" lean-forward="true" selection-start-line="229" selection-start-column="18" selection-end-line="229" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/font-awesome.min.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/gijgo.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-45226" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/flaticon.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="14" lean-forward="true" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="1457" column="2" lean-forward="true" selection-start-line="1457" selection-start-column="2" selection-end-line="1457" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Desktop/hostza/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="430" column="41" lean-forward="true" selection-start-line="430" selection-start-column="41" selection-end-line="430" selection-end-column="100" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/speak_request.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="192" column="107" lean-forward="true" selection-start-line="192" selection-start-column="97" selection-end-line="192" selection-end-column="107" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-=======
-    <entry file="file://$PROJECT_DIR$/downloads.html">
-=======
-    <entry file="file://$PROJECT_DIR$/about.html">
->>>>>>> website prototype latest
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1360">
-          <caret line="80" column="54" selection-start-line="80" selection-start-column="54" selection-end-line="80" selection-end-column="54" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#footer#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/elements.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1411">
-          <caret line="83" column="44" selection-start-line="83" selection-start-column="44" selection-end-line="83" selection-end-column="44" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#2;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#3;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#4;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#div#5;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#div#6;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/conference_2.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="811">
-          <caret line="80" column="55" selection-start-line="80" selection-start-column="55" selection-end-line="80" selection-end-column="55" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#footer#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#2;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#3;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#4;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#div#5;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#div#6;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/search.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="811">
-          <caret line="80" column="54" selection-start-line="80" selection-start-column="54" selection-end-line="80" selection-end-column="54" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#footer#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> website prototype
-          </folding>
-        </state>
-      </provider>
-    </entry>
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="122" column="95" lean-forward="true" selection-start-line="122" selection-start-column="95" selection-end-line="122" selection-end-column="95" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vote.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="678">
-          <caret line="266" column="66" selection-start-line="266" selection-start-column="66" selection-end-line="266" selection-end-column="66" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#0;n#div#0;n#div#1;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#5;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-=======
-    <entry file="file://$PROJECT_DIR$/contact.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="811">
-          <caret line="80" column="58" selection-start-line="80" selection-start-column="58" selection-end-line="80" selection-end-column="58" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#footer#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-=======
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
-    <entry file="file://$PROJECT_DIR$/conference.html" />
-    <entry file="file://$PROJECT_DIR$/downloads.html" />
-    <entry file="file://$PROJECT_DIR$/Support.html" />
-    <entry file="file://$PROJECT_DIR$/about.html" />
-    <entry file="file://$PROJECT_DIR$/elements.html" />
-    <entry file="file://$PROJECT_DIR$/conference_2.html" />
-    <entry file="file://$PROJECT_DIR$/search.html" />
-    <entry file="file://$PROJECT_DIR$/contact.html" />
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/profile.html">
-=======
-<<<<<<< HEAD
->>>>>>> updated prototype
-    <entry file="file://$PROJECT_DIR$/css/theme-default.css">
-=======
-    <entry file="file://$PROJECT_DIR$/profile.html">
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="867">
           <caret line="51" column="47" selection-start-line="51" selection-start-column="47" selection-end-line="51" selection-end-column="47" />
@@ -1174,69 +286,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/change_request.html">
       <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <state relative-caret-position="1372">
-          <caret line="155" column="57" selection-start-line="155" selection-start-column="57" selection-end-line="155" selection-end-column="57" />
-<<<<<<< HEAD
-          <folding>
-<<<<<<< HEAD
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#footer#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> website prototype
-=======
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> website prototype latest
-          </folding>
-        </state>
-      </provider>
-    </entry>
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="129" column="64" selection-start-line="129" selection-start-column="64" selection-end-line="129" selection-end-column="64" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-=======
-    <entry file="file://$PROJECT_DIR$/elements.html">
-=======
-    <entry file="file://$PROJECT_DIR$/home.html">
->>>>>>> website prototype latest
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12648">
-          <caret line="744" column="66" lean-forward="true" selection-start-line="744" selection-start-column="36" selection-end-line="744" selection-end-column="66" />
-=======
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/change_request.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1105">
-          <caret line="123" column="37" lean-forward="true" selection-start-line="123" selection-start-column="37" selection-end-line="123" selection-end-column="37" />
->>>>>>> updated prototype
-=======
-        <state relative-caret-position="529">
-          <caret line="138" column="79" selection-start-line="138" selection-start-column="79" selection-end-line="138" selection-end-column="79" />
->>>>>>> added javascript function for login in website prototype
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="123" column="43" selection-start-line="123" selection-start-column="43" selection-end-line="123" selection-end-column="43" />
-=======
-        <state relative-caret-position="-12181">
-          <caret line="44" column="6" selection-start-line="44" selection-start-column="6" selection-end-line="44" selection-end-column="6" />
->>>>>>> changed layout and some options in website-prototype
-=======
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
         <state relative-caret-position="658">
           <caret line="1257" column="4" selection-start-line="1257" selection-start-column="4" selection-end-line="1288" selection-end-column="9" />
           <folding>
@@ -1248,85 +297,11 @@
             <element signature="n#style#0;n#div#0;n#div#2;n#form#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#script#24;n#body#0;n#html#0;n#!!top" />
           </folding>
-<<<<<<< HEAD
-=======
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/css/bootstrap.min.css">
       <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-        <state relative-caret-position="66">
-          <caret line="156" column="76" selection-start-line="156" selection-start-column="76" selection-end-line="156" selection-end-column="76" />
-          <folding>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#footer#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#2;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#3;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#4;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#div#5;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#div#6;n#div#0;n#form#0;n#div#0;n#div#0;n#form#1;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> website prototype
-=======
-            <element signature="n#style#0;n#div#1;n#form#0;n#div#1;n#div#1;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> website prototype latest
-=======
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> updated prototype
-=======
-=======
-            <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> changed layout and some options in website-prototype
-            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
->>>>>>> added javascript function for login in website prototype
-          </folding>
-        </state>
-      </provider>
-    </entry>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    <entry file="file://$PROJECT_DIR$/contact_process.php">
-      <provider selected="true" editor-type-id="text-editor" />
-=======
-    <entry file="file://$PROJECT_DIR$/documents.html">
-=======
-    <entry file="file://$PROJECT_DIR$/profile.html">
->>>>>>> updated prototype
-=======
-    <entry file="file://$PROJECT_DIR$/documents.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="116" column="20" selection-start-line="116" selection-start-column="20" selection-end-line="124" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-=======
->>>>>>> changed layout and some options in website-prototype
-    <entry file="file://$PROJECT_DIR$/vote.html">
->>>>>>> added javascript function for login in website prototype
-=======
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
         <state relative-caret-position="-1989" />
       </provider>
     </entry>
@@ -1341,10 +316,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/css/font-awesome.min.css">
-<<<<<<< HEAD
-=======
->>>>>>> website-prototype V2.0
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
@@ -1409,15 +380,7 @@
           </folding>
         </state>
       </provider>
-<<<<<<< HEAD
     </entry>
-=======
->>>>>>> website prototype latest
-    </entry>
-<<<<<<< HEAD
->>>>>>> website prototype
-=======
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
     <entry file="file://$PROJECT_DIR$/home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
@@ -1428,9 +391,5 @@
         </state>
       </provider>
     </entry>
-<<<<<<< HEAD
-=======
->>>>>>> make changes in website-prototype/home.html
->>>>>>> b783db8d3bbded95b761212b5d9b8975b212791e
   </component>
 </project>

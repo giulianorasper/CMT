@@ -19,28 +19,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e01ff772-b260-492f-a707-d14bc3aef2bb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/change_request.html" beforeDir="false" afterPath="$PROJECT_DIR$/change_request.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/blog/author.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/blog/blog_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/blog/blog_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/blog/blog_3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/blog/blog_4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/blog/learn_about_bg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/blog/single_blog_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/blog/single_blog_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/blog/single_blog_3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/blog/single_blog_4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/blog/single_blog_5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/blog/slide_thumb_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/comment/comment_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/comment/comment_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/comment/comment_3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speak_request.html" beforeDir="false" afterPath="$PROJECT_DIR$/speak_request.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vote.html" beforeDir="false" afterPath="$PROJECT_DIR$/vote.html" afterDir="false" />
     </list>
 >>>>>>> website prototype latest
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -95,12 +74,16 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> make changes in website-prototype/home.html
         <entry file="file://$PROJECT_DIR$/home.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="340">
               <caret line="129" column="64" selection-start-line="129" selection-start-column="64" selection-end-line="129" selection-end-column="64" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+<<<<<<< HEAD
 =======
         <entry file="file://$PROJECT_DIR$/contact_process.php">
           <provider selected="true" editor-type-id="text-editor" />
@@ -193,6 +176,8 @@
                 <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#3;n#div#0;n#div#1;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
 >>>>>>> changed layout and some options in website-prototype
+=======
+>>>>>>> make changes in website-prototype/home.html
               </folding>
             </state>
           </provider>
@@ -200,9 +185,13 @@
       </file>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       <file pinned="false" current-in-tab="false">
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+      <file pinned="false" current-in-tab="false">
+>>>>>>> make changes in website-prototype/home.html
         <entry file="file://$PROJECT_DIR$/vote.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="678">
@@ -520,6 +509,7 @@
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/documents.html" />
 <<<<<<< HEAD
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/vote.html" />
 >>>>>>> changed layout and some options in website-prototype
         <option value="$PROJECT_DIR$/change_request.html" />
@@ -544,13 +534,19 @@
 >>>>>>> changed layout and some options in website-prototype
 =======
         <option value="$PROJECT_DIR$/home.html" />
+=======
+>>>>>>> make changes in website-prototype/home.html
         <option value="$PROJECT_DIR$/profile.html" />
         <option value="$PROJECT_DIR$/change_request.html" />
         <option value="$PROJECT_DIR$/speak_request.html" />
         <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$USER_HOME$/Desktop/hostza/index.html" />
         <option value="$PROJECT_DIR$/vote.html" />
+<<<<<<< HEAD
 >>>>>>> website-prototype V2.0
+=======
+        <option value="$PROJECT_DIR$/home.html" />
+>>>>>>> make changes in website-prototype/home.html
       </list>
     </option>
   </component>
@@ -1290,16 +1286,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="113" column="32" lean-forward="true" selection-start-line="113" selection-start-column="32" selection-end-line="113" selection-end-column="32" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="271">
@@ -1323,6 +1309,19 @@
       </provider>
 >>>>>>> website prototype latest
     </entry>
+<<<<<<< HEAD
 >>>>>>> website prototype
+=======
+    <entry file="file://$PROJECT_DIR$/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="129" column="64" selection-start-line="129" selection-start-column="64" selection-end-line="129" selection-end-column="64" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#header#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+>>>>>>> make changes in website-prototype/home.html
   </component>
 </project>

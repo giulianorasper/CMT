@@ -1,9 +1,14 @@
 package communication;
 
+//TODO Add thrown exceptions e.g. NotInitialized
+
+import java.io.IOException;
+
 /**
  * The interface that is responsible with waiting for requests and processing them. Receives a {@link CommunicationFactory} which it uses to process requests
  */
 public interface CommunicationManager {
+
     /**
      * Initializes the Manager (equivalently to a class constructor)
      * @param factory - the communication factory used to answer requests
@@ -13,14 +18,14 @@ public interface CommunicationManager {
 
     /**
      * Waits for requests and generates responses using the functionality provided by the {@link CommunicationFactory}.
-     * Should block until a request arrives
      * Should close the connection if completing the requests takes to long in order to prevent slow loris attacks.
      * What exactly to long means is specified by the init function
      */
-    void processRequest();
+    void start();
 
     /**
-     * After calling this function the method {@link CommunicationManager#processRequest()} stops processing new requests.
+     * After calling this function the CommunicationManager stops processing new requests.
      */
-    void closeConnection();
+    void stop() throws IOException, InterruptedException;
+
 }

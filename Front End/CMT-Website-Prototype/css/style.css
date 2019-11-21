@@ -89,7 +89,7 @@ h6 a {
 }
 
 /* line 52, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_reset.scss */
-ol {
+ul {
   margin: 0px;
   padding: 0px;
 <<<<<<< HEAD
@@ -1463,6 +1463,7 @@ h3 {
 
 /* line 102, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
 <<<<<<< HEAD
+<<<<<<< HEAD
 .package_prsing_area .single_prising .list ul li {
 <<<<<<< HEAD
   font-size: 26px;
@@ -1471,6 +1472,9 @@ h3 {
 >>>>>>> website prototype
 =======
 .package_prsing_area .single_prising .list ol li {
+=======
+.package_prsing_area .single_prising .list ul li {
+>>>>>>> website-prototype V2.0
   font-size: 26px;
 >>>>>>> changed layout and some options in website-prototype
   margin-bottom: 20px;
@@ -1488,7 +1492,7 @@ h3 {
 
 >>>>>>> changed layout and some options in website-prototype
 /* line 108, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
-.package_prsing_area .single_prising .list ol li::before {
+.package_prsing_area .single_prising .list ul li::before {
   position: absolute;
   left: 0;
 <<<<<<< HEAD
@@ -2498,10 +2502,14 @@ h3 {
   border: 5px;
   margin-bottom: 30px;
 <<<<<<< HEAD
+<<<<<<< HEAD
  // border: 1px solid #E9E5EC;
 =======
   border: 1px solid #E9E5EC;
 >>>>>>> website prototype
+=======
+ // border: 1px solid #E9E5EC;
+>>>>>>> website-prototype V2.0
 }
 
 /* line 68, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
@@ -2510,12 +2518,18 @@ h3 {
   background-color: #fff;
   border-bottom: none;
 <<<<<<< HEAD
+<<<<<<< HEAD
  // padding: 14px 0 16px 14px;
 
    padding: 0px 0 16px 14px;
 =======
   padding: 14px 0 16px 14px;
 >>>>>>> website prototype
+=======
+ // padding: 14px 0 16px 14px;
+
+   padding: 0px 0 16px 14px;
+>>>>>>> website-prototype V2.0
 }
 
 @media (max-width: 767px) {

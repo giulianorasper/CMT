@@ -1,7 +1,7 @@
-package communication.packages.response;
+package communication.packets.response;
 
-import communication.packages.PacketType;
-import communication.packages.ResponsePacket;
+import communication.packets.PacketType;
+import communication.packets.ResponsePacket;
 import login.LoginResponse;
 
 public class LoginResponsePacket extends ResponsePacket {

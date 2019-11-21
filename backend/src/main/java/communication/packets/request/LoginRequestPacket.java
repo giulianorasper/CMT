@@ -1,9 +1,9 @@
-package communication.packages.request;
+package communication.packets.request;
 
 import communication.CommunicationFactory;
-import communication.packages.PacketType;
-import communication.packages.RequestPacket;
-import communication.packages.response.LoginResponsePacket;
+import communication.packets.PacketType;
+import communication.packets.RequestPacket;
+import communication.packets.response.LoginResponsePacket;
 import login.LoginResponse;
 import org.java_websocket.WebSocket;
 import utils.Pair;

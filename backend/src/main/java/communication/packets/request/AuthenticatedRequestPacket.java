@@ -1,7 +1,7 @@
-package communication.packages.request;
+package communication.packets.request;
 
-import communication.packages.PacketType;
-import communication.packages.RequestPacket;
+import communication.packets.PacketType;
+import communication.packets.RequestPacket;
 
 public abstract class AuthenticatedRequestPacket extends RequestPacket {
 

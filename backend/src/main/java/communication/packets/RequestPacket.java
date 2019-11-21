@@ -1,4 +1,4 @@
-package communication.packages;
+package communication.packets;
 
 import communication.CommunicationFactory;
 import org.java_websocket.WebSocket;

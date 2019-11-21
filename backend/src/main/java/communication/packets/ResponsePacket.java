@@ -1,4 +1,4 @@
-package communication.packages;
+package communication.packets;
 
 public abstract class ResponsePacket extends BasePacket {
 

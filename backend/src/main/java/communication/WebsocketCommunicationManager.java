@@ -1,9 +1,9 @@
 package communication;
 
 import com.google.gson.Gson;
-import communication.packages.BasePacket;
-import communication.packages.Packet;
-import communication.packages.request.LoginRequestPacket;
+import communication.packets.BasePacket;
+import communication.packets.Packet;
+import communication.packets.request.LoginRequestPacket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;

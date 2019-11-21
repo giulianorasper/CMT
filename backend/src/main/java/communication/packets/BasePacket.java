@@ -1,4 +1,4 @@
-package communication.packages;
+package communication.packets;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

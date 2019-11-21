@@ -1,8 +1,8 @@
-package communication.packages.request.attendee;
+package communication.packets.request.attendee;
 
 import communication.CommunicationFactory;
-import communication.packages.PacketType;
-import communication.packages.request.AuthenticatedRequestPacket;
+import communication.packets.PacketType;
+import communication.packets.request.AuthenticatedRequestPacket;
 import org.java_websocket.WebSocket;
 
 public class PersonalDataRequest extends AuthenticatedRequestPacket {

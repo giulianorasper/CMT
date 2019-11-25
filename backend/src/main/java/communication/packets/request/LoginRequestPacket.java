@@ -8,6 +8,9 @@ import login.LoginResponse;
 import org.java_websocket.WebSocket;
 import utils.Pair;
 
+/**
+ * This packet handles an login request from either an attendee or an admin and responds with an {@link LoginResponsePacket}.
+ */
 public class LoginRequestPacket extends RequestPacket {
 
     public LoginRequestPacket(String username, String password) {
@@ -19,13 +22,14 @@ public class LoginRequestPacket extends RequestPacket {
     private String username;
     private String password;
 
+    //TODO handle
     @Override
     public void handle(CommunicationFactory factory, WebSocket webSocket) {
-        Pair<LoginResponse, Pair<String,Long>> result;
+        Pair<LoginResponse, Pair<String,Integer>> result;
         //result = factory.checkLogin(username, password);
         //Just for the prototype
         if(username.equals("theAnswer") && password.equals("42")) {
-            result = new Pair<>(LoginResponse.Valid, new Pair<>("suchSecureWow", System.currentTimeMillis() + 2000));
+            result = new Pair<>(LoginResponse.Valid, new Pair<>("suchSecureWow", 120));
         } else {
             result = new Pair<>(LoginResponse.WrongPassword, null);
         }

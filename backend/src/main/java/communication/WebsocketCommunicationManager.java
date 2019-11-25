@@ -43,7 +43,7 @@ public class WebsocketCommunicationManager extends WebSocketServer implements Co
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         conns.add(conn);
-        System.out.println("New connection from " + conn.getRemoteSocketAddress().getAddress().getHostAddress());
+        System.out.println(System.currentTimeMillis() + ": New connection from " + conn.getRemoteSocketAddress().getAddress().getHostAddress());
     }
 
     @Override

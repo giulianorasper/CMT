@@ -1,8 +1,8 @@
-package communication.packets.response;
+package communication.packets.response.both;
 
 import communication.packets.PacketType;
 import communication.packets.ResponsePacket;
-import communication.packets.request.LoginRequestPacket;
+import communication.packets.request.both.LoginRequestPacket;
 import login.LoginResponse;
 
 /**

@@ -3,7 +3,7 @@ package communication;
 import com.google.gson.Gson;
 import communication.packets.BasePacket;
 import communication.packets.Packet;
-import communication.packets.request.LoginRequestPacket;
+import communication.packets.request.both.LoginRequestPacket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;

@@ -1,5 +1,5 @@
 import com.google.gson.Gson;
-import communication.packets.request.LoginRequestPacket;
+import communication.packets.request.both.LoginRequestPacket;
 import org.junit.Test;
 
 public class CommunicationTests {

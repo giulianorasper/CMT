@@ -15,4 +15,5 @@ gradle-app.setting
 ### Intelij
 
 .idea/
+src/main/main.iml
 out/

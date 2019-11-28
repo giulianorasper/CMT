@@ -926,6 +926,8 @@ h3 {
   font-family: "Roboto", sans-serif;
   position: relative;
   text-transform: capitalize;
+  //text-decoration-line: none;
+  text-decoration: none;
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
@@ -1001,7 +1003,7 @@ h3 {
   left: 0;
   top: 140%;
   background: #fff;
-  width: 200px;
+  width: 220px;
   z-index: 2;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.02);
   opacity: 0;
@@ -1495,7 +1497,8 @@ h3 {
 
 /* line 138, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
 .package_prsing_area .boxed_btn_green {
-  padding: 12px 49px;
+ // padding: 12px 49px;
+  padding: 10px 14px;
 }
 
 /* line 143, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */

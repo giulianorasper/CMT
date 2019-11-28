@@ -69,6 +69,7 @@
                                             <ul class="submenu">
                                                 <li><a href="change_request.html">Change Request</a></li>
                                                 <li><a href="speak_request.html">Speak Request</a></li>
+                                                <li><a href="manage_requests.html">Manage Requests</a></li>
                                             </ul>
                                         </li>
                                         <li><a href="agenda_management.html">Manage Agendas</a></li>
@@ -113,62 +114,157 @@
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-lg-12">
                     <div class="single_prising" id="submit-message">
-                        <!--<div class="prising_header">-->
-                            <!--<h3>TOP (Agenda Items)</h3>-->
-                        <!--</div>-->
-                        <!--<div >-->
-                         <div class="row">
-                            <div class="col-lg-3" style="float:left;">
-                                <!--<h2 class="contact-title pull-left">Conference Name</h2>-->
-                            </div>
-                             <div class="col-lg-9" style="float:left;">
-                                <h2 class="contact-title pull-left">Conference Name</h2>
-                            </div>
+                        <div class="prising_header">
+                            <h3>Requests Management Panel</h3>
                         </div>
+                        <!--<div >-->
+                         <!--<div class="row">-->
+                            <!--<div class="col-lg-3" style="float:left;">-->
+                                <!--&lt;!&ndash;<h2 class="contact-title pull-left">Conference Name</h2>&ndash;&gt;-->
+                            <!--</div>-->
+                             <!--<div class="col-lg-9" style="float:left;">-->
+                                <!--<h2 class="contact-title pull-left">Conference Name</h2>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
                         <form class="" action="change_request.html" method="POST" id="form-submit">
-                        <div class="row">
-                            <div class="col-lg-3" style="float:left;">
+                        <div class="row" style="padding-top: 36px;">
+                            <div class="col-lg-1" style="float:left;">
                                 <!--<h2 class="contact-title pull-left">Conference Name</h2>-->
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-5">
                                     <!--<div class="row">-->
                                         <!--<div class="custom-control custom-radio col-xl-12 col-md-12">-->
                                              <div class="form-group controls">
                                                       <select class="form-control" name="language" required>
 
-                                                          <option disabled selected hidden>please select here</option>
+                                                          <option disabled selected hidden>select request type</option>
 
-                                                          <option>Option 1</option>
+                                                          <option>All</option>
 
-                                                          <option>Option 2</option>
-                                                          <option>Option 3</option>
+                                                          <option>Change Request</option>
+                                                          <option>Speak Request</option>
 
-                                                          <option>Option 4</option>
-                                                          <option>Option 5</option>
+                                                          <!--<option>Option 4</option>-->
+                                                          <!--<option>Option 5</option>-->
 
-                                                          <option>Option 6</option>
-                                                          <option>Option 7</option>
+                                                          <!--<option>Option 6</option>-->
+                                                          <!--<option>Option 7</option>-->
 
-                                                          <option>Option 8</option>
+                                                          <!--<option>Option 8</option>-->
 
 
                                                           <!--<option>Englisch</option>-->
                                                       </select>
                                             </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-3" style="float:left;">
+                            <div class="col-lg-5">
+                                    <!--<div class="row">-->
+                                        <!--<div class="custom-control custom-radio col-xl-12 col-md-12">-->
+                                             <div class="form-group controls">
+                                                      <select class="form-control" name="language" required>
+
+                                                          <option disabled selected hidden>select request topic</option>
+
+                                                          <option>Agenda Topic 1</option>
+
+                                                          <option>Agenda Topic 2</option>
+                                                          <option>Agenda Topic 3</option>
+
+                                                          <option>Agenda Topic 4</option>
+                                                          <option>Document Topic 1</option>
+
+                                                          <option>Document Topic 2</option>
+                                                          <option>Document Topic 3</option>
+                                                          <option>Document Topic 4</option>
+
+
+                                                          <!--<option>Englisch</option>-->
+                                                      </select>
+                                            </div>
+                            </div>
+                            <div class="col-lg-1" style="float:left;">
                                 <!--<h2 class="contact-title pull-left">Conference Name</h2>-->
                             </div>
-                            <div class="col-lg-6">
-                                    <!--<div class="col-xl-8 col-md-8">-->
-                                        <div class="form-group">
-                                        <textarea class="form-control w-100" name="message" id="message" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Message'" placeholder=" please enter here"></textarea>
-                                        </div>
-                            </div>
                         </div>
+                        <!--<div class="row">-->
+                            <br>
+                            <br>
+                            <div class="col-lg-12" style="padding-bottom: 20px;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <th>Requests</th>
+                                        <th>Time Stamp</th>
+                                        <th>Request Type</th>
+                                        <th>Approved?</th>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr data-toggle="collapse" data-target="#accordion" class="clickable">
+                                            <td>Request 1</td>
+                                            <td>Wed, 14:00 PM 11/28/2019</td>
+                                            <td>Change</td>
+                                            <td>Approved</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <div id="accordion" class="collapse">
+                                                    <h4 style="color:grey;">Attendee: Project23</h4>
+                                                    <h4 style="color:grey;">Question: Question Bla Bla?</h4>
+                                                    <h4 style="color:grey;">Request Text: Bla Bla should be changed.</h4>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr data-toggle="collapse" data-target="#accordion1" class="clickable">
+                                            <td>Request 2</td>
+                                            <td>Wed, 10:00 AM 11/28/2019</td>
+                                            <td>Speak</td>
+                                            <td>Approved</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <div id="accordion1" class="collapse">
+                                                    <h4 style="color:grey;">Attendee: Project23</h4>
+                                                    <h4 style="color:grey;">Question: Question Bla Bla I?</h4>
+                                                    <h4 style="color:grey;">Request Text: Wants to speak</h4>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr data-toggle="collapse" data-target="#accordion2" class="clickable">
+                                            <td>Request 3</td>
+                                            <td>Wed, 12:00 PM 11/28/2019</td>
+                                            <td>Change</td>
+                                            <td>Disapproved</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <div id="accordion2" class="collapse">
+                                                    <h4 style="color:grey;">Attendee: Project23</h4>
+                                                    <h4 style="color:grey;">Question: Question Bla Bla II?</h4>
+                                                    <h4 style="color:grey;">Request Text: Bla Bla should be changed.</h4>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+
+
+
+                        <!--</div>-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-lg-3" style="float:left;">-->
+                                <!--&lt;!&ndash;<h2 class="contact-title pull-left">Conference Name</h2>&ndash;&gt;-->
+                            <!--</div>-->
+                            <!--<div class="col-lg-6">-->
+                                    <!--&lt;!&ndash;<div class="col-xl-8 col-md-8">&ndash;&gt;-->
+                                        <!--<div class="form-group">-->
+                                        <!--<textarea class="form-control w-100" name="message" id="message" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Message'" placeholder=" please enter here"></textarea>-->
+                                        <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
 
                                 <!--<div class="col-sm-6">-->
@@ -187,17 +283,21 @@
                                     <!--</div>-->
                                 <!--</div>-->
                             <!--</div>-->
-                                <br>
-                                <br>
-                        <div class="row">
-                            <div class="col-lg-3" style="float:left;">
-                                <!--<h2 class="contact-title pull-left">Conference Name</h2>-->
-                            </div>
-                            <div class="form-group mt-3 col-lg-6" style="float: right;">
-                                <!--<button type="button" class="button button-contactForm boxed-btn">Cancel</button>-->
-                                <button type="submit" class="button button-contactForm boxed-btn pull-right" id="btnclose">Request</button>
-                            </div>
-                        </div>
+                                <!--<br>-->
+                                <!--<br>-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-lg-3" style="float:left;">-->
+                                <!--&lt;!&ndash;<h2 class="contact-title pull-left">Conference Name</h2>&ndash;&gt;-->
+                            <!--</div>-->
+                            <!--<div class="form-group mt-3 col-lg-6" style="float: right;">-->
+                                <!--&lt;!&ndash;<button type="button" class="button button-contactForm boxed-btn">Cancel</button>&ndash;&gt;-->
+                                <!--<button type="submit" class="button button-contactForm boxed-btn pull-right" id="btnclose">Request</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+
+
+
                         </form>
                     <!--</div>-->
                         <!--<div class="middle_content">-->

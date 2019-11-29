@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form by Colorlib</title>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="main">
+
+        <section class="signup">
+            <!-- <img src="images/signup-bg.jpg" alt=""> -->
+            <div class="container">
+                <div class="signup-content">
+                    <form method="POST" id="form" class="signup-form" action="website.html">
+                        <h2 class="form-title">Account Login</h2>
+                        <div class="form-group">
+
+							
+							<input type="text" class="form-input" name="token" id="token" style="width: 70%;" placeholder="Enter Token Here" required/>
+							<button type="button" class="btn-my" style="margin-left: 45px;" onclick="paste()">Paste</button>
+							<span id='message'></span>
+
+                        </div>  
+                        <div class="form-group">
+                            <input type="submit" name="submit" id="submit" class="form-submit" value="Sign in"/>
+                        </div>
+                    </form>
+                    <p class="loginhere">
+                        Forgot Token? <a href="#" class="loginhere-link">Enter here</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+<script>
+
+
+            $("form").submit(function (e) {
+
+                var textValue = document.getElementById("token").value
+
+				console.log(textValue);
+                if (textValue !== "ADX2345%A32X0$0") {
+                    console.log(textValue);
+                    $("#token").focus();
+                    <!--$('#message').html('Passwords need to match').css('color', 'red');-->
+                    $('#message').html('Incorrect token').css('color', 'red');
+                    e.preventDefault();
+                        return false;
+
+                }
+				
+            });
+		
+
+</script>
+<script>
+	
+		async function paste() {
+		  const text = await navigator.clipboard.readText();
+		  document.getElementById("token").value = text;
+		}
+		
+		
+
+
+</script>	
+	
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>

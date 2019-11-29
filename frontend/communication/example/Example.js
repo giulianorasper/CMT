@@ -1,5 +1,6 @@
 import LoginRequestPacket from "../packets/LoginRequestPacket.js";
 import Cookies from "../utils/Cookies.js";
+import CommunicationManager from "../CommunicationManager.js";
 
 // An example on how to send requests to the server and handle it's responses.
 

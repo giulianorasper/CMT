@@ -7,19 +7,10 @@ import agenda.Topic;
 
 public class DB_AgendaManager extends DB_Controller implements DB_AgendaManagement, AgendaObserver {
 
-    @Override
-    public void init() {
-        //TODO: Implement this
-    }
+    private static String table = "agenda";
 
-    @Override
-    public void openConnection() {
-        //TODO: Implement this
-    }
-
-    @Override
-    public void closeConnection() {
-        //TODO: Implement this
+    public DB_AgendaManager(String url) {
+        super(url);
     }
 
     @Override

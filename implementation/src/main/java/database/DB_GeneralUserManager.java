@@ -10,19 +10,8 @@ import java.util.List;
 
 public class DB_GeneralUserManager extends DB_Controller implements DB_GeneralUserManagement {
 
-    @Override
-    public void init() {
-        //TODO: Implement this
-    }
-
-    @Override
-    public void openConnection() {
-        //TODO: Implement this
-    }
-
-    @Override
-    public void closeConnection() {
-        //TODO: Implement this
+    public DB_GeneralUserManager(String url) {
+        super(url);
     }
 
     @Override

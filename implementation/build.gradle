@@ -32,7 +32,7 @@ sourceSets {
 
     test {
         java {
-            srcDirs = ['test/main/java']
+            srcDirs = ['src/test/java']
         }
     }
 }

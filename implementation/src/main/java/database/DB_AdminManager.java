@@ -3,23 +3,14 @@ package database;
 import user.Admin;
 import user.DB_AdminManagement;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 public class DB_AdminManager extends DB_Controller implements DB_AdminManagement {
 
-    @Override
-    public void init() {
-        //TODO: Implement this
-    }
-
-    @Override
-    public void openConnection() {
-        //TODO: Implement this
-    }
-
-    @Override
-    public void closeConnection() {
-        //TODO: Implement this
+    public DB_AdminManager(String url) {
+        super(url);
     }
 
     @Override

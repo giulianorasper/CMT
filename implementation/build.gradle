@@ -21,5 +21,18 @@ spotbugs {
     toolVersion = '4.0.0-beta4'
     ignoreFailures = true
     effort = "max"
+}
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+
+    test {
+        java {
+            srcDirs = ['test/main/java']
+        }
+    }
 }

@@ -7,17 +7,9 @@ import java.io.File;
 
 public class Document implements Requestable, DocumentObservable {
 
-    private File file;
-    private String name;
+    public File file;
+    public String name;
     private int revisionNumber;
-
-    public void rename(String name) {
-        //TODO: Implement this
-    }
-
-    public void updateFile(File file) {
-        //TODO: Implement this
-    }
 
     @Override
     public void register(DocumentObserver o) {

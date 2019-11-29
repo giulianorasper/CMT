@@ -9,19 +9,10 @@ import java.util.List;
 
 public class DB_RequestManager extends DB_Controller implements DB_RequestManagement, RequestObserver {
 
-    @Override
-    public void init() {
-        //TODO: Implement this
-    }
+    private static String table = "requests";
 
-    @Override
-    public void openConnection() {
-        //TODO: Implement this
-    }
-
-    @Override
-    public void closeConnection() {
-        //TODO: Implement this
+    public DB_RequestManager(String url) {
+        super(url);
     }
 
     @Override

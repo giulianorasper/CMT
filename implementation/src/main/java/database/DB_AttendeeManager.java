@@ -7,19 +7,8 @@ import java.util.List;
 
 public class DB_AttendeeManager extends DB_Controller implements DB_AttendeeManagement {
 
-    @Override
-    public void init() {
-        //TODO: Implement this
-    }
-
-    @Override
-    public void openConnection() {
-        //TODO: Implement this
-    }
-
-    @Override
-    public void closeConnection() {
-        //TODO: Implement this
+    public DB_AttendeeManager(String url) {
+        super(url);
     }
 
     @Override

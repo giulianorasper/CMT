@@ -8,19 +8,10 @@ import java.util.List;
 
 public class DB_VotingManager extends DB_Controller implements DB_VotingManagement, VotingObserver {
 
-    @Override
-    public void init() {
-        //TODO: Implement this
-    }
+    private static String table = "votes";
 
-    @Override
-    public void openConnection() {
-        //TODO: Implement this
-    }
-
-    @Override
-    public void closeConnection() {
-        //TODO: Implement this
+    public DB_VotingManager(String url) {
+        super(url);
     }
 
     @Override

@@ -1,18 +1,32 @@
 package request;
 
+import user.User;
+
 public class SpeechRequest extends Request {
 
-    protected SpeechRequest(int id) {
+    public SpeechRequest(User requester, long timestamp) {
+        super();
+        this.requester = requester;
+        this.timeStamp = timestamp;
+
+        this.open = true;
+    }
+
+    public SpeechRequest(int id, User requester, long timestamp) {
         super(id);
+        this.requester = requester;
+        this.timeStamp = timestamp;
+
+        this.open = true;
     }
 
     @Override
     public void reopen() {
-        //TODO: Implement this
+        this.open = true;
     }
 
     @Override
     public void close() {
-        //TODO: Implement this
+        this.open = false;
     }
 }

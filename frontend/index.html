@@ -120,7 +120,7 @@
                     <!--<div class="col-xl-9">-->
                         <!--<div class="slider_text text-center">-->
                          <img src="images/support/support_lg.png" alt="">
-                             <form id="test-form" class="white-popup-block" action="home.html">
+                             <form id="test-form" class="white-popup-block">
                                 <div class="popup_box ">
                                     <div class="popup_inner">
                                         <div class="logo text-center">
@@ -132,10 +132,10 @@
                                         <!--<form action="home.html">-->
                                             <div class="row">
                                                 <div class="col-xl-12 col-md-12">
-                                                    <input type="email" placeholder="Enter email" required>
+                                                    <input type="text" placeholder="name" id="name" required>
                                                 </div>
                                                 <div class="col-xl-12 col-md-12">
-                                                    <input type="password" placeholder="Password" id="name" required>
+                                                    <input type="password" placeholder="Password" id="password" required>
                                                      <span id='message'></span>
                                                 </div>
 
@@ -910,33 +910,40 @@
     <script src="js/main.js"></script>
 
 
-<script>
-    <!--$( document ).ready(function() {-->
-    <!--var link = document.createElement('a');-->
-    <!--link.href = "#test-form";-->
-    <!--document.body.appendChild(link);-->
-    <!--link.class = "login popup-with-form";-->
-    <!--link.click();-->
-
-    <!--console.log( "ready!" );-->
-    <!--console.log(link);-->
-<!--});-->
+<script type="module">
+    import LoginRequestPacket from "./communication/packets/LoginRequestPacket.js";
+    import CommunicationManager from "./communication/CommunicationManager.js";
+    import Cookies from "./communication/utils/Cookies.js";
 
             $("#test-form").submit(function (e) {
+                //This prevents the default redirection due to form submission
+                e.preventDefault();
 
-                var textValue = document.getElementById("name").value
+                var name = document.getElementById("name").value;
+                var password = document.getElementById("password").value;
 
-				console.log(textValue);
-                if (textValue !== "project23") {
-                    console.log(textValue);
-                    $("#name").focus();
-                    <!--$('#message').html('Passwords need to match').css('color', 'red');-->
-                    $('#message').html('Incorrect password').css('color', 'red');
-                    e.preventDefault();
+                function success(packet) {
+                    console.log("This method is called if a response from the server is received.");
+                    // Take a look at the java docs for details on the structure of the packets.
+                    if(packet.loginResponse === "Valid") {
+                        Cookies.setCookie("token", packet.token, packet.expiration);
+                        window.location.href = "./home.html";
+                    } else {
+                        $("#name").focus();
+                        $('#message').html('Incorrect password').css('color', 'red');
                         return false;
-
+                    }
                 }
 
+                function fail() {
+                    console.log("This method is called if something went wrong during the general communication.");
+                    $('#message').html('Backend communication failed').css('color', 'red');
+                }
+
+                const login = new LoginRequestPacket(name, password);
+
+                // Send the request to the server
+                CommunicationManager.send(login, success, fail);
             });
 
 </script>

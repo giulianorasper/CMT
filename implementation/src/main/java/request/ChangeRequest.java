@@ -1,21 +1,58 @@
 package request;
 
+import user.User;
+
 public class ChangeRequest extends Request {
 
     private boolean approved;
     private String message;
 
-    protected ChangeRequest(int id) {
+    public ChangeRequest(User requester, long timestamp, String message){
+        super();
+        this.message = message;
+        this.requester = requester;
+        this.timeStamp = timestamp;
+
+        this.approved = false;
+        this.open = true;
+    }
+
+    public ChangeRequest(int id, User requester, long timestamp, String message) {
         super(id);
+        this.message = message;
+        this.requester = requester;
+        this.timeStamp = timestamp;
+
+        this.approved = false;
+        this.open = true;
+    }
+
+
+    public void approve(){
+        this.approved = true;
+        this.close();
+    }
+
+    public void disapprove(){
+        this.approved = false;
+        this.close();
+    }
+
+    public String getMessage(){
+        return this.message;
     }
 
     @Override
     public void reopen() {
-        //TODO: Implement this
+        this.open = false;
+        this.approved = false;
     }
 
+    /**
+     * Shouldn't be called from the outside since closing without approving/disapproving is not possible
+     */
     @Override
     public void close() {
-        //TODO: Implement this
+        this.open = false;
     }
 }

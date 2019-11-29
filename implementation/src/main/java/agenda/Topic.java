@@ -8,20 +8,38 @@ public class Topic implements Requestable {
     private String name;
     private Agenda parent;
 
+    public Topic(String name, Agenda parent){
+        this.parent = parent;
+        this.name = name;
+
+        this.subTopics = new Agenda();
+    }
+
     public void remove() {
-        //TODO: Implement this
+        this.parent.removeTopic(this);
     }
 
     public void rename(String name) {
-        //TODO: Implement this
+        this.name = name;
         //TODO: notify observers
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     public void moveToNewAgenda(Agenda agenda, int pos) {
-        //TODO: Implement this
+        this.parent = agenda;
+
+        agenda.addTopic(this, pos);
     }
 
     public void reorder(int pos) {
-        //TODO: Implement this
+        this.parent.reOrderTopic(this, pos);
     }
+
+    public Agenda getSubTopics(){
+        return this.subTopics;
+    }
+
 }

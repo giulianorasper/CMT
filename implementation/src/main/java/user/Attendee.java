@@ -25,6 +25,10 @@ public class Attendee extends User {
         this.present = true;
     }
 
+    public void logout(){
+        this.present = false;
+    }
+
     public boolean isPresent() {
         return present;
     }

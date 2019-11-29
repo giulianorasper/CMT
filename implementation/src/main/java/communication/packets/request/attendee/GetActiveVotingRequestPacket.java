@@ -1,8 +1,8 @@
 package communication.packets.request.attendee;
 
-import communication.CommunicationFactory;
 import communication.packets.PacketType;
 import communication.packets.request.AuthenticatedRequestPacket;
+import main.Conference;
 import org.java_websocket.WebSocket;
 import communication.packets.response.attendee.GetActiveVotingResponsePacket;
 
@@ -16,7 +16,7 @@ public class GetActiveVotingRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(CommunicationFactory factory, WebSocket webSocket) {
+    public void handle(Conference conference, WebSocket webSocket) {
         //TODO handle
     }
 }

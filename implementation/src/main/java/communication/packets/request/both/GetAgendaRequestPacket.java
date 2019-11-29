@@ -1,9 +1,9 @@
 package communication.packets.request.both;
 
-import communication.CommunicationFactory;
 import communication.packets.PacketType;
 import communication.packets.request.AuthenticatedRequestPacket;
 import communication.packets.response.both.GetAgendaResponsePacket;
+import main.Conference;
 import org.java_websocket.WebSocket;
 
 /**
@@ -16,7 +16,7 @@ public class GetAgendaRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(CommunicationFactory factory, WebSocket webSocket) {
+    public void handle(Conference conference, WebSocket webSocket) {
         //TODO handle
     }
 }

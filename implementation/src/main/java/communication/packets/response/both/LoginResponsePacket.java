@@ -3,7 +3,7 @@ package communication.packets.response.both;
 import communication.packets.PacketType;
 import communication.packets.ResponsePacket;
 import communication.packets.request.both.LoginRequestPacket;
-import login.LoginResponse;
+import user.LoginResponse;
 
 /**
  * A login response sent as result of an login request using an {@link LoginRequestPacket}.

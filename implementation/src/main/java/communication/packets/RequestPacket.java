@@ -1,6 +1,6 @@
 package communication.packets;
 
-import communication.CommunicationFactory;
+import main.Conference;
 import org.java_websocket.WebSocket;
 
 /**
@@ -15,8 +15,8 @@ public abstract class RequestPacket extends BasePacket {
     /**
      * A method which is called on any incoming packet.
      * Each subclass calls this method to handle it's associated request properly.
-     * @param factory An {@link CommunicationFactory} which enables handling the request by calling provided backend methods.
+     * @param conference An {@link Conference} which enables handling the request by calling provided backend methods.
      * @param webSocket An {@link WebSocket} to send an {@link ResponsePacket} to if required.
      */
-    public abstract void handle(CommunicationFactory factory, WebSocket webSocket);
+    public abstract void handle(Conference conference, WebSocket webSocket);
 }

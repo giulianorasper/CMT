@@ -1,11 +1,11 @@
 package communication.packets.request.both;
 
-import communication.CommunicationFactory;
 import communication.packets.PacketType;
 import communication.packets.RequestPacket;
 import communication.packets.response.both.LoginResponsePacket;
-import login.LoginResponse;
+import main.Conference;
 import org.java_websocket.WebSocket;
+import user.LoginResponse;
 import utils.Pair;
 
 /**
@@ -24,7 +24,7 @@ public class LoginRequestPacket extends RequestPacket {
 
     //TODO handle
     @Override
-    public void handle(CommunicationFactory factory, WebSocket webSocket) {
+    public void handle(Conference conference, WebSocket webSocket) {
         Pair<LoginResponse, Pair<String,Integer>> result;
         //result = factory.checkLogin(username, password);
         //Just for the prototype
@@ -36,10 +36,10 @@ public class LoginRequestPacket extends RequestPacket {
 
         //actual code again
         LoginResponsePacket loginResponsePackage;
-        if(result.getFirst() == LoginResponse.Valid) {
-            loginResponsePackage = new LoginResponsePacket(result.getFirst(), result.getSecond().getFirst(), result.getSecond().getSecond());
+        if(result.first() == LoginResponse.Valid) {
+            loginResponsePackage = new LoginResponsePacket(result.first(), result.second().first(), result.second().second());
         } else {
-            loginResponsePackage = new LoginResponsePacket(result.getFirst());
+            loginResponsePackage = new LoginResponsePacket(result.first());
         }
         loginResponsePackage.send(webSocket);
     }

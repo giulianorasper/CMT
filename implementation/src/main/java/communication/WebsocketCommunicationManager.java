@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import communication.packets.BasePacket;
 import communication.packets.Packet;
 import communication.packets.request.both.LoginRequestPacket;
+import main.Conference;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -19,19 +20,19 @@ public class WebsocketCommunicationManager extends WebSocketServer implements Co
     //TODO make this configurable
     private static int TCP_PORT = 17699;
     private Set<WebSocket> conns;
-    private CommunicationFactory factory;
+    private Conference conference;
     //TODO implement timeout
     private int timeoutAfter;
 
-    public WebsocketCommunicationManager(CommunicationFactory factory, int timeoutAfter) {
+    public WebsocketCommunicationManager(Conference conference, int timeoutAfter) {
         super(new InetSocketAddress(TCP_PORT));
-        init(factory, timeoutAfter);
+        init(conference, timeoutAfter);
         conns = new HashSet<>();
     }
 
     @Override
-    public void init(CommunicationFactory factory, int timeoutAfter) {
-        this.factory = factory;
+    public void init(Conference conference, int timeoutAfter) {
+        this.conference = conference;
         this.timeoutAfter = timeoutAfter;
     }
 
@@ -61,7 +62,7 @@ public class WebsocketCommunicationManager extends WebSocketServer implements Co
 
             switch(pack.getPacketType()) {
                 case LOGIN_REQUEST:
-                    gson.fromJson(message, LoginRequestPacket.class).handle(factory, conn);
+                    gson.fromJson(message, LoginRequestPacket.class).handle(conference, conn);
             }
 
         } catch (Exception e) {

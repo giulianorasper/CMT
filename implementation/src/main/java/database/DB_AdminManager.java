@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+@SuppressWarnings("checkstyle:typename")
 public class DB_AdminManager extends DB_Controller implements DB_AdminManagement {
 
     public DB_AdminManager(String url) {

@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@SuppressWarnings("checkstyle:typename")
 public class DB_DocumentManager extends DB_Controller implements DB_DocumentManagement, DocumentObserver {
 
     private static String table = "documents";

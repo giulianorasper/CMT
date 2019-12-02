@@ -7,6 +7,7 @@ import request.RequestObserver;
 
 import java.util.List;
 
+@SuppressWarnings("checkstyle:typename")
 public class DB_RequestManager extends DB_Controller implements DB_RequestManagement, RequestObserver {
 
     private static String table = "requests";

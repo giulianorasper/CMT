@@ -2,6 +2,7 @@ package request;
 
 import java.util.List;
 
+@SuppressWarnings("checkstyle:typename")
 public interface DB_RequestManagement {
 
     boolean addRequest(Request req);

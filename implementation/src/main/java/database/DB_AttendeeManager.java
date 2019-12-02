@@ -5,6 +5,7 @@ import user.DB_AttendeeManagement;
 
 import java.util.List;
 
+@SuppressWarnings("checkstyle:typename")
 public class DB_AttendeeManager extends DB_Controller implements DB_AttendeeManagement {
 
     public DB_AttendeeManager(String url) {

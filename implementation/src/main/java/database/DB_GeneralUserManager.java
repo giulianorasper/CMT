@@ -8,6 +8,7 @@ import utils.Pair;
 
 import java.util.List;
 
+@SuppressWarnings("checkstyle:typename")
 public class DB_GeneralUserManager extends DB_Controller implements DB_GeneralUserManagement {
 
     public DB_GeneralUserManager(String url) {

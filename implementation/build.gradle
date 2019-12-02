@@ -1,6 +1,12 @@
+import com.github.spotbugs.SpotBugsTask
+
 plugins {
     id "java"
+    id "pmd"
+    id "jacoco"
     id "com.github.spotbugs" version "2.0.1"
+    id "checkstyle"
+    id "de.jansauer.printcoverage" version "2.0.0"
 }
 
 group 'se19.project23'
@@ -8,36 +14,8 @@ version '0.1'
 
 sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testImplementation 'junit:junit:4.9'
-    spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.1")
-
-    /**
-     * Library used for basic WebSocket communication
-     * Licensed under Apache-2.0 license
-     * https://tootallnate.github.io/Java-WebSocket/
-     */
-    compile group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.4.0'
-
-    /**
-     * Library used for converting objects to JSON and viceversa
-     * Licensed under the MIT license
-     * https://github.com/google/gson
-     */
-    compile 'com.google.code.gson:gson:2.8.6'
-
-    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
-}
-
-spotbugs {
-    toolVersion = '4.0.0-beta4'
-    ignoreFailures = true
-    effort = "max"
-}
+if (!JavaVersion.current().isJava11Compatible())
+    throw new GradleException("REQUIRES AT LEAST JAVA 11")
 
 wrapper {
     gradleVersion = "6.0.1"
@@ -62,4 +40,113 @@ sourceSets {
         }
         compileClasspath += sourceSets.main.output
     }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.9'
+    spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.1")
+
+    /**
+     * Library used for basic WebSocket communication
+     * Licensed under Apache-2.0 license
+     * https://tootallnate.github.io/Java-WebSocket/
+     */
+    implementation("org.java-websocket:Java-WebSocket:1.4.0")
+
+    /**
+     * Library used for converting objects to JSON and viceversa
+     * Licensed under the MIT license
+     * https://github.com/google/gson
+     */
+    implementation("com.google.code.gson:gson:2.8.6")
+
+    implementation("org.slf4j:slf4j-api:1.6.1")
+    runtimeOnly("org.slf4j:slf4j-simple:1.6.1")
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+    options.compilerArgs.add("-Xlint:all")
+    options.compilerArgs.add("-Werror")
+    sourceCompatibility = 11
+    targetCompatibility = 11
+}
+build {
+    dependsOn(check)
+    dependsOn(javadoc)
+}
+
+pmd {
+    toolVersion = "6.17.0"
+    ignoreFailures = true
+}
+tasks.withType(Pmd) {
+    reports {
+        html.enabled = true
+    }
+}
+
+spotbugs {
+    toolVersion = '4.0.0-beta4'
+    ignoreFailures = true
+}
+tasks.withType(SpotBugsTask) {
+    reports {
+        html.enabled = true
+        xml.enabled = false
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+}
+tasks.withType(JacocoReport) {
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+        html.destination = file("${buildDir}/reports/jacoco")
+    }
+    finalizedBy("printCoverage")
+}
+
+tasks.withType(Test) {
+    testClassesDirs = sourceSets.main.output.classesDirs + sourceSets.test.output.classesDirs
+    classpath = sourceSets.main.runtimeClasspath + sourceSets.test.runtimeClasspath
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams false
+    }
+    ignoreFailures = false
+    finalizedBy("jacocoTestReport")
+}
+
+checkstyle {
+    toolVersion = "8.26"
+    ignoreFailures = true
+}
+checkstyleMain {
+    showViolations = true
+}
+checkstyleTest {
+    showViolations = false
+}
+tasks.withType(Checkstyle) {
+    reports {
+        html.enabled = true
+        xml.enabled = false
+    }
+    configFile file("${projectDir}/config/checkstyle/configuration.xml")
+    configProperties = ["suppressionFile": file("${projectDir}/config/checkstyle/suppression.xml")]
+}
+
+javadoc {
+    options.encoding = "UTF-8"
+    options.addBooleanOption("html5", true)
+    options.destinationDirectory = file("${buildDir}/reports/javadoc")
+    source = sourceSets.main.allJava
 }

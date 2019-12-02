@@ -1,5 +1,6 @@
 package agenda;
 
+@SuppressWarnings("checkstyle:typename")
 public interface DB_AgendaManagement {
 
     boolean addTopic(Agenda a, Topic t, int pos);

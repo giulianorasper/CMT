@@ -1,8 +1,7 @@
 package communication.packets;
 
 /**
- * An packet sent to clients as response to a {@link RequestPacket}.
- * This abstraction does not have a designated functionality yet. It has the sole purpose of increasing flexibility in case of code expansion.
+ * A packet sent to clients as response to a {@link RequestPacket}.
  */
 public abstract class ResponsePacket extends BasePacket {
 
@@ -10,4 +9,9 @@ public abstract class ResponsePacket extends BasePacket {
         super(packetType);
     }
 
+    private RequestResult result;
+
+    public void setResult(RequestResult result) {
+        this.result = result;
+    }
 }

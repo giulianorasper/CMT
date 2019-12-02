@@ -12,7 +12,7 @@ public class LoginResponsePacket extends ResponsePacket {
 
     private LoginResponse loginResponse;
     private String token;
-    private int expiration;
+    private long expiration;
 
     /**
      *
@@ -20,7 +20,7 @@ public class LoginResponsePacket extends ResponsePacket {
      * @param token A token used for further communication on a successful login, null otherwise.
      * @param expiration The number of seconds until the token should expire.
      */
-    public LoginResponsePacket(LoginResponse loginResponse, String token, int expiration) {
+    public LoginResponsePacket(LoginResponse loginResponse, String token, long expiration) {
         super(PacketType.LOGIN_RESPONSE);
         this.loginResponse = loginResponse;
         this.token = token;

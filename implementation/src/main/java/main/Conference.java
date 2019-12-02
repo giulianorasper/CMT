@@ -265,6 +265,14 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         return null;//TODO implement me
     }
 
+    /**
+     * A function that the communication system can use to check if a login is valid
+     * @param userName - the username provided by the request
+     * @param password - the password provided by the request
+     * @return - A pair consisting of a {@link LoginResponse}, a token, a token, and the number of seconds until the token
+     * should expire.
+     * If the {@link LoginResponse} is not Valid then the second argument will be null
+     */
     @Override
     public Pair<LoginResponse, Pair<String, Long>> login(String userName, String password) {
         return null;

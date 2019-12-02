@@ -1,5 +1,6 @@
 package communication.packets.response.both;
 
+import agenda.Agenda;
 import communication.packets.PacketType;
 import communication.packets.ResponsePacket;
 import communication.packets.request.both.GetAgendaRequestPacket;
@@ -9,7 +10,7 @@ import communication.packets.request.both.GetAgendaRequestPacket;
  */
 public class GetAgendaResponsePacket extends ResponsePacket {
 
-    //TODO add Agenda attribute as soon as an Agenda class is available
+    private Agenda agenda;
 
     public GetAgendaResponsePacket() {
         super(PacketType.GET_AGENDA_RESPONSE);

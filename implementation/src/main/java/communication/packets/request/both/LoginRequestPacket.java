@@ -22,19 +22,11 @@ public class LoginRequestPacket extends RequestPacket {
     private String username;
     private String password;
 
-    //TODO handle
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-        Pair<LoginResponse, Pair<String,Integer>> result;
-        //result = factory.checkLogin(username, password);
-        //Just for the prototype
-        if(username.equals("theAnswer") && password.equals("42")) {
-            result = new Pair<>(LoginResponse.Valid, new Pair<>("suchSecureWow", 120));
-        } else {
-            result = new Pair<>(LoginResponse.WrongPassword, null);
-        }
+        Pair<LoginResponse, Pair<String,Long>> result;
+        result = conference.login(username, password);
 
-        //actual code again
         LoginResponsePacket loginResponsePackage;
         if(result.first() == LoginResponse.Valid) {
             loginResponsePackage = new LoginResponsePacket(result.first(), result.second().first(), result.second().second());

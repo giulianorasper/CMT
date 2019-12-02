@@ -5,6 +5,7 @@ import agenda.AgendaObserver;
 import agenda.DB_AgendaManagement;
 import agenda.Topic;
 
+@SuppressWarnings("checkstyle:typename")
 public class DB_AgendaManager extends DB_Controller implements DB_AgendaManagement, AgendaObserver {
 
     private static String table = "agenda";

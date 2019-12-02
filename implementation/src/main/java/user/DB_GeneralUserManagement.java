@@ -4,6 +4,7 @@ import utils.Pair;
 
 import java.util.List;
 
+@SuppressWarnings("checkstyle:typename")
 public interface DB_GeneralUserManagement {
 
     Pair<LoginResponse, String> checkLogin(String name, String password);

@@ -2,6 +2,7 @@ package document;
 
 import java.util.List;
 
+@SuppressWarnings("checkstyle:typename")
 public interface DB_DocumentManagement {
 
     boolean addDocument(Document document);

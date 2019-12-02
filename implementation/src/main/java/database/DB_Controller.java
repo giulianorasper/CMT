@@ -5,6 +5,7 @@ import java.sql.*;
 /**
  * Create the database for a conference and communicate with it.
  */
+@SuppressWarnings("checkstyle:typename")
 public class DB_Controller {
 
     public Connection connection;

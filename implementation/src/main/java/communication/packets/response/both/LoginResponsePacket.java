@@ -1,6 +1,7 @@
 package communication.packets.response.both;
 
 import communication.packets.PacketType;
+import communication.packets.RequestResult;
 import communication.packets.ResponsePacket;
 import communication.packets.request.both.LoginRequestPacket;
 import user.LoginResponse;
@@ -10,24 +11,26 @@ import user.LoginResponse;
  */
 public class LoginResponsePacket extends ResponsePacket {
 
-    private LoginResponse loginResponse;
     private String token;
     private long expiration;
 
     /**
      *
-     * @param loginResponse A String representing the overall result of the login request. This {@link LoginResponse} may be an abstraction of the actual response.
+     * @param result A String representing the overall result of the login request. This {@link RequestResult} is an abstraction of a {@link LoginResponse}.
      * @param token A token used for further communication on a successful login, null otherwise.
      * @param expiration The number of seconds until the token should expire.
      */
-    public LoginResponsePacket(LoginResponse loginResponse, String token, long expiration) {
-        super(PacketType.LOGIN_RESPONSE);
-        this.loginResponse = loginResponse;
+    private LoginResponsePacket(RequestResult result, String token, long expiration) {
+        super(PacketType.LOGIN_RESPONSE, result);
         this.token = token;
         this.expiration = expiration;
     }
 
-    public LoginResponsePacket(LoginResponse loginResponse) {
-        this(loginResponse, null, -1);
+    /**
+     * @param token A token used for further communication on a successful login, null otherwise.
+     * @param expiration The number of seconds until the token should expire.
+     */
+    public LoginResponsePacket(String token, long expiration) {
+        this(RequestResult.Valid ,token, expiration);
     }
 }

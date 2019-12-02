@@ -1,6 +1,7 @@
 package communication.packets.response.attendee;
 
 import communication.packets.PacketType;
+import communication.packets.RequestResult;
 import communication.packets.ResponsePacket;
 import communication.packets.request.attendee.VoteRequestPacket;
 
@@ -9,15 +10,9 @@ import communication.packets.request.attendee.VoteRequestPacket;
  */
 public class VoteResponsePacket extends ResponsePacket {
 
-    //TODO change this to an enum
-    private String result;
+    //TODO Any further information?
 
-    /**
-     *
-     * @param result the result of the vote submission (e.g. success, failure)
-      */
-    public VoteResponsePacket(String result) {
-        super(PacketType.VOTE_RESPONSE);
-        this.result = result;
+    public VoteResponsePacket(RequestResult result) {
+        super(PacketType.VOTE_RESPONSE, result);
     }
 }

@@ -1,5 +1,6 @@
 package communication.packets.response.attendee;
 import communication.packets.PacketType;
+import communication.packets.RequestResult;
 import communication.packets.ResponsePacket;
 import communication.packets.request.attendee.PersonalDataRequest;
 
@@ -25,7 +26,7 @@ public class PersonalDataResponse extends ResponsePacket {
      * @param residence the attendee's residence address
      */
     public PersonalDataResponse(String firstname, String lastname, String group, String function, String email, String residence) {
-        super(PacketType.PERSONAL_DATA_RESPONSE);
+        super(PacketType.PERSONAL_DATA_RESPONSE, RequestResult.Valid);
         this.firstname = firstname;
         this.lastname = lastname;
         this.group = group;

@@ -135,7 +135,7 @@
                 function success(packet) {
                     console.log("This method is called if a response from the server is received.");
                     // Take a look at the java docs for details on the structure of the packets.
-                    if(packet.loginResponse === "Valid") {
+                    if(packet.result === "Valid") {
                         Cookies.setCookie("token", packet.token, packet.expiration);
                         window.location.href = "./home.html";
                     } else {

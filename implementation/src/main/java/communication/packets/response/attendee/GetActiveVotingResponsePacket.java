@@ -1,6 +1,7 @@
 package communication.packets.response.attendee;
 
 import communication.packets.PacketType;
+import communication.packets.RequestResult;
 import communication.packets.ResponsePacket;
 import communication.packets.request.attendee.GetActiveVotingRequestPacket;
 
@@ -20,7 +21,7 @@ public class GetActiveVotingResponsePacket extends ResponsePacket {
      * @param options vote options (ordered) of the active voting, null if there is none
      */
     public GetActiveVotingResponsePacket(boolean exists, String title, String[] options) {
-        super(PacketType.GET_ACTIVE_VOTING_RESPONSE);
+        super(PacketType.GET_ACTIVE_VOTING_RESPONSE, RequestResult.Valid);
         this.exists = exists;
         this.title = title;
         this.options = options;

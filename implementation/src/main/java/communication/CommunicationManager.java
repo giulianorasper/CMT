@@ -7,7 +7,7 @@ import main.Conference;
 import java.io.IOException;
 
 /**
- * The interface that is responsible with waiting for requests and processing them. Receives a {@link CommunicationFactory} which it uses to process requests
+ * The interface that is responsible with waiting for requests and processing them. Receives a {@link Conference} which it uses to process requests
  */
 public interface CommunicationManager {
 
@@ -27,6 +27,8 @@ public interface CommunicationManager {
 
     /**
      * After calling this function the CommunicationManager stops processing new requests.
+     * @throws IOException .
+     * @throws InterruptedException .
      */
     void stop() throws IOException, InterruptedException;
 

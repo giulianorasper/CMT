@@ -1,7 +1,10 @@
 package communication.packets.request.both;
 
+import communication.packets.Packet;
 import communication.packets.PacketType;
 import communication.packets.RequestPacket;
+import communication.packets.RequestResult;
+import communication.packets.ResponsePacket;
 import communication.packets.response.both.LoginResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
@@ -27,12 +30,12 @@ public class LoginRequestPacket extends RequestPacket {
         Pair<LoginResponse, Pair<String,Long>> result;
         result = conference.login(username, password);
 
-        LoginResponsePacket loginResponsePackage;
+        Packet response;
         if(result.first() == LoginResponse.Valid) {
-            loginResponsePackage = new LoginResponsePacket(result.first(), result.second().first(), result.second().second());
+            response = new LoginResponsePacket(result.second().first(), result.second().second());
         } else {
-            loginResponsePackage = new LoginResponsePacket(result.first());
+            response = new ResponsePacket(PacketType.LOGIN_RESPONSE, RequestResult.Failure);
         }
-        loginResponsePackage.send(webSocket);
+        response.send(webSocket);
     }
 }

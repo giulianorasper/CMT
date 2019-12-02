@@ -4,7 +4,7 @@ import main.Conference;
 import org.java_websocket.WebSocket;
 
 /**
- * An extension of {@link BasePacket} which handles requests of clients by running the {@link RequestPacket#handle(CommunicationFactory, WebSocket)} method.
+ * An extension of {@link BasePacket} which handles requests of clients by running the {@link RequestPacket#handle(Conference, WebSocket)} method.
  */
 public abstract class RequestPacket extends BasePacket {
 

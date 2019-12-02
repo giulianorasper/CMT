@@ -8,23 +8,17 @@ public class ChangeRequest extends Request {
     private String message;
 
     public ChangeRequest(User requester, Requestable topic, long timestamp, String message){
-        super(topic);
+        super(topic, requester, timestamp);
         this.message = message;
-        this.requester = requester;
-        this.timeStamp = timestamp;
 
         this.approved = false;
-        this.open = true;
     }
 
     public ChangeRequest(int id, User requester, Requestable topic, long timestamp, String message) {
-        super(id, topic);
+        super(id, topic, requester, timestamp);
         this.message = message;
-        this.requester = requester;
-        this.timeStamp = timestamp;
 
         this.approved = false;
-        this.open = true;
     }
 
 

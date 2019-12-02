@@ -20,7 +20,7 @@ public abstract class Request implements RequestObservable {
 
     protected boolean open;
 
-    protected Request(int id, Requestable topic){
+    protected Request(int id, Requestable topic, User requester, long timestamp){
         try {
             idLock.lock();
 
@@ -30,15 +30,18 @@ public abstract class Request implements RequestObservable {
 
             this.ID = id;
             this.requestable = topic;
+            this.requester = requester;
+            this.timeStamp = timestamp;
+
+            this.open = true;
 
         } finally {
             idLock.unlock();
         }
     }
 
-    protected Request(Requestable topic){
-        this.ID = getNextID();
-        this.requestable = topic;
+    protected Request(Requestable topic, User requester, long timestamp){
+        this(getNextID(), topic, requester, timestamp);
     }
 
     public boolean isOpen() {
@@ -49,7 +52,7 @@ public abstract class Request implements RequestObservable {
 
     public abstract void close();
 
-    protected int getNextID(){
+    protected static int getNextID(){
         try{
             idLock.lock();
             lastUsedID++;

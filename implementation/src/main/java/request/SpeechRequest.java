@@ -4,16 +4,16 @@ import user.User;
 
 public class SpeechRequest extends Request {
 
-    public SpeechRequest(User requester, long timestamp) {
-        super();
+    public SpeechRequest(User requester, Requestable topic, long timestamp) {
+        super(topic);
         this.requester = requester;
         this.timeStamp = timestamp;
 
         this.open = true;
     }
 
-    public SpeechRequest(int id, User requester, long timestamp) {
-        super(id);
+    public SpeechRequest(int id, User requester, Requestable topic, long timestamp) {
+        super(id, topic);
         this.requester = requester;
         this.timeStamp = timestamp;
 

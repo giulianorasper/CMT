@@ -7,8 +7,8 @@ public class ChangeRequest extends Request {
     private boolean approved;
     private String message;
 
-    public ChangeRequest(User requester, long timestamp, String message){
-        super();
+    public ChangeRequest(User requester, Requestable topic, long timestamp, String message){
+        super(topic);
         this.message = message;
         this.requester = requester;
         this.timeStamp = timestamp;
@@ -17,8 +17,8 @@ public class ChangeRequest extends Request {
         this.open = true;
     }
 
-    public ChangeRequest(int id, User requester, long timestamp, String message) {
-        super(id);
+    public ChangeRequest(int id, User requester, Requestable topic, long timestamp, String message) {
+        super(id, topic);
         this.message = message;
         this.requester = requester;
         this.timeStamp = timestamp;

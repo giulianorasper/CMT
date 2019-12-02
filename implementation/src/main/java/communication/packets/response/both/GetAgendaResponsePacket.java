@@ -13,7 +13,8 @@ public class GetAgendaResponsePacket extends ResponsePacket {
 
     private Agenda agenda;
 
-    public GetAgendaResponsePacket() {
+    public GetAgendaResponsePacket(Agenda agenda) {
         super(PacketType.GET_AGENDA_RESPONSE, RequestResult.Valid);
+        this.agenda = agenda;
     }
 }

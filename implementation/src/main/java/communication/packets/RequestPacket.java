@@ -15,6 +15,7 @@ public abstract class RequestPacket extends BasePacket {
         super(packetType);
     }
 
+    //TODO try catch?
     /**
      * A method which is called on any incoming packet.
      * Each subclass calls this method to handle it's associated request properly.
@@ -35,7 +36,7 @@ public abstract class RequestPacket extends BasePacket {
         if(value == OperationResponse.InvalidToken) {
             new InvalidTokenResponsePacket().send(socket);
         } else if(value == OperationResponse.InvalidArguments) {
-            new FailureResponsePacket().send(socket);
+            new FailureResponsePacket(value.getMessage()).send(socket);
         } else if(value == OperationResponse.AdminSuccess || (value == OperationResponse.AttendeeSuccess && !adminOperation)) {
             return true;
         } else {

@@ -41,6 +41,7 @@ public class Agenda implements AgendaObservable{
     }
 
     protected Agenda (Agenda parent, WriterBiasedRWLock lock){
+        this("");
         this.lock = lock;
         this.parent = parent;
     }
@@ -78,6 +79,25 @@ public class Agenda implements AgendaObservable{
         }
         finally {
             lock.finishRead();
+        }
+    }
+
+    public Topic getTopicFromPreorderString(String preorder) {
+        String[] preorderArray = preorder.split("\\.");
+        List<Integer> preorderList = new LinkedList<>();
+        for(String s : preorderArray) {
+            preorderList.add((Integer.parseInt(s)));
+        }
+        return getTopicFromPreorderList(preorderList);
+    }
+
+    protected Topic getTopicFromPreorderList(List<Integer> preorder) {
+        if(!preorder.isEmpty()) {
+            Topic topic = topics.get(preorder.get(0));
+            preorder.remove(preorder.size()-1);
+            return topic.getTopicFromPreorderList(preorder);
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 

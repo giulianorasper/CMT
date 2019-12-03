@@ -122,6 +122,25 @@
                                 </ul>
                             </div>
                         </div>
+
+
+                        <!--Testing-->
+                        <div class="middle_content">
+                            <div class="list" >
+                                <ul id="parentid">
+                                    <!--<li >Detail One</li>-->
+
+                                            <!--<ul id="childid">-->
+                                             <!--<li style="font-size: 20px;">Detail two</li>-->
+
+                                            <!--<li style="font-size: 20px;">Detail three</li>-->
+                                            <!--<ul>-->
+                                            <!--</ul>-->
+                                </ul>
+                            </div>
+                        </div>
+                        <!--end-->
+
                     </div>
                 </div>
             </div>
@@ -158,6 +177,8 @@
 
     <script src="js/main.js"></script>
 
+    <script type="text/javascript" src="data.json"></script>
+
 
 <script>
     $( document ).ready(function() {
@@ -169,6 +190,73 @@
 
     console.log( "ready!" );
     console.log(link);
+
+    <!--var mydata = JSON.parse(data);-->
+
+
+    <!--var newdata = data.userList;-->
+    <!--console.log(typeof data);-->
+    <!--var new = data[0];-->
+    var newtesting = JSON.parse(JSON.stringify(data));
+    <!--var new = data.0;-->
+
+
+
+    function generateList(data, $e) {
+    // create an inner item
+        styleVar = 26;
+        function createInner(obj, $target) {
+            var li = $('<li style="font-size: '+styleVar+'px;">').appendTo($target);
+            li.text(obj.name);
+            if (obj.subTopics.topics != undefined && obj.subTopics.topics.length > 0) {
+                var innerList = $('<div class="list"><ul>').appendTo(li);
+                for (var i = 0; i < obj.subTopics.topics.length; i++) {
+                    var child = obj.subTopics.topics[i];
+                    styleVar = styleVar - 4
+                    createInner(child, innerList);
+                };
+            }
+        }
+        for (var i = 0; i < data.topics.length; i++) {
+            createInner(data.topics[i], $e);
+        }
+    }
+
+    generateList(data, $('#parentid'));
+
+
+
+
+
+
+
+
+
+
+    console.log(data.topics[0].name);
+
+    console.log(data.topics[0].name);
+    console.log(data.topics[0].subTopics);
+    console.log(data.topics[1].subTopics.topics[0]);
+    console.log(data.topics[1].subTopics.topics[0].name);
+
+    console.log(data.topics[1].name);
+    console.log(data.topics[1].subTopics);
+    console.log(data.topics[1].subTopics.topics[0]);
+    console.log(data.topics[1].subTopics.topics[0].name);
+    console.log(data.topics.length);
+
+    <!--for(i in data.topics){-->
+        <!--console.log(data.topics[i].name);-->
+        <!--$("#parentid").append("<li >"+data.topics[i].name+"</li>");-->
+
+        <!--for(j in data.topics[i].subTopics.topics){-->
+            <!--$("#parentid").append($("#childid").append("<div class='list'><ul><li style='font-size: 20px;'>"+data.topics[i].subTopics.topics[j].name+"</li><ul></div>"));-->
+            <!--console.log(data.topics[i].subTopics.topics[j].name);-->
+
+        <!--}-->
+    <!--}-->
+
 });
 
 

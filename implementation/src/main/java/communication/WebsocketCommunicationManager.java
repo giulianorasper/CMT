@@ -3,6 +3,15 @@ package communication;
 import com.google.gson.Gson;
 import communication.packets.BasePacket;
 import communication.packets.Packet;
+import communication.packets.RequestPacket;
+import communication.packets.request.admin.AddTopicRequestPacket;
+import communication.packets.request.admin.RemoveTopicRequestPacket;
+import communication.packets.request.admin.RenameTopicRequestPacket;
+import communication.packets.request.admin.ReorderTopicRequestPacket;
+import communication.packets.request.attendee.GetActiveVotingRequestPacket;
+import communication.packets.request.attendee.PersonalDataRequestPacket;
+import communication.packets.request.attendee.VoteRequestPacket;
+import communication.packets.request.both.GetAgendaRequestPacket;
 import communication.packets.request.both.LoginRequestPacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
@@ -57,13 +66,42 @@ public class WebsocketCommunicationManager extends WebSocketServer implements Co
     @Override
     public void onMessage(WebSocket conn, String message) {
         try {
-            Packet pack;
-            pack = gson.fromJson(message, BasePacket.class);
+            RequestPacket pack;
+            pack = gson.fromJson(message, RequestPacket.class);
 
             switch(pack.getPacketType()) {
                 case LOGIN_REQUEST:
-                    gson.fromJson(message, LoginRequestPacket.class).handle(conference, conn);
+                    pack = gson.fromJson(message, LoginRequestPacket.class);
+                    break;
+                case GET_ACTIVE_VOTING_REQUEST:
+                    pack = gson.fromJson(message, GetActiveVotingRequestPacket.class);
+                    break;
+                case PERSONAL_DATA_REQUEST:
+                    pack = gson.fromJson(message, PersonalDataRequestPacket.class);
+                    break;
+                case VOTE_REQUEST:
+                    pack = gson.fromJson(message, VoteRequestPacket.class);
+                    break;
+                case GET_AGENDA_REQUEST:
+                    pack = gson.fromJson(message, GetAgendaRequestPacket.class);
+                    break;
+                case ADD_TOPIC_REQUEST:
+                    pack = gson.fromJson(message, AddTopicRequestPacket.class);
+                    break;
+                case REMOVE_TOPIC_REQUEST:
+                    pack = gson.fromJson(message, RemoveTopicRequestPacket.class);
+                    break;
+                case RENAME_TOPIC_REQUEST:
+                    pack = gson.fromJson(message, RenameTopicRequestPacket.class);
+                    break;
+                case REORDER_TOPIC_REQUEST:
+                    pack = gson.fromJson(message, ReorderTopicRequestPacket.class);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Packet type " + pack.getPacketType() + " does not exist.");
             }
+            pack.handle(conference, conn);
+
 
         } catch (Exception e) {
             e.printStackTrace();

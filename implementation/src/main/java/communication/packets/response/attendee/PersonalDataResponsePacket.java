@@ -1,4 +1,5 @@
 package communication.packets.response.attendee;
+import com.google.gson.annotations.Expose;
 import communication.packets.PacketType;
 import communication.packets.RequestResult;
 import communication.packets.ResponsePacket;
@@ -10,6 +11,7 @@ import user.Attendee;
  */
 public class PersonalDataResponsePacket extends ResponsePacket {
 
+    @Expose
     private Attendee attendee;
 
     /**

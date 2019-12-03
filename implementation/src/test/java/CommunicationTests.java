@@ -34,6 +34,6 @@ public class CommunicationTests {
         Topic subTopic = new Topic("Subtopic of 2", t2.getSubTopics());
         t2.getSubTopics().addTopic(subTopic,0);
         GetAgendaResponsePacket packet = new GetAgendaResponsePacket(agenda);
-        System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(packet));
+        System.out.println(packet.toJson());
     }
 }

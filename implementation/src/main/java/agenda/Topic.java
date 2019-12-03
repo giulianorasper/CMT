@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import request.Requestable;
 import utils.WriterBiasedRWLock;
 
+import java.util.List;
+
 
 public class Topic implements Requestable {
 
@@ -11,7 +13,7 @@ public class Topic implements Requestable {
     private Agenda subTopics;
     @Expose
     private String name;
-    private transient Agenda parent;
+    private Agenda parent;
     private WriterBiasedRWLock lock; //used for the agenda
 
     public Topic(String name, Agenda parent){
@@ -65,6 +67,16 @@ public class Topic implements Requestable {
         }
     }
 
+    public Topic getTopicFromPreorderList(List<Integer> preorder) {
+        if(preorder.isEmpty()) {
+            return this;
+        } else if(subTopics != null) {
+            return subTopics.getTopicFromPreorderList(preorder);
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
     public boolean moveToNewAgenda(Agenda agenda, int pos) {
         try {
             lock.getWriteAccess();
@@ -101,7 +113,7 @@ public class Topic implements Requestable {
             return null;
         }
         finally {
-            lock.finishWrite();
+            lock.finishRead();
         }
     }
 

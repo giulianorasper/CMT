@@ -2,7 +2,21 @@ package user;
 
 public class Admin extends Attendee {
 
-    public Admin(String name, String group, String residence, String function, int ID) {
-        super(name, group, residence, function, ID);
+    public boolean isLogedIn() {
+        return logedIn;
+    }
+
+    public void login() {
+        this.logedIn = true;
+    }
+
+    public void logout() {
+        this.logedIn = false;
+    }
+
+    private boolean logedIn;
+
+    public Admin(String name, String userName, String group, String residence, String function, int ID){
+        super(name, userName, group, residence, function, ID);
     }
 }

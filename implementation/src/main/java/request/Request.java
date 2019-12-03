@@ -1,18 +1,53 @@
 package request;
 
 import user.User;
+import utils.WriterBiasedRWLock;
+import voting.VotingObserver;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class Request implements RequestObservable {
 
     protected static int lastUsedID = 0;
+    private ConcurrentHashMap<RequestObserver, Boolean> observers = new ConcurrentHashMap<>(); // a map backed hashset
+
 
     //Locking static variable lastUsedID for multiple admins
     private static Lock idLock = new ReentrantLock();
 
+    protected WriterBiasedRWLock lock = new WriterBiasedRWLock();
+
     protected long timeStamp;
+
+
+    public abstract void reopen();
+
+    public Requestable getRequestable() {
+        try {
+            lock.getReadAccess();
+            return requestable;
+        }
+        catch (InterruptedException e){
+            return null;
+        }
+        finally {
+            lock.finishRead();
+        }
+    }
+
+    public User getRequester() {
+        try {
+            lock.getReadAccess();
+            return this.requester;
+        } catch (InterruptedException e) {
+            return null;
+        } finally {
+            lock.finishRead();
+        }
+    }
+
     protected Requestable requestable;
     protected User requester;
 
@@ -45,12 +80,16 @@ public abstract class Request implements RequestObservable {
     }
 
     public boolean isOpen() {
-        return this.open;
+        try {
+            lock.getReadAccess();
+            return this.open;
+        } catch (InterruptedException e) {
+            return false;
+        } finally {
+            lock.finishRead();
+        }
     }
 
-    public abstract void reopen();
-
-    public abstract void close();
 
     protected static int getNextID(){
         try{
@@ -62,22 +101,19 @@ public abstract class Request implements RequestObservable {
         }
     }
 
-    public Requestable getTopic(){
-        return this.requestable;
-    }
 
     @Override
     public void register(RequestObserver o) {
-        //TODO: Implement this
+        observers.put(o, true);
     }
 
     @Override
     public void unregister(RequestObserver o) {
-        //TODO: Implement this
+        observers.remove(o);
     }
 
     @Override
     public void notifyObservers() {
-        //TODO: Implement this
+        observers.forEachKey(2, o -> o.update(this));
     }
 }

@@ -19,7 +19,4 @@ public interface AdminManagement {
 
     OperationResponse editAdmin(int ID, Admin a);
 
-    OperationResponse generateNewPassword(int ID);
-
-    OperationResponse generateNewToken(int ID);
 }

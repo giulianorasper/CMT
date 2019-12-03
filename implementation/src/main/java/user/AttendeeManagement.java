@@ -17,7 +17,7 @@ public interface AttendeeManagement {
 
     OperationResponse logoutAttendee(String adminToken, int userID);
 
-    OperationResponse editAttendee(String adminToken, int userID);
+    OperationResponse editAttendee(String adminToken, int userID, Attendee attendee);
 
     OperationResponse generateNewAttendeePassword(String adminToken, int userID);
 

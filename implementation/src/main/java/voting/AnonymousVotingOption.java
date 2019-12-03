@@ -2,13 +2,15 @@ package voting;
 
 public class AnonymousVotingOption extends VotingOption {
 
+    private int votes;
+
     @Override
-    public void addVote(int userID) {
-        //TODO: Implement this
+    protected void addVote(int userID) {
+        votes++;
     }
 
     @Override
     public int getCurrentResult() {
-        return 0; //TODO: Implement this
+        return votes; //TODO: Implement this
     }
 }

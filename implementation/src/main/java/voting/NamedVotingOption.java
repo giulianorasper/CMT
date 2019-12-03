@@ -1,14 +1,19 @@
 package voting;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NamedVotingOption extends VotingOption {
 
+    public List<Integer> voters = new ArrayList<>();
+
     @Override
-    public void addVote(int userID) {
-        //TODO: Implement this
+    protected void addVote(int userID) {
+        voters.add(userID);
     }
 
     @Override
     public int getCurrentResult() {
-        return 0; //TODO: Implement this
+        return voters.size(); //TODO: Implement this
     }
 }

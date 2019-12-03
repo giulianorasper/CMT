@@ -21,5 +21,7 @@ public interface DB_GeneralUserManagement {
 
     boolean storeNewPassword(int userID, String password);
 
+    boolean userNameAlreadyUsed(String username);
+
     List<Integer> getIDs();
 }

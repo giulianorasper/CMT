@@ -17,36 +17,50 @@ public class ChangeRequest extends Request {
     public ChangeRequest(int id, User requester, Requestable topic, long timestamp, String message) {
         super(id, topic, requester, timestamp);
         this.message = message;
-
         this.approved = false;
     }
 
 
     public void approve(){
-        this.approved = true;
-        this.close();
+        try {
+            lock.getWriteAccess();
+            this.approved = true;
+            this.open = false;
+        } catch (InterruptedException e) {
+            //do nothing
+        } finally {
+            lock.finishWrite();
+        }
+    }
+
+    @Override
+    public void reopen() {
+        try {
+            lock.getWriteAccess();
+            this.open = true;
+            this.approved = false;
+        } catch (InterruptedException e) {
+            //do nothing
+        } finally {
+            lock.finishWrite();
+        }
     }
 
     public void disapprove(){
-        this.approved = false;
-        this.close();
+        try {
+            lock.getWriteAccess();
+            this.approved = false;
+            this.open = false;
+        } catch (InterruptedException e) {
+            //do nothing
+        } finally {
+            lock.finishWrite();
+        }
     }
 
     public String getMessage(){
         return this.message;
     }
 
-    @Override
-    public void reopen() {
-        this.open = false;
-        this.approved = false;
-    }
 
-    /**
-     * Shouldn't be called from the outside since closing without approving/disapproving is not possible
-     */
-    @Override
-    public void close() {
-        this.open = false;
-    }
 }

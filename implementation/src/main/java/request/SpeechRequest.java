@@ -14,11 +14,25 @@ public class SpeechRequest extends Request {
 
     @Override
     public void reopen() {
-        this.open = true;
+        try {
+            lock.getWriteAccess();
+            this.open = true;
+        } catch (InterruptedException e) {
+            //do nothing
+        } finally {
+            lock.finishWrite();
+        }
     }
 
-    @Override
+
     public void close() {
-        this.open = false;
+        try {
+            lock.getWriteAccess();
+            this.open = false;
+        } catch (InterruptedException e) {
+            //do nothing
+        } finally {
+            lock.finishWrite();
+        }
     }
 }

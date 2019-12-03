@@ -34,12 +34,10 @@ public class Agenda implements AgendaObservable{
     public boolean addTopic(Topic t, int pos) {
         //No pos >= topics.size() because inserting to the first non existing index is fine
         if(pos >= 0 && pos <= topics.size()){
-            return false;
+            this.topics.add(pos, t);
+            return true;
         }
-
-        this.topics.add(pos, t);
-
-        return true;
+        return false;
     }
 
     public Topic getTopic(int pos) {

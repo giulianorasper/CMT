@@ -6,7 +6,7 @@ public class Topic implements Requestable {
 
     private Agenda subTopics;
     private String name;
-    private Agenda parent;
+    private transient Agenda parent;
 
     public Topic(String name, Agenda parent){
         this.parent = parent;

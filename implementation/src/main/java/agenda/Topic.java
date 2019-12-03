@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import request.Requestable;
 import utils.WriterBiasedRWLock;
 
+import java.util.List;
+
 
 public class Topic implements Requestable {
 
@@ -62,6 +64,16 @@ public class Topic implements Requestable {
         }
         finally {
             lock.finishRead();
+        }
+    }
+
+    public Topic getTopicFromPreorderList(List<Integer> preorder) {
+        if(preorder.isEmpty()) {
+            return this;
+        } else if(subTopics != null) {
+            return subTopics.getTopicFromPreorderList(preorder);
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 

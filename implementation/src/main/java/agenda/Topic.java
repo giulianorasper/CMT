@@ -2,6 +2,8 @@ package agenda;
 
 import com.google.gson.annotations.Expose;
 import request.Requestable;
+import utils.WriterBiasedRWLock;
+
 
 public class Topic implements Requestable {
 
@@ -10,39 +12,97 @@ public class Topic implements Requestable {
     @Expose
     private String name;
     private transient Agenda parent;
+    private WriterBiasedRWLock lock; //used for the agenda
 
     public Topic(String name, Agenda parent){
         this.parent = parent;
         this.name = name;
+        this.lock = parent.lock;
 
-        this.subTopics = new Agenda();
+        this.subTopics = new Agenda(parent, lock);
     }
 
-    public void remove() {
-        this.parent.removeTopic(this);
+    public boolean remove() {
+        try {
+            lock.getWriteAccess();
+            return this.parent.removeTopic(this);
+        }
+        catch (InterruptedException e){
+            return false;
+            //do nothing
+        }
+        finally {
+            parent.notifyObservers();
+            lock.finishWrite();
+        }
     }
 
     public void rename(String name) {
-        this.name = name;
-        //TODO: notify observers
+        try {
+            lock.getWriteAccess();
+            this.name = name;
+            parent.notifyObservers();
+        }
+        catch (InterruptedException e){
+            //do nothing
+        }
+        finally {
+            lock.finishWrite();
+        }
     }
 
     public String getName(){
-        return this.name;
+        try {
+            lock.getReadAccess();
+            return this.name;
+        }
+        catch (InterruptedException e){
+            //do nothing
+            return "";
+        }
+        finally {
+            lock.finishRead();
+        }
     }
 
-    public void moveToNewAgenda(Agenda agenda, int pos) {
-        this.parent = agenda;
-
-        agenda.addTopic(this, pos);
+    public boolean moveToNewAgenda(Agenda agenda, int pos) {
+        try {
+            lock.getWriteAccess();
+            this.parent = agenda;
+            return agenda.addTopic(this, pos);
+        }
+        catch (InterruptedException e){
+            return false;
+        }
+        finally {
+            lock.finishWrite();
+        }
     }
 
-    public void reorder(int pos) {
-        this.parent.reOrderTopic(this, pos);
+    public boolean reorder(int pos) {
+        try {
+            lock.getWriteAccess();
+            return this.parent.reOrderTopic(this, pos);
+        }
+        catch (InterruptedException e){
+            return false;
+        }
+        finally {
+            lock.finishWrite();
+        }
     }
 
     public Agenda getSubTopics(){
-        return this.subTopics;
+        try{
+            lock.getReadAccess();
+            return this.subTopics;
+        }
+        catch (InterruptedException e){
+            return null;
+        }
+        finally {
+            lock.finishWrite();
+        }
     }
 
 }

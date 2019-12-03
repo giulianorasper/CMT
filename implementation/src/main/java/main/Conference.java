@@ -16,6 +16,7 @@ import user.DB_AdminManagement;
 import user.DB_AttendeeManagement;
 import user.DB_GeneralUserManagement;
 import user.LoginResponse;
+import user.TokenResponse;
 import user.User;
 import user.UserManagement;
 import utils.OperationResponse;
@@ -27,6 +28,7 @@ import voting.VotingManagement;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -43,14 +45,14 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         this.agenda = new Agenda("");
         this.votings = new ConcurrentHashMap<>();
         this.documents = new ConcurrentHashMap<>();
-        this.attendees = new ConcurrentHashMap<>();
         this.admins = new ConcurrentHashMap<>();
         this.requests = new ConcurrentHashMap<>();
+        this.adminTokens = new ConcurrentHashMap<>();
         this.activeVoting = null;
     }
 
 
-    public Conference(String name, String organizer, Time startsAt, Time endsAt, Agenda agenda, ConcurrentHashMap<Integer,Voting> votings, ConcurrentHashMap<Integer,Document> documents, ConcurrentHashMap<Integer,Admin> admins, ConcurrentHashMap<Integer,Attendee> attendees, ConcurrentHashMap<Integer,Request> requests, Voting activeVoting) {
+    public Conference(String name, String organizer, Time startsAt, Time endsAt, Agenda agenda, ConcurrentHashMap<Integer,Voting> votings, ConcurrentHashMap<Integer,Document> documents, Set<String> adminTokens, ConcurrentHashMap<Integer,Request> requests, Voting activeVoting) {
         this.name = name;
         this.organizer = organizer;
         this.startsAt = startsAt;
@@ -58,10 +60,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         this.agenda = agenda;
         this.votings = votings;
         this.documents = documents;
-        this.attendees = attendees;
-        this.admins= admins;
         this.requests = requests;
         this.activeVoting = activeVoting;
+
+        adminTokens.forEach(f -> this.adminTokens.put(f, true));
     }
 
     //Conference Data
@@ -75,53 +77,37 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private Agenda agenda;
     private ConcurrentHashMap<Integer,Voting> votings;
     private ConcurrentHashMap<Integer,Document> documents;
-    private ConcurrentHashMap<Integer,Attendee> attendees;
     private ConcurrentHashMap<Integer,Admin> admins;
     private ConcurrentHashMap<Integer,Request> requests;
     private Voting activeVoting;
+    private ConcurrentHashMap<String, Boolean> adminTokens; // a map backed Set
 
-    //Database System //TODO add url
-    DB_AdminManagement db_adminManagement = new DB_AdminManager("");
-    DB_AgendaManagement db_agendaManagement = new DB_AgendaManager("");
-    DB_AttendeeManagement db_attendeeManagement = new DB_AttendeeManager("");
-    DB_DocumentManagement db_docuemntManagement = new DB_DocumentManager("");
-    DB_GeneralUserManagement db_generalUserManagement = new DB_GeneralUserManager("");
-    DB_RequestManagement db_requestManagement = new DB_RequestManager("");
-    DB_VotingManagement db_votingManagement = new DB_VotingManager("");
+    //Database System //TODO add urls
+    private DB_AdminManagement db_adminManagement = new DB_AdminManager("");
+    private DB_AgendaManagement db_agendaManagement = new DB_AgendaManager("");
+    private DB_AttendeeManagement db_attendeeManagement = new DB_AttendeeManager("");
+    private DB_DocumentManagement db_docuemntManagement = new DB_DocumentManager("");
+    private DB_GeneralUserManagement db_generalUserManagement = new DB_GeneralUserManager("");
+    private DB_RequestManagement db_requestManagement = new DB_RequestManager("");
+    private DB_VotingManagement db_votingManagement = new DB_VotingManager("");
 
 
-    //TODO Replace those by database calls once the DB is set up.
-    private ConcurrentHashMap<String, Integer> tokensToIds = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, String> namesToPasswords = new ConcurrentHashMap<>();
-    //TODO Add database calls
 
-    //Locks
-    private Lock atttendeeLock = new ReentrantLock();
+    //Locks - always take in this order !!!
     private Lock adminLock = new ReentrantLock();
+    private Lock attendeeLock = new ReentrantLock();
     private Lock requestLock = new ReentrantLock();
 
     /****************** The Request Management Interface *********/
 
     @Override
-    public OperationResponse addRequest(String adminToken, Request request) {
-        OperationResponse response = OperationResponse.AdminSuccess; //TODO check rights
-        try {
-            requestLock.lock();
-            if (requests.containsKey(request.ID)){
-                return OperationResponse.InvalidArguments;
-            }
-            requests.put(request.ID, request);
-            return OperationResponse.AdminSuccess;
-        }
-        finally {
-            requestLock.unlock();
-        }
+    public OperationResponse addRequest(String token, Request request) {
+        return null; // TODO Implement me
     }
 
     @Override
     public Pair<OperationResponse, Request> getRequest(String adminToken, int ID) {
-        OperationResponse response = OperationResponse.AdminSuccess; //TODO check rights
-        return new Pair<>( response ,requests.get(ID));
+       return null; //TODO implement me
     }
 
     @Override
@@ -188,25 +174,13 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     @Override
     public OperationResponse addAttendee(String adminToken, Attendee a) {
-        //TODO check rights
-        try {
-            atttendeeLock.lock();
-            if (attendees.containsKey(a.getID())) {
-                return OperationResponse.InvalidArguments;
-            }
-            attendees.put(a.getID(), a);
-            return OperationResponse.AdminSuccess;
-        }
-        finally {
-            atttendeeLock.unlock();
-        }
-
+        return null;
     }
 
     @Override
     public Pair<OperationResponse, List<Attendee>> getAllAttendees(String adminToken) {
         //TODO check rights
-        return new Pair<>(OperationResponse.AdminSuccess, new ArrayList<>(attendees.values()));
+        return null;
     }
 
     @Override
@@ -309,7 +283,24 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     @Override
     public Pair<OperationResponse, Agenda> getAgenda(String token) {
-        return null;
+        try {
+            adminLock.lock();
+            attendeeLock.lock();
+            TokenResponse tokentype = db_generalUserManagement.checkToken(token);
+            if(tokentype == TokenResponse.ValidAdmin){
+                return new Pair<>(OperationResponse.AdminSuccess, agenda);
+            }
+            else if(tokentype == TokenResponse.ValidAttendee){
+                return new Pair<>(OperationResponse.AttendeeSuccess, agenda);
+            }
+            else{
+                return new Pair<>(OperationResponse.InvalidToken, null);
+            }
+        }
+        finally {
+            attendeeLock.unlock();
+            adminLock.unlock();
+        }
     }
 
 

@@ -21,8 +21,9 @@ public class Voting implements VotingObservable{
         return null; //TODO: Implement this
     }
 
-    public void addVote(int optionID, int userID) {
+    public boolean addVote(int optionID, int userID) {
         //TODO: Implement this
+        return true;
     }
 
     public boolean startVote() {

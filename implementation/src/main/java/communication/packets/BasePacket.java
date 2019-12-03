@@ -2,6 +2,7 @@ package communication.packets;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import org.java_websocket.WebSocket;
 
 /**
@@ -9,6 +10,7 @@ import org.java_websocket.WebSocket;
  */
 public class BasePacket implements Packet {
 
+    @Expose
     private PacketType packetType;
 
     /**

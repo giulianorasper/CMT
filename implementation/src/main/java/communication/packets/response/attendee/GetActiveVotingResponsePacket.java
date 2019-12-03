@@ -1,5 +1,6 @@
 package communication.packets.response.attendee;
 
+import com.google.gson.annotations.Expose;
 import communication.packets.PacketType;
 import communication.packets.RequestResult;
 import communication.packets.ResponsePacket;
@@ -12,7 +13,9 @@ import voting.Voting;
  */
 public class GetActiveVotingResponsePacket extends ResponsePacket {
 
+    @Expose
     private boolean exists;
+    @Expose
     private Voting voting;
 
     /**
@@ -32,5 +35,13 @@ public class GetActiveVotingResponsePacket extends ResponsePacket {
         super(PacketType.GET_ACTIVE_VOTING_RESPONSE, RequestResult.Valid);
         this.exists = exists;
         this.voting = voting;
+    }
+
+    public GetActiveVotingResponsePacket(Voting voting) {
+        this(true, voting);
+    }
+
+    public GetActiveVotingResponsePacket() {
+        this(false, null);
     }
 }

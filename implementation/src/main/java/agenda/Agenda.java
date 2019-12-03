@@ -41,6 +41,7 @@ public class Agenda implements AgendaObservable{
     }
 
     protected Agenda (Agenda parent, WriterBiasedRWLock lock){
+        this("");
         this.lock = lock;
         this.parent = parent;
     }

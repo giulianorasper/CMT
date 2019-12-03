@@ -11,7 +11,7 @@ public class Topic implements Requestable {
     private Agenda subTopics;
     @Expose
     private String name;
-    private transient Agenda parent;
+    private Agenda parent;
     private WriterBiasedRWLock lock; //used for the agenda
 
     public Topic(String name, Agenda parent){
@@ -101,7 +101,7 @@ public class Topic implements Requestable {
             return null;
         }
         finally {
-            lock.finishWrite();
+            lock.finishRead();
         }
     }
 

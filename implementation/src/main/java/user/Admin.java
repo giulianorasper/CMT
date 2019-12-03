@@ -1,11 +1,8 @@
 package user;
 
-public class Admin extends User {
+public class Admin extends Attendee {
 
-    public Admin(String name, String group, String residence, int ID){
-        this.name = name;
-        this.group = group;
-        this.residence = residence;
-        this.ID = ID;
+    public Admin(String name, String group, String residence, String function, int ID) {
+        super(name, group, residence, function, ID);
     }
 }

@@ -86,17 +86,18 @@ public class Agenda implements AgendaObservable{
         String[] preorderArray = preorder.split("\\.");
         List<Integer> preorderList = new LinkedList<>();
         for(String s : preorderArray) {
-            preorderList.add((Integer.parseInt(s)));
+            //here we convert counting from 1 to counting from 0
+            preorderList.add((Integer.parseInt(s)-1));
         }
         return getTopicFromPreorderList(preorderList);
     }
 
     protected Topic getTopicFromPreorderList(List<Integer> preorder) {
-        if(!preorder.isEmpty()) {
+        try {
             Topic topic = topics.get(preorder.get(0));
-            preorder.remove(preorder.size()-1);
+            preorder.remove(0);
             return topic.getTopicFromPreorderList(preorder);
-        } else {
+        } catch (Exception e) {
             throw new IllegalArgumentException();
         }
     }

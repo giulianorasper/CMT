@@ -1,9 +1,13 @@
 package user;
 
+import com.google.gson.annotations.Expose;
+
 public class Attendee extends User {
 
+    @Expose
     private String function;
     private int numberOfDevices;
+    @Expose
     private boolean present;
 
     public Attendee(String name, String group, String residence, String function, int ID){

@@ -1,14 +1,19 @@
 package voting;
 
+import com.google.gson.annotations.Expose;
 import utils.OperationResponse;
 
 import java.util.List;
 
 public class Voting implements VotingObservable{
 
+    @Expose
     private int ID;
+    @Expose
     private String question;
+    @Expose
     private List<VotingOption> options;
+    @Expose
     private long openUntil;
     private VotingStatus status;
 
@@ -16,8 +21,9 @@ public class Voting implements VotingObservable{
         return null; //TODO: Implement this
     }
 
-    public void addVote(int optionID, int userID) {
+    public boolean addVote(int optionID, int userID) {
         //TODO: Implement this
+        return true;
     }
 
     public boolean startVote() {

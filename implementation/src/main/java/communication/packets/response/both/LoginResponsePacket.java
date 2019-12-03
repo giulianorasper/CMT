@@ -1,5 +1,6 @@
 package communication.packets.response.both;
 
+import com.google.gson.annotations.Expose;
 import communication.packets.PacketType;
 import communication.packets.RequestResult;
 import communication.packets.ResponsePacket;
@@ -11,7 +12,9 @@ import user.LoginResponse;
  */
 public class LoginResponsePacket extends ResponsePacket {
 
+    @Expose
     private String token;
+    @Expose
     private long expiration;
 
     /**

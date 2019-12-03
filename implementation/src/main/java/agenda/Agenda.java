@@ -1,19 +1,27 @@
 package agenda;
 
+import com.google.gson.annotations.Expose;
+
+import utils.WriterBiasedRWLock;
+
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Agenda implements AgendaObservable{
 
+    private Agenda parent;
+    @Expose
     private List<Topic> topics;
+    protected WriterBiasedRWLock lock;
+    private ConcurrentHashMap<AgendaObserver, Boolean> observers = new ConcurrentHashMap<>(); // a map backed hashset
 
-    void removeTopic(Topic t) {
-        this.topics.remove(t);
+    boolean removeTopic(Topic t) {
+        return this.topics.remove(t);
     }
 
-    void reOrderTopic(Topic t, int pos) {
-        //removing topic from old agenda
-        t.moveToNewAgenda(this, pos);
+    boolean reOrderTopic(Topic t, int pos) {
+        return t.moveToNewAgenda(this, pos);
     }
 
     /**
@@ -25,43 +33,72 @@ public class Agenda implements AgendaObservable{
         //TODO: Implement this
 
         this.topics = new LinkedList<>();
+        this.lock = new WriterBiasedRWLock();
     }
 
     public Agenda(){
         this("");
     }
 
+    protected Agenda (Agenda parent, WriterBiasedRWLock lock){
+        this("");
+        this.lock = lock;
+        this.parent = parent;
+    }
+
     public boolean addTopic(Topic t, int pos) {
-        //No pos >= topics.size() because inserting to the first non existing index is fine
-        if(pos >= 0 && pos <= topics.size()){
+        try {
+            lock.getWriteAccess();
+            if (pos >= 0 && pos <= topics.size()) {
+                this.topics.add(pos, t);
+                return true;
+            }
             return false;
         }
-
-        this.topics.add(pos, t);
-
-        return true;
+        catch (InterruptedException e){
+            //do nothing
+            return false;
+        }
+        finally {
+            lock.finishWrite();
+        }
     }
 
     public Topic getTopic(int pos) {
-        if(pos < 0 || pos >= topics.size()){
-            throw new IllegalArgumentException("Invalid position! Was: " + pos);
-        }
+        try {
+            lock.getReadAccess();
+            if (pos < 0 || pos >= topics.size()) {
+                throw new IllegalArgumentException("Invalid position! Was: " + pos);
+            }
 
-        return this.topics.get(pos);
+            return this.topics.get(pos);
+        }
+        catch (InterruptedException e){
+            // do nothing
+            return null;
+        }
+        finally {
+            lock.finishRead();
+        }
     }
 
     @Override
     public void register(AgendaObserver o) {
-        //TODO: Implement this
+        observers.put(o, true);
     }
 
     @Override
     public void unregister(AgendaObserver o) {
-        //TODO: Implement this
+        observers.remove(o);
     }
 
     @Override
     public void notifyObservers() {
-        //TODO: Implement this
+        if(parent == null) {
+            observers.forEachKey(2, o -> o.update(this));
+        }
+        else{
+            parent.notifyObservers();
+        }
     }
 }

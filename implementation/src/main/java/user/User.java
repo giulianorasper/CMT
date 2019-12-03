@@ -1,10 +1,18 @@
 package user;
 
+import com.google.gson.annotations.Expose;
+
 public abstract class User {
 
+    @Expose
     protected String name;
+    @Expose
     protected String group;
+    @Expose
     protected String residence;
+    @Expose
+    protected String email;
+    @Expose
     protected int ID;
 
     public String getName() {
@@ -33,5 +41,13 @@ public abstract class User {
 
     public int getID() {
         return ID;
+    }
+
+    public String getMail() {
+        return email;
+    }
+
+    public void setMail(String mail) {
+        this.email = mail;
     }
 }

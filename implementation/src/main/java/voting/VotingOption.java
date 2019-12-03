@@ -1,8 +1,12 @@
 package voting;
 
+import com.google.gson.annotations.Expose;
+
 public abstract class VotingOption {
 
+    @Expose
     protected String name;
+    @Expose
     protected int optionID;
 
     public int getOptionID() {

@@ -1,14 +1,19 @@
 package voting;
 
+import com.google.gson.annotations.Expose;
 import utils.OperationResponse;
 
 import java.util.List;
 
 public class Voting implements VotingObservable{
 
+    @Expose
     private int ID;
+    @Expose
     private String question;
+    @Expose
     private List<VotingOption> options;
+    @Expose
     private long openUntil;
     private VotingStatus status;
 

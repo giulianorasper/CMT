@@ -1,7 +1,9 @@
 package communication.packets.request.attendee;
 
+import communication.packets.Packet;
 import communication.packets.PacketType;
 import communication.packets.request.AuthenticatedRequestPacket;
+import communication.packets.response.both.GetAgendaResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import communication.packets.response.attendee.GetActiveVotingResponsePacket;
@@ -22,7 +24,7 @@ public class GetActiveVotingRequestPacket extends AuthenticatedRequestPacket {
     public void handle(Conference conference, WebSocket webSocket) {
         Pair<OperationResponse, Voting> result = conference.getActiveVoting(getToken());
         if(isPermitted(webSocket, false, result.first())) {
-            Voting voting = result.second();
+            //Packet response = new GetAgendaResponsePacket
         }
     }
 }

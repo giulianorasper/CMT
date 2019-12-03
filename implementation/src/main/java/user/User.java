@@ -6,6 +6,11 @@ public abstract class User {
 
     @Expose
     protected String name;
+
+    public String getUserName() {
+        return userName;
+    }
+
     @Expose
     protected String userName;
     protected String group;

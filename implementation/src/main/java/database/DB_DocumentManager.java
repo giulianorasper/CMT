@@ -7,6 +7,7 @@ import document.DocumentObserver;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings("checkstyle:typename")
@@ -21,114 +22,118 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
     @Override
     public boolean addDocument(Document document) {
         this.openConnection();
-        String sqlstatement = "INSERT INTO documents(name,url)"
-                + "VALUES(?,?)";
+        String sqlstatement = "INSERT INTO documents(path, documentName, revision)"
+                + "VALUES(?,?,?)";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            stmt.setString(1, document.name);
-            stmt.setString(2, "content");//TODO: Read Content out of Document file
+            stmt.setString(1, document.file.getAbsolutePath());
+            stmt.setString(2, document.getName());
+            stmt.setInt(3, 1);
             stmt.executeUpdate();
-
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            return false;
+        } finally {
+            this.closeConnection();
         }
-        this.closeConnection();
-        return false; //TODO: Return correct response
+        return true;
     }
 
     @Override
     public boolean deleteDocument(String name) {
         this.openConnection();
-        //TODO: Delete by name, documents do not even have IDs
         String sqlstatement = "DELETE FROM documents"
-                + " WHERE id = ?";
-
+                + " WHERE documentName = ?";
         try  {
             PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            //stmt.setInt(1, id);//TODO: Change this
+            stmt.setString(1, name);
             stmt.executeUpdate();
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
+        } finally {
+            this.closeConnection();
         }
-        this.closeConnection();
-        return false; //TODO: Return correct response
+        return true;
     }
 
     @Override
-    public boolean updateDocument(String name, String content) {
+    public boolean updateDocument(String oldName, String newName) {
         this.openConnection();
-        //TODO: Change by name, documents do not have IDs
-        String sqlstatement = "UPDATE documents SET name = ? , "
-                + "url = ? "
-                + "WHERE id = ?";
+        String revisionNumber = "SELECT revision FROM documents"
+                + " WHERE documentName = ?";
+        String sqlstatement = "UPDATE documents SET revision = ? , "
+                + "documentName = ?"
+                + " WHERE documentName = ?";
         try {
+            PreparedStatement rev = connection.prepareStatement(revisionNumber);
+            rev.setString(1, oldName);
+            ResultSet res = rev.executeQuery();
+
             PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-
-            stmt.setString(1, name);
-            stmt.setString(2, url);
-            //stmt.setInt(3, documents_id);//TODO: Change this
-
+            stmt.setInt(1, res.getInt("revision") + 1);
+            stmt.setString(2, newName);
+            stmt.setString(3, oldName);
             stmt.executeQuery();
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
+        } finally {
+            this.closeConnection();
         }
-        this.closeConnection();
-        return false; //TODO: Return correct response
+        this.update(this.getDocument(newName));//TODO: DELETE THIS
+        return true;
     }
 
     @Override
     public Document getDocument(String name) {
         this.openConnection();
-        //TODO: Search by name, documents do not have IDs
-        String sqlstatement = "SELECT documents_id, name, url"
-                + "FROM documents"
-                + "WHERE documents_id = ?";
-
+        String sqlstatement = "SELECT * FROM documents"
+                + " WHERE documentName = ?";
+        Document document = null;
         try {
             PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            //stmt.setInt(1, id);//TODO: Change this
-            ResultSet Dbtable  = stmt.executeQuery();
-
-            //String name = Dbtable.getString("name");//TODO: This is never used
-            //String url  = Dbtable.getString("url");
-
+            stmt.setString(1, name);
+            ResultSet doc  = stmt.executeQuery();
+            document = new Document(doc.getString("path"),
+                    doc.getString("documentName"),
+                    doc.getInt("revision"));
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } finally {
+            this.closeConnection();
         }
-        this.closeConnection();
-        return null; //TODO: Return concrete Document object
+        return document;
     }
 
     @Override
     public List<Document> getAllDocuments() {
         this.openConnection();
+        List<Document> documents = new LinkedList<>();
 
-        String sqlstatement = "SELECT documents_id, name, url"
-                + "FROM documents";
-
+        String sqlstatement = "SELECT * FROM documents";
         try {
             PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            ResultSet Dbtable  = stmt.executeQuery();
+            ResultSet table  = stmt.executeQuery();
 
-            while (Dbtable.next()) {
-                String name = Dbtable.getString("name");//TODO: This is never used
-                String url  = Dbtable.getString("url");
-
+            while (table.next()) {
+                String name = table.getString("documentName");
+                String url  = table.getString("path");
+                int revision = table.getInt("revision");
+                documents.add(new Document(url, name, revision));
             }
-
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            return null;
+        } finally {
+            this.closeConnection();
         }
-        this.closeConnection();
-
-        return null;//TODO: Return the concrete Document objects
+        return documents;
     }
 
     @Override
     public boolean update(Document r) {
-        return false; //TODO: Implement this
+        return false; //TODO: DELETE THIS
     }
 }

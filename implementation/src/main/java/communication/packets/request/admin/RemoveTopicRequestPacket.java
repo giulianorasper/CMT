@@ -34,8 +34,8 @@ public class RemoveTopicRequestPacket extends AuthenticatedRequestPacket {
         Pair<OperationResponse, Agenda> result = conference.getAgenda(getToken());
         if(isPermitted(webSocket, true, result.first())) {
             Agenda agenda = result.second();
-            Topic topicToRemove = agenda.getTopicFromPreorderString(position);
-            topicToRemove.remove();
+            Topic topic = agenda.getTopicFromPreorderString(position);
+            topic.remove();
         }
     }
 }

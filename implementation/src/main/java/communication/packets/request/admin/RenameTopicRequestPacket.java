@@ -1,10 +1,14 @@
 package communication.packets.request.admin;
 
+import agenda.Agenda;
+import agenda.Topic;
 import communication.packets.BasePacket;
 import communication.packets.PacketType;
 import communication.packets.request.AuthenticatedRequestPacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
+import utils.OperationResponse;
+import utils.Pair;
 
 /**
  * This packet handles a rename topic request from an admin and responds with a general {@link BasePacket}.
@@ -27,6 +31,11 @@ public class RenameTopicRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-        //TODO implement
+        Pair<OperationResponse, Agenda> result = conference.getAgenda(getToken());
+        if(isPermitted(webSocket, true, result.first())) {
+            Agenda agenda = result.second();
+            Topic topic = agenda.getTopicFromPreorderString(position);
+            topic.rename(name);
+        }
     }
 }

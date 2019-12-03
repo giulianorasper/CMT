@@ -1,10 +1,11 @@
-import communication.WebsocketCommunicationManager;
+import communication.CommunicationManager;
+import communication.CommunicationManagerFactory;
 import java.util.Scanner;
 
 public class TestServer {
 
    public static void main(String[] args) {
-        WebsocketCommunicationManager w = new WebsocketCommunicationManager(null,0);
+        CommunicationManager w = new CommunicationManagerFactory(null).enableDebugging().create();
         w.start();
        System.out.println("Type anything to stop the serer.");
         Scanner scanner = new Scanner(System.in);

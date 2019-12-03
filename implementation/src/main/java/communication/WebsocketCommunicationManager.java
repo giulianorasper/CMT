@@ -24,31 +24,25 @@ import java.net.InetSocketAddress;
 import java.util.HashSet;
 import java.util.Set;
 
-public class WebsocketCommunicationManager extends WebSocketServer implements CommunicationManager {
+class WebsocketCommunicationManager extends WebSocketServer implements CommunicationManager {
 
     private Gson gson = new Gson();
     //TODO make this configurable
-    private static int TCP_PORT = 17699;
     private Set<WebSocket> conns;
     private Conference conference;
     //TODO implement timeout
     private int timeoutAfter;
 
-    public WebsocketCommunicationManager(Conference conference, int timeoutAfter) {
-        super(new InetSocketAddress(TCP_PORT));
-        init(conference, timeoutAfter);
+    public WebsocketCommunicationManager(Conference conference, int port, int timeoutAfter, boolean debugging) {
+        super(new InetSocketAddress(port));
+        this.conference = conference;
+        this.timeoutAfter = timeoutAfter;
         conns = new HashSet<>();
     }
 
     @Override
-    public void init(Conference conference, int timeoutAfter) {
-        this.conference = conference;
-        this.timeoutAfter = timeoutAfter;
-    }
-
-    @Override
     public void onStart() {
-        System.out.println("Starting socket server on port: " + TCP_PORT);
+        System.out.println("Starting socket server on port: " + getPort());
     }
 
     @Override

@@ -22,7 +22,7 @@ public class GetAgendaRequestPacket extends AuthenticatedRequestPacket {
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
         Pair<OperationResponse, Agenda> result = conference.getAgenda(getToken());
-        if(isPermitted(webSocket, PermissionLevel.AdminOrAttendee, result.first())) {
+        if(isPermitted(webSocket, false, result.first())) {
             new GetAgendaResponsePacket(result.second());
         }
     }

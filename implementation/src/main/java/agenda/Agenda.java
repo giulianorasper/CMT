@@ -1,10 +1,13 @@
 package agenda;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public class Agenda implements AgendaObservable{
 
+    @Expose
     private List<Topic> topics;
 
     void removeTopic(Topic t) {

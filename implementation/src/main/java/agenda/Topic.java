@@ -1,10 +1,13 @@
 package agenda;
 
+import com.google.gson.annotations.Expose;
 import request.Requestable;
 
 public class Topic implements Requestable {
 
+    @Expose
     private Agenda subTopics;
+    @Expose
     private String name;
     private transient Agenda parent;
 

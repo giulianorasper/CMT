@@ -3,6 +3,7 @@ package communication;
 import com.google.gson.Gson;
 import communication.packets.BasePacket;
 import communication.packets.Packet;
+import communication.packets.PacketType;
 import communication.packets.RequestPacket;
 import communication.packets.request.admin.AddTopicRequestPacket;
 import communication.packets.request.admin.RemoveTopicRequestPacket;
@@ -67,9 +68,9 @@ public class WebsocketCommunicationManager extends WebSocketServer implements Co
     public void onMessage(WebSocket conn, String message) {
         try {
             RequestPacket pack;
-            pack = gson.fromJson(message, RequestPacket.class);
+            PacketType packetType = gson.fromJson(message, BasePacket.class).getPacketType();
 
-            switch(pack.getPacketType()) {
+            switch(packetType) {
                 case LOGIN_REQUEST:
                     pack = gson.fromJson(message, LoginRequestPacket.class);
                     break;
@@ -98,7 +99,7 @@ public class WebsocketCommunicationManager extends WebSocketServer implements Co
                     pack = gson.fromJson(message, ReorderTopicRequestPacket.class);
                     break;
                 default:
-                    throw new IllegalArgumentException("Packet type " + pack.getPacketType() + " does not exist.");
+                    throw new IllegalArgumentException("Packet type " + packetType + " does not exist.");
             }
             pack.handle(conference, conn);
 

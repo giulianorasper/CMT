@@ -7,7 +7,7 @@ import voting.VotingObserver;
 import java.util.List;
 
 @SuppressWarnings("checkstyle:typename")
-public class DB_VotingManager extends DB_Controller implements DB_VotingManagement, VotingObserver {
+public class DB_VotingManager extends DB_Controller implements DB_VotingManagement {
 
     private static String table = "votes";
 

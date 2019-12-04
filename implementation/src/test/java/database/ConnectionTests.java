@@ -28,7 +28,7 @@ public class ConnectionTests {
 
     @Test
     public void initializeDatabase() {
-        DB_Controller controller = new DB_Controller(path.toString());
+        DB_Controller controller = new DB_Controller("db/database.db");
         controller.init();
     }
 }

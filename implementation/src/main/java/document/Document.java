@@ -5,7 +5,7 @@ import request.Requestable;
 
 import java.io.File;
 
-public class Document implements Requestable, DocumentObservable {
+public class Document implements Requestable {
 
     public File file;
     private String name;
@@ -24,20 +24,5 @@ public class Document implements Requestable, DocumentObservable {
     @Override
     public String getName() {
         return this.name;
-    }
-
-    @Override
-    public void register(DocumentObserver o) {
-        //TODO: Implement this
-    }
-
-    @Override
-    public void unregister(DocumentObserver o) {
-        //TODO: Implement this
-    }
-
-    @Override
-    public void notifyObservers() {
-        //TODO: Implement this
     }
 }

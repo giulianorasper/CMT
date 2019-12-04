@@ -15,6 +15,11 @@ public class Voting implements VotingObservable{
 
     @Expose
     private final int ID;
+
+    public boolean isNamedVote() {
+        return namedVote;
+    }
+
     //TODO handle setting this boolean
     @Expose
     private boolean namedVote;
@@ -83,6 +88,20 @@ public class Voting implements VotingObservable{
         ID = getNextId();
         status = VotingStatus.Created;
         options.forEach(o -> o.setParent(this));
+    }
+
+    /**
+     * Constructor for the Database to easily reconstruct Voting Results in case the voting has ended.
+     * @param options A list of VotingOptions with their results.
+     * @param question The question of the voting.
+     * @param ID The ID of the voting that was already stored in the Database.
+     */
+    public Voting(List<VotingOption> options, String question, int ID) {
+        this.options = options;
+        this.question = question;
+        this.ID = ID;
+        status = VotingStatus.Closed;
+        this.options.forEach(o -> o.setParent(this));
     }
 
     public List<VotingOption> getOptions() {

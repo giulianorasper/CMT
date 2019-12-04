@@ -34,7 +34,7 @@ public class DB_Controller {
         this.url = "jdbc:sqlite:" + url;
     }
 
-    public void init(){
+    public void init(){ //TODO: Let the controllers implement this method
         String userTable = "CREATE TABLE IF NOT EXISTS users (\n"
                 + "     userID INTEGER PRIMARY KEY,\n"
                 + "     fullname TEXT NOT NULL,\n"
@@ -66,6 +66,13 @@ public class DB_Controller {
                 + "     documentName TEXT NOT NULL UNIQUE,\n"
                 + "     revision INTEGER NOT NULL\n"
                 + ");";
+        String votingsTable = "CREATE TABLE IF NOT EXISTS votings (\n"
+                + "     votingID INTEGER PRIMARY KEY, \n"
+                + "     isNamed BOOL, \n"
+                + "     numberOfOptions, \n"
+                + "     question TEXT NOT NULL, \n"
+                + "     tableName TEXT NOT NULL UNIQUE \n"
+                + ") WITHOUT ROWID;";
 
         openConnection();
         try {
@@ -73,6 +80,7 @@ public class DB_Controller {
             connection.createStatement().execute(requestTable);
             connection.createStatement().execute(agendaTable);
             connection.createStatement().execute(documentTable);
+            connection.createStatement().execute(votingsTable);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

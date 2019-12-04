@@ -116,7 +116,8 @@ public class Agenda implements AgendaObservable{
         }
     }
 
-    private List<Integer> getPreorderListFromPreorderString(String preorder) {
+    //TODO does this method really belong here?
+    public List<Integer> getPreorderListFromPreorderString(String preorder) {
         String[] preorderArray = preorder.split("\\.");
         List<Integer> preorderList = new LinkedList<>();
         for(String s : preorderArray) {

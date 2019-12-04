@@ -23,6 +23,7 @@ public class GetActiveVotingResponsePacket extends ResponsePacket {
      * @param voting the voting if it exists
      * Following properties of the {@link Voting} object are exposed:
      * id: int - the unique id of the voting
+     * named: boolean - if the voting is a named voting
      * question: String - the voting question
      * options: List<VotingOption> - a list of the available voting options
      *

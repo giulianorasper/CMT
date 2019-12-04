@@ -5,6 +5,7 @@ import agenda.Topic;
 import communication.packets.BasePacket;
 import communication.packets.PacketType;
 import communication.packets.request.AuthenticatedRequestPacket;
+import communication.packets.response.both.ValidResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import utils.OperationResponse;
@@ -36,6 +37,7 @@ public class RemoveTopicRequestPacket extends AuthenticatedRequestPacket {
             Agenda agenda = result.second();
             Topic topic = agenda.getTopicFromPreorderString(position);
             topic.remove();
+            new ValidResponsePacket().send(webSocket);
         }
     }
 }

@@ -2,11 +2,14 @@ package agenda;
 
 import com.google.gson.annotations.Expose;
 
+import utils.LexicographicalComparator;
+import utils.Pair;
 import utils.WriterBiasedRWLock;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Agenda implements AgendaObservable{
 
@@ -82,6 +85,62 @@ public class Agenda implements AgendaObservable{
         }
     }
 
+    public List<String> preOrder () {
+        try {
+            lock.getReadAccess();
+            List<String> strings  = new LinkedList<>();
+            for(int i = 0; i < this.getNumberOfTopics(); i++) {
+                strings.add("" + i);
+                for (String s: this.topics.get(i).getSubTopics().preOrder()) {
+                    strings.add(i + "." + s);
+                }
+            }
+            return strings;
+        } catch (InterruptedException ignored) {
+            return null;
+        } finally {
+            lock.finishRead();
+        }
+    }
+
+    public int getNumberOfTopics() {
+        try {
+            lock.getReadAccess();
+            return topics.size();
+        } catch (InterruptedException e) {
+            return -1;
+        } finally {
+            lock.finishRead();
+        }
+    }
+
+
+    public Topic getTopicFromPreorderString(String preorder) {
+        List<Integer> preorderList = getPreorderListFromPreorderString(preorder);
+        return getTopicFromPreorderList(preorderList);
+    }
+
+    //TODO: Can this be private?
+    public List<Integer> getPreorderListFromPreorderString(String preorder) {
+        String[] preorderArray = preorder.split("\\.");
+        List<Integer> preorderList = new LinkedList<>();
+        for(String s : preorderArray) {
+            //here we convert counting from 1 to counting from 0
+            preorderList.add((Integer.parseInt(s)-1));
+        }
+        return preorderList;
+    }
+
+
+    protected Topic getTopicFromPreorderList(List<Integer> preorder) {
+        try {
+            Topic topic = topics.get(preorder.get(0));
+            preorder.remove(0);
+            return topic.getTopicFromPreorderList(preorder);
+        } catch (Exception e) {
+            throw new IllegalArgumentException();
+        }
+    }
 
     //TODO @Giuliano Add documentation to preorder methods
     //TODO @Stephan It would be great if you would look into weather / how these methods should be locked. I think you are more proficient with that.
@@ -101,30 +160,30 @@ public class Agenda implements AgendaObservable{
 
     }
 
-    public Topic getTopicFromPreorderString(String preorder) {
-        List<Integer> preorderList = getPreorderListFromPreorderString(preorder);
-        return getTopicFromPreorderList(preorderList);
-    }
-
-    protected Topic getTopicFromPreorderList(List<Integer> preorder) {
-        try {
-            Topic topic = topics.get(preorder.get(0));
-            preorder.remove(0);
-            return topic.getTopicFromPreorderList(preorder);
-        } catch (Exception e) {
-            throw new IllegalArgumentException();
+    /**
+     *
+     * @param tops Preorder + Name list
+     */
+    public Agenda(List<Pair<List<Integer>, String>> tops) {
+        this("");
+        Agenda ag = this;
+        AtomicInteger depth = new AtomicInteger(1);
+        while (tops.stream().anyMatch(p -> p.first().size() == depth.get())) {
+            var ref = new Object() {
+                Agenda aux = ag;
+            };
+            AtomicInteger auxDepth = new AtomicInteger(1);
+            tops.stream().filter(p -> p.first().size() == depth.get()).sorted(new LexicographicalComparator())
+                    .forEach(p -> p.first().forEach(i -> {
+                        if (auxDepth.get() < depth.get()) {
+                            ref.aux = ref.aux.getTopic(i).getSubTopics();
+                        } else {
+                            ref.aux.addTopic(new Topic(p.second(), ref.aux), i);
+                        }
+                        auxDepth.getAndIncrement();
+                    }));
+            depth.incrementAndGet();
         }
-    }
-
-    //TODO does this method really belong here?
-    public List<Integer> getPreorderListFromPreorderString(String preorder) {
-        String[] preorderArray = preorder.split("\\.");
-        List<Integer> preorderList = new LinkedList<>();
-        for(String s : preorderArray) {
-            //here we convert counting from 1 to counting from 0
-            preorderList.add((Integer.parseInt(s)-1));
-        }
-        return preorderList;
     }
 
     @Override
@@ -139,11 +198,19 @@ public class Agenda implements AgendaObservable{
 
     @Override
     public void notifyObservers() {
-        if(parent == null) {
-            observers.forEachKey(2, o -> o.update(this));
+        try {
+            lock.getReadAccess();
+            if(parent == null) {
+                observers.forEachKey(2, o -> o.update(this));
+            }
+            else{
+                parent.notifyObservers();
+            }
+        } catch (InterruptedException ignored) {
+
+        } finally {
+            lock.finishRead();
         }
-        else{
-            parent.notifyObservers();
-        }
+
     }
 }

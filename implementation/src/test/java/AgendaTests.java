@@ -5,6 +5,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert.*;
 import org.junit.rules.ExpectedException;
+import utils.Pair;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 
 public class AgendaTests {
 
@@ -48,6 +55,27 @@ public class AgendaTests {
         Assert.assertEquals(expected4, agenda.getTopicFromPreorderString("3.1").getName());
         Assert.assertEquals(expected5, agenda.getTopicFromPreorderString("3.2.").getName());
         Assert.assertEquals(expected6, agenda.getTopicFromPreorderString("3.2.1").getName());
+    }
+
+    @Test
+    public void testAgendaConstructorOrderedListSimple() {
+        List<Pair<List<Integer>, String>> tops = new LinkedList<>();
+        tops.add(new Pair<>(Arrays.asList(2, 0), "Top 3.1"));
+        tops.add(new Pair<>(Arrays.asList(2, 0, 0), "Top 3.1.1"));
+        tops.add(new Pair<List<Integer>, String>(Arrays.asList(0), "Top 1"));
+        tops.add(new Pair<List<Integer>, String>(Arrays.asList(1), "Top 2"));
+        tops.add(new Pair<List<Integer>, String>(Arrays.asList(2), "Top 3"));
+        tops.add(new Pair<List<Integer>, String>(Arrays.asList(3), "Top 4"));
+
+        Agenda ag = new Agenda(tops);
+
+        List<String> preOrder = ag.preOrder();
+        for (String s : preOrder) {
+            System.out.println(s);
+        }
+
+        assertNotNull(ag);
+
     }
 
     @Test(expected = IllegalArgumentException.class)

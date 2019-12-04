@@ -1,6 +1,12 @@
 package database;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Paths;
 import java.sql.*;
+
+import static java.lang.System.exit;
 
 /**
  * Create the database for a conference and communicate with it.
@@ -12,6 +18,19 @@ public class DB_Controller {
     public String url;
 
     public DB_Controller(String url) {
+        URI path = Paths.get(url).toUri();
+        File file = new File(path);
+        if (!file.getParentFile().isDirectory()) {
+            file.getParentFile().mkdirs();
+        }
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            exit(1);
+        }
         this.url = "jdbc:sqlite:" + url;
     }
 
@@ -70,7 +89,7 @@ public class DB_Controller {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            System.exit(e.getErrorCode());//TODO: ???
+            exit(e.getErrorCode());//TODO: ???
         }
     };
 

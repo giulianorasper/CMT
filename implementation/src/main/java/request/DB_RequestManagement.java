@@ -3,7 +3,7 @@ package request;
 import java.util.List;
 
 @SuppressWarnings("checkstyle:typename")
-public interface DB_RequestManagement {
+public interface DB_RequestManagement extends RequestObserver{
 
     boolean addRequest(Request req);
 

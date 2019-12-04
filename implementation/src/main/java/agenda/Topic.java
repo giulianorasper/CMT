@@ -67,10 +67,10 @@ public class Topic implements Requestable {
         }
     }
 
-    public Topic getTopicFromPreorderList(List<Integer> preorder) {
-        if(preorder.isEmpty()) {
+    protected Topic getTopicFromPreorderList(List<Integer> preorder) {
+        if (preorder.isEmpty()) {
             return this;
-        } else if(subTopics != null) {
+        } else if (subTopics != null) {
             return subTopics.getTopicFromPreorderList(preorder);
         } else {
             throw new IllegalArgumentException();

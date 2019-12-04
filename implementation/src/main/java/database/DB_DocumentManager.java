@@ -2,7 +2,6 @@ package database;
 
 import document.DB_DocumentManagement;
 import document.Document;
-import document.DocumentObserver;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings("checkstyle:typename")
-public class DB_DocumentManager extends DB_Controller implements DB_DocumentManagement, DocumentObserver {
+public class DB_DocumentManager extends DB_Controller implements DB_DocumentManagement {
 
     private static String table = "documents";
 
@@ -82,7 +81,6 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         } finally {
             this.closeConnection();
         }
-        this.update(this.getDocument(newName));//TODO: DELETE THIS
         return true;
     }
 
@@ -130,10 +128,5 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
             this.closeConnection();
         }
         return documents;
-    }
-
-    @Override
-    public boolean update(Document r) {
-        return false; //TODO: DELETE THIS
     }
 }

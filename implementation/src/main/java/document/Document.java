@@ -8,8 +8,23 @@ import java.io.File;
 public class Document implements Requestable, DocumentObservable {
 
     public File file;
-    public String name;
-    private int revisionNumber;
+    private String name;
+    private int revisionNumber = 1;
+
+    public Document(String path, String name) {
+        file = new File(path);
+        this.name = name;
+    }
+
+    public Document(String path, String name, int revisionNumber) {
+        this(path, name);
+        this.revisionNumber = revisionNumber;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
 
     @Override
     public void register(DocumentObserver o) {

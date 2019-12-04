@@ -12,63 +12,48 @@ public class DB_Controller {
     public String url;
 
     public DB_Controller(String url) {
-        this.url = url;
+        this.url = "jdbc:sqlite:" + url;
     }
 
     public void init(){
-        //TODO: Change this table, we never require anything that works on only parts of the name,
-        // so we store this in a single column
-        //TODO: Domicile should be called residence to be consistent with the rest of the project
-        String participantsTable = "CREATE TABLE IF NOT EXISTS participants (\n"
-                + "    participants_id integer PRIMARY KEY,\n"
-                + "    firstname text NOT NULL,\n"
-                + "    lastname text NOT NULL,\n"
-                + "    email text NOT NULL UNIQUE,\n"
-                + "    password text NOT NULL UNIQUE,\n"
-                + "    token text NOT NULL UNIQUE,\n"
-                + "    party text NOT NULL,\n"
-                + "    role text NOT NULL,\n"
-                + "    domicile text NOT NULL UNIQUE,\n"
-                + "    logged_in BOOL NOT NULL\n"
-                + ") [WITHOUT ROWID];";
+        String userTable = "CREATE TABLE IF NOT EXISTS users (\n"
+                + "     userID INTEGER PRIMARY KEY,\n"
+                + "     fullname TEXT NOT NULL,\n"
+                + "     username TEXT NOT NULL UNIQUE,\n"
+                + "     password TEXT UNIQUE,\n"
+                + "     token TEXT UNIQUE,\n"
+                + "     email TEXT NOT NULL UNIQUE,\n"
+                + "     groups TEXT NOT NULL,\n"
+                + "     function TEXT NOT NULL,\n"
+                + "     residence TEXT NOT NULL UNIQUE,\n"
+                + "     isAdmin BOOL NOT NULL,\n"
+                + "     present BOOL NOT NULL\n"
+                + ") WITHOUT ROWID;";
         String requestTable = "CREATE TABLE IF NOT EXISTS requests (\n"
-                + "    request_id integer PRIMARY KEY,\n"
-                + "    participants_id integer NOT NULL,\n"
-                + "    change_of_request BOOL NOT NULL,\n"
-                + "    topic text NOT NULL,\n"
-                + "    timestamp text NOT NULL,\n"
-                + "    message text,\n"
-                + "    close BOOL\n"
-                + ") [WITHOUT ROWID];";
+                + "     requestID INTEGER PRIMARY KEY,\n"
+                + "     userID INTEGER NOT NULL,\n"
+                + "     requestType INTEGER NOT NULL,\n"
+                + "     requestableName TEXT NOT NULL,\n"
+                + "     timestamps INTEGER NOT NULL,\n" //TODO: Change size to bigint
+                + "     content TEXT,\n"
+                + "     approved BOOL\n"
+                + ") WITHOUT ROWID;";
         String agendaTable = "CREATE TABLE IF NOT EXISTS agenda (\n"
-                + "    topic_id integer PRIMARY KEY,\n"
-                + "    topicname text NOT NULL\n"
-                + "    parent_id integer NOT NULL,\n"
-                + "    order integer NOT NULL,\n"
-                + ") [WITHOUT ROWID];";
-        String documentsTable = "CREATE TABLE IF NOT EXISTS documents (\n"
-                + "    documents_id integer PRIMARY KEY,\n"
-                + "    name text NOT NULL,\n"
-                + "    url text NOT NULL\n"
-                + ") [WITHOUT ROWID];";
-        String voteTable = "CREATE TABLE IF NOT EXISTS votes1 (\n"
-                + "    option_id integer NOT NULL,\n"
-                + "    option text NOT NULL,\n"
-                + "    participants_id text NOT NULL Unique,\n"
+                + "     topicPosition TEXT NOT NULL,\n"
+                + "     topicName TEXT NOT NULL\n"
+                + ");";
+        String documentTable = "CREATE TABLE IF NOT EXISTS documents (\n"
+                + "     path TEXT NOT NULL,\n"
+                + "     documentName TEXT NOT NULL UNIQUE,\n"
+                + "     revision INTEGER NOT NULL\n"
                 + ");";
 
         openConnection();
         try {
-            Statement stmt0 = connection.createStatement();
-            stmt0.execute(participantsTable);
-            Statement stmt1 = connection.createStatement();
-            stmt1.execute(requestTable);
-            Statement stmt2 = connection.createStatement();
-            stmt2.execute(agendaTable);
-            Statement stmt4 = connection.createStatement();
-            stmt4.execute(documentsTable);
-            Statement stmt3 = connection.createStatement();
-            stmt3.execute(voteTable);
+            connection.createStatement().execute(userTable);
+            connection.createStatement().execute(requestTable);
+            connection.createStatement().execute(agendaTable);
+            connection.createStatement().execute(documentTable);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -85,6 +70,7 @@ public class DB_Controller {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            System.exit(e.getErrorCode());//TODO: ???
         }
     };
 

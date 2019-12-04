@@ -9,7 +9,7 @@ public interface DB_DocumentManagement {
 
     boolean deleteDocument(String name);
 
-    boolean updateDocument(String name, String content);
+    boolean updateDocument(String oldName, String newName);
 
     Document getDocument(String name);
 

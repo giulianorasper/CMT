@@ -7,7 +7,7 @@ import java.util.List;
 @SuppressWarnings("checkstyle:typename")
 public interface DB_GeneralUserManagement {
 
-    Pair<LoginResponse, String> checkLogin(String name, String password);
+    Pair<LoginResponse, String> checkLogin(String userName, String password);
 
     TokenResponse checkToken (String token);
 

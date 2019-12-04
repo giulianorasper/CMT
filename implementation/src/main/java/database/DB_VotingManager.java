@@ -150,4 +150,12 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
         }
         return votings;
     }
+
+    @Override
+    public boolean update(Voting v) {
+        if (v.getStatus() == VotingStatus.Closed) {
+            this.addVoting(v);
+            return true;
+        } return false;
+    }
 }

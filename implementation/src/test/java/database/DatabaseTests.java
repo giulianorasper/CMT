@@ -31,23 +31,27 @@ public abstract class DatabaseTests {
 
     @Before
     public void init() throws IOException {
-        path = Paths.get("test_db/database.db").toUri();
-        File file = new File(path);
-        file.getParentFile().mkdirs();
-        file.createNewFile();
+        String path = "testdb/database.db";
 
-        this.generalUserDB = new DB_GeneralUserManager(this.path.toString());
-        this.adminDB = new DB_AdminManager(this.path.toString());
-        this.attendeeDB = new DB_AttendeeManager(this.path.toString());
-        this.agendaDB = new DB_AgendaManager(this.path.toString());
-        this.documentDB = new DB_DocumentManager(this.path.toString());
-        this.requestDB = new DB_RequestManager(this.path.toString());
-        this.votingDB = new DB_VotingManager(this.path.toString());
+        this.generalUserDB = new DB_GeneralUserManager(path);
+        this.adminDB = new DB_AdminManager(path);
+        this.attendeeDB = new DB_AttendeeManager(path);
+        this.agendaDB = new DB_AgendaManager(path);
+        this.documentDB = new DB_DocumentManager(path);
+        this.requestDB = new DB_RequestManager(path);
+        this.votingDB = new DB_VotingManager(path);
     }
 
     @After
     public void cleanup() {
+        path = Paths.get("db/database.db").toUri();
         new File(path).delete();
+    }
+
+    @Test
+    public void initializeDatabase() {
+        DB_Controller controller = new DB_Controller("db/database.db");
+        controller.init();
     }
 
     protected DB_GeneralUserManagement getGeneralUserDB(){

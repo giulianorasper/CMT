@@ -7,14 +7,6 @@ public interface DB_RequestManagement extends RequestObserver{
 
     boolean addRequest(Request req);
 
-    boolean closeRequest(Request req);
-
-    boolean reopenRequest(Request req);
-
-    boolean approveRequest(ChangeRequest req);
-
-    boolean disapproveRequest(ChangeRequest req);
-
     Request getRequest(int ID);
 
     List<Request> getAllRequests();

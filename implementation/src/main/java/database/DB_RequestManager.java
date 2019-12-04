@@ -22,26 +22,6 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
     }
 
     @Override
-    public boolean closeRequest(Request req) {
-        return false; //TODO: Implement this
-    }
-
-    @Override
-    public boolean reopenRequest(Request req) {
-        return false; //TODO: Implement this
-    }
-
-    @Override
-    public boolean approveRequest(ChangeRequest req) {
-        return false; //TODO: Implement this
-    }
-
-    @Override
-    public boolean disapproveRequest(ChangeRequest req) {
-        return false; //TODO: Implement this
-    }
-
-    @Override
     public Request getRequest(int ID) {
         return null; //TODO: Implement this
     }

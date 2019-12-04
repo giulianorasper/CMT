@@ -82,13 +82,27 @@ public class Agenda implements AgendaObservable{
         }
     }
 
-    public Topic getTopicFromPreorderString(String preorder) {
-        String[] preorderArray = preorder.split("\\.");
-        List<Integer> preorderList = new LinkedList<>();
-        for(String s : preorderArray) {
-            //here we convert counting from 1 to counting from 0
-            preorderList.add((Integer.parseInt(s)-1));
+
+    //TODO @Giuliano Add documentation to preorder methods
+    //TODO @Stephan It would be great if you would look into weather / how these methods should be locked. I think you are more proficient with that.
+    public Agenda getAgendaFromPreorderString(String preorder) {
+        List<Integer> preorderList = getPreorderListFromPreorderString(preorder);
+        return getAgendaFromPreorderList(preorderList);
+    }
+
+    private Agenda getAgendaFromPreorderList(List<Integer> preorder) {
+        if(!preorder.isEmpty()) {
+            preorder.remove(preorder.size()-1);
+            Topic topic = getTopicFromPreorderList(preorder);
+            return topic.getSubTopics();
+        } else {
+            throw new IllegalArgumentException();
         }
+
+    }
+
+    public Topic getTopicFromPreorderString(String preorder) {
+        List<Integer> preorderList = getPreorderListFromPreorderString(preorder);
         return getTopicFromPreorderList(preorderList);
     }
 
@@ -100,6 +114,16 @@ public class Agenda implements AgendaObservable{
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }
+    }
+
+    private List<Integer> getPreorderListFromPreorderString(String preorder) {
+        String[] preorderArray = preorder.split("\\.");
+        List<Integer> preorderList = new LinkedList<>();
+        for(String s : preorderArray) {
+            //here we convert counting from 1 to counting from 0
+            preorderList.add((Integer.parseInt(s)-1));
+        }
+        return preorderList;
     }
 
     @Override

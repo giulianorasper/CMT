@@ -2,6 +2,7 @@ package communication.packets.request.admin;
 
 import agenda.Agenda;
 import agenda.Topic;
+import com.google.gson.internal.$Gson$Preconditions;
 import communication.packets.PacketType;
 import communication.packets.request.AuthenticatedRequestPacket;
 import communication.packets.BasePacket;
@@ -33,9 +34,10 @@ public class AddTopicRequestPacket extends AuthenticatedRequestPacket {
     public void handle(Conference conference, WebSocket webSocket) {
         Pair<OperationResponse, Agenda> result = conference.getAgenda(getToken());
         if(isPermitted(webSocket, true, result.first())) {
-            Agenda agenda = result.second();
-            Topic topic = agenda.getTopicFromPreorderString(position);
-            //TODO implement
+            Agenda mainAgenda = result.second();
+            Agenda agenda = mainAgenda.getAgendaFromPreorderString(position);
+            Topic topic = new Topic(name, mainAgenda);
+            //agenda.addTopic(mainAgenda)
         }
     }
 }

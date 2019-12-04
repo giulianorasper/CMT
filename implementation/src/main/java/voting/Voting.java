@@ -15,6 +15,9 @@ public class Voting implements VotingObservable{
 
     @Expose
     private final int ID;
+    //TODO handle setting this boolean
+    @Expose
+    private boolean namedVote;
     private ConcurrentHashMap<VotingObserver, Boolean> observers = new ConcurrentHashMap<>(); // a map backed hashset
     public List<Integer> voters = new ArrayList<>();
     public int getID() {

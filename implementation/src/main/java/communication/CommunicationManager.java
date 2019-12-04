@@ -12,13 +12,6 @@ import java.io.IOException;
 public interface CommunicationManager {
 
     /**
-     * Initializes the Manager (equivalently to a class constructor)
-     * @param conference - the communication factory used to answer requests
-     * @param timeoutAfter - the number of seconds a request is allowed to wait for a response before the connection gets forcefully closed
-     */
-    void init(Conference conference, int timeoutAfter);
-
-    /**
      * Waits for requests and generates responses using the functionality provided by the {@link Conference}.
      * Should close the connection if completing the requests takes to long in order to prevent slow loris attacks.
      * What exactly to long means is specified by the init function

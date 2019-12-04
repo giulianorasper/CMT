@@ -1,10 +1,19 @@
 package communication.packets.request.admin;
 
+import agenda.Agenda;
+import agenda.Topic;
+import com.google.gson.internal.$Gson$Preconditions;
 import communication.packets.PacketType;
+import communication.packets.ResponsePacket;
 import communication.packets.request.AuthenticatedRequestPacket;
 import communication.packets.BasePacket;
+import communication.packets.response.both.ValidResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
+import utils.OperationResponse;
+import utils.Pair;
+
+import java.util.List;
 
 /**
  * This packet handles an add topic request from an admin and responds with a general {@link BasePacket}.
@@ -27,6 +36,16 @@ public class AddTopicRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-        //TODO implement
+        Pair<OperationResponse, Agenda> result = conference.getAgenda(getToken());
+        if(isPermitted(webSocket, true, result.first())) {
+            Agenda mainAgenda = result.second();
+            Agenda agenda = mainAgenda.getAgendaFromPreorderString(position);
+            Topic topic = new Topic(name, mainAgenda);
+            List<Integer> preorderList = agenda.getPreorderListFromPreorderString(position);
+            //we assert the size of the preorderList to be at least one, otherwise a IllegalArgumenException would be thrown earlier
+            int pos = preorderList.get(preorderList.size()-1);
+            mainAgenda.addTopic(topic, pos-1);
+            new ValidResponsePacket().send(webSocket);
+        }
     }
 }

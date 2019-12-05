@@ -4,15 +4,9 @@ import com.google.gson.Gson;
 import communication.packets.BasePacket;
 import communication.enums.PacketType;
 import communication.packets.RequestPacket;
-import communication.packets.request.admin.AddTopicRequestPacket;
-import communication.packets.request.admin.RemoveTopicRequestPacket;
-import communication.packets.request.admin.RenameTopicRequestPacket;
-import communication.packets.request.admin.ReorderTopicRequestPacket;
-import communication.packets.request.GetActiveVotingRequestPacket;
-import communication.packets.request.PersonalDataRequestPacket;
-import communication.packets.request.VoteRequestPacket;
-import communication.packets.request.GetAgendaRequestPacket;
-import communication.packets.request.LoginRequestPacket;
+import communication.packets.request.*;
+import communication.packets.request.admin.*;
+import communication.packets.response.FailureResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -68,32 +62,88 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
             PacketType packetType = gson.fromJson(message, BasePacket.class).getPacketType();
 
             switch(packetType) {
-                case LOGIN_REQUEST:
-                    pack = gson.fromJson(message, LoginRequestPacket.class);
-                    break;
-                case GET_ACTIVE_VOTING_REQUEST:
-                    pack = gson.fromJson(message, GetActiveVotingRequestPacket.class);
-                    break;
-                case PERSONAL_DATA_REQUEST:
-                    pack = gson.fromJson(message, PersonalDataRequestPacket.class);
-                    break;
-                case VOTE_REQUEST:
-                    pack = gson.fromJson(message, VoteRequestPacket.class);
-                    break;
-                case GET_AGENDA_REQUEST:
-                    pack = gson.fromJson(message, GetAgendaRequestPacket.class);
+                /* ADMIN PACKETS */
+                case ADD_ATTENDEE_REQUEST:
+                    pack = gson.fromJson(message, AddAttendeeRequestPacket.class);
                     break;
                 case ADD_TOPIC_REQUEST:
                     pack = gson.fromJson(message, AddTopicRequestPacket.class);
                     break;
+                case ADD_VOTING_REQUEST_PACKET:
+                    pack = gson.fromJson(message, AddVotingRequestPacket.class);
+                    break;
+                case EDIT_USER_REQUEST:
+                    pack = gson.fromJson(message, EditUserRequestPacket.class);
+                    break;
+                case GENERATE_MESSING_ATTENDEE_PASSWORDS:
+                    pack = gson.fromJson(message, GenerateMissingAttendeePasswordsPacket.class);
+                    break;
+                case GENERATE_NEW_ATTENDEE_PASSWORD:
+                    pack = gson.fromJson(message, GenerateNewAttendeePasswordRequestPacket.class);
+                    break;
+                case GET_ALL_ATTENDEE_PASSWORDS:
+                    pack = gson.fromJson(message, GetAllAttendeePasswordsRequestPacket.class);
+                    break;
+                case GET_ALL_ATTENDEES_REQUEST:
+                    pack = gson.fromJson(message, GetAllAttendeesRequestPacket.class);
+                    break;
+                case GET_ALL_REQUESTS_REQUEST:
+                    pack = gson.fromJson(message, GetAllRequestsRequestPacket.class);
+                    break;
+                case GET_ATTENDEE_DATA_REQUEST:
+                    pack = gson.fromJson(message, GetAttendeeDataRequestPacket.class);
+                    break;
+                case GET_ATTENDEE_PASSWORD_REQUEST:
+                    pack = gson.fromJson(message, GetAttendeePasswordRequestPacket.class);
+                    break;
+                case GET_VOTINGS_REQUEST:
+                    pack = gson.fromJson(message, GetVotingsRequestPacket.class);
+                    break;
+                case LOGOUT_ALL_ATTENDEES:
+                    pack = gson.fromJson(message, LogoutAllAttendeesRequestPacket.class);
+                    break;
+                case LOGOUT_ATTENDEE_REQUEST:
+                    pack = gson.fromJson(message, LogoutAttendeeRequestPacket.class);
+                    break;
+                case REMOVE_ATTENDEE_REQUEST:
+                    pack = gson.fromJson(message, RemoveAttendeeRequestPacket.class);
+                    break;
                 case REMOVE_TOPIC_REQUEST:
                     pack = gson.fromJson(message, RemoveTopicRequestPacket.class);
+                    break;
+                case REMOVE_VOTING_REQUEST:
+                    pack = gson.fromJson(message, RemoveVotingRequestPacket.class);
                     break;
                 case RENAME_TOPIC_REQUEST:
                     pack = gson.fromJson(message, RenameTopicRequestPacket.class);
                     break;
                 case REORDER_TOPIC_REQUEST:
                     pack = gson.fromJson(message, ReorderTopicRequestPacket.class);
+                    break;
+                case SET_REQUEST_APPROVAL_STATUS:
+                    pack = gson.fromJson(message, SetRequestApprovalStatusRequestPacket.class);
+                    break;
+                    /* USER PACKETS */
+                case ADD_VOTE_REQUEST:
+                    pack = gson.fromJson(message, AddVoteRequestPacket.class);
+                    break;
+                case GET_ACTIVE_VOTING_REQUEST:
+                    pack = gson.fromJson(message, GetActiveVotingRequestPacket.class);
+                    break;
+                case GET_AGENDA_REQUEST:
+                    pack = gson.fromJson(message, GetAgendaRequestPacket.class);
+                    break;
+                case LOGIN_REQUEST:
+                    pack = gson.fromJson(message, LoginRequestPacket.class);
+                    break;
+                case PERSONAL_DATA_REQUEST:
+                    pack = gson.fromJson(message, PersonalDataRequestPacket.class);
+                    break;
+                case REQUEST_OF_CHANGE_REQUEST:
+                    pack = gson.fromJson(message, RequestOfChangeRequestPacket.class);
+                    break;
+                case REQUEST_OF_SPEECH_REQUEST:
+                    pack = gson.fromJson(message, RequestOfSpeechRequestPacket.class);
                     break;
                 default:
                     throw new IllegalArgumentException("Packet type " + packetType + " does not exist.");
@@ -102,9 +152,12 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
 
 
         } catch (Exception e) {
-            //TODO handle invalid argument exception here
-            e.printStackTrace();
-            //TODO this should basically never happen, therefore log occurrences
+            if(e instanceof IllegalArgumentException) {
+                new FailureResponsePacket(e.getMessage()).send(conn);
+            } else {
+                e.printStackTrace();
+                //TODO this should basically never happen, therefore log occurrences
+            }
         }
     }
 

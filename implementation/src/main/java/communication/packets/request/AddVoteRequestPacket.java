@@ -13,7 +13,7 @@ import voting.Voting;
 /**
  * This packet handles an attendee requesting to submit their vote in an ongoing voting and on success responds with a general {@link communication.packets.ResponsePacket}.
  */
-public class VoteRequestPacket extends AuthenticatedRequestPacket {
+public class AddVoteRequestPacket extends AuthenticatedRequestPacket {
 
     private int voteID;
     private int optionID;
@@ -23,8 +23,8 @@ public class VoteRequestPacket extends AuthenticatedRequestPacket {
      * @param voteID the ID of the voting the attendee wants to submit a vote for
      * @param optionID the ID of the choice the attendee wants to vote for
      */
-    public VoteRequestPacket(int voteID, int optionID) {
-        super(PacketType.VOTE_REQUEST);
+    public AddVoteRequestPacket(int voteID, int optionID) {
+        super(PacketType.ADD_VOTE_REQUEST);
         this.voteID = voteID;
         this.optionID = optionID;
     }
@@ -36,7 +36,7 @@ public class VoteRequestPacket extends AuthenticatedRequestPacket {
             int userID = conference.tokenToID(getToken());
             Packet response;
             if(voting.addVote(optionID, userID)) {
-                response = new ResponsePacket(PacketType.VOTE_RESPONSE, RequestResult.Valid);
+                response = new ResponsePacket(PacketType.ADD_VOTE_RESPONSE, RequestResult.Valid);
             } else {
                 response = new FailureResponsePacket();
             }

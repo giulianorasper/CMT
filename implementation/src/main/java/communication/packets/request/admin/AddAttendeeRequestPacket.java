@@ -30,7 +30,7 @@ public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
         setNotNull(group);
         setNotNull(residence);
         setNotNull(function);
-
+        //TODO implement
         //OperationResponse response = conference.addAttendee(getToken(), new Attendee(name, email, group, residence, function));
     }
 

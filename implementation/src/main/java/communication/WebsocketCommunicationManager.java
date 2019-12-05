@@ -31,11 +31,13 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
     private Conference conference;
     //TODO implement timeout
     private int timeoutAfter;
+    private  boolean debugging;
 
     public WebsocketCommunicationManager(Conference conference, int port, int timeoutAfter, boolean debugging) {
         super(new InetSocketAddress(port));
         this.conference = conference;
         this.timeoutAfter = timeoutAfter;
+        this.debugging = debugging;
         conns = new HashSet<>();
     }
 
@@ -60,6 +62,8 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
     @Override
     public void onMessage(WebSocket conn, String message) {
         try {
+            if(debugging) System.out.println(message);
+
             RequestPacket pack;
             PacketType packetType = gson.fromJson(message, BasePacket.class).getPacketType();
 

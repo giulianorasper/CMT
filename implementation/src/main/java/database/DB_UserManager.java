@@ -50,11 +50,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public Pair<LoginResponse, String> checkLogin(String userName, String password) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users WHERE username = ? ";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            stmt.setString(1, userName);
-            ResultSet table  = stmt.executeQuery();
+        String sqlstatement = "SELECT * FROM users WHERE username =  " + userName;
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet table  = stmt.executeQuery()) {
             if (!table.next()) {
                 return new Pair<>(LoginResponse.UserDoesNotExist, null);
             } else {
@@ -89,11 +87,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public TokenResponse checkToken(String token) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users WHERE token = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            stmt.setString(1, token);
-            ResultSet table  = stmt.executeQuery();
+        String sqlstatement = "SELECT * FROM users WHERE token = " + token;
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet table  = stmt.executeQuery();) {
             if (!table.next()) {
                 return TokenResponse.TokenDoesNotExist;
             } else {
@@ -122,16 +118,16 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      *
      * @param token The token of the user.
      * @return the ID of the user with the given token.
+     *
+     * @throws IllegalArgumentException if the token does not exist.
      */
     @Override
     public int tokenToID(String token) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users WHERE token = ?";
+        String sqlstatement = "SELECT * FROM users WHERE token = " + token;
         int ID = -1;
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            stmt.setString(1, token);
-            ResultSet doc  = stmt.executeQuery();
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet doc  = stmt.executeQuery()) {
             if (doc.next()) {
                 return doc.getInt("userID");
             } else {
@@ -156,8 +152,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     public boolean removeUser(int userID) {
         this.openConnection();
         String sqlstatement = "DELETE FROM users WHERE userID = ?";
-        try  {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, userID);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -181,8 +176,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     public boolean logoutUser(int userID) {
         this.openConnection();
         String sqlstatement = "UPDATE users SET password = ? , token = ?  WHERE userID = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setNull(1, java.sql.Types.VARCHAR);
             stmt.setNull(2, java.sql.Types.VARCHAR);
             stmt.setInt(3, userID);
@@ -207,9 +201,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         this.openConnection();
         List<Pair<User, String>> pass = new LinkedList<>();
         String sqlstatement = "SELECT * FROM users";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            ResultSet att  = stmt.executeQuery();
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet att  = stmt.executeQuery()) {
             while (att.next()) {
                 User user = new Attendee(att.getString("fullname"),
                         att.getString("email"),
@@ -241,8 +234,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     public boolean storeNewToken(int userID, String token) {
         this.openConnection();
         String sqlstatement = "UPDATE users SET token = ? WHERE userID = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, token);
             stmt.setInt(2, userID);
             stmt.executeQuery();
@@ -267,8 +259,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     public boolean storeNewPassword(int userID, String password) {
         this.openConnection();
         String sqlstatement = "UPDATE users SET password = ?  WHERE userID = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, password);
             stmt.setInt(2, userID);
             stmt.executeQuery();
@@ -291,11 +282,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public boolean userNameAlreadyUsed(String username) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users WHERE username = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            stmt.setString(1, username);
-            ResultSet table  = stmt.executeQuery();
+        String sqlstatement = "SELECT * FROM users WHERE username = " + username;
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet table  = stmt.executeQuery();) {
             if (!table.next()) {
                 return true;
             } else {
@@ -318,9 +307,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         this.openConnection();
         List<Integer> IDs = new LinkedList<>();
         String sqlstatement = "SELECT userID FROM users";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            ResultSet table  = stmt.executeQuery();
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet table  = stmt.executeQuery()) {
             while (table.next()) {
                 IDs.add(table.getInt("userID"));
             }
@@ -348,8 +336,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         String sqlstatement = "INSERT INTO users(userID, fullname, username, password, "
                 + "token, email, groups, function, residence, isAdmin, present)"
                 + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, a.getID());
             stmt.setString(2, a.getName());
             stmt.setString(3, a.getUserName());
@@ -380,9 +367,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         this.openConnection();
         List<Attendee> attendees = new LinkedList<>();
         String sqlstatement = "SELECT * FROM users";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            ResultSet table  = stmt.executeQuery();
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet table  = stmt.executeQuery()) {
             while (table.next()) {
                 attendees.add(new Attendee(table.getString("fullname"),
                         table.getString("email"),
@@ -411,12 +397,10 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public Attendee getAttendeeData(int userID) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users  WHERE userID = ? ";
+        String sqlstatement = "SELECT * FROM users  WHERE userID =  " + userID;
         Attendee attendee = null;
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            stmt.setInt(1, userID);
-            ResultSet att  = stmt.executeQuery();
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet att  = stmt.executeQuery()) {
             attendee = new Attendee(att.getString("fullname"),
                     att.getString("email"),
                     att.getString("username"),
@@ -449,8 +433,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 + " residence = ? , "
                 + " function = ? "
                 + " WHERE userID = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, a.getName());
             stmt.setString(2, a.getMail());
             stmt.setString(3, a.getUserName());
@@ -483,8 +466,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         String sqlstatement = "INSERT INTO users(userID, fullname, username, password ,"
                 + "token, email, groups, function, residence, isAdmin, present)"
                 + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);) {
             stmt.setInt(1, a.getID());
             stmt.setString(2, a.getName());
             stmt.setString(3, a.getUserName());
@@ -515,18 +497,18 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         this.openConnection();
         List<Admin> admins = new LinkedList<>();
         String sqlstatement = "SELECT * FROM users WHERE isAdmin = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setBoolean(1, true);
-            ResultSet table  = stmt.executeQuery();
-            while (table.next()) {
-                admins.add(new Admin(table.getString("fullname"),
-                        table.getString("email"),
-                        table.getString("username"),
-                        table.getString("group"),
-                        table.getString("residence"),
-                        table.getString("function"),
-                        table.getInt("userID")));
+            try (ResultSet table  = stmt.executeQuery()) {
+                while (table.next()) {
+                    admins.add(new Admin(table.getString("fullname"),
+                            table.getString("email"),
+                            table.getString("username"),
+                            table.getString("group"),
+                            table.getString("residence"),
+                            table.getString("function"),
+                            table.getInt("userID")));
+                }
             }
         } catch (SQLException ex) {
             System.err.println("An exception occurred while reading all admins.");
@@ -549,18 +531,18 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         this.openConnection();
         String sqlstatement = "SELECT * FROM users WHERE userID = ? AND isAdmin = ?";
         Admin admin = null;
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, userID);
             stmt.setBoolean(2, true);
-            ResultSet adm  = stmt.executeQuery();
-            admin = new Admin(adm.getString("fullname"),
-                    adm.getString("email"),
-                    adm.getString("username"),
-                    adm.getString("groups"),
-                    adm.getString("residence"),
-                    adm.getString("function"),
-                    adm.getInt("userID"));
+            try (ResultSet adm  = stmt.executeQuery()) {
+                admin = new Admin(adm.getString("fullname"),
+                        adm.getString("email"),
+                        adm.getString("username"),
+                        adm.getString("groups"),
+                        adm.getString("residence"),
+                        adm.getString("function"),
+                        adm.getInt("userID"));
+            }
         } catch (SQLException ex) {
             System.err.println("An exception occurred while trying to return an admin.");
             System.err.println(ex.getMessage());
@@ -585,8 +567,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 + "residence = ? , "
                 + "function = ?"
                 + " WHERE userID = ? AND isAdmin = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);) {
             stmt.setString(1, a.getName());
             stmt.setString(2, a.getMail());
             stmt.setString(3, a.getGroup());

@@ -128,7 +128,7 @@
                                 <thead>
                                 <th>Name</th>
                                 <th>Group</th>
-                                <th>Login Status</th>
+                                <th>Function</th>
                                 <th>Present</th>
                                 </thead>
 
@@ -136,15 +136,14 @@
                                 <tr data-toggle="collapse" data-target="#accordion" class="clickable">
                                     <td>Max Mustermann</td>
                                     <td>RCDS</td>
-                                    <td>Logged In</td>
+                                    <td>Party Leader</td>
                                     <td>Yes</td>
                                 </tr>
                                 <tr>
                                     <td colspan="4">
                                         <div id="accordion" class="collapse">
-                                            <h4 style="color:grey;">Role: -</h4>
-                                            <h4 style="color:grey;">Residence: -</h4>
-                                            <h4 style="color:grey;">Email: -</h4>
+                                            <h4 style="color:grey;">Residence: Saarland University Saarbrücken</h4>
+                                            <h4 style="color:grey;">Email: attendee@cmt.de</h4>
                                         </div>
                                     </td>
                                 </tr>
@@ -188,6 +187,34 @@
 <script src="js/mail-script.js"></script>
 
 <script src="js/main.js"></script>
+
+
+<script type="module">
+    import GetAllAttendeesRequestPacket from "./communication/packets/GetAllAttendeesRequestPacket.js";
+    import Cookies from "./communication/utils/Cookies.js";
+    import CommunicationManager from "./communication/CommunicationManager.js";
+
+
+    function printUserList(){
+
+    }
+
+    function success(packet){
+        if(packet.result === "Valid"){
+
+        }
+    }
+
+    function fail() {
+        console.log("Something went wrong during Get All Attendees Request.");
+    }
+
+    const requestPacket = new GetAllAttendeesRequestPacket();
+
+    CommunicationManager.send(requestPacket, success, fail);
+
+</script>
+
 
 <script>
     $("#form-submit").submit(function (e) {

@@ -53,13 +53,18 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         closeConnection();
     }
 
+    /**
+     * Adds a new {@link Request} to the database.
+     *
+     * @param req The {@link Request} to be added.
+     * @return True, iff the {@link Request} was successfully added.
+     */
     @Override
     public boolean addRequest(Request req) {
         this.openConnection();
         String sqlstatement = "INSERT INTO requests(requestID, userID, requestType, requestableName, timestamps," +
                 "content, approved) VALUES(?,?,?,?,?,?,?)";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);) {
             stmt.setInt(1, req.ID);
             stmt.setInt(2, req.getRequester().getID());
             if (req instanceof ChangeRequest) { //TODO: Enum for type
@@ -71,14 +76,15 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 stmt.setNull(6, Types.VARCHAR);
                 stmt.setNull(7, java.sql.Types.BOOLEAN);
             } else {
-                System.err.println("Requestable Type not supported by Database implementation.");
+                System.err.println("Requestable Type not supported by database implementation.");
                 return false;
             }
             stmt.setString(4, req.getRequestable().getName());
             stmt.setLong(5, req.getTimeStamp());
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("An error occurred while adding a new request to the database.");
+            System.err.println(ex.getMessage());
             return false;
         } finally {
             this.closeConnection();
@@ -86,17 +92,19 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         return true;
     }
 
+    /**
+     * Reconstructs a given {@link Request} from the database.
+     *
+     * @param ID The ID of the {@link Request}.
+     * @return the reconstructed {@link Request}.
+     */
     @Override
     public Request getRequest(int ID) {
         this.openConnection();
         Request request = null;
-
-        String sqlstatement = "SELECT * FROM requests WHERE requestID = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            stmt.setInt(1, ID);
-            ResultSet table  = stmt.executeQuery();
-
+        String sqlstatement = "SELECT * FROM requests WHERE requestID = " + ID;
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet table  = stmt.executeQuery()) {
             int requestID = table.getInt("requestID");
             int userID = table.getInt("userID");
             int requestType = table.getInt("requestType");
@@ -111,19 +119,18 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                     return name;
                 }
             };
-
-            String userstmt = "SELECT * FROM users WHERE userID = ? ";
-            PreparedStatement user = connection.prepareStatement(userstmt);
-            user.setInt(1, userID);
-            ResultSet att  = user.executeQuery();
-            User attendee = new Attendee(att.getString("fullname"),
-                   att.getString("email"),
-                   att.getString("username"),
-                   att.getString("groups"),
-                   att.getString("residence"),
-                   att.getString("function"),
-                   att.getInt("userID"));
-
+            User attendee = null;
+            String userstmt = "SELECT * FROM users WHERE userID =  " + userID;
+            try (PreparedStatement user = connection.prepareStatement(userstmt);
+                 ResultSet att  = user.executeQuery();) {
+                attendee = new Attendee(att.getString("fullname"),
+                        att.getString("email"),
+                        att.getString("username"),
+                        att.getString("groups"),
+                        att.getString("residence"),
+                        att.getString("function"),
+                        att.getInt("userID"));
+            }
             switch (requestType) {
                 case 0: //Is ChangeRequest
                     ChangeRequest req = new ChangeRequest(requestID, attendee, requestable, timestamp, text);
@@ -141,7 +148,8 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                     return null;
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("An error occurred while trying to reconstruct a request.");
+            System.err.println(ex.getMessage());
             return null;
         } finally {
             this.closeConnection();
@@ -149,16 +157,17 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         return request;
     }
 
+    /**
+     *
+     * @return a list of all reconstructed {@link Request}s from the database.
+     */
     @Override
     public List<Request> getAllRequests() {
         this.openConnection();
         List<Request> requests = new LinkedList<>();
-
         String sqlstatement = "SELECT * FROM requests";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            ResultSet table  = stmt.executeQuery();
-
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet table  = stmt.executeQuery();) {
             while (table.next()) {
                 int requestID = table.getInt("requestID");
                 int userID = table.getInt("userID");
@@ -166,7 +175,6 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 long timestamp = table.getInt("timestamps");
                 String text = table.getString("content");
                 boolean approved = table.getBoolean("approved");
-
                 String name = table.getString("requestName");
                 Requestable requestable = new Requestable() {
                     @Override
@@ -174,20 +182,18 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                         return name;
                     }
                 };
-
-                String userstmt = "SELECT * FROM users"
-                        + " WHERE userID = ? ";
-                PreparedStatement user = connection.prepareStatement(userstmt);
-                user.setInt(1, userID);
-                ResultSet att  = user.executeQuery();
-                User attendee = new Attendee(att.getString("fullname"),
-                        att.getString("email"),
-                        att.getString("username"),
-                        att.getString("groups"),
-                        att.getString("residence"),
-                        att.getString("function"),
-                        att.getInt("userID"));
-
+                String userstmt = "SELECT * FROM users WHERE userID =  " + userID;
+                User attendee = null;
+                try (PreparedStatement user = connection.prepareStatement(userstmt);
+                     ResultSet att  = user.executeQuery();) {
+                    attendee = new Attendee(att.getString("fullname"),
+                            att.getString("email"),
+                            att.getString("username"),
+                            att.getString("groups"),
+                            att.getString("residence"),
+                            att.getString("function"),
+                            att.getInt("userID"));
+                }
                 switch (requestType) {
                     case 0: //Is ChangeRequest
                         ChangeRequest req = new ChangeRequest(requestID, attendee, requestable, timestamp, text);
@@ -206,7 +212,8 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("An error occured while reconstructing all requests.");
+            System.err.println(ex.getMessage());
             return null;
         } finally {
             this.closeConnection();
@@ -214,6 +221,12 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         return requests;
     }
 
+    /**
+     * Updates the {@link Request} after the {@link RequestObservable} was changed.
+     *
+     * @param r The updates {@link Request}.
+     * @return True, iff the updates was successful.
+     */
     @Override
     public boolean update(Request r) {
         this.openConnection();
@@ -221,8 +234,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 + "requestableName = ? ,"
                 + "timestamps = ?"
                 + " WHERE requestID = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             if (r instanceof ChangeRequest) {
                 stmt.setBoolean(1, ((ChangeRequest) r).isApproved());
             } else if (r instanceof SpeechRequest) {
@@ -236,7 +248,8 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
             stmt.setInt(4, r.ID);
             stmt.executeQuery();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println("An error occurred while updating a request.");
+            System.err.println(e.getMessage());
             return false;
         } finally {
             this.closeConnection();

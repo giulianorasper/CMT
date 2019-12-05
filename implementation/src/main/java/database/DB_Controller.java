@@ -35,7 +35,6 @@ public abstract class DB_Controller {
         }
         this.url = "jdbc:sqlite:" + url;
         init();
-
     }
 
     /**

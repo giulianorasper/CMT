@@ -44,9 +44,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public Conference(){
         this (  "Test",
                 "Team 23",
-                new Time(System.currentTimeMillis()),
-                new Time(System.currentTimeMillis() + 1000*60*60),
+                System.currentTimeMillis(),
+                System.currentTimeMillis() + 1000*60*60,
                 new Agenda(""),
+                new HashMap<Integer, Admin>(),
                 new HashMap<Integer, Voting>(),
                 new HashMap<String, Path>(),
                 "./docs",
@@ -54,10 +55,13 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                 new HashMap<Integer, Request>(),
                 null
         );
+
+        this.addAdmin(new Admin("test", "test", "test", "test", "test", "test", 0));
+        System.out.println(this.getAttendeePassword(0).second());
     }
 
 
-    public Conference(String name, String organizer, Time startsAt, Time endsAt, Agenda agenda, HashMap<Integer,Voting> votings, HashMap<String,Path> documents, String  documentsPath, Set<String> adminTokens, HashMap<Integer,Request> requests, Voting activeVoting) {
+    public Conference(String name, String organizer, long startsAt, long endsAt, Agenda agenda, HashMap<Integer, Admin> admins, HashMap<Integer,Voting> votings, HashMap<String,Path> documents, String  documentsPath, Set<String> adminTokens, HashMap<Integer,Request> requests, Voting activeVoting) {
         this.name = name;
         this.organizer = organizer;
         this.startsAt = startsAt;
@@ -68,6 +72,8 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         this.requests = requests;
         this.activeVoting = activeVoting;
         this.documentsPath = documentsPath;
+
+        this.admins = admins;
 
         adminTokens.forEach(f -> this.adminTokens.put(f, true));
         DB_AgendaManager db_agendaManagement = new DB_AgendaManager("");
@@ -89,8 +95,8 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     private String organizer;
 
-    private Time startsAt;
-    private Time endsAt;
+    private long startsAt;
+    private long endsAt;
 
     private Generator gen = new Generator_Imp();
 
@@ -105,10 +111,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private HashMap<String, Boolean> adminTokens; // a map backed Set
 
     //Database System //TODO add urls
-    private DB_DocumentManagement db_documentManagement = new DB_DocumentManager("");
-    private DB_UserManagement db_userManagement = new DB_UserManager("");
-    private DB_RequestManagement db_requestManagement = new DB_RequestManager("");
-    private DB_VotingManager db_votingManagement = new DB_VotingManager("");
+    private DB_DocumentManagement db_documentManagement = new DB_DocumentManager("./testdb/testdb.db");
+    private DB_UserManagement db_userManagement = new DB_UserManager("./testdb/testdb.db");
+    private DB_RequestManagement db_requestManagement = new DB_RequestManager("./testdb/testdb.db");
+    private DB_VotingManager db_votingManagement = new DB_VotingManager("./testdb/testdb.db");
 
 
 
@@ -431,12 +437,14 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             attendeeLock.lock();
-            Pair<LoginResponse, String> response = db_userManagement.checkLogin(name, password);
+            Pair<LoginResponse, String> response = db_userManagement.checkLogin(userName, password);
+
+            //System.out.println(response.first() + ", " + response.second() + ", " + userName + ", " + password);
             if(response.first() != LoginResponse.Valid){
                 return new Pair<>(response.first(), null);
             }
             else{
-                return new Pair<>(response.first(), new Pair<>(response.second(), endsAt.toInstant().toEpochMilli()));
+                return new Pair<>(response.first(), new Pair<>(response.second(), endsAt));
             }
         }
         finally {

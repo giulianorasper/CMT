@@ -35,20 +35,24 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         closeConnection();
     }
 
+    /**
+     * Add a new {@link Document} to the database.
+     *
+     * @param document The new {@link Document}.
+     * @return True, iff it was successfully added.
+     */
     @Override
     public boolean addDocument(Document document) {
         this.openConnection();
-        String sqlstatement = "INSERT INTO documents(path, documentName, revision)"
-                + "VALUES(?,?,?)";
-
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        String sqlstatement = "INSERT INTO documents(path, documentName, revision) VALUES(?,?,?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, document.file.getAbsolutePath());
             stmt.setString(2, document.getName());
             stmt.setInt(3, 1);
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("An error occurred while adding a new document.");
+            System.err.println(ex.getMessage());
             return false;
         } finally {
             this.closeConnection();
@@ -56,17 +60,22 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         return true;
     }
 
+    /**
+     * Delete a {@link Document} with the given name.
+     *
+     * @param name The name of the document.
+     * @return True, iff it was successfully deleted.
+     */
     @Override
     public boolean deleteDocument(String name) {
         this.openConnection();
-        String sqlstatement = "DELETE FROM documents"
-                + " WHERE documentName = ?";
-        try  {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        String sqlstatement = "DELETE FROM documents WHERE documentName = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, name);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println("An error occurred while deleting a document.");
+            System.err.println(e.getMessage());
             return false;
         } finally {
             this.closeConnection();
@@ -74,26 +83,32 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         return true;
     }
 
+    /**
+     * Updates a given document name.
+     *
+     * @param oldName The old name of the the {@link Document}.
+     * @param newName The new name of the {@link Document}.
+     * @return True, iff it was successfully updated.
+     */
     @Override
     public boolean updateDocument(String oldName, String newName) {
         this.openConnection();
-        String revisionNumber = "SELECT revision FROM documents"
-                + " WHERE documentName = ?";
+        String revisionNumber = "SELECT revision FROM documents WHERE documentName = ?";
         String sqlstatement = "UPDATE documents SET revision = ? , "
                 + "documentName = ?"
                 + " WHERE documentName = ?";
-        try {
-            PreparedStatement rev = connection.prepareStatement(revisionNumber);
+        try (PreparedStatement rev = connection.prepareStatement(revisionNumber);) {
             rev.setString(1, oldName);
-            ResultSet res = rev.executeQuery();
-
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            stmt.setInt(1, res.getInt("revision") + 1);
-            stmt.setString(2, newName);
-            stmt.setString(3, oldName);
-            stmt.executeQuery();
+            try (ResultSet res = rev.executeQuery();
+                 PreparedStatement stmt = connection.prepareStatement(sqlstatement);) {
+                stmt.setInt(1, res.getInt("revision") + 1);
+                stmt.setString(2, newName);
+                stmt.setString(3, oldName);
+                stmt.executeQuery();
+            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println("An error occurred while updating a document.");
+            System.err.println(e.getMessage());
             return false;
         } finally {
             this.closeConnection();
@@ -101,37 +116,44 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         return true;
     }
 
+    /**
+     * Reconstructs a {@link Document} object with the given name from the database.
+     *
+     * @param name The name of the {@link Document}.
+     * @return the reconstructed {@link Document}.
+     */
     @Override
     public Document getDocument(String name) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM documents"
-                + " WHERE documentName = ?";
+        String sqlstatement = "SELECT * FROM documents WHERE documentName = ?";
         Document document = null;
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, name);
-            ResultSet doc  = stmt.executeQuery();
-            document = new Document(doc.getString("path"),
-                    doc.getString("documentName"),
-                    doc.getInt("revision"));
+            try (ResultSet doc  = stmt.executeQuery()) {
+                document = new Document(doc.getString("path"),
+                        doc.getString("documentName"),
+                        doc.getInt("revision"));
+            }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("An error occurred while reconstructing a document.");
+            System.err.println(ex.getMessage());
         } finally {
             this.closeConnection();
         }
         return document;
     }
 
+    /**
+     *
+     * @return a list of all reconstructed {@link Document}s in the database.
+     */
     @Override
     public List<Document> getAllDocuments() {
         this.openConnection();
         List<Document> documents = new LinkedList<>();
-
         String sqlstatement = "SELECT * FROM documents";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            ResultSet table  = stmt.executeQuery();
-
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet table  = stmt.executeQuery()) {
             while (table.next()) {
                 String name = table.getString("documentName");
                 String url  = table.getString("path");
@@ -139,7 +161,8 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
                 documents.add(new Document(url, name, revision));
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("An error occurred while reconstructing all documents.");
+            System.err.println(ex.getMessage());
             return null;
         } finally {
             this.closeConnection();

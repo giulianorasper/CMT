@@ -152,8 +152,12 @@ public class Agenda implements AgendaObservable{
     private Agenda getAgendaFromPreorderList(List<Integer> preorder) {
         if(!preorder.isEmpty()) {
             preorder.remove(preorder.size()-1);
-            Topic topic = getTopicFromPreorderList(preorder);
-            return topic.getSubTopics();
+            if(preorder.isEmpty()) {
+                return this;
+            } else {
+                Topic topic = getTopicFromPreorderList(preorder);
+                return topic.getSubTopics();
+            }
         } else {
             throw new IllegalArgumentException();
         }

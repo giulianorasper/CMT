@@ -1,10 +1,13 @@
 package request;
 
+import com.google.gson.annotations.Expose;
 import user.User;
 
 public class ChangeRequest extends Request {
 
+    @Expose
     private boolean approved;
+    @Expose
     private String message;
 
     public ChangeRequest(User requester, Requestable topic, long timestamp, String message){

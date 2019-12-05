@@ -13,6 +13,7 @@ public abstract class User {
 
     @Expose
     protected String userName;
+    @Expose
     protected String group;
     @Expose
     protected String residence;
@@ -21,8 +22,9 @@ public abstract class User {
     @Expose
     protected int ID;
 
-    public User(String name, String userName, String group, String residence, int ID){
+    public User(String name, String email, String userName, String group, String residence, int ID){
         this.name = name;
+        this.email = email;
         this.group = group;
         this.residence = residence;
         this.userName = userName;

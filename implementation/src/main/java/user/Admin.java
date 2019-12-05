@@ -16,7 +16,7 @@ public class Admin extends Attendee {
 
     private boolean logedIn;
 
-    public Admin(String name, String userName, String group, String residence, String function, int ID){
-        super(name, userName, group, residence, function, ID);
+    public Admin(String name, String email, String userName, String group, String residence, String function, int ID){
+        super(name, email, userName, group, residence, function, ID);
     }
 }

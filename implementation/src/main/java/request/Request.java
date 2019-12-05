@@ -1,5 +1,6 @@
 package request;
 
+import com.google.gson.annotations.Expose;
 import user.User;
 import utils.WriterBiasedRWLock;
 import voting.VotingObserver;
@@ -19,6 +20,7 @@ public abstract class Request implements RequestObservable {
 
     protected WriterBiasedRWLock lock = new WriterBiasedRWLock();
 
+    @Expose
     protected long timeStamp;
 
 
@@ -48,7 +50,9 @@ public abstract class Request implements RequestObservable {
         }
     }
 
+    @Expose
     protected Requestable requestable;
+    @Expose
     protected User requester;
 
     public final int ID;

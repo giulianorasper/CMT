@@ -21,4 +21,9 @@ public abstract class AuthenticatedRequestPacket extends RequestPacket {
     public String getToken() {
         return token;
     }
+
+    public AuthenticatedRequestPacket setToken(String token) {
+        this.token = token;
+        return this;
+    }
 }

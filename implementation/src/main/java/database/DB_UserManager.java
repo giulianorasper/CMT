@@ -50,7 +50,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public Pair<LoginResponse, String> checkLogin(String userName, String password) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users WHERE username =  " + userName;
+        String sqlstatement = "SELECT * FROM users WHERE username =  '"+ userName+"'";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
              ResultSet table  = stmt.executeQuery()) {
             if (!table.next()) {
@@ -87,7 +87,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public TokenResponse checkToken(String token) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users WHERE token = " + token;
+        String sqlstatement = "SELECT * FROM users WHERE token =  '"+ token+"'";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
              ResultSet table  = stmt.executeQuery();) {
             if (!table.next()) {
@@ -124,7 +124,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public int tokenToID(String token) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users WHERE token = " + token;
+        String sqlstatement = "SELECT * FROM users WHERE token  =  '"+ token+"'";
         int ID = -1;
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
              ResultSet doc  = stmt.executeQuery()) {

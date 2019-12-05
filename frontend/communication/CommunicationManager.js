@@ -12,7 +12,6 @@ export default class CommunicationManager {
     static send(packet, successHook = new function(packet){}, errorHook = new function(){}) {
         var socket = new WebSocket('ws://127.0.0.1:17699');
         socket.onmessage = function(event) {
-            console.log(event.data);
             successHook(JSON.parse(event.data));
             socket.onclose = function() {};
             socket.close();

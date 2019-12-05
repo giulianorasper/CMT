@@ -23,7 +23,7 @@ public interface AttendeeManagement {
 
     void generateNewAttendeeToken(int userID);
 
-    void generateAllMissingAttendeePasswords(String adminToken);
+    void generateAllMissingAttendeePasswords();
 
     Pair<User, String> getAttendeePassword(int userID);
 

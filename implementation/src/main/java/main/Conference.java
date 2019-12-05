@@ -355,7 +355,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     @Override
-    public void generateAllMissingAttendeePasswords(String adminToken) {
+    public void generateAllMissingAttendeePasswords() {
         try{
             attendeeLock.lock();
             boolean success = true;

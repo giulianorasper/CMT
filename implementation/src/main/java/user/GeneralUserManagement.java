@@ -8,6 +8,8 @@ public interface GeneralUserManagement {
 
     int tokenToID(String token);
 
+    boolean isAdmin(int id);
+
     TokenResponse checkToken(String token);
 
     String getFreeUserName(String name);

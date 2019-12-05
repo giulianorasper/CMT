@@ -24,4 +24,6 @@ public interface DB_GeneralUserManagement {
     boolean userNameAlreadyUsed(String username);
 
     List<Integer> getIDs();
+
+    int tokenToId(String token);
 }

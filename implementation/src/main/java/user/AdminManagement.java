@@ -7,16 +7,16 @@ import java.util.List;
 
 public interface AdminManagement {
 
-    OperationResponse addAdmin(Admin a);
+    void addAdmin(Admin a);
 
     List<Admin> getAllAdmins();
 
     Admin getAdminPersonalData(int ID);
 
-    OperationResponse removeAdmin(int ID);
+    void removeAdmin(int ID);
 
-    OperationResponse logoutAdmin(int ID);
+    void logoutAdmin(int ID);
 
-    OperationResponse editAdmin(int ID, Admin a);
+    void editAdmin(int ID, Admin a);
 
 }

@@ -7,13 +7,14 @@ import java.util.List;
 
 public interface VotingManagement {
 
-    Pair<OperationResponse, Voting> getActiveVoting(String token);
+    Voting getActiveVoting();
 
-    Pair<OperationResponse, Voting> getVoting(String token, int ID);
+    Voting getVoting(int ID);
 
-    Pair<OperationResponse, List<Voting>> getVotings(String token);
+    List<Voting> getVotings();
 
-    OperationResponse addVoting(String token, Voting voting);
 
-    OperationResponse removeVoting(String token, Voting voting);
+    void addVoting(Voting voting);
+
+    void removeVoting(Voting voting);
 }

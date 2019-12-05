@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface DocumentManagement {
 
-    OperationResponse addDocument(String adminToken, String name, String content);
+    void addDocument(String name, String content);
 
-    OperationResponse deleteDocument(String adminToken, String name);
+    void deleteDocument(String name);
 
-    OperationResponse updateDocument(String adminToken, String name, String content);
+    void updateDocument(String name, String content);
 
-    Pair<OperationResponse, Document> getDocument(String token, String name);
+    Document getDocument(String name);
 
-    Pair<OperationResponse, List<Document>> getAllDocuments(String token);
+    List<Document> getAllDocuments();
 }

@@ -9,7 +9,7 @@ public interface DB_AttendeeManagement {
 
     List<Attendee> getAllAttendees();
 
-    Attendee getAttendeeData(String token);
+    Attendee getAttendeeData(int id);
 
     boolean editAttendee(Attendee a);
 }

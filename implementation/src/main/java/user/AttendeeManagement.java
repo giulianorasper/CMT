@@ -7,29 +7,28 @@ import java.util.List;
 
 public interface AttendeeManagement {
 
-    OperationResponse addAttendee(String adminToken, Attendee a);
+    void addAttendee(Attendee a);
 
-    Pair<OperationResponse, List<Attendee>> getAllAttendees(String adminToken);
+    List<Attendee> getAllAttendees();
 
-    Pair<OperationResponse, Attendee> getAttendeeData(String userToken);
+    Attendee getAttendeeData(int userID);
 
-    OperationResponse removeAttendee(String adminToken, int userID);
+    void removeAttendee(int userID);
 
-    OperationResponse logoutAttendee(String adminToken, int userID);
+    void logoutAttendee(int userID);
 
-    OperationResponse editAttendee(String adminToken, int userID, Attendee attendee);
+    void editAttendee(Attendee attendee);
 
-    OperationResponse generateNewAttendeePassword(String adminToken, int userID);
+    void generateNewAttendeePassword(int userID);
 
-    OperationResponse generateNewAttendeeToken(String adminToken, int userID);
+    void generateNewAttendeeToken(int userID);
 
-    OperationResponse generateAllMissingAttendeePasswords(String adminToken);
+    void generateAllMissingAttendeePasswords(String adminToken);
 
-    Pair<OperationResponse, Pair<User, String>> getAttendeePassword(String adminToken, int userID);
+    Pair<User, String> getAttendeePassword(int userID);
 
-    Pair<OperationResponse, List<Pair<User, String>>> getAllAttendeePasswords(String adminToken);
+    List<Pair<User, String>> getAllAttendeePasswords();
 
     boolean logoutAllAttendees();
 
-    OperationResponse logoutAttendees(String adminToken);
 }

@@ -28,6 +28,8 @@ import utils.Pair;
 import voting.DB_VotingManagement;
 import voting.Voting;
 import voting.VotingManagement;
+import voting.VotingObserver;
+import voting.VotingStatus;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 
-public class Conference implements UserManagement, VotingManagement, RequestManagement, DocumentManagement, AgendaManagement {
+public class Conference implements UserManagement, VotingManagement, RequestManagement, DocumentManagement, AgendaManagement, VotingObserver {
 
     //Creates a clean conference (for debugging)
     public Conference(){
@@ -112,34 +114,29 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     /****************** The Request Management Interface *********/
 
     @Override
-    public OperationResponse addRequest(String token, Request request) {
-        return null; // TODO Implement me
+    public void addRequest( Request request) {
+        return; // TODO Implement me
     }
 
     @Override
-    public Pair<OperationResponse, Request> getRequest(String adminToken, int ID) {
+    public Request getRequest( int ID) {
        return null; //TODO implement me
     }
 
     @Override
-    public Pair<OperationResponse, List<Request>> getAllRequests(String adminToken) {
-        OperationResponse response = OperationResponse.AdminSuccess; //TODO check rights
-        return new Pair<>( response ,new ArrayList<>(requests.values()));
+    public List<Request> getAllRequests() {
+        return new ArrayList<>(requests.values());
     }
 
     /****************** The User Management Interface *********/
     @Override
-    public OperationResponse addAdmin(Admin a) {
+    public void addAdmin(Admin a) {
         try{
             adminLock.lock();
-            if(admins.containsKey(a.getID())){
-                return OperationResponse.InvalidArguments;
-            }
             if(!db_adminManagement.addAdmin(a, gen.generatePassword(), gen.generateToken())){
-                return OperationResponse.InvalidArguments;
+                throw new IllegalArgumentException("Database addition failed");
             }
             admins.put(a.getID(), a);
-            return OperationResponse.AdminSuccess;
         }
         finally {
             adminLock.unlock();
@@ -169,13 +166,14 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     @Override
-    public OperationResponse removeAdmin(int ID) {
+    public void removeAdmin(int ID) {
         try {
             adminLock.lock();
-            if (admins.get(ID) == null || (!db_generalUserManagement.removeUser(ID))) {
-                return OperationResponse.InvalidArguments;
-            } else {
-                return OperationResponse.AdminSuccess;
+            if (admins.get(ID) == null) {
+                throw new IllegalArgumentException("Admin not found");
+            }
+            if(!db_generalUserManagement.removeUser(ID)){
+                throw new IllegalArgumentException("Admin can not be removed for unknown reasons");
             }
         }
         finally {
@@ -184,19 +182,18 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     @Override
-    public OperationResponse logoutAdmin(int ID) {
+    public void logoutAdmin(int ID) {
         try{
             adminLock.lock();
             if(admins.get(ID) == null){
-                return OperationResponse.InvalidArguments;
+                throw new IllegalArgumentException("Admin not found");
             }
             else{
                 admins.get(ID).logout();
             }
             if(!(db_generalUserManagement.logoutUser(ID))){
-                return OperationResponse.InvalidArguments;
+                throw new IllegalArgumentException("Admin can not be logged out for unknown reasons");
             }
-            return OperationResponse.AdminSuccess;
         }
         finally {
             adminLock.unlock();
@@ -204,14 +201,16 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     @Override
-    public OperationResponse editAdmin(int ID, Admin a) {
+    public void editAdmin(int ID, Admin a) {
         try {
             adminLock.lock();
+            if(!admins.containsKey(ID)){
+                throw new IllegalArgumentException("Admin not found");
+            }
             if(!db_adminManagement.editAdmin(a)){
-                return OperationResponse.InvalidArguments;
+                throw new IllegalArgumentException("Admin can not be edited for unknown reasons");
             }
             admins.replace(ID, a);
-            return OperationResponse.AdminSuccess;
         }
         finally {
             adminLock.unlock();
@@ -220,254 +219,157 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
 
     @Override
-    public OperationResponse addAttendee(String adminToken, Attendee a) {
+    public void addAttendee( Attendee a) {
         try{
-            adminLock.lock();
             attendeeLock.lock();
-
-            if(!adminTokens.containsKey(adminToken)){
-                return OperationResponse.InvalidToken;
-            }
-
             if(!db_attendeeManagement.addAttendee(a, gen.generatePassword(), gen.generateToken())){
-                return OperationResponse.InvalidArguments;
+                throw new IllegalArgumentException("Attendee can not be edited for unknown reasons");
             }
-
-            return OperationResponse.AttendeeSuccess;
 
         }
         finally {
             attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public Pair<OperationResponse, List<Attendee>> getAllAttendees(String adminToken) {
+    public List<Attendee> getAllAttendees() {
         try{
-            adminLock.lock();
             attendeeLock.lock();
-            if(!adminTokens.containsKey(adminToken)){
-                return new Pair<>(OperationResponse.InvalidToken, null);
-            }
-            else{
-                return new Pair<>(OperationResponse.AdminSuccess, db_attendeeManagement.getAllAttendees());
-            }
+            return db_attendeeManagement.getAllAttendees();
         }
         finally {
             attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public Pair<OperationResponse, Attendee> getAttendeeData(String userToken) {
+    public Attendee getAttendeeData(int userID) {
         try{
-            adminLock.lock();
             attendeeLock.lock();
-            if(db_generalUserManagement.checkToken(userToken) != TokenResponse.ValidAttendee){
-                return new Pair<>(OperationResponse.InvalidToken, null);
-            }
-            else{
-                return new Pair<>(OperationResponse.AttendeeSuccess, db_attendeeManagement.getAttendeeData(userToken));
-            }
+            return db_attendeeManagement.getAttendeeData(userID);
         }
         finally {
             attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public OperationResponse removeAttendee(String adminToken, int userID) {
+    public void removeAttendee( int userID) {
         try{
-            adminLock.lock();
             attendeeLock.lock();
-            if(!adminTokens.containsKey(adminToken)){
-                return OperationResponse.InvalidToken;
+            if(!db_generalUserManagement.removeUser(userID)){
+                throw new IllegalArgumentException("Admin can not be removed for unknown reasons");
             }
-            else{
-                if(!db_generalUserManagement.removeUser(userID)){
-                    return OperationResponse.InvalidArguments;
-                }
-                else{
-                    return OperationResponse.AdminSuccess;
-                }
-            }
+
         }
         finally {
             attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public OperationResponse logoutAttendee(String adminToken, int userID) {
+    public void logoutAttendee( int userID) {
         try{
-            adminLock.lock();
             attendeeLock.lock();
-            if(!adminTokens.containsKey(adminToken)){
-                return OperationResponse.InvalidToken;
-            }
-            else{
-                if(!db_generalUserManagement.logoutUser(userID)){
-                    return OperationResponse.InvalidArguments;
-                }
-                else{
-                    return OperationResponse.AdminSuccess;
-                }
+            if(!db_generalUserManagement.logoutUser(userID)){
+                throw new IllegalArgumentException("Attendee can not be logged out for unknown reasons");
             }
         }
         finally {
             attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public OperationResponse editAttendee(String adminToken, int userID, Attendee attendee) {
+    public void editAttendee(Attendee attendee) {
         try{
-            adminLock.lock();
             attendeeLock.lock();
-            if(!adminTokens.containsKey(adminToken)){
-                return OperationResponse.InvalidToken;
-            }
-            else{
-                if(userID != attendee.getID() || !db_attendeeManagement.editAttendee(attendee)){
-                    return OperationResponse.InvalidArguments;
-                }
-                else{
-                    return OperationResponse.AdminSuccess;
-                }
+           if(!db_attendeeManagement.editAttendee(attendee)){
+               throw new IllegalArgumentException("Attendee could not be edited for unknown reasons");
             }
         }
         finally {
             attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public OperationResponse generateNewAttendeePassword(String adminToken, int userID) {
+    public void generateNewAttendeePassword( int userID) {
         try{
-            adminLock.lock();
             attendeeLock.lock();
-            if(!adminTokens.containsKey(adminToken)){
-                return OperationResponse.InvalidToken;
-            }
-            else{
-                if(!db_generalUserManagement.storeNewPassword(userID, gen.generatePassword())){
-                    return OperationResponse.InvalidArguments;
-                }
-                else{
-                    return OperationResponse.AdminSuccess;
-                }
+            if(!db_generalUserManagement.storeNewPassword(userID, gen.generatePassword())){
+                throw new IllegalArgumentException();
             }
         }
         finally {
             attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public OperationResponse generateNewAttendeeToken(String adminToken, int userID) {
+    public void generateNewAttendeeToken( int userID) {
         try{
-            adminLock.lock();
             attendeeLock.lock();
-            if(!adminTokens.containsKey(adminToken)){
-                return OperationResponse.InvalidToken;
-            }
-            else{
-                if(!db_generalUserManagement.storeNewToken(userID, gen.generateToken())){
-                    return OperationResponse.InvalidArguments;
-                }
-                else{
-                    return OperationResponse.AdminSuccess;
-                }
+            if(!db_generalUserManagement.storeNewToken(userID, gen.generateToken())){
+                throw new IllegalArgumentException();
             }
         }
         finally {
             attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public OperationResponse generateAllMissingAttendeePasswords(String adminToken) {
+    public void generateAllMissingAttendeePasswords(String adminToken) {
         try{
-            adminLock.lock();
             attendeeLock.lock();
-            if(!adminTokens.containsKey(adminToken)){
-                return OperationResponse.InvalidToken;
-            }
-            else{
-                boolean success = true;
-                for (Pair<User, String> p:db_generalUserManagement.getAllPasswords()) {
-                    if(p.second() == null){
-                        success = success && db_generalUserManagement.storeNewPassword(p.first().getID(), gen.generatePassword());
-                    }
+            boolean success = true;
+            for (Pair<User, String> p:db_generalUserManagement.getAllPasswords()) {
+                if(p.second() == null){
+                    success = success && db_generalUserManagement.storeNewPassword(p.first().getID(), gen.generatePassword());
                 }
+            }
 
-               if(success){
-                   return OperationResponse.AdminSuccess;
-               }
-               else{
-                    return OperationResponse.InvalidArguments;
-               }
+            if(!success){
+                throw new IllegalArgumentException();
             }
         }
         finally {
             attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public Pair<OperationResponse, Pair<User, String>> getAttendeePassword(String adminToken, int userID) {
+    public Pair<User, String> getAttendeePassword( int userID) {
         try{
-            adminLock.lock();
             attendeeLock.lock();
-            if(!adminTokens.containsKey(adminToken)){
-                return new Pair<>(OperationResponse.InvalidToken, null);
-            }
-            else{
-                for (Pair<User, String> p:db_generalUserManagement.getAllPasswords()) {
-                    if(p.first().getID() == userID){
-                        return new Pair<>(OperationResponse.AdminSuccess, p);
-                    }
+            for (Pair<User, String> p:db_generalUserManagement.getAllPasswords()) {
+                if(p.first().getID() == userID){
+                    return  p;
                 }
-                return new Pair<>(OperationResponse.InvalidToken, null);
             }
+            throw new IllegalArgumentException();
         }
         finally {
             attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public Pair<OperationResponse, List<Pair<User, String>>> getAllAttendeePasswords(String adminToken) {
+    public List<Pair<User, String>> getAllAttendeePasswords() {
         try{
-            adminLock.lock();
             attendeeLock.lock();
-            if(!adminTokens.containsKey(adminToken)){
-                return new Pair<>(OperationResponse.InvalidToken, null);
-            }
-            else{
-                return new Pair<>(OperationResponse.AdminSuccess, db_generalUserManagement.getAllPasswords());
-            }
+            return db_generalUserManagement.getAllPasswords();
         }
         finally {
             attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
     public boolean logoutAllAttendees() {
         try{
-            adminLock.lock();
             attendeeLock.lock();
             boolean success = true;
             for (Attendee a : db_attendeeManagement.getAllAttendees()) {
@@ -478,37 +380,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
         finally {
             attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
-    @Override
-    public OperationResponse logoutAttendees(String adminToken) {
-        try{
-            adminLock.lock();
-            attendeeLock.lock();
-            boolean success = true;
-            if(!adminTokens.containsKey(adminToken)){
-                return OperationResponse.InvalidToken;
-            }
-            else{
-                for (Attendee a : db_attendeeManagement.getAllAttendees()) {
-                    a.logout();
-                    success = success && db_generalUserManagement.logoutUser(a.getID());
-                }
-            }
-            if(success){
-                return OperationResponse.AdminSuccess;
-            }
-            else{
-                return OperationResponse.InvalidArguments;
-            }
-        }
-        finally {
-            attendeeLock.unlock();
-            adminLock.unlock();
-        }
-    }
 
     /**
      * A function that the communication system can use to check if a login is valid
@@ -538,6 +412,39 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     @Override
+    public int tokenToID(String token) {//todo check if keeping track of the tokens and ids is more performant
+        try {
+            adminLock.lock();
+            attendeeLock.lock();
+            return db_generalUserManagement.tokenToId(token);
+        }
+        finally {
+            attendeeLock.unlock();
+            adminLock.unlock();
+        }
+    }
+
+    @Override
+    public TokenResponse checkToken(String token) {
+        try{
+            adminLock.lock();
+            if(adminTokens.containsKey(token)){
+                return TokenResponse.ValidAdmin
+            }
+            else try{
+                attendeeLock.lock();
+                return db_generalUserManagement.checkToken(token);
+            }
+            finally {
+                attendeeLock.unlock();
+            }
+        }
+        finally {
+            adminLock.unlock();
+        }
+    }
+
+    @Override
     public  String getFreeUserName(String name){
         try{
             adminLock.lock();
@@ -560,157 +467,116 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     /****************** The Voting Management Interface *********/
     @Override
-    public Pair<OperationResponse, Voting> getActiveVoting(String token) {
-        try{
-            adminLock.lock();
-            attendeeLock.lock();
-            if(db_generalUserManagement.checkToken(token)==TokenResponse.ValidAdmin){
-                return new Pair<>(OperationResponse.AdminSuccess, activeVoting);
-            }
-            else if(db_generalUserManagement.checkToken(token)==TokenResponse.ValidAttendee){
-                return new Pair<>(OperationResponse.AttendeeSuccess, activeVoting);
-            }
-            else {
-                return new Pair<>(OperationResponse.InvalidToken, null);
-            }
-        }
-        finally {
-            attendeeLock.unlock();
-            adminLock.unlock();
-        }
-    }
-
-    @Override
-    public Pair<OperationResponse, Voting> getVoting(String token, int ID) {
-        try{
-            adminLock.lock();
-            attendeeLock.lock();
+    public Voting getActiveVoting() {
+        try {
             votingLock.lock();
-            if(votings.get(ID) == null){
-                return new Pair<>(OperationResponse.InvalidArguments, null);
-            }
-            if(db_generalUserManagement.checkToken(token) == TokenResponse.ValidAdmin){
-                return new Pair<>(OperationResponse.AdminSuccess, votings.get(ID));
-            }
-            if(db_generalUserManagement.checkToken(token) == TokenResponse.ValidAttendee){
-                return new Pair<>(OperationResponse.AttendeeSuccess, votings.get(ID));
-            }
-            return new Pair<>(OperationResponse.InvalidToken, null);
+            return activeVoting;
         }
         finally {
             votingLock.unlock();
-            attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public Pair<OperationResponse, List<Voting>> getVotings(String token) {
+    public Voting getVoting( int ID) {
         try{
-            adminLock.lock();
-            attendeeLock.lock();
             votingLock.lock();
-            if(db_generalUserManagement.checkToken(token) == TokenResponse.ValidAdmin){
-                return new Pair<>(OperationResponse.AdminSuccess, new ArrayList<>(votings.values()));
-            }
-            if(db_generalUserManagement.checkToken(token) == TokenResponse.ValidAttendee){
-                return new Pair<>(OperationResponse.AttendeeSuccess, new ArrayList<>(votings.values()));
-            }
-            return new Pair<>(OperationResponse.InvalidToken, null);
+            return votings.get(ID);
         }
         finally {
             votingLock.unlock();
-            attendeeLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public OperationResponse addVoting(String token, Voting voting) {
+    public List<Voting> getVotings() {
         try{
-            adminLock.lock();
             votingLock.lock();
+            return new ArrayList<>(votings.values());
+        }
+        finally {
+            votingLock.unlock();
+        }
+    }
 
-            if(!adminTokens.containsKey(token)){
-                return OperationResponse.InvalidToken;
-            }
+    @Override
+    public void addVoting( Voting voting) {
+        try{
+            votingLock.lock();
             votings.put(voting.getID(), voting);
             voting.register(db_votingManagement);
-            return OperationResponse.AdminSuccess;
         }
         finally {
             votingLock.unlock();
-            adminLock.unlock();
         }
     }
 
     @Override
-    public OperationResponse removeVoting(String token, Voting voting) {
+    public void removeVoting( Voting voting) {
         try{
-            adminLock.lock();
             votingLock.lock();
-
-            if(!adminTokens.containsKey(token)){
-                return OperationResponse.InvalidToken;
-            }
             votings.remove(voting.getID(), voting);
-            return OperationResponse.AdminSuccess;
+
         }
         finally {
             votingLock.unlock();
-            adminLock.unlock();
         }
     }
 
     /****************** The Agenda Management Interface *********/
 
     @Override
-    public Pair<OperationResponse, Agenda> getAgenda(String token) {
-        try {
-            adminLock.lock();
-            attendeeLock.lock();
-            TokenResponse tokentype = db_generalUserManagement.checkToken(token);
-            if(tokentype == TokenResponse.ValidAdmin){
-                return new Pair<>(OperationResponse.AdminSuccess, agenda);
-            }
-            else if(tokentype == TokenResponse.ValidAttendee){
-                return new Pair<>(OperationResponse.AttendeeSuccess, agenda);
-            }
-            else{
-                return new Pair<>(OperationResponse.InvalidToken, null);
-            }
-        }
-        finally {
-            attendeeLock.unlock();
-            adminLock.unlock();
-        }
+    public Agenda getAgenda() {
+        return agenda;
     }
 
 
     /****************** The Document Management Interface *********/
 
     @Override
-    public OperationResponse addDocument(String adminToken, String name, String content) {
+    public void addDocument( String name, String content) {
+        return;
+    }
+
+    @Override
+    public void deleteDocument( String name) {
+        return;
+    }
+
+    @Override
+    public void updateDocument( String name, String content) {
+        return;
+    }
+
+    @Override
+    public Document getDocument( String name) {
         return null;
     }
 
     @Override
-    public OperationResponse deleteDocument(String adminToken, String name) {
+    public List<Document> getAllDocuments() {
         return null;
     }
 
     @Override
-    public OperationResponse updateDocument(String adminToken, String name, String content) {
-        return null;
-    }
-
-    @Override
-    public Pair<OperationResponse, Document> getDocument(String token, String name) {
-        return null;
-    }
-
-    @Override
-    public Pair<OperationResponse, List<Document>> getAllDocuments(String token) {
-        return null;
+    public boolean update(Voting v) {
+        try {
+            votingLock.lock();
+            if (v.getStatus() == VotingStatus.Closed) {
+                activeVoting = null;
+            }
+            if(v.getStatus() == VotingStatus.Running){
+                if(activeVoting != null){
+                    throw new IllegalStateException("trying to start a vote without closing the previous vote");
+                }
+                else{
+                    activeVoting = v;
+                }
+            }
+            return true;
+        }
+        finally {
+            votingLock.unlock();
+        }
     }
 }

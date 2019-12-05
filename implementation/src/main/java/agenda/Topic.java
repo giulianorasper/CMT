@@ -43,13 +43,13 @@ public class Topic implements Requestable {
         try {
             lock.getWriteAccess();
             this.name = name;
-            parent.notifyObservers();
         }
         catch (InterruptedException e){
             //do nothing
         }
         finally {
             lock.finishWrite();
+            parent.notifyObservers();
         }
     }
 

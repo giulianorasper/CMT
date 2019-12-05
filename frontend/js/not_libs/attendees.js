@@ -3,9 +3,11 @@ import CommunicationManager from "../../communication/CommunicationManager.js";
 
 $(document).ready( function() {
 
+    var attendeeContainer =  $('#attendeeListID');
+
     function success(packet){
         if(packet.result === "Valid"){
-            printAttendeeList(packet.attendees, $('#attendeeListID'));
+            printAttendeeList(packet.attendees, attendeeContainer);
         }
     }
 

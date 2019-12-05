@@ -32,6 +32,7 @@ public class DB_Controller {
             exit(1);
         }
         this.url = "jdbc:sqlite:" + url;
+        init();
     }
 
     public void init(){ //TODO: Let the controllers implement this method
@@ -51,9 +52,9 @@ public class DB_Controller {
         String requestTable = "CREATE TABLE IF NOT EXISTS requests (\n"
                 + "     requestID INTEGER PRIMARY KEY,\n"
                 + "     userID INTEGER NOT NULL,\n"
-                + "     requestType INTEGER NOT NULL,\n"
+                + "     requestType INTEGER NOT NULL,\n"//0 for Change, 1 for Speech//TODO: Maybe make this a bool
                 + "     requestableName TEXT NOT NULL,\n"
-                + "     timestamps INTEGER NOT NULL,\n" //TODO: Change size to bigint
+                + "     timestamps BIGINT NOT NULL,\n" //TODO: Change size to bigint
                 + "     content TEXT,\n"
                 + "     approved BOOL\n"
                 + ") WITHOUT ROWID;";

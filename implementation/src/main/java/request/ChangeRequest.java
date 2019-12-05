@@ -5,6 +5,17 @@ import user.User;
 
 public class ChangeRequest extends Request {
 
+    public boolean isApproved() {
+        try {
+            lock.getReadAccess();
+            return this.approved;
+        } catch (InterruptedException e) {
+            return this.approved;//TODO: Well, ...
+        } finally {
+            lock.finishRead();
+        }
+    }
+
     @Expose
     private boolean approved;
     @Expose

@@ -44,13 +44,13 @@ public abstract class DatabaseTests {
 
     @After
     public void cleanup() {
-        path = Paths.get("db/database.db").toUri();
+        path = Paths.get("testdb/database.db").toUri();
         new File(path).delete();
     }
 
     @Test
     public void initializeDatabase() {
-        DB_Controller controller = new DB_Controller("db/database.db");
+        DB_Controller controller = new DB_Controller("testdb/database.db");
         controller.init();
     }
 

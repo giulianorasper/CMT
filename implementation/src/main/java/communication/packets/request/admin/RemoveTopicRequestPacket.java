@@ -21,7 +21,7 @@ public class RemoveTopicRequestPacket extends AuthenticatedRequestPacket {
      * @param position the position of the topic as string (e.g. "1.4.3")
      */
     public RemoveTopicRequestPacket(String position) {
-        super(PacketType.REORDER_TOPIC_REQUEST);
+        super(PacketType.REMOVE_TOPIC_REQUEST);
         this.position = position;
     }
 

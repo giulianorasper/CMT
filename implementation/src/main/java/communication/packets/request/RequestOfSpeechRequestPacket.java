@@ -11,7 +11,7 @@ public class RequestOfSpeechRequestPacket extends AuthenticatedRequestPacket {
     private String reference;
 
     public RequestOfSpeechRequestPacket(boolean refersToTopic, String reference) {
-        super(PacketType.REQUEST_OF_CHANGE_REQUEST);
+        super(PacketType.REQUEST_OF_SPEECH_REQUEST);
         this.refersToTopic = refersToTopic;
         this.reference = reference;
     }

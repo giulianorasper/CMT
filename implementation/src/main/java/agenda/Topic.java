@@ -34,8 +34,8 @@ public class Topic implements Requestable {
             //do nothing
         }
         finally {
-            parent.notifyObservers();
             lock.finishWrite();
+            parent.notifyObservers();
         }
     }
 

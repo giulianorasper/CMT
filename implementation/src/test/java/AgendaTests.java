@@ -70,9 +70,6 @@ public class AgendaTests {
         Agenda ag = new Agenda(tops);
 
         List<String> preOrder = ag.preOrder();
-        for (String s : preOrder) {
-            System.out.println(s);
-        }
 
         assertNotNull(ag);
 

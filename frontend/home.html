@@ -24,11 +24,7 @@
     <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/slicknav.css">
     <link rel="stylesheet" href="css/style.css">
-    <!-- <link rel="stylesheet" href="css/responsive.css"> -->
-
-    <!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
-    <!--<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
-    <!--<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>-->
+    
 
 </head>
 
@@ -95,47 +91,15 @@
                     <div class="single_prising">
                         <div class="prising_header">
                             <h3>TOP (Agenda Items)</h3>
-                        </div>
 
-                        <div class="middle_content">
-                            <div class="list" >
-                                <ul>
-                                    <li >Detail One</li>
-                                    <div class="list" >
-                                            <ul>
-                                             <li style="font-size: 20px;">Detail two</li>
-                                                <div class="list">
-                                                    <ul>
-                                                        <li style="font-size: 14px;">sub of sub</li>
-
-                                                    </ul>
-
-                                                </div>
-
-                                            <li style="font-size: 20px;">Detail three</li>
-                                            </ul>
-                                    </div>
-                                    <li>Detail two</li>
-                                    <li>Detail three</li>
-                                    <li>Detail four</li>
-                                    <li>Detail five</li>
-                                </ul>
-                            </div>
                         </div>
 
 
                         <!--Testing-->
                         <div class="middle_content">
                             <div class="list" >
-                                <ul id="parentid">
-                                    <!--<li >Detail One</li>-->
-
-                                            <!--<ul id="childid">-->
-                                             <!--<li style="font-size: 20px;">Detail two</li>-->
-
-                                            <!--<li style="font-size: 20px;">Detail three</li>-->
-                                            <!--<ul>-->
-                                            <!--</ul>-->
+                                <ul id="agendaContainer">
+                                   
                                 </ul>
                             </div>
                         </div>
@@ -148,6 +112,10 @@
 </div>
 
 
+    <!--- IMPORTANT: find out why the other bootstrap imports are broken when trying to load glyphicons -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+ 
     <!-- JS here -->
     <script src="js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="js/vendor/jquery-1.12.4.min.js"></script>
@@ -177,102 +145,10 @@
 
     <script src="js/main.js"></script>
 
-    <script type="text/javascript" src="data.json"></script>
-
-
-<script type="module">
-    import CommunicationManager from "./communication/CommunicationManager.js";
-    import GetAgendaRequestPacket from "./communication/packets/GetAgendaRequestPacket.js";
-
-    $( document ).ready(function() {
-    var link = document.createElement('a');
-    link.href = "#test-form";
-    document.body.appendChild(link);
-    link.class = "login popup-with-form";
-    link.click();
-
-    console.log( "ready!" );
-    console.log(link);
-
-    var newtesting = JSON.parse(JSON.stringify(data));
+    <script type="module" src="js/not_libs/agenda.js"></script>
 
 
 
-    function generateList(data, $e) {
-    // create an inner item
-        var styleVar = 26;
-        function createInner(obj, $target) {
-            var li = $('<li style="font-size: '+styleVar+'px;">').appendTo($target);
-            li.text(obj.name);
-            if (obj.subTopics.topics != undefined && obj.subTopics.topics.length > 0) {
-                var innerList = $('<div class="list"><ul>').appendTo(li);
-                for (var i = 0; i < obj.subTopics.topics.length; i++) {
-                    var child = obj.subTopics.topics[i];
-                    styleVar = styleVar - 4
-                    createInner(child, innerList);
-		    styleVar = styleVar + 4
-                };
-            }
-        }
-        for (var i = 0; i < data.topics.length; i++) {
-            createInner(data.topics[i], $e);
-        }
-    }
-
-        function success(packet) {
-            if(packet.result === "Valid") {
-                generateList(packet.agenda, $('#parentid'));
-            }
-        }
-
-        function fail() {
-            console.log("This method is called if something went wrong during the general communication.");
-        }
-
-        const packet = new GetAgendaRequestPacket();
-
-        // Send the request to the server
-        CommunicationManager.send(packet, success, fail);
-
-    //generateList(data, $('#parentid'));
-
-
-
-
-
-
-
-
-
-
-    console.log(data.topics[0].name);
-
-    console.log(data.topics[0].name);
-    console.log(data.topics[0].subTopics);
-    console.log(data.topics[1].subTopics.topics[0]);
-    console.log(data.topics[1].subTopics.topics[0].name);
-
-    console.log(data.topics[1].name);
-    console.log(data.topics[1].subTopics);
-    console.log(data.topics[1].subTopics.topics[0]);
-    console.log(data.topics[1].subTopics.topics[0].name);
-    console.log(data.topics.length);
-
-    /*<!--for(i in data.topics){-->
-        <!--console.log(data.topics[i].name);-->
-        /*$("#parentid").append("<li >"+data.topics[i].name+"</li>");
-
-        <!--for(j in data.topics[i].subTopics.topics){-->
-            /*<!--$("#parentid").append($("#childid").append("<div class='list'><ul><li style='font-size: 20px;'>"+data.topics[i].subTopics.topics[j].name+"</li><ul></div>"));-->
-            <!--console.log(data.topics[i].subTopics.topics[j].name);-->
-
-        <!--}-->
-    <!--}-->*/
-
-});
-
-
-</script>
 
 
 

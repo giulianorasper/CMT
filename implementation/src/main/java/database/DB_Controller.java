@@ -12,10 +12,10 @@ import static java.lang.System.exit;
  * Create the database for a conference and communicate with it.
  */
 @SuppressWarnings("checkstyle:typename")
-public class DB_Controller {
+public abstract class DB_Controller {
 
-    public Connection connection;
-    public String url;
+    protected Connection connection;
+    protected String url;
 
     public DB_Controller(String url) {
         URI path = Paths.get(url).toUri();
@@ -28,65 +28,20 @@ public class DB_Controller {
                 file.createNewFile();
             }
         } catch (IOException e) {
+            System.err.println("Encountered an exception while trying to find the database." +
+                    "Please make sure the path is correct.");
             e.printStackTrace();
             exit(1);
         }
         this.url = "jdbc:sqlite:" + url;
         init();
+
     }
 
-    public void init(){ //TODO: Let the controllers implement this method
-        String userTable = "CREATE TABLE IF NOT EXISTS users (\n"
-                + "     userID INTEGER PRIMARY KEY,\n"
-                + "     fullname TEXT NOT NULL,\n"
-                + "     username TEXT NOT NULL UNIQUE,\n"
-                + "     password TEXT UNIQUE,\n"
-                + "     token TEXT UNIQUE,\n"
-                + "     email TEXT NOT NULL UNIQUE,\n"
-                + "     groups TEXT NOT NULL,\n"
-                + "     function TEXT NOT NULL,\n"
-                + "     residence TEXT NOT NULL UNIQUE,\n"
-                + "     isAdmin BOOL NOT NULL,\n"
-                + "     present BOOL NOT NULL\n"
-                + ") WITHOUT ROWID;";
-        String requestTable = "CREATE TABLE IF NOT EXISTS requests (\n"
-                + "     requestID INTEGER PRIMARY KEY,\n"
-                + "     userID INTEGER NOT NULL,\n"
-                + "     requestType INTEGER NOT NULL,\n"//0 for Change, 1 for Speech//TODO: Maybe make this a bool
-                + "     requestableName TEXT NOT NULL,\n"
-                + "     timestamps BIGINT NOT NULL,\n" //TODO: Change size to bigint
-                + "     content TEXT,\n"
-                + "     approved BOOL\n"
-                + ") WITHOUT ROWID;";
-        String agendaTable = "CREATE TABLE IF NOT EXISTS agenda (\n"
-                + "     topicPosition TEXT NOT NULL,\n"
-                + "     topicName TEXT NOT NULL\n"
-                + ");";
-        String documentTable = "CREATE TABLE IF NOT EXISTS documents (\n"
-                + "     path TEXT NOT NULL,\n"
-                + "     documentName TEXT NOT NULL UNIQUE,\n"
-                + "     revision INTEGER NOT NULL\n"
-                + ");";
-        String votingsTable = "CREATE TABLE IF NOT EXISTS votings (\n"
-                + "     votingID INTEGER PRIMARY KEY, \n"
-                + "     isNamed BOOL, \n"
-                + "     numberOfOptions, \n"
-                + "     question TEXT NOT NULL, \n"
-                + "     tableName TEXT NOT NULL UNIQUE \n"
-                + ") WITHOUT ROWID;";
-
-        openConnection();
-        try {
-            connection.createStatement().execute(userTable);
-            connection.createStatement().execute(requestTable);
-            connection.createStatement().execute(agendaTable);
-            connection.createStatement().execute(documentTable);
-            connection.createStatement().execute(votingsTable);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        closeConnection();
-    };
+    /**
+     * Initializes the neccessary tables for the database
+     */
+    protected abstract void init();
 
     public void openConnection() {
         try {
@@ -96,11 +51,11 @@ public class DB_Controller {
             connection = DriverManager.getConnection(this.url);
             System.out.println("Connection to SQLite has been established.");
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            exit(e.getErrorCode());//TODO: ???
+        } catch (SQLException ex) {
+            System.err.println("An exception occured in the database connection.");
+            System.err.println(ex.getMessage());
         }
-    };
+    }
 
     public void closeConnection() {
         try {
@@ -108,7 +63,8 @@ public class DB_Controller {
                 connection.close();
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("An exception occured in the database connection.");
+            System.err.println(ex.getMessage());
         }
-    };
+    }
 }

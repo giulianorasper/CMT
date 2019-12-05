@@ -12,6 +12,7 @@ import request.ChangeRequest;
 import request.Requestable;
 import request.SpeechRequest;
 import user.Attendee;
+import user.User;
 import utils.OperationResponse;
 import utils.Pair;
 
@@ -38,25 +39,20 @@ public class RequestOfPacketWrapper extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-        Requestable requestable;
-        if(refersToTopic) {
-            Pair<OperationResponse, Agenda> result = conference.getAgenda(getToken());
-            if(!isPermitted(webSocket, false, result.first())) return;
-            requestable = result.second().getTopicFromPreorderString(reference);
-        } else {
-            Pair<OperationResponse, Document> result = conference.getDocument(getToken(), reference);
-            if(!isPermitted(webSocket, false, result.first())) return;
-            requestable = result.second();
-        }
-        Pair<OperationResponse, Attendee> result = conference.getAttendeeData(getToken());
-        if(!isPermitted(webSocket, false, result.first())) return;
-        OperationResponse response;
-        if(isSpeechRequest) {
-            response = conference.addRequest(getToken(), new SpeechRequest(result.second(), requestable, System.currentTimeMillis()));
-        } else {
-            response = conference.addRequest(getToken(), new ChangeRequest(result.second(), requestable, System.currentTimeMillis(), request));
-        }
-        if(isPermitted(webSocket, false, response)) {
+        if(isPermitted(conference, webSocket, false)) {
+            Requestable requestable;
+            if(refersToTopic) {
+                requestable = conference.getAgenda().getTopicFromPreorderString(reference);
+            } else {
+                requestable = conference.getDocument(reference);
+            }
+            User requester = conference.getAttendeeData(conference.tokenToID(getToken()));
+
+            if(isSpeechRequest) {
+                conference.addRequest(new SpeechRequest(requester, requestable, System.currentTimeMillis() / 1000));
+            } else {
+                conference.addRequest(new ChangeRequest(requester, requestable, System.currentTimeMillis() / 1000, request));
+            }
             new ValidResponsePacket().send(webSocket);
         }
     }

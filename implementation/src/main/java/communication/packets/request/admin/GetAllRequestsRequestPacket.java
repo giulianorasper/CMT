@@ -19,9 +19,9 @@ public class GetAllRequestsRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-        Pair<OperationResponse, List<Request>> result = conference.getAllRequests(getToken());
-        if(isPermitted(webSocket, true, result.first())) {
-            new GetAllRequestsResponsePacket(result.second()).send(webSocket);
+        if(isPermitted(conference, webSocket, true)) {
+            List<Request> requests = conference.getAllRequests();
+            new GetAllRequestsResponsePacket(requests).send(webSocket);
         }
     }
 }

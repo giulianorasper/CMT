@@ -19,6 +19,41 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
     }
 
     @Override
+    protected void init() {
+        String userTable = "CREATE TABLE IF NOT EXISTS users (\n"
+                + "     userID INTEGER PRIMARY KEY,\n"
+                + "     fullname TEXT NOT NULL,\n"
+                + "     username TEXT NOT NULL UNIQUE,\n"
+                + "     password TEXT UNIQUE,\n"
+                + "     token TEXT UNIQUE,\n"
+                + "     email TEXT NOT NULL UNIQUE,\n"
+                + "     groups TEXT NOT NULL,\n"
+                + "     function TEXT NOT NULL,\n"
+                + "     residence TEXT NOT NULL UNIQUE,\n"
+                + "     isAdmin BOOL NOT NULL,\n"
+                + "     present BOOL NOT NULL\n"
+                + ") WITHOUT ROWID;";
+        String requestTable = "CREATE TABLE IF NOT EXISTS requests (\n"
+                + "     requestID INTEGER PRIMARY KEY,\n"
+                + "     userID INTEGER NOT NULL,\n"
+                + "     requestType INTEGER NOT NULL,\n"//0 for Change, 1 for Speech//TODO: Make this enum
+                + "     requestableName TEXT NOT NULL,\n"
+                + "     timestamps BIGINT NOT NULL,\n" //TODO: Change size to bigint
+                + "     content TEXT,\n"
+                + "     approved BOOL\n"
+                + ") WITHOUT ROWID;";
+        openConnection();
+        try {
+            connection.createStatement().execute(userTable);
+            connection.createStatement().execute(requestTable);
+        } catch (SQLException e) {
+            System.err.println("Database initialization failed!");
+            System.err.println(e.getMessage());
+        }
+        closeConnection();
+    }
+
+    @Override
     public boolean addRequest(Request req) {
         this.openConnection();
         String sqlstatement = "INSERT INTO requests(requestID, userID, requestType, requestableName, timestamps," +
@@ -82,6 +117,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
             user.setInt(1, userID);
             ResultSet att  = user.executeQuery();
             User attendee = new Attendee(att.getString("fullname"),
+                   att.getString("email"),
                    att.getString("username"),
                    att.getString("groups"),
                    att.getString("residence"),
@@ -145,6 +181,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 user.setInt(1, userID);
                 ResultSet att  = user.executeQuery();
                 User attendee = new Attendee(att.getString("fullname"),
+                        att.getString("email"),
                         att.getString("username"),
                         att.getString("groups"),
                         att.getString("residence"),

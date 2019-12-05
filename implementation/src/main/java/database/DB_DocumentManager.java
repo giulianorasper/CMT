@@ -19,6 +19,23 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
     }
 
     @Override
+    protected void init() {
+        String documentTable = "CREATE TABLE IF NOT EXISTS documents (\n"
+                + "     path TEXT NOT NULL,\n"
+                + "     documentName TEXT NOT NULL UNIQUE,\n"
+                + "     revision INTEGER NOT NULL\n"
+                + ");";
+        openConnection();
+        try {
+            connection.createStatement().execute(documentTable);
+        } catch (SQLException e) {
+            System.err.println("Database initialization failed!");
+            System.err.println(e.getMessage());
+        }
+        closeConnection();
+    }
+
+    @Override
     public boolean addDocument(Document document) {
         this.openConnection();
         String sqlstatement = "INSERT INTO documents(path, documentName, revision)"

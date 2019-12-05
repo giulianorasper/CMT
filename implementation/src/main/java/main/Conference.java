@@ -10,15 +10,7 @@ import document.DocumentManagement;
 import request.DB_RequestManagement;
 import request.Request;
 import request.RequestManagement;
-import user.Admin;
-import user.Attendee;
-import user.DB_AdminManagement;
-import user.DB_AttendeeManagement;
-import user.DB_GeneralUserManagement;
-import user.LoginResponse;
-import user.TokenResponse;
-import user.User;
-import user.UserManagement;
+import user.*;
 import utils.Generator;
 import utils.Generator_Imp;
 import utils.Log;
@@ -113,10 +105,8 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private HashMap<String, Boolean> adminTokens; // a map backed Set
 
     //Database System //TODO add urls
-    private DB_AdminManagement db_adminManagement = new DB_AdminManager("");
-    private DB_AttendeeManagement db_attendeeManagement = new DB_AttendeeManager("");
     private DB_DocumentManagement db_documentManagement = new DB_DocumentManager("");
-    private DB_GeneralUserManagement db_generalUserManagement = new DB_GeneralUserManager("");
+    private DB_UserManagement db_userManagement = new DB_UserManager("");
     private DB_RequestManagement db_requestManagement = new DB_RequestManager("");
     private DB_VotingManager db_votingManagement = new DB_VotingManager("");
 
@@ -177,7 +167,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void addAdmin(Admin a) {
         try{
             adminLock.lock();
-            if(!db_adminManagement.addAdmin(a, gen.generatePassword(), gen.generateToken())){
+            if(!db_userManagement.addAdmin(a, gen.generatePassword(), gen.generateToken())){
                 throw new IllegalArgumentException("Database addition failed");
             }
             admins.put(a.getID(), a);
@@ -216,7 +206,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             if (admins.get(ID) == null) {
                 throw new IllegalArgumentException("Admin not found");
             }
-            if(!db_generalUserManagement.removeUser(ID)){
+            if(!db_userManagement.removeUser(ID)){
                 throw new IllegalArgumentException("Admin can not be removed for unknown reasons");
             }
         }
@@ -235,7 +225,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             else{
                 admins.get(ID).logout();
             }
-            if(!(db_generalUserManagement.logoutUser(ID))){
+            if(!(db_userManagement.logoutUser(ID))){
                 throw new IllegalArgumentException("Admin can not be logged out for unknown reasons");
             }
         }
@@ -251,7 +241,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             if(!admins.containsKey(ID)){
                 throw new IllegalArgumentException("Admin not found");
             }
-            if(!db_adminManagement.editAdmin(a)){
+            if(!db_userManagement.editAdmin(a)){
                 throw new IllegalArgumentException("Admin can not be edited for unknown reasons");
             }
             admins.replace(ID, a);
@@ -266,7 +256,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void addAttendee( Attendee a) {
         try{
             attendeeLock.lock();
-            if(!db_attendeeManagement.addAttendee(a, gen.generatePassword(), gen.generateToken())){
+            if(!db_userManagement.addAttendee(a, gen.generatePassword(), gen.generateToken())){
                 throw new IllegalArgumentException("Attendee can not be edited for unknown reasons");
             }
 
@@ -280,7 +270,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public List<Attendee> getAllAttendees() {
         try{
             attendeeLock.lock();
-            return db_attendeeManagement.getAllAttendees();
+            return db_userManagement.getAllAttendees();
         }
         finally {
             attendeeLock.unlock();
@@ -291,7 +281,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public Attendee getAttendeeData(int userID) {
         try{
             attendeeLock.lock();
-            return db_attendeeManagement.getAttendeeData(userID);
+            return db_userManagement.getAttendeeData(userID);
         }
         finally {
             attendeeLock.unlock();
@@ -302,7 +292,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void removeAttendee( int userID) {
         try{
             attendeeLock.lock();
-            if(!db_generalUserManagement.removeUser(userID)){
+            if(!db_userManagement.removeUser(userID)){
                 throw new IllegalArgumentException("Admin can not be removed for unknown reasons");
             }
 
@@ -316,7 +306,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void logoutAttendee( int userID) {
         try{
             attendeeLock.lock();
-            if(!db_generalUserManagement.logoutUser(userID)){
+            if(!db_userManagement.logoutUser(userID)){
                 throw new IllegalArgumentException("Attendee can not be logged out for unknown reasons");
             }
         }
@@ -329,7 +319,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void editAttendee(Attendee attendee) {
         try{
             attendeeLock.lock();
-           if(!db_attendeeManagement.editAttendee(attendee)){
+           if(!db_userManagement.editAttendee(attendee)){
                throw new IllegalArgumentException("Attendee could not be edited for unknown reasons");
             }
         }
@@ -342,7 +332,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void generateNewAttendeePassword( int userID) {
         try{
             attendeeLock.lock();
-            if(!db_generalUserManagement.storeNewPassword(userID, gen.generatePassword())){
+            if(!db_userManagement.storeNewPassword(userID, gen.generatePassword())){
                 throw new IllegalArgumentException();
             }
         }
@@ -355,7 +345,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void generateNewAttendeeToken( int userID) {
         try{
             attendeeLock.lock();
-            if(!db_generalUserManagement.storeNewToken(userID, gen.generateToken())){
+            if(!db_userManagement.storeNewToken(userID, gen.generateToken())){
                 throw new IllegalArgumentException();
             }
         }
@@ -369,9 +359,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             attendeeLock.lock();
             boolean success = true;
-            for (Pair<User, String> p:db_generalUserManagement.getAllPasswords()) {
+            for (Pair<User, String> p:db_userManagement.getAllPasswords()) {
                 if(p.second() == null){
-                    success = success && db_generalUserManagement.storeNewPassword(p.first().getID(), gen.generatePassword());
+                    success = success && db_userManagement.storeNewPassword(p.first().getID(), gen.generatePassword());
                 }
             }
 
@@ -388,7 +378,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public Pair<User, String> getAttendeePassword( int userID) {
         try{
             attendeeLock.lock();
-            for (Pair<User, String> p:db_generalUserManagement.getAllPasswords()) {
+            for (Pair<User, String> p:db_userManagement.getAllPasswords()) {
                 if(p.first().getID() == userID){
                     return  p;
                 }
@@ -404,7 +394,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public List<Pair<User, String>> getAllAttendeePasswords() {
         try{
             attendeeLock.lock();
-            return db_generalUserManagement.getAllPasswords();
+            return db_userManagement.getAllPasswords();
         }
         finally {
             attendeeLock.unlock();
@@ -416,9 +406,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             attendeeLock.lock();
             boolean success = true;
-            for (Attendee a : db_attendeeManagement.getAllAttendees()) {
+            for (Attendee a : db_userManagement.getAllAttendees()) {
                 a.logout();
-                success = success && db_generalUserManagement.logoutUser(a.getID());
+                success = success && db_userManagement.logoutUser(a.getID());
             }
             return success;
         }
@@ -441,7 +431,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             attendeeLock.lock();
-            Pair<LoginResponse, String> response = db_generalUserManagement.checkLogin(name, password);
+            Pair<LoginResponse, String> response = db_userManagement.checkLogin(name, password);
             if(response.first() != LoginResponse.Valid){
                 return new Pair<>(response.first(), null);
             }
@@ -460,7 +450,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try {
             adminLock.lock();
             attendeeLock.lock();
-            return db_generalUserManagement.tokenToId(token);
+            return db_userManagement.tokenToID(token);
         }
         finally {
             attendeeLock.unlock();
@@ -477,7 +467,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             }
             else try{
                 attendeeLock.lock();
-                return db_generalUserManagement.checkToken(token);
+                return db_userManagement.checkToken(token);
             }
             finally {
                 attendeeLock.unlock();
@@ -496,7 +486,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             name = name.replaceAll("[^A-Za-z0-9]", ".");
             String nameAux = name;
             int i =1;
-            while (db_generalUserManagement.userNameAlreadyUsed(nameAux)){
+            while (db_userManagement.userNameAlreadyUsed(nameAux)){
                 nameAux = name + i;
                 i++;
             }

@@ -6,9 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import request.DB_RequestManagement;
-import user.DB_AdminManagement;
-import user.DB_AttendeeManagement;
-import user.DB_GeneralUserManagement;
+import user.DB_UserManagement;
 import user.GeneralUserManagement;
 import voting.DB_VotingManagement;
 
@@ -21,9 +19,7 @@ public abstract class DatabaseTests {
 
     private URI path;
 
-    private DB_GeneralUserManagement generalUserDB;
-    private DB_AttendeeManagement attendeeDB;
-    private DB_AdminManagement adminDB;
+    private DB_UserManagement generalUserDB;
     private DB_AgendaManagement agendaDB;
     private DB_DocumentManagement documentDB;
     private DB_RequestManagement requestDB;
@@ -33,9 +29,7 @@ public abstract class DatabaseTests {
     public void init() throws IOException {
         String path = "testdb/database.db";
 
-        this.generalUserDB = new DB_GeneralUserManager(path);
-        this.adminDB = new DB_AdminManager(path);
-        this.attendeeDB = new DB_AttendeeManager(path);
+        this.generalUserDB = new DB_UserManager(path);
         this.agendaDB = new DB_AgendaManager(path);
         this.documentDB = new DB_DocumentManager(path);
         this.requestDB = new DB_RequestManager(path);
@@ -48,23 +42,10 @@ public abstract class DatabaseTests {
         new File(path).delete();
     }
 
-    @Test
-    public void initializeDatabase() {
-        DB_Controller controller = new DB_Controller("testdb/database.db");
-        controller.init();
-    }
-
-    protected DB_GeneralUserManagement getGeneralUserDB(){
+    protected DB_UserManagement getGeneralUserDB(){
         return this.generalUserDB;
     }
 
-    protected DB_AttendeeManagement getAttendeeDB(){
-        return this.attendeeDB;
-    }
-
-    protected DB_AdminManagement getAdminDB(){
-        return this.adminDB;
-    }
 
     protected DB_AgendaManagement getAgendaDB(){
         return this.agendaDB;

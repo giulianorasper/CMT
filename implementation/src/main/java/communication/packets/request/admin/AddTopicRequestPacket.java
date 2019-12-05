@@ -36,9 +36,8 @@ public class AddTopicRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-        Pair<OperationResponse, Agenda> result = conference.getAgenda(getToken());
-        if(isPermitted(webSocket, true, result.first())) {
-            Agenda mainAgenda = result.second();
+        if(isPermitted(conference, webSocket, true)) {
+            Agenda mainAgenda = conference.getAgenda();
             Agenda agenda = mainAgenda.getAgendaFromPreorderString(position);
             Topic topic = new Topic(name, mainAgenda);
             List<Integer> preorderList = agenda.getPreorderListFromPreorderString(position);

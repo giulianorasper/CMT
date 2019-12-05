@@ -4,6 +4,7 @@ import communication.packets.response.both.FailureResponsePacket;
 import communication.packets.response.both.InvalidTokenResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
+import user.TokenResponse;
 import utils.OperationResponse;
 
 /**
@@ -23,26 +24,4 @@ public abstract class RequestPacket extends BasePacket {
      * @param webSocket An {@link WebSocket} to send an {@link ResponsePacket} to if required.
      */
     public abstract void handle(Conference conference, WebSocket webSocket);
-
-    /**
-     * This method has the side effects, that it sends a {@link FailureResponsePacket} or {@link FailureResponsePacket}
-     * if the request was not successful.
-     * @param socket the socket to cause side effects on
-     * @param adminOperation weather to check if the token provides {@link OperationResponse#AdminSuccess}
-     * @param value the {@link OperationResponse} to check
-     * @return true iff the requesting client has the necessary permissions for the desired request
-     */
-    public boolean isPermitted(WebSocket socket, boolean adminOperation, OperationResponse value) {
-        if(value == OperationResponse.InvalidToken) {
-            new InvalidTokenResponsePacket().send(socket);
-        } else if(value == OperationResponse.InvalidArguments) {
-            new FailureResponsePacket(value.getMessage()).send(socket);
-        } else if(value == OperationResponse.AdminSuccess || (value == OperationResponse.AttendeeSuccess && !adminOperation)) {
-            return true;
-        } else {
-            //a token counts as invalid if the associated user does not have the required permissions
-            new InvalidTokenResponsePacket().send(socket);
-        }
-        return false;
-    }
 }

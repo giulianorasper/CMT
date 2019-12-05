@@ -90,9 +90,9 @@ public class Agenda implements AgendaObservable{
             lock.getReadAccess();
             List<String> strings  = new LinkedList<>();
             for(int i = 0; i < this.getNumberOfTopics(); i++) {
-                strings.add("" + i);
+                strings.add("" + (i + 1));
                 for (String s: this.topics.get(i).getSubTopics().preOrder()) {
-                    strings.add(i + "." + s);
+                    strings.add((i + 1) + "." + s);
                 }
             }
             return strings;

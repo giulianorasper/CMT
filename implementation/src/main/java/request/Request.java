@@ -19,6 +19,10 @@ public abstract class Request implements RequestObservable {
 
     protected WriterBiasedRWLock lock = new WriterBiasedRWLock();
 
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
     protected long timeStamp;
 
 

@@ -12,7 +12,7 @@ gradle-app.setting
 .idea/*
 src/main/main.iml
 out/*
-testdb/*
+testdb/
 
 # Compiled class file
 *.class

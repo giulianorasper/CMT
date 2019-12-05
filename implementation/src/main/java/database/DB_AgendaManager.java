@@ -25,6 +25,22 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
     }
 
     @Override
+    protected void init() {
+        String agendaTable = "CREATE TABLE IF NOT EXISTS agenda (\n"
+                + "     topicPosition TEXT NOT NULL,\n"
+                + "     topicName TEXT NOT NULL\n"
+                + ");";
+        openConnection();
+        try {
+            connection.createStatement().execute(agendaTable);
+        } catch (SQLException e) {
+            System.err.println("Database initialization failed!");
+            System.err.println(e.getMessage());
+        }
+        closeConnection();
+    }
+
+    @Override
     public boolean update(Agenda a) {
         this.openConnection();
         List<String> preOrder = a.preOrder();

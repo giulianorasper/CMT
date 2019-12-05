@@ -20,6 +20,26 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
     }
 
     @Override
+    protected void init() {
+        String votingsTable = "CREATE TABLE IF NOT EXISTS votings (\n"
+                + "     votingID INTEGER PRIMARY KEY, \n"
+                + "     isNamed BOOL, \n"
+                + "     numberOfOptions, \n"
+                + "     question TEXT NOT NULL, \n"
+                + "     tableName TEXT NOT NULL UNIQUE \n"
+                + ") WITHOUT ROWID;";
+
+        openConnection();
+        try {
+            connection.createStatement().execute(votingsTable);
+        } catch (SQLException e) {
+            System.err.println("Database initialization failed!");
+            System.err.println(e.getMessage());
+        }
+        closeConnection();
+    }
+
+    @Override
     public boolean addVoting(Voting v) {
         this.openConnection();
         String sqlstatement = "INSERT INTO votings(votingID, isNamed, numberOfOptions, question, tableName)"

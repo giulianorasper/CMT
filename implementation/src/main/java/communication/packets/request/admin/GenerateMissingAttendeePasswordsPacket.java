@@ -5,9 +5,9 @@ import communication.packets.AuthenticatedRequestPacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
-public class GenerateMissingAttendeePasswords extends AuthenticatedRequestPacket {
+public class GenerateMissingAttendeePasswordsPacket extends AuthenticatedRequestPacket {
 
-    public GenerateMissingAttendeePasswords() {
+    public GenerateMissingAttendeePasswordsPacket() {
         super(PacketType.GENERATE_MESSING_ATTENDEE_PASSWORDS);
     }
 

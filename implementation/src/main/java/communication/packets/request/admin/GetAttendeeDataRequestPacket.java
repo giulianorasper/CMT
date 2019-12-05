@@ -5,10 +5,13 @@ import communication.packets.AuthenticatedRequestPacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
-public class GetAllAttendeePasswords extends AuthenticatedRequestPacket {
+public class GetAttendeeDataRequestPacket extends AuthenticatedRequestPacket {
 
-    public GetAllAttendeePasswords() {
-        super(PacketType.GET_ALL_ATTENDEE_PASSWORDS);
+    int id;
+
+    public GetAttendeeDataRequestPacket(int id) {
+        super(PacketType.GET_ATTENDEE_DATA_REQUEST);
+        this.id = id;
     }
 
     @Override

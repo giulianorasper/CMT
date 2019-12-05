@@ -5,11 +5,11 @@ import communication.packets.AuthenticatedRequestPacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
-public class GenerateNewAttendeePasswordRequest extends AuthenticatedRequestPacket {
+public class GenerateNewAttendeePasswordRequestPacket extends AuthenticatedRequestPacket {
 
     int id;
 
-    public GenerateNewAttendeePasswordRequest(int id) {
+    public GenerateNewAttendeePasswordRequestPacket(int id) {
         super(PacketType.GENERATE_NEW_ATTENDEE_PASSWORD);
         this.id = id;
     }

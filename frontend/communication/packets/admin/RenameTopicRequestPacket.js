@@ -1,4 +1,4 @@
-import AuthenticatedRequestPacket from "./AuthenticatedRequestPacket.js";
+import AuthenticatedRequestPacket from "../AuthenticatedRequestPacket.js";
 
 export default class RenameTopicRequestPacket extends AuthenticatedRequestPacket {
 

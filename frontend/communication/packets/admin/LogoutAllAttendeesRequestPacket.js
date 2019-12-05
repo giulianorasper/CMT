@@ -1,6 +1,6 @@
-import LogoutAllAttendeesRequestPacket from "../AuthenticatedRequestPacket.js";
+import AuthenticatedRequestPacket from "../AuthenticatedRequestPacket.js";
 
-export default class GetAllAttendeesRequestPacket extends AuthenticatedRequestPacket {
+export default class LogoutAllAttendeesRequestPacket extends AuthenticatedRequestPacket {
 
     constructor() {
         super("LOGOUT_ALL_ATTENDEES");

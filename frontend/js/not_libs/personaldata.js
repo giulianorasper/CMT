@@ -1,5 +1,5 @@
 import CommunicationManager from "../../communication/CommunicationManager.js";
-import PersonalDataRequestPacket from "../../communication/packets/PersonalDataRequestPacket";
+import PersonalDataRequestPacket from "../../communication/packets/PersonalDataRequestPacket.js";
 
 $(document).ready( function(){
 

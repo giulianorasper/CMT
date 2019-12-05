@@ -4,7 +4,7 @@ export default class RemoveTopicRequestPacket extends AuthenticatedRequestPacket
 
     
     constructor(position) {
-        super("REORDER_TOPIC_REQUEST");
+        super("REMOVE_TOPIC_REQUEST");
         this.position = position;
     }
 }

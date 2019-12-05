@@ -31,9 +31,12 @@ import voting.VotingManagement;
 import voting.VotingObserver;
 import voting.VotingStatus;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -47,21 +50,22 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     //Creates a clean conference (for debugging)
     public Conference(){
-        this.name = "Test";
-        this.organizer = "Team 23";
-        this.startsAt = new Time(System.currentTimeMillis());
-        this.endsAt =  this.startsAt = new Time(System.currentTimeMillis() + 1000*60*60);
-        this.agenda = new Agenda("");
-        this.votings = new HashMap<>();
-        this.documents = new HashMap<>();
-        this.admins = new HashMap<>();
-        this.requests = new HashMap<>();
-        this.adminTokens = new HashMap<>();
-        this.activeVoting = null;
+        this (  "Test",
+                "Team 23",
+                new Time(System.currentTimeMillis()),
+                new Time(System.currentTimeMillis() + 1000*60*60),
+                new Agenda(""),
+                new HashMap<Integer, Voting>(),
+                new HashMap<String, Path>(),
+                "./docs",
+                new HashSet<String>(),
+                new HashMap<Integer, Request>(),
+                null
+        );
     }
 
 
-    public Conference(String name, String organizer, Time startsAt, Time endsAt, Agenda agenda, HashMap<Integer,Voting> votings, HashMap<Integer,Document> documents, Set<String> adminTokens, HashMap<Integer,Request> requests, Voting activeVoting) {
+    public Conference(String name, String organizer, Time startsAt, Time endsAt, Agenda agenda, HashMap<Integer,Voting> votings, HashMap<String,Path> documents, String  documentsPath, Set<String> adminTokens, HashMap<Integer,Request> requests, Voting activeVoting) {
         this.name = name;
         this.organizer = organizer;
         this.startsAt = startsAt;
@@ -71,10 +75,21 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         this.documents = documents;
         this.requests = requests;
         this.activeVoting = activeVoting;
+        this.documentsPath = documentsPath;
 
         adminTokens.forEach(f -> this.adminTokens.put(f, true));
         DB_AgendaManager db_agendaManagement = new DB_AgendaManager("");
         agenda.register(db_agendaManagement);
+        File f = new File(documentsPath);
+        if(!f.exists() && !f.mkdir()){
+            throw new IllegalArgumentException("Could not create directory " + documentsPath);
+        }
+        if(f.exists() && !f.isDirectory()){
+            throw new IllegalArgumentException("Could not create directory " + documentsPath +" , because a file with that name already exists");
+        }
+        if(f.exists() && f.isDirectory()){
+            //todo read files from directory
+        }
     }
 
     //Conference Data
@@ -87,9 +102,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     private Generator gen = new Generator_Imp();
 
+    private String  documentsPath ;
+
     private Agenda agenda;
     private HashMap<Integer,Voting> votings;
-    private HashMap<Integer,Document> documents;
+    private HashMap<String, Path> documents;
     private HashMap<Integer,Admin> admins;
     private HashMap<Integer,Request> requests;
     private Voting activeVoting;
@@ -110,22 +127,49 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private Lock attendeeLock = new ReentrantLock();
     private Lock votingLock = new ReentrantLock();
     private Lock requestLock = new ReentrantLock();
+    private Lock documentsLock = new ReentrantLock();
 
     /****************** The Request Management Interface *********/
 
     @Override
     public void addRequest( Request request) {
-        return; // TODO Implement me
+
+        try {
+            requestLock.lock();
+            if(requests.containsKey(request.ID)){
+                throw new IllegalArgumentException();
+            }
+            if(!db_requestManagement.addRequest(request)){
+                throw new IllegalArgumentException();
+            }
+            requests.put(request.ID, request);
+        }
+        finally {
+            requestLock.unlock();
+        }
+
     }
 
     @Override
     public Request getRequest( int ID) {
-       return null; //TODO implement me
+        try {
+            requestLock.lock();
+            return requests.get(ID);
+        }
+        finally {
+            requestLock.unlock();
+        }
     }
 
     @Override
     public List<Request> getAllRequests() {
-        return new ArrayList<>(requests.values());
+        try {
+            requestLock.lock();
+            return new ArrayList<>(requests.values());
+        }
+        finally {
+            requestLock.unlock();
+        }
     }
 
     /****************** The User Management Interface *********/
@@ -429,7 +473,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             if(adminTokens.containsKey(token)){
-                return TokenResponse.ValidAdmin
+                return TokenResponse.ValidAdmin;
             }
             else try{
                 attendeeLock.lock();
@@ -535,7 +579,18 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     @Override
     public void addDocument( String name, String content) {
-        return;
+        try {
+            documentsLock.lock();
+            if(documents.containsKey(name)){
+                throw new IllegalArgumentException();
+            }
+            //TODO
+
+
+        }
+        finally {
+            documentsLock.unlock();
+        }
     }
 
     @Override

@@ -7,8 +7,8 @@ import java.io.File;
 
 public class Document implements Requestable {
 
-    public File file;
-    private String name;
+    public final File file;
+    private final String name;
     private int revisionNumber = 1;
 
     public Document(String path, String name) {

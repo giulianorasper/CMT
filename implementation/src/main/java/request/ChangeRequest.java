@@ -73,7 +73,17 @@ public class ChangeRequest extends Request {
     }
 
     public String getMessage(){
-        return this.message;
+
+        try{
+            lock.getReadAccess();
+            return this.message;
+        }
+        catch (InterruptedException e){
+            return "";
+        }
+        finally {
+            lock.finishRead();
+        }
     }
 
 

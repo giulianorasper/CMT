@@ -25,7 +25,7 @@ public abstract class Request implements RequestObservable {
     }
 
     @Expose
-    protected long timeStamp;
+    protected final long timeStamp;
 
 
     public abstract void reopen();

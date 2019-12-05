@@ -3,6 +3,7 @@ package main;
 import agenda.Agenda;
 import agenda.AgendaManagement;
 import agenda.DB_AgendaManagement;
+import agenda.Topic;
 import database.*;
 import document.DB_DocumentManagement;
 import document.Document;
@@ -58,6 +59,12 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
         this.addAdmin(new Admin("test", "test", "test", "test", "test", "test", 0));
         System.out.println(this.getAttendeePassword(0).second());
+
+        agenda.addTopic(new Topic("Testing com 1", agenda), 0);
+        agenda.addTopic(new Topic("Testing com 2", agenda), 1);
+        agenda.addTopic(new Topic("Testing com 3", agenda), 2);
+        agenda.getTopic(1).getSubTopics().addTopic(new Topic("Testing com 2.1", agenda), 0);
+        agenda.getTopic(1).getSubTopics().addTopic(new Topic("Testing com 2.2", agenda), 1);
     }
 
 
@@ -75,6 +82,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
         this.admins = admins;
 
+        this.adminTokens = new HashMap<>();
         adminTokens.forEach(f -> this.adminTokens.put(f, true));
         DB_AgendaManager db_agendaManagement = new DB_AgendaManager("");
         agenda.register(db_agendaManagement);
@@ -464,6 +472,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             attendeeLock.unlock();
             adminLock.unlock();
         }
+    }
+
+    @Override
+    public boolean isAdmin(int id) {
+        return false;
     }
 
     @Override

@@ -21,9 +21,8 @@ public class PersonalDataRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-        Pair<OperationResponse, Attendee> result = conference.getAttendeeData(getToken());
-        if(isPermitted(webSocket, false, result.first())) {
-            Attendee attendee = result.second();
+        if(isPermitted(conference, webSocket, false)) {
+            Attendee attendee = conference.getAttendeeData(conference.tokenToID(getToken()));
             Packet response = new PersonalDataResponsePacket(attendee);
             response.send(webSocket);
         }

@@ -99,6 +99,7 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
 
 
         } catch (Exception e) {
+            //TODO handle invalid argument exception here
             e.printStackTrace();
             //TODO this should basically never happen, therefore log occurrences
         }

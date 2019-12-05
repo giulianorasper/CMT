@@ -33,10 +33,9 @@ public class VoteRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-        Pair<OperationResponse, Voting> result = conference.getVoting(getToken(), voteID);
-        if(isPermitted(webSocket, false, result.first())) {
-            Voting voting = result.second();
-            int userID = conference.getAttendeeData(getToken()).second().getID();
+        if(isPermitted(conference, webSocket, false)) {
+            Voting voting = conference.getVoting(voteID);
+            int userID = conference.tokenToID(getToken());
             Packet response;
             if(voting.addVote(optionID, userID)) {
                 response = new ResponsePacket(PacketType.VOTE_RESPONSE, RequestResult.Valid);

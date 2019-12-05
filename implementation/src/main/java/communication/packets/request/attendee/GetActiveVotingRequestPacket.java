@@ -22,11 +22,11 @@ public class GetActiveVotingRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-        Pair<OperationResponse, Voting> result = conference.getActiveVoting(getToken());
-        if(isPermitted(webSocket, false, result.first())) {
+        if(isPermitted(conference, webSocket, false)) {
+            Voting voting = conference.getActiveVoting();
             Packet response;
-            if(result.second() != null) {
-                response = new GetActiveVotingResponsePacket(result.second());
+            if(voting != null) {
+                response = new GetActiveVotingResponsePacket(voting);
             } else {
                 response = new GetActiveVotingResponsePacket();
             }

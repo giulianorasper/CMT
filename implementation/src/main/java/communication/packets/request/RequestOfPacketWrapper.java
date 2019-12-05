@@ -1,20 +1,14 @@
-package communication.packets.request.attendee;
+package communication.packets.request;
 
-import agenda.Agenda;
-import communication.packets.PacketType;
-import communication.packets.RequestPacket;
-import communication.packets.request.AuthenticatedRequestPacket;
-import communication.packets.response.both.ValidResponsePacket;
-import document.Document;
+import communication.enums.PacketType;
+import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.response.ValidResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import request.ChangeRequest;
 import request.Requestable;
 import request.SpeechRequest;
-import user.Attendee;
 import user.User;
-import utils.OperationResponse;
-import utils.Pair;
 
 public class RequestOfPacketWrapper extends AuthenticatedRequestPacket {
 

@@ -1,7 +1,7 @@
 package communication.packets;
 
+import communication.enums.PacketType;
 import org.java_websocket.WebSocket;
-import org.java_websocket.exceptions.WebsocketNotConnectedException;
 
 /**
  * An interface representing a data packet which can be sent through an open {@link WebSocket} connection.

@@ -1,11 +1,11 @@
-package communication.packets.request.both;
+package communication.packets.request;
 
+import communication.enums.RequestResult;
 import communication.packets.Packet;
-import communication.packets.PacketType;
+import communication.enums.PacketType;
 import communication.packets.RequestPacket;
-import communication.packets.RequestResult;
 import communication.packets.ResponsePacket;
-import communication.packets.response.both.LoginResponsePacket;
+import communication.packets.response.LoginResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import user.LoginResponse;

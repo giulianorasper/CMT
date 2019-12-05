@@ -3,6 +3,7 @@ package communication.packets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import communication.enums.PacketType;
 import org.java_websocket.WebSocket;
 
 /**

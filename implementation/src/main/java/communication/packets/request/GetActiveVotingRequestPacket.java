@@ -1,14 +1,11 @@
-package communication.packets.request.attendee;
+package communication.packets.request;
 
 import communication.packets.Packet;
-import communication.packets.PacketType;
-import communication.packets.request.AuthenticatedRequestPacket;
-import communication.packets.response.both.GetAgendaResponsePacket;
+import communication.enums.PacketType;
+import communication.packets.AuthenticatedRequestPacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
-import communication.packets.response.attendee.GetActiveVotingResponsePacket;
-import utils.OperationResponse;
-import utils.Pair;
+import communication.packets.response.GetActiveVotingResponsePacket;
 import voting.Voting;
 
 /**

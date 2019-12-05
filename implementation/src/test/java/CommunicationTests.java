@@ -1,10 +1,8 @@
 import agenda.Agenda;
 import agenda.Topic;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import communication.packets.request.both.GetAgendaRequestPacket;
-import communication.packets.request.both.LoginRequestPacket;
-import communication.packets.response.both.GetAgendaResponsePacket;
+import communication.packets.request.LoginRequestPacket;
+import communication.packets.response.GetAgendaResponsePacket;
 import org.junit.Test;
 
 public class CommunicationTests {

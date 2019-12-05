@@ -1,9 +1,9 @@
-package communication.packets.response.attendee;
+package communication.packets.response;
 import com.google.gson.annotations.Expose;
-import communication.packets.PacketType;
-import communication.packets.RequestResult;
+import communication.enums.PacketType;
+import communication.enums.RequestResult;
 import communication.packets.ResponsePacket;
-import communication.packets.request.attendee.PersonalDataRequestPacket;
+import communication.packets.request.PersonalDataRequestPacket;
 import user.Attendee;
 
 /**

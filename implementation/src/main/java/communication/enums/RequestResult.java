@@ -1,4 +1,6 @@
-package communication.packets;
+package communication.enums;
+
+import communication.packets.ResponsePacket;
 
 /**
  * These request results which are sent as part of a {@link ResponsePacket} have following meaning:

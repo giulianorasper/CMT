@@ -2,6 +2,8 @@ package communication.packets;
 
 
 import com.google.gson.annotations.Expose;
+import communication.enums.PacketType;
+import communication.enums.RequestResult;
 
 /**
  * A packet sent to clients as response to a {@link RequestPacket}.

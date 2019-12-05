@@ -1,7 +1,7 @@
-package communication.packets.response.both;
+package communication.packets.response;
 
-import communication.packets.PacketType;
-import communication.packets.RequestResult;
+import communication.enums.PacketType;
+import communication.enums.RequestResult;
 import communication.packets.ResponsePacket;
 
 public class ValidResponsePacket extends ResponsePacket {

@@ -1,13 +1,11 @@
-package communication.packets.request;
+package communication.packets;
 
-import communication.packets.PacketType;
-import communication.packets.RequestPacket;
-import communication.packets.response.both.FailureResponsePacket;
-import communication.packets.response.both.InvalidTokenResponsePacket;
+import communication.enums.PacketType;
+import communication.packets.response.FailureResponsePacket;
+import communication.packets.response.InvalidTokenResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import user.TokenResponse;
-import utils.OperationResponse;
 
 /**
  * A superclass for packets which require the client to be an authenticated user.

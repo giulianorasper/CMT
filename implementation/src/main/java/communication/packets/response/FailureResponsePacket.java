@@ -1,8 +1,8 @@
-package communication.packets.response.both;
+package communication.packets.response;
 
 import com.google.gson.annotations.Expose;
-import communication.packets.PacketType;
-import communication.packets.RequestResult;
+import communication.enums.PacketType;
+import communication.enums.RequestResult;
 import communication.packets.ResponsePacket;
 
 public class FailureResponsePacket extends ResponsePacket {

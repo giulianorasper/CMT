@@ -1,11 +1,9 @@
 package communication.packets.request.admin;
 
-import communication.packets.PacketType;
-import communication.packets.request.AuthenticatedRequestPacket;
+import communication.enums.PacketType;
+import communication.packets.AuthenticatedRequestPacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
-import user.Attendee;
-import utils.OperationResponse;
 
 public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
 

@@ -1,11 +1,11 @@
-package communication.packets.response.both;
+package communication.packets.response;
 
 import agenda.Agenda;
 import com.google.gson.annotations.Expose;
-import communication.packets.PacketType;
-import communication.packets.RequestResult;
+import communication.enums.PacketType;
+import communication.enums.RequestResult;
 import communication.packets.ResponsePacket;
-import communication.packets.request.both.GetAgendaRequestPacket;
+import communication.packets.request.GetAgendaRequestPacket;
 
 /**
  * An response containing the current agenda which is sent as result of an {@link GetAgendaRequestPacket}.

@@ -1,6 +1,10 @@
-package communication.packets;
+package communication.enums;
 
 //TODO refine packet types to a final standard
+
+import communication.packets.Packet;
+import communication.packets.ResponsePacket;
+
 /**
  * This enum contains all types of packets as String representation.
  * This String is used on the server-side to identify a {@link Packet} before instantiating the corresponding class.

@@ -1,14 +1,12 @@
-package communication.packets.request.attendee;
+package communication.packets.request;
 
 import communication.packets.Packet;
-import communication.packets.PacketType;
-import communication.packets.request.AuthenticatedRequestPacket;
+import communication.enums.PacketType;
+import communication.packets.AuthenticatedRequestPacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
-import communication.packets.response.attendee.PersonalDataResponsePacket;
+import communication.packets.response.PersonalDataResponsePacket;
 import user.Attendee;
-import utils.OperationResponse;
-import utils.Pair;
 
 /**
  * This packet handles a personal data request from an attendee and responds with an {@link PersonalDataResponsePacket}.

@@ -1,10 +1,10 @@
-package communication.packets.response.both;
+package communication.packets.response;
 
 import com.google.gson.annotations.Expose;
-import communication.packets.PacketType;
-import communication.packets.RequestResult;
+import communication.enums.PacketType;
+import communication.enums.RequestResult;
 import communication.packets.ResponsePacket;
-import communication.packets.request.both.LoginRequestPacket;
+import communication.packets.request.LoginRequestPacket;
 import user.LoginResponse;
 
 /**

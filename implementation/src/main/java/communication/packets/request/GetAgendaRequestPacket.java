@@ -1,14 +1,10 @@
-package communication.packets.request.both;
+package communication.packets.request;
 
-import agenda.Agenda;
-import communication.packets.PacketType;
-import communication.packets.PermissionLevel;
-import communication.packets.request.AuthenticatedRequestPacket;
-import communication.packets.response.both.GetAgendaResponsePacket;
+import communication.enums.PacketType;
+import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.response.GetAgendaResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
-import utils.OperationResponse;
-import utils.Pair;
 
 /**
  * This packet handles either an attendee or an admin requesting the current agenda and responds with a {@link GetAgendaResponsePacket}.

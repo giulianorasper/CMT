@@ -1,7 +1,7 @@
-package communication.packets.request.attendee;
+package communication.packets.request;
 
-import communication.packets.PacketType;
-import communication.packets.request.AuthenticatedRequestPacket;
+import communication.enums.PacketType;
+import communication.packets.AuthenticatedRequestPacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 

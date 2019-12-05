@@ -1,11 +1,8 @@
 package communication.packets;
 
-import communication.packets.response.both.FailureResponsePacket;
-import communication.packets.response.both.InvalidTokenResponsePacket;
+import communication.enums.PacketType;
 import main.Conference;
 import org.java_websocket.WebSocket;
-import user.TokenResponse;
-import utils.OperationResponse;
 
 /**
  * An extension of {@link BasePacket} which handles requests of clients by running the {@link RequestPacket#handle(Conference, WebSocket)} method.

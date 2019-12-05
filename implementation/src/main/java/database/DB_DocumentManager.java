@@ -45,8 +45,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
     public boolean addDocument(Document document) {
         this.openConnection();
         String sqlstatement = "INSERT INTO documents(path, documentName, revision) VALUES(?,?,?)";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, document.file.getAbsolutePath());
             stmt.setString(2, document.getName());
             stmt.setInt(3, 1);
@@ -71,8 +70,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
     public boolean deleteDocument(String name) {
         this.openConnection();
         String sqlstatement = "DELETE FROM documents WHERE documentName = ?";
-        try  {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, name);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -99,15 +97,15 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         String sqlstatement = "UPDATE documents SET revision = ? , "
                 + "documentName = ?"
                 + " WHERE documentName = ?";
-        try {
-            PreparedStatement rev = connection.prepareStatement(revisionNumber);
+        try (PreparedStatement rev = connection.prepareStatement(revisionNumber);) {
             rev.setString(1, oldName);
-            ResultSet res = rev.executeQuery();
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            stmt.setInt(1, res.getInt("revision") + 1);
-            stmt.setString(2, newName);
-            stmt.setString(3, oldName);
-            stmt.executeQuery();
+            try (ResultSet res = rev.executeQuery();
+                 PreparedStatement stmt = connection.prepareStatement(sqlstatement);) {
+                stmt.setInt(1, res.getInt("revision") + 1);
+                stmt.setString(2, newName);
+                stmt.setString(3, oldName);
+                stmt.executeQuery();
+            }
         } catch (SQLException e) {
             System.err.println("An error occurred while updating a document.");
             System.err.println(e.getMessage());
@@ -129,13 +127,13 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         this.openConnection();
         String sqlstatement = "SELECT * FROM documents WHERE documentName = ?";
         Document document = null;
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, name);
-            ResultSet doc  = stmt.executeQuery();
-            document = new Document(doc.getString("path"),
-                    doc.getString("documentName"),
-                    doc.getInt("revision"));
+            try (ResultSet doc  = stmt.executeQuery()) {
+                document = new Document(doc.getString("path"),
+                        doc.getString("documentName"),
+                        doc.getInt("revision"));
+            }
         } catch (SQLException ex) {
             System.err.println("An error occurred while reconstructing a document.");
             System.err.println(ex.getMessage());
@@ -154,9 +152,8 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         this.openConnection();
         List<Document> documents = new LinkedList<>();
         String sqlstatement = "SELECT * FROM documents";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            ResultSet table  = stmt.executeQuery();
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet table  = stmt.executeQuery()) {
             while (table.next()) {
                 String name = table.getString("documentName");
                 String url  = table.getString("path");

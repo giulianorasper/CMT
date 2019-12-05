@@ -46,26 +46,23 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
     public boolean update(Agenda a) {
         this.openConnection();
         List<String> preOrder = a.preOrder();
-        try {
-            for (String s : preOrder) {
+        String sqlstatement = "INSERT INTO agenda(topicPosition, topicName) VALUES(?,?)";
+        for (String s : preOrder) {
+            try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
                 String name = a.getTopicFromPreorderString(s).getName();
-                String sqlstatement = "INSERT INTO agenda(topicPosition, topicName)"
-                        + "VALUES(?,?)";
-                PreparedStatement stmt = connection.prepareStatement(sqlstatement);
                 stmt.setString(1, s);
                 stmt.setString(2, name);
                 stmt.execute();
+            } catch (SQLException ex) {
+                System.err.println("An exception occurred while updating the agenda.");
+                System.err.println(ex.getMessage());
+                return false;
+            } finally {
+                this.closeConnection();
             }
-        } catch (SQLException ex) {
-            System.err.println("An exception occurred while updating the agenda.");
-            System.err.println(ex.getMessage());
-            return false;
-        } finally {
-            this.closeConnection();
         }
         return true;
     }
-
 
     /**
      *
@@ -76,9 +73,8 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
         this.openConnection();
         String sqlstatement = "SELECT * FROM agenda";
         Agenda ag = null;
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            ResultSet agenda  = stmt.executeQuery();
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+            ResultSet agenda = stmt.executeQuery()) {
             List<Pair<List<Integer>, String>> tops = new LinkedList<>();
             while (agenda.next()) {
                 String ord = agenda.getString("topicPosition");
@@ -91,9 +87,9 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
         } catch (SQLException ex) {
             System.err.println("An error occurred while reconstructing the agenda.");
             System.err.println(ex.getMessage());
+            return null;
         } finally {
             this.closeConnection();
         }
-        return ag;
     }
 }

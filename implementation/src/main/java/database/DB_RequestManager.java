@@ -64,8 +64,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         this.openConnection();
         String sqlstatement = "INSERT INTO requests(requestID, userID, requestType, requestableName, timestamps," +
                 "content, approved) VALUES(?,?,?,?,?,?,?)";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);) {
             stmt.setInt(1, req.ID);
             stmt.setInt(2, req.getRequester().getID());
             if (req instanceof ChangeRequest) { //TODO: Enum for type
@@ -103,12 +102,9 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
     public Request getRequest(int ID) {
         this.openConnection();
         Request request = null;
-        String sqlstatement = "SELECT * FROM requests WHERE requestID = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            stmt.setInt(1, ID);
-            ResultSet table  = stmt.executeQuery();
-
+        String sqlstatement = "SELECT * FROM requests WHERE requestID = " + ID;
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet table  = stmt.executeQuery()) {
             int requestID = table.getInt("requestID");
             int userID = table.getInt("userID");
             int requestType = table.getInt("requestType");
@@ -123,19 +119,18 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                     return name;
                 }
             };
-
-            String userstmt = "SELECT * FROM users WHERE userID = ? ";
-            PreparedStatement user = connection.prepareStatement(userstmt);
-            user.setInt(1, userID);
-            ResultSet att  = user.executeQuery();
-            User attendee = new Attendee(att.getString("fullname"),
-                   att.getString("email"),
-                   att.getString("username"),
-                   att.getString("groups"),
-                   att.getString("residence"),
-                   att.getString("function"),
-                   att.getInt("userID"));
-
+            User attendee = null;
+            String userstmt = "SELECT * FROM users WHERE userID =  " + userID;
+            try (PreparedStatement user = connection.prepareStatement(userstmt);
+                 ResultSet att  = user.executeQuery();) {
+                attendee = new Attendee(att.getString("fullname"),
+                        att.getString("email"),
+                        att.getString("username"),
+                        att.getString("groups"),
+                        att.getString("residence"),
+                        att.getString("function"),
+                        att.getInt("userID"));
+            }
             switch (requestType) {
                 case 0: //Is ChangeRequest
                     ChangeRequest req = new ChangeRequest(requestID, attendee, requestable, timestamp, text);
@@ -171,9 +166,8 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         this.openConnection();
         List<Request> requests = new LinkedList<>();
         String sqlstatement = "SELECT * FROM requests";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            ResultSet table  = stmt.executeQuery();
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet table  = stmt.executeQuery();) {
             while (table.next()) {
                 int requestID = table.getInt("requestID");
                 int userID = table.getInt("userID");
@@ -188,17 +182,18 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                         return name;
                     }
                 };
-                String userstmt = "SELECT * FROM users WHERE userID = ? ";
-                PreparedStatement user = connection.prepareStatement(userstmt);
-                user.setInt(1, userID);
-                ResultSet att  = user.executeQuery();
-                User attendee = new Attendee(att.getString("fullname"),
-                        att.getString("email"),
-                        att.getString("username"),
-                        att.getString("groups"),
-                        att.getString("residence"),
-                        att.getString("function"),
-                        att.getInt("userID"));
+                String userstmt = "SELECT * FROM users WHERE userID =  " + userID;
+                User attendee = null;
+                try (PreparedStatement user = connection.prepareStatement(userstmt);
+                     ResultSet att  = user.executeQuery();) {
+                    attendee = new Attendee(att.getString("fullname"),
+                            att.getString("email"),
+                            att.getString("username"),
+                            att.getString("groups"),
+                            att.getString("residence"),
+                            att.getString("function"),
+                            att.getInt("userID"));
+                }
                 switch (requestType) {
                     case 0: //Is ChangeRequest
                         ChangeRequest req = new ChangeRequest(requestID, attendee, requestable, timestamp, text);
@@ -239,8 +234,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 + "requestableName = ? ,"
                 + "timestamps = ?"
                 + " WHERE requestID = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             if (r instanceof ChangeRequest) {
                 stmt.setBoolean(1, ((ChangeRequest) r).isApproved());
             } else if (r instanceof SpeechRequest) {

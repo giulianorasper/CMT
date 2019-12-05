@@ -122,6 +122,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      *
      * @param token The token of the user.
      * @return the ID of the user with the given token.
+     *
+     * @throws IllegalArgumentException if the token does not exist.
      */
     @Override
     public int tokenToID(String token) {

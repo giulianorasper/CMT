@@ -1,6 +1,5 @@
 package database;
 
-import document.Document;
 import voting.*;
 
 import java.sql.PreparedStatement;
@@ -39,6 +38,12 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
         closeConnection();
     }
 
+    /**
+     * Adds a new, already finished, {@link Voting} to the database.
+     *
+     * @param v The {@link Voting} to be added.
+     * @return True, iff the {@link Voting} was successfully added.
+     */
     @Override
     public boolean addVoting(Voting v) {
         this.openConnection();
@@ -52,7 +57,6 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
             stmt.setString(4, v.getQuestion());
             stmt.setString(5, "voting" + v.getID());
             stmt.executeUpdate();
-
             if (v.isNamedVote()) {
                 String votingTable = "CREATE TABLE IF NOT EXISTS voting" + v.getID() + " (\n"
                         + "     optionID INTEGER, \n"
@@ -90,7 +94,8 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("An error occurred while adding a new voting to the database.");
+            System.err.println(ex.getMessage());
             return false;
         } finally {
             this.closeConnection();
@@ -98,6 +103,12 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
         return true;
     }
 
+    /**
+     * Reconstructs a given {@link Voting} from the database.
+     *
+     * @param ID The ID of the {@link Voting}.
+     * @return the reconstructed {@link Voting}.
+     */
     @Override
     public Voting getVoting(int ID) {
         this.openConnection();
@@ -112,7 +123,6 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
             String optionRequest = "SELECT * FROM " + table.getString("tableName");
             PreparedStatement optR = connection.prepareStatement(optionRequest);
             ResultSet vot = optR.executeQuery();
-
             List<VotingOption> options = new ArrayList<>();
             if (table.getBoolean("isNamed")) {
                 List<List<Integer>> res = new ArrayList<>();
@@ -142,7 +152,8 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
             }
             voting = new Voting(options, table.getString("question"), table.getInt("votingID"));
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("An error occurred while reconstructing a voting from the database.");
+            System.err.println(ex.getMessage());
             return null;
         } finally {
             this.closeConnection();
@@ -150,6 +161,10 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
         return voting;
     }
 
+    /**
+     *
+     * @return a list of all reconstructed {@link Voting}s from the database.
+     */
     @Override
     public List<Voting> getVotings() {
         this.openConnection();
@@ -158,12 +173,12 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
             String sqlstatement = "SELECT * FROM votings";
             PreparedStatement stmt = connection.prepareStatement(sqlstatement);
             ResultSet table  = stmt.executeQuery();
-
             while (table.next()) {
                 votings.add(this.getVoting(table.getInt("votingID")));
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("An error occurred while reconstructing all voting from the database.");
+            System.err.println(ex.getMessage());
             return null;
         } finally {
             this.closeConnection();
@@ -171,6 +186,12 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
         return votings;
     }
 
+    /**
+     * Updates the {@link Voting} after the {@link VotingObservable} was changed.
+     *
+     * @param v The updates {@link Voting}.
+     * @return True, iff the updates was successful.
+     */
     @Override
     public boolean update(Voting v) {
         if (v.getStatus() == VotingStatus.Closed) {

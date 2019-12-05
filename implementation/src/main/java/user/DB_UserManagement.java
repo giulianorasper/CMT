@@ -30,6 +30,8 @@ public interface DB_UserManagement {
      *
      * @param token The token of the user.
      * @return the ID of the user with the given token.
+     *
+     * @throws IllegalArgumentException if the token does not exist.
      */
     int tokenToID(String token);
 

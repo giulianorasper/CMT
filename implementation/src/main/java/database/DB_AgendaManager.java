@@ -1,10 +1,8 @@
 package database;
 
 import agenda.Agenda;
-import agenda.AgendaObserver;
+import agenda.AgendaObservable;
 import agenda.DB_AgendaManagement;
-import agenda.Topic;
-import utils.LexicographicalComparator;
 import utils.Pair;
 
 import java.sql.PreparedStatement;
@@ -13,7 +11,6 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("checkstyle:typename")
 public class DB_AgendaManager extends DB_Controller implements DB_AgendaManagement {
@@ -40,6 +37,11 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
         closeConnection();
     }
 
+    /**
+     * Observer for the Agenda. Updates the Agenda when the {@link AgendaObservable} changes.
+     * @param a The new {@link Agenda}.
+     * @return True, iff the agenda was updates properly.
+     */
     @Override
     public boolean update(Agenda a) {
         this.openConnection();
@@ -54,8 +56,9 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
                 stmt.setString(2, name);
                 stmt.execute();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            System.err.println("An exception occurred while updating the agenda.");
+            System.err.println(ex.getMessage());
             return false;
         } finally {
             this.closeConnection();
@@ -64,6 +67,10 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
     }
 
 
+    /**
+     *
+     * @return the {@link Agenda} object reconstructed from the database.
+     */
     @Override
     public Agenda getAgenda() {
         this.openConnection();
@@ -82,7 +89,8 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
             }
             return new Agenda(tops);
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("An error occurred while reconstructing the agenda.");
+            System.err.println(ex.getMessage());
         } finally {
             this.closeConnection();
         }

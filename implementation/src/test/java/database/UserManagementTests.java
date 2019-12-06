@@ -27,4 +27,16 @@ public class UserManagementTests extends DatabaseTests {
         assertEquals(TokenResponse.ValidAdmin, dbGen.checkToken("token"));
     }
 
+    @Test
+    public void removeAttendee(){
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Admin stephan = new Admin("Stephan Mustermann", "email@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
+        DB_UserManagement dbGen = this.getGeneralUserDB();
+
+        dbGen.addAttendee(max, "1234", "42");
+        dbGen.addAdmin(stephan, "1111", "9999");
+        int id = dbGen.tokenToID("42");
+        assertTrue(dbGen.removeUser(id));
+    }
+
 }

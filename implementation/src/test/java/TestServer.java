@@ -13,13 +13,13 @@ import java.util.Scanner;
 
 public class TestServer {
 
-    @Test
+    /*@Test
    public void testing() throws InterruptedException{
         CommunicationManager w = new CommunicationManagerFactory(new Conference()).enableDebugging().create();
         w.start();
         Thread.sleep(100000000);
    }
-
+*/
     @Before
     public void cleanup() {
         URI path = Paths.get("testdb/testdb.db").toUri();

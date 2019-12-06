@@ -36,9 +36,8 @@ function printAttendeeList(attendeeList, $listID){
         '<tbody>').appendTo($listID);
 
     //Iterate over all given attendees
-    for(var i = 0; i < attendeeList.length; i++){
+    for (var curAttendee in attendeeList){
         //Head of new entry
-        var currAttendee = attendeeList[i];
 
         $('<tr data-toggle="collapse" data-target="#accordion" class="clickable">\n').appendTo($listID);
 

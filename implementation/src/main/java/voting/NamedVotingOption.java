@@ -8,10 +8,21 @@ public class NamedVotingOption extends VotingOption {
     public List<Integer> voters = new ArrayList<>();
 
     /**
+     * Standard constructor.
+     */
+    public NamedVotingOption(int ID, String name) {
+        this.optionID = ID;
+        this.name = name;
+    }
+
+    /**
      * Database reconstructor to remove the need to iterate again.
+     * @param ID The ID of this option.
+     * @param name The name of this option.
      * @param voters The userIDs of the users who voted for this option.
      */
-    public NamedVotingOption(List<Integer> voters) {
+    public NamedVotingOption(int ID, String name, List<Integer> voters) {
+        this(ID, name);
         this.voters = voters;
     }
 

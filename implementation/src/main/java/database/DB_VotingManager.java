@@ -43,13 +43,25 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
      * Adds a new, already finished, {@link Voting} to the database.
      *
      * @param v The {@link Voting} to be added.
-     * @return True, iff the {@link Voting} was successfully added.
+     * @return True, iff the {@link Voting} was successfully added. False if a voting with that ID did already exist.
      */
     @Override
     public boolean addVoting(Voting v) {
         this.openConnection();
-        String sqlstatement = "INSERT INTO votings(votingID, isNamed, numberOfOptions, question, tableName)"
-                + "VALUES(?,?,?,?,?)";
+        String duplicate = "SELECT * FROM votings WHERE votingID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(duplicate)) {
+            stmt.setInt(1, v.getID());
+            try (ResultSet table = stmt.executeQuery()) {
+                if (!table.isAfterLast()) {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            this.closeConnection();
+            System.err.println("An error occurred while trying to check a voting duplicate.");
+        }
+        String sqlstatement = "INSERT INTO votings (votingID, isNamed, numberOfOptions, question, tableName) "
+                + " VALUES (?,?,?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, v.getID());
             stmt.setBoolean(2, v.isNamedVote());
@@ -58,35 +70,36 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
             stmt.setString(5, "voting" + v.getID());
             stmt.executeUpdate();
             if (v.isNamedVote()) {
-                String votingTable = "CREATE TABLE IF NOT EXISTS voting" + v.getID() + " (\n"
-                        + "     optionID INTEGER, \n"
-                        + "     optionName TEXT, \n"
-                        + "     userID INTEGER UNIQUE \n"
-                        + ");";
+                String votingTable = "CREATE TABLE IF NOT EXISTS voting" + Integer.toString(v.getID()) + " ("
+                        + "     optionID INTEGER, "
+                        + "     optionName TEXT, "
+                        + "     userID INTEGER UNIQUE );";
                 connection.createStatement().execute(votingTable);
                 for (VotingOption p : v.getOptions()) {
                     List<Integer> voters = p.getVoters();
                     for (Integer i : voters) {
-                        String insert = "INSERT INTO voting" + v.getID() + "(optionID, optionName, userID)"
-                                + "VALUES(?,?,?)";
+                        String insert = "INSERT INTO voting" + Integer.toString(v.getID()) +
+                                " (optionID, optionName, userID) VALUES (?,?,?)";
                         try (PreparedStatement in = connection.prepareStatement(insert)) {
-                            in.setInt(1, p.getOptionID());
-                            in.setString(2, p.getName());
-                            in.setInt(3, i);
+                            in.setString(1, "voting" + v.getID());
+                            in.setInt(2, p.getOptionID());
+                            in.setString(3, p.getName());
+                            in.setInt(4, i);
                             in.executeUpdate();
                         }
                     }
                 }
             } else {
-                String votingTable = "CREATE TABLE IF NOT EXISTS voting" + v.getID() + " (\n"
-                        + "     optionID INTEGER PRIMARY KEY, \n"
-                        + "     optionName  BOOL, \n"
-                        + "     result INTEGER \n"
+                String votingTable = "CREATE TABLE IF NOT EXISTS voting" + Integer.toString(v.getID()) + " ("
+                        + "     optionID INTEGER PRIMARY KEY, "
+                        + "     optionName  BOOL, "
+                        + "     result INTEGER "
                         + ") WITHOUT ROWID ;";
                 connection.createStatement().execute(votingTable);
                 for (VotingOption p : v.getOptions()) {
-                    String insert = "INSERT INTO voting" + v.getID() + "(optionID, optionName, result)"
-                            + "VALUES(?,?,?)";
+                    String insert =
+                            "INSERT INTO voting" + Integer.toString(v.getID()) +
+                                    " (optionID, optionName, result) VALUES (?,?,?)";
                     try (PreparedStatement in = connection.prepareStatement(insert)) {
                         in.setInt(1, p.getOptionID());
                         in.setString(2, p.getName());
@@ -119,38 +132,39 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                 + " WHERE votingID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, ID);
-            ResultSet table  = stmt.executeQuery();
-            String optionRequest = "SELECT * FROM " + table.getString("tableName");
-            try (PreparedStatement optR = connection.prepareStatement(optionRequest);
-                 ResultSet vot = optR.executeQuery()) {
-                List<VotingOption> options = new ArrayList<>();
-                if (table.getBoolean("isNamed")) {
-                    List<List<Integer>> res = new ArrayList<>();
-                    String[] map = new String[table.getInt("numberOfOptions")];
-                    for (int i = 0; i < table.getInt("numberOfOptions"); i++) {
-                        res.add(new LinkedList<>());
-                    }
-                    while (vot.next()) {
-                        if (map[vot.getInt("optionID")] == null) {
-                            map[vot.getInt("optionID")] = vot.getString("optionName");
+            try (ResultSet table = stmt.executeQuery()) {
+                String optionRequest = "SELECT * FROM  " + table.getString("tableName");
+                try (PreparedStatement optR = connection.prepareStatement(optionRequest);
+                     ResultSet vot = optR.executeQuery()) {
+                    List<VotingOption> options = new ArrayList<>();
+                    if (table.getBoolean("isNamed")) {
+                        List<List<Integer>> res = new ArrayList<>();
+                        String[] map = new String[table.getInt("numberOfOptions")];
+                        for (int i = 0; i < table.getInt("numberOfOptions"); i++) {
+                            res.add(new LinkedList<>());
                         }
-                        res.get(vot.getInt("optionID")).add(vot.getInt("userID"));
+                        while (vot.next()) {
+                            if (map[vot.getInt("optionID")] == null) {
+                                map[vot.getInt("optionID")] = vot.getString("optionName");
+                            }
+                            res.get(vot.getInt("optionID")).add(vot.getInt("userID"));
+                        }
+                        for (List<Integer> p : res) {
+                            VotingOption v = new NamedVotingOption(res.indexOf(p),
+                                    map[res.indexOf(p)], p);
+                            options.add(v);
+                        }
+                    } else {
+                        while (vot.next()) {
+                            VotingOption v =
+                                    new AnonymousVotingOption(vot.getInt("optionID"),
+                                            vot.getString("optionName"),
+                                            vot.getInt("result"));
+                            options.add(v);
+                        }
                     }
-                    for (List<Integer> p : res) {
-                        VotingOption v = new NamedVotingOption(p);
-                        v.changeName(map[res.indexOf(p)]);
-                        v.setOptionID(res.indexOf(p));
-                        options.add(v);
-                    }
-                } else {
-                    while (vot.next()) {
-                        VotingOption v = new AnonymousVotingOption(vot.getInt("result"));
-                        v.changeName(vot.getString("optionName"));
-                        v.setOptionID(vot.getInt("optionID"));
-                        options.add(v);
-                    }
+                    voting = new Voting(options, table.getString("question"), ID);
                 }
-                voting = new Voting(options, table.getString("question"), table.getInt("votingID"));
             }
         } catch (SQLException ex) {
             System.err.println("An error occurred while reconstructing a voting from the database.");
@@ -197,6 +211,6 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
         if (v.getStatus() == VotingStatus.Closed) {
             this.addVoting(v);
             return true;
-        } return false;
+        } return true;
     }
 }

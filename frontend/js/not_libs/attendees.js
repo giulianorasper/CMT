@@ -26,21 +26,22 @@ function printAttendeeList(attendeeList){
 
     var attendeeContainer = $('#attendeeList');
 
+    var i = 0;
      for (var currAttendee of attendeeList){
-        generateAttendee(currAttendee).appendTo(attendeeContainer);
+        generateAttendee(currAttendee, i++).appendTo(attendeeContainer);
      }
 
 
-    function generateAttendee(attendee){
-        return $('<tr data-toggle="collapse" data-target="#accordion" class="clickable">'+
+    function generateAttendee(attendee, id){
+        return $('<tr data-toggle="collapse" data-target="#user_accordion'+i +'" class="clickable">'+
                                             '<td>'+attendee.name+'</td>'+
-                                            '<td>'+attendeeList.group+'</td>'+
+                                            '<td>'+attendee.group+'</td>'+
                                             '<td>'+attendee.function+'</td>'+
                                             '<td>'+attendee.present+'</td>'+
                                         '</tr>'+
                                         '<tr>'+
                                             '<td colspan="4">'+
-                                                '<div id="accordion" class="collapse">'+
+                                                '<div id="user_accordion'+i +'"  class="collapse">'+
                                                     '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
                                                     '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
                                                 '</div>'+

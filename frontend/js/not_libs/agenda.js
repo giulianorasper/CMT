@@ -35,8 +35,14 @@ function failAgendaReq() {
 function renderAgenda(data, $e) {
     // create an inner item
     agendaContainer.html("");
+    if(data.topics.length == 0){
+        createDefault($e);
+        return;
+    }
+
     var fontSize = 26;
     var fontSizeDifference = 4;
+    
     function createInner(obj, $target, preOrder) {
         var li = generateAgendaRow(obj.name, preOrder, fontSize).appendTo($target);
         fontSize = fontSize - fontSizeDifference
@@ -49,6 +55,11 @@ function renderAgenda(data, $e) {
         }
         fontSize = fontSize + fontSizeDifference
     }
+
+    function createDefault($target){
+        $('<span onclick = "appendToAgenda(\"0\")">Click here to add the first topic</span>').appendTo($target);
+    }
+
     for (var i = 0; i < data.topics.length; i++) {
         createInner(data.topics[i], $e, i+1);
     }
@@ -59,7 +70,6 @@ function append(preorder){
     var split = (""+preorder).split(".");
     var elem = split.pop()
     var newOrder = split.join(".")+ "." + (parseInt(elem) +1);
-    alert(newOrder);
 
 
     const packet = new AddTopicRequestPacket(newOrder, prompt("topic name?"));

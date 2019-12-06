@@ -291,12 +291,10 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         String sqlstatement = "SELECT * FROM users WHERE username = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, userName);
-            ResultSet table  = stmt.executeQuery();
-            if (!table.next()) {
-                return true;
-            } else {
-                return false;
+            try (ResultSet table  = stmt.executeQuery()) {
+                return !table.isAfterLast();
             }
+
         } catch (SQLException ex) {
             System.err.println("An exception occurred while checking whether a username was already used.");
             System.err.println(ex.getMessage());

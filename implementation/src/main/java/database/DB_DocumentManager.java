@@ -12,12 +12,13 @@ import java.util.List;
 @SuppressWarnings("checkstyle:typename")
 public class DB_DocumentManager extends DB_Controller implements DB_DocumentManagement {
 
-    private static String table = "documents";
-
     public DB_DocumentManager(String url) {
         super(url);
     }
 
+    /**
+     * Initializes the documents tables for the database
+     */
     @Override
     protected void init() {
         String documentTable = "CREATE TABLE IF NOT EXISTS documents (\n"
@@ -97,10 +98,10 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         String sqlstatement = "UPDATE documents SET revision = ? , "
                 + "documentName = ?"
                 + " WHERE documentName = ?";
-        try (PreparedStatement rev = connection.prepareStatement(revisionNumber);) {
+        try (PreparedStatement rev = connection.prepareStatement(revisionNumber)) {
             rev.setString(1, oldName);
             try (ResultSet res = rev.executeQuery();
-                 PreparedStatement stmt = connection.prepareStatement(sqlstatement);) {
+                 PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
                 stmt.setInt(1, res.getInt("revision") + 1);
                 stmt.setString(2, newName);
                 stmt.setString(3, oldName);

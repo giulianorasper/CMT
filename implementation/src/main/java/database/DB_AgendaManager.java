@@ -21,6 +21,9 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
         super(url);
     }
 
+    /**
+     * Initializes the agenda tables for the database
+     */
     @Override
     protected void init() {
         String agendaTable = "CREATE TABLE IF NOT EXISTS agenda (\n"
@@ -72,7 +75,6 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
     public Agenda getAgenda() {
         this.openConnection();
         String sqlstatement = "SELECT * FROM agenda";
-        Agenda ag = null;
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
             ResultSet agenda = stmt.executeQuery()) {
             List<Pair<List<Integer>, String>> tops = new LinkedList<>();

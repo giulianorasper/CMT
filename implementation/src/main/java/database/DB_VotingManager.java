@@ -12,12 +12,13 @@ import java.util.List;
 @SuppressWarnings("checkstyle:typename")
 public class DB_VotingManager extends DB_Controller implements DB_VotingManagement {
 
-    private static String table = "votings";
-
     public DB_VotingManager(String url) {
         super(url);
     }
 
+    /**
+     * Initializes the agenda tables for the database
+     */
     @Override
     protected void init() {
         String votingsTable = "CREATE TABLE IF NOT EXISTS votings (\n"
@@ -86,7 +87,7 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                 for (VotingOption p : v.getOptions()) {
                     String insert = "INSERT INTO voting" + v.getID() + "(optionID, optionName, result)"
                             + "VALUES(?,?,?)";
-                    try (PreparedStatement in = connection.prepareStatement(insert);) {
+                    try (PreparedStatement in = connection.prepareStatement(insert)) {
                         in.setInt(1, p.getOptionID());
                         in.setString(2, p.getName());
                         in.setInt(3, p.getCurrentResult());
@@ -115,9 +116,10 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
         this.openConnection();
         Voting voting = null;
         String sqlstatement = "SELECT isNamed, numberOfOptions, question, tableName FROM votings"
-                + " WHERE votingID = " + ID + ";";
-        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet table  = stmt.executeQuery()) {
+                + " WHERE votingID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setInt(1, ID);
+            ResultSet table  = stmt.executeQuery();
             String optionRequest = "SELECT * FROM " + table.getString("tableName");
             try (PreparedStatement optR = connection.prepareStatement(optionRequest);
                  ResultSet vot = optR.executeQuery()) {
@@ -168,9 +170,9 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
     public List<Voting> getVotings() {
         this.openConnection();
         List<Voting> votings = new LinkedList<>();
-        String sqlstatement = "SELECT * FROM votings ;";
+        String sqlstatement = "SELECT * FROM votings";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet table  = stmt.executeQuery();) {
+             ResultSet table  = stmt.executeQuery()) {
             while (table.next()) {
                 votings.add(this.getVoting(table.getInt("votingID")));
             }

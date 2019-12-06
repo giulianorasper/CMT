@@ -15,6 +15,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         super(url);
     }
 
+    /**
+     * Initializes the user table for the database
+     */
     @Override
     protected void init() {
         String userTable = "CREATE TABLE IF NOT EXISTS users (\n"
@@ -50,9 +53,10 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public Pair<LoginResponse, String> checkLogin(String userName, String password) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users WHERE username =  '"+ userName+"'";
-        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet table  = stmt.executeQuery()) {
+        String sqlstatement = "SELECT * FROM users WHERE username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setString(1, userName);
+            ResultSet table  = stmt.executeQuery();
             if (!table.next()) {
                 return new Pair<>(LoginResponse.UserDoesNotExist, null);
             } else {
@@ -87,9 +91,10 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public TokenResponse checkToken(String token) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users WHERE token =  '"+ token+"'";
-        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet table  = stmt.executeQuery();) {
+        String sqlstatement = "SELECT * FROM users WHERE token = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setString(1, token);
+            ResultSet table  = stmt.executeQuery();
             if (!table.next()) {
                 return TokenResponse.TokenDoesNotExist;
             } else {
@@ -124,10 +129,11 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public int tokenToID(String token) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users WHERE token  =  '"+ token+"'";
+        String sqlstatement = "SELECT * FROM users WHERE token  = ?";
         int ID = -1;
-        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet doc  = stmt.executeQuery()) {
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setString(1, token);
+            ResultSet doc  = stmt.executeQuery();
             if (doc.next()) {
                 return doc.getInt("userID");
             } else {
@@ -276,15 +282,16 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     /**
      * This methods checks whether a username was already used to enable unique username creation.
      *
-     * @param username The username that should be checked.
+     * @param userName The username that should be checked.
      * @return True, iff the username was already in the database.
      */
     @Override
-    public boolean userNameAlreadyUsed(String username) {
+    public boolean userNameAlreadyUsed(String userName) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users WHERE username = " + username;
-        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet table  = stmt.executeQuery();) {
+        String sqlstatement = "SELECT * FROM users WHERE username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setString(1, userName);
+            ResultSet table  = stmt.executeQuery();
             if (!table.next()) {
                 return true;
             } else {
@@ -397,10 +404,11 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public Attendee getAttendeeData(int userID) {
         this.openConnection();
-        String sqlstatement = "SELECT * FROM users  WHERE userID =  " + userID;
+        String sqlstatement = "SELECT * FROM users  WHERE userID = ?";
         Attendee attendee = null;
-        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet att  = stmt.executeQuery()) {
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setInt(1, userID);
+            ResultSet att  = stmt.executeQuery();
             attendee = new Attendee(att.getString("fullname"),
                     att.getString("email"),
                     att.getString("username"),
@@ -426,7 +434,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public boolean editAttendee(Attendee a) {
         this.openConnection();
-        String sqlstatement = "UPDATE users SET fullname = ? , "
+        String sqlstatement = "UPDATE users SET fullname = ?, "
                 + " email = ?, "
                 + " username = ? , "
                 + " groups = ? , "
@@ -466,7 +474,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         String sqlstatement = "INSERT INTO users(userID, fullname, username, password ,"
                 + "token, email, groups, function, residence, isAdmin, present)"
                 + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);) {
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, a.getID());
             stmt.setString(2, a.getName());
             stmt.setString(3, a.getUserName());

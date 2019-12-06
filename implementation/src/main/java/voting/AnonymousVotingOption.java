@@ -25,6 +25,10 @@ public class AnonymousVotingOption extends VotingOption {
         this.votes = votes;
     }
 
+    public AnonymousVotingOption(int votes) {
+
+    }
+
     @Override
     protected void addVote(int userID) {
         votes++;

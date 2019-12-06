@@ -27,6 +27,7 @@ public class UserManagementTests extends DatabaseTests {
         assertEquals(dbGen.getAttendeeData(max.getID()).getID(), max.getID());
 
 
+
     }
 
     @Test
@@ -56,6 +57,9 @@ public class UserManagementTests extends DatabaseTests {
 
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAdmin(stephan, "1111", "9999");
+        List<Integer> ids = dbGen.getIDs();
+        assertTrue(ids.get(0) == max.getID());
+        assertTrue(ids.get(1) == stephan.getID());
         int id = dbGen.tokenToID("42");
         assertTrue(dbGen.removeUser(id));
         int id1 = dbGen.tokenToID("9999");
@@ -128,4 +132,40 @@ public class UserManagementTests extends DatabaseTests {
         assertEquals(dbGen.getAllPasswords().get(0).second(), "121");
         assertEquals(dbGen.getAllPasswords().get(1).second(),"2222");
     }
+
+    @Test
+    public void existUserName(){
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
+        DB_UserManagement dbGen = this.getGeneralUserDB();
+
+        dbGen.addAttendee(max, "1234", "42");
+        dbGen.addAdmin(stephan, "1111", "9999");
+        String a = dbGen.getAttendeeData(0).getUserName();
+        assertTrue(dbGen.userNameAlreadyUsed(max.getUserName()));
+        assertTrue(dbGen.userNameAlreadyUsed(stephan.getUserName()));
+        assertTrue(!(dbGen.userNameAlreadyUsed("username")));
+    }
+
+    @Test
+    public void severalAttendeesAndAdmins(){
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee stephan = new Attendee("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
+        DB_UserManagement dbGen = this.getGeneralUserDB();
+
+        dbGen.addAttendee(max, "1234", "42");
+        dbGen.addAttendee(stephan, "1111", "9999");
+        List<Attendee> attendees = dbGen.getAllAttendees();
+        assertEquals(attendees.get(0).getID(),max.getID());
+        assertEquals(attendees.get(1).getID(), stephan.getID());
+
+        Admin Alex = new Admin("Alex Mustermann", "almail@email.muster", "Alex.Mustermann", "RCDS", "Diffeasarten", "Straßenkehrer", 2);
+        Admin Kamran = new Admin("Kamran Mustermann", "kamnmail@email.muster", "Kamran", "project23", "Winterwdfgunderland", "group member", 3);
+        dbGen.addAdmin(Alex, "345", "3456");
+        dbGen.addAdmin(Kamran, "2345", "3245");
+        List<Admin> admins = dbGen.getAllAdmins();
+        assertEquals(admins.get(0).getID(), Alex.getID());
+        assertEquals(admins.get(1).getID(), Kamran.getID());
+    }
+
 }

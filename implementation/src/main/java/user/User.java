@@ -35,7 +35,7 @@ public abstract class User {
         return name;
     }
 
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -43,7 +43,7 @@ public abstract class User {
         return group;
     }
 
-    void setGroup(String group) {
+    public void setGroup(String group) {
         this.group = group;
     }
 
@@ -51,7 +51,7 @@ public abstract class User {
         return residence;
     }
 
-    void setResidence(String residence) {
+    public void setResidence(String residence) {
         this.residence = residence;
     }
 
@@ -65,5 +65,9 @@ public abstract class User {
 
     public void setMail(String mail) {
         this.email = mail;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

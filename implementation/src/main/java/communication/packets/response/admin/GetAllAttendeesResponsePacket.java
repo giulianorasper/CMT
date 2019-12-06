@@ -23,7 +23,7 @@ public class GetAllAttendeesResponsePacket extends ResponsePacket {
     @Expose
     private List<Attendee> attendees;
 
-    public GetAllAttendeesResponsePacket(RequestResult result, List<Attendee> attendees) {
+    public GetAllAttendeesResponsePacket(List<Attendee> attendees) {
         super(PacketType.GET_ALL_REQUESTS_RESPONSE, RequestResult.Valid);
         this.attendees = attendees;
     }

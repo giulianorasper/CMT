@@ -15,6 +15,9 @@ public class NamedVotingOption extends VotingOption {
         this.voters = voters;
     }
 
+    public NamedVotingOption() {
+    }
+
     @Override
     protected void addVote(int userID) {
         voters.add(userID);

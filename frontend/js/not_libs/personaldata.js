@@ -26,10 +26,10 @@ $(document).ready( function(){
 
 function printPersonalData(attendee, $name, $email, $group, $function, $residence){
     //append all data to respective place
-    $name.append(attendee.name);
-    $email.append(attendee.email);
-    $group.append(attendee.group);
-    $function.append(attendee.function);
-    $residence.append(attendee.residence);
+    $name.text(attendee.name);
+    $email.text(attendee.email);
+    $group.text(attendee.group);
+    $function.text(attendee.function);
+    $residence.text(attendee.residence);
 
 }

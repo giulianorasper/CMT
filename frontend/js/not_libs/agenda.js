@@ -47,7 +47,7 @@ function renderAgenda(data, $e) {
         var li = generateAgendaRow(obj.name, preOrder, fontSize).appendTo($target);
         fontSize = fontSize - fontSizeDifference
         if (obj.subTopics.topics != undefined && obj.subTopics.topics.length > 0) {
-            var innerList = $('<div class="list agendaList"><ul>').appendTo(li);
+            var innerList = $('<ul class="list agendaList"></ul>').appendTo(li);
             for (var i = 0; i < obj.subTopics.topics.length; i++) {
                 var child = obj.subTopics.topics[i];
                 createInner(child, innerList,  preOrder+"."+(i+1));
@@ -56,8 +56,8 @@ function renderAgenda(data, $e) {
         fontSize = fontSize + fontSizeDifference
     }
 
-    function createDefault($target){
-        $('<span onclick = "appendToAgenda(\"0\")">Click here to add the first topic</span>').appendTo($target);
+    function createDefault(target){
+        $('<li onclick = "appendToAgenda(\'0\')"><span>Click here to add the first topic</span></li>').appendTo(target);
     }
 
     for (var i = 0; i < data.topics.length; i++) {
@@ -69,7 +69,10 @@ function renderAgenda(data, $e) {
 function append(preorder){
     var split = (""+preorder).split(".");
     var elem = split.pop()
-    var newOrder = split.join(".")+ "." + (parseInt(elem) +1);
+    var newOrder = (parseInt(elem) +1);
+    if(split.length != 0){
+        newOrder = split.join(".")+ "." + newOrder
+    }
 
 
     const packet = new AddTopicRequestPacket(newOrder, prompt("topic name?"));

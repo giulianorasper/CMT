@@ -34,8 +34,8 @@ public class Topic implements Requestable {
             //do nothing
         }
         finally {
-            lock.finishWrite();
             parent.notifyObservers();
+            lock.finishWrite();
         }
     }
 
@@ -43,13 +43,13 @@ public class Topic implements Requestable {
         try {
             lock.getWriteAccess();
             this.name = name;
+            parent.notifyObservers();
         }
         catch (InterruptedException e){
             //do nothing
         }
         finally {
             lock.finishWrite();
-            parent.notifyObservers();
         }
     }
 
@@ -111,6 +111,18 @@ public class Topic implements Requestable {
         }
         catch (InterruptedException e){
             return null;
+        }
+        finally {
+            lock.finishRead();
+        }
+    }
+    public String toString(){
+        try{
+            lock.getReadAccess();
+            return name + subTopics.toString();
+        }
+        catch (InterruptedException e){
+            return "";
         }
         finally {
             lock.finishRead();

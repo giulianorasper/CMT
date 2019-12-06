@@ -57,7 +57,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                 null
         );
 
-        this.addAdmin(new Admin("test", "test", "test", "test", "test", "test", 0));
+        this.addAdmin(new Admin("Test Name", "test@test.tes", "test", "test group", "test street", "e^x", 0));
         System.out.println(this.getAttendeePassword(0).second());
 
         agenda.addTopic(new Topic("Testing com 1", agenda), 0);

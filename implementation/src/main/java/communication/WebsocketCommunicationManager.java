@@ -20,7 +20,6 @@ import java.util.Set;
 class WebsocketCommunicationManager extends WebSocketServer implements CommunicationManager {
 
     private Gson gson = new Gson();
-    //TODO make this configurable
     private Set<WebSocket> conns;
     private Conference conference;
     //TODO implement timeout
@@ -76,7 +75,7 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
                     pack = gson.fromJson(message, EditUserRequestPacket.class);
                     break;
                 case GENERATE_MESSING_ATTENDEE_PASSWORDS:
-                    pack = gson.fromJson(message, GenerateMissingAttendeePasswordsPacket.class);
+                    pack = gson.fromJson(message, GenerateMissingAttendeePasswordsRequestPacket.class);
                     break;
                 case GENERATE_NEW_ATTENDEE_PASSWORD:
                     pack = gson.fromJson(message, GenerateNewAttendeePasswordRequestPacket.class);
@@ -119,6 +118,9 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
                     break;
                 case REORDER_TOPIC_REQUEST:
                     pack = gson.fromJson(message, ReorderTopicRequestPacket.class);
+                    break;
+                case SET_ATTENDEE_PRESENT_STATUS_REQUEST:
+                    pack = gson.fromJson(message, SetAttendeePresentStatusRequestPacket.class);
                     break;
                 case SET_REQUEST_APPROVAL_STATUS:
                     pack = gson.fromJson(message, SetRequestApprovalStatusRequestPacket.class);

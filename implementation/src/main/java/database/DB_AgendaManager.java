@@ -48,8 +48,19 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
     @Override
     public boolean update(Agenda a) {
         this.openConnection();
+        String sqlstatement = "DELETE FROM agenda";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.execute();
+        } catch (SQLException ex) {
+            System.err.println("An exception occurred while first Deleting the agenda.");
+            System.err.println(ex.getMessage());
+            return false;
+        } finally {
+            this.closeConnection();
+        }
+        this.openConnection();
         List<String> preOrder = a.preOrder();
-        String sqlstatement = "INSERT INTO agenda(topicPosition, topicName) VALUES(?,?)";
+        sqlstatement = "INSERT INTO agenda(topicPosition, topicName) VALUES(?,?)";
         for (String s : preOrder) {
             try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
                 String name = a.getTopicFromPreorderString(s).getName();

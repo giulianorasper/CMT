@@ -18,6 +18,11 @@ public class Attendee extends User {
         this.present = false;
     }
 
+    //TODO implement this constructor
+    public Attendee(String name, String email, String group, String residence, String function) {
+        this(null,null,null,null,null,null, -1);
+    }
+
     public void additionalDevice(){
         this.numberOfDevices++;
     }
@@ -42,7 +47,11 @@ public class Attendee extends User {
         return this.function;
     }
 
-    void setFunction(String function) {
+    public void setFunction(String function) {
         this.function = function;
+    }
+
+    public void setPresent(boolean present) {
+        this.present = present;
     }
 }

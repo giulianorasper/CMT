@@ -186,7 +186,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setNull(1, java.sql.Types.VARCHAR);
             stmt.setNull(2, java.sql.Types.VARCHAR);
             stmt.setInt(3, userID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An exception occurred while logging out/invalidating a user.");
             System.err.println(e.getMessage());
@@ -243,7 +243,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, token);
             stmt.setInt(2, userID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An exception occurred while storing a new user token.");
             System.err.println(e.getMessage());
@@ -268,7 +268,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, password);
             stmt.setInt(2, userID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An exception occurred while storing a new user password.");
             System.err.println(e.getMessage());
@@ -380,7 +380,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 attendees.add(new Attendee(table.getString("fullname"),
                         table.getString("email"),
                         table.getString("username"),
-                        table.getString("group"),
+                        table.getString("groups"),
                         table.getString("residence"),
                         table.getString("function"),
                         table.getInt("userID")));
@@ -512,7 +512,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                     admins.add(new Admin(table.getString("fullname"),
                             table.getString("email"),
                             table.getString("username"),
-                            table.getString("group"),
+                            table.getString("groups"),
                             table.getString("residence"),
                             table.getString("function"),
                             table.getInt("userID")));

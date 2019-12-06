@@ -10,7 +10,6 @@ import java.util.List;
 
 public class GetAllRequestsResponsePacket extends ResponsePacket {
 
-    //TODO packet content information
     @Expose
     List<Request> requests;
 

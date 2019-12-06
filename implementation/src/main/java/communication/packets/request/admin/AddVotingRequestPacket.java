@@ -4,7 +4,12 @@ import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
+import voting.AnonymousVotingOption;
+import voting.NamedVotingOption;
+import voting.Voting;
+import voting.VotingOption;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class AddVotingRequestPacket extends AuthenticatedRequestPacket {
@@ -22,6 +27,18 @@ public class AddVotingRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-        //TODO handle
+        if(isPermitted(conference, webSocket, true)) {
+            VotingOption votingOptionObject;
+            List<VotingOption> optionsObjectList = new LinkedList<>();
+            for(String option : options) {
+                if(namedVote) {
+                    votingOptionObject = new NamedVotingOption();
+                } else {
+                    votingOptionObject = new AnonymousVotingOption(0);
+                }
+                optionsObjectList.add(votingOptionObject);
+            }
+            Voting voting = new Voting(optionsObjectList, question);
+        }
     }
 }

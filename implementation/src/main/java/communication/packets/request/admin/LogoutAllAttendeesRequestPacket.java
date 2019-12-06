@@ -2,6 +2,7 @@ package communication.packets.request.admin;
 
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.response.ValidResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
@@ -13,6 +14,9 @@ public class LogoutAllAttendeesRequestPacket extends AuthenticatedRequestPacket 
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-        //TODO handle
+        if(isPermitted(conference, webSocket, true)) {
+            conference.logoutAllAttendees();
+            new ValidResponsePacket().send(webSocket);
+        }
     }
 }

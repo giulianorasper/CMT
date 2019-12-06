@@ -5,20 +5,25 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
+import user.Attendee;
 
-public class RemoveVotingRequestPacket extends AuthenticatedRequestPacket {
+public class SetAttendeePresentStatusRequestPacket extends AuthenticatedRequestPacket {
 
-    private int id;
+    int id;
+    boolean present;
 
-    public RemoveVotingRequestPacket(int id) {
-        super(PacketType.REMOVE_VOTING_REQUEST);
+    public SetAttendeePresentStatusRequestPacket(int id, boolean present) {
+        super(PacketType.SET_ATTENDEE_PRESENT_STATUS_REQUEST);
         this.id = id;
+        this.present = present;
     }
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
         if(isPermitted(conference, webSocket, true)) {
-            conference.removeVoting(conference.getVoting(id));
+            Attendee attendee = conference.getAttendeeData(id);
+            attendee.setPresent(present);
+            conference.editAttendee(attendee);
             new ValidResponsePacket().send(webSocket);
         }
     }

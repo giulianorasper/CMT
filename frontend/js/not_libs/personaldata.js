@@ -28,17 +28,18 @@ function printPersonalData(attendee, $name, $email, $group, $function, $residenc
     //append all data to respective place
     var insertName = $('<h2 class="contact-title">').appendTo($name);
     insertName.text(attendee.name);
+    $('</h2>').appendTo(insertName);
 
-    var insertEmail = $('<div style="font-size: medium">').appendTo($email);
+    var insertEmail = $('<div style="font-size: large">').appendTo($email);
     insertEmail.text(attendee.email);
 
-    var insertGroup = $('<div style="font-size: medium">').appendTo($group);
+    var insertGroup = $('<div style="font-size: large">').appendTo($group);
     insertGroup.text(attendee.group);
 
-    var insertFunction = $('<div style="font-size: medium">').appendTo($function);
+    var insertFunction = $('<div style="font-size: large">').appendTo($function);
     insertFunction.text(attendee.function);
 
-    var insertResidence = $('<div style="font-size: medium">').appendTo($residence);
+    var insertResidence = $('<div style="font-size: large">').appendTo($residence);
     insertResidence.text(attendee.residence);
 
 }

@@ -2,6 +2,8 @@ package communication.packets.request.admin;
 
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.Packet;
+import communication.packets.response.admin.GetAllAttendeesResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
@@ -13,6 +15,7 @@ public class GetAllAttendeesRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-
+        Packet response = new GetAllAttendeesResponsePacket(conference.getAllAttendees());
+        response.send(webSocket);
     }
 }

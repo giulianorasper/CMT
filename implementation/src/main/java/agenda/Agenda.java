@@ -117,10 +117,18 @@ public class Agenda implements AgendaObservable{
 
     public Topic getTopicFromPreorderString(String preorder) {
         List<Integer> preorderList = getPreorderListFromPreorderString(preorder);
-        return getTopicFromPreorderList(preorderList);
+        try {
+            lock.getReadAccess();
+            return getTopicFromPreorderList(preorderList);
+        }
+        catch (InterruptedException e){
+            return null;
+        }
+        finally {
+            lock.finishRead();
+        }
     }
 
-    //TODO: Can this be private?
     public List<Integer> getPreorderListFromPreorderString(String preorder) {
         String[] preorderArray = preorder.split("\\.");
         List<Integer> preorderList = new LinkedList<>();
@@ -146,7 +154,16 @@ public class Agenda implements AgendaObservable{
     //TODO @Stephan It would be great if you would look into weather / how these methods should be locked. I think you are more proficient with that.
     public Agenda getAgendaFromPreorderString(String preorder) {
         List<Integer> preorderList = getPreorderListFromPreorderString(preorder);
-        return getAgendaFromPreorderList(preorderList);
+        try {
+            lock.getReadAccess();
+            return getAgendaFromPreorderList(preorderList);
+        }
+        catch (InterruptedException e){
+            return null;
+        }
+        finally {
+            lock.finishRead();
+        }
     }
 
     private Agenda getAgendaFromPreorderList(List<Integer> preorder) {
@@ -178,14 +195,16 @@ public class Agenda implements AgendaObservable{
             };
             AtomicInteger auxDepth = new AtomicInteger(1);
             tops.stream().filter(p -> p.first().size() == depth.get()).sorted(new LexicographicalComparator())
-                    .forEach(p -> p.first().forEach(i -> {
+                    .forEach(p -> {auxDepth.set(1); ref.aux = ag; p.first().forEach(i -> {
+                     //   System.out.println("At position " + i + " maxDepth "+depth.get() + " depth" + auxDepth.get());
                         if (auxDepth.get() < depth.get()) {
                             ref.aux = ref.aux.getTopic(i).getSubTopics();
                         } else {
+                         //   System.out.println("Added " + p.second() +" at position " + i+ "in" +ref.aux);
                             ref.aux.addTopic(new Topic(p.second(), ref.aux), i);
                         }
                         auxDepth.getAndIncrement();
-                    }));
+                    });});
             depth.incrementAndGet();
         }
     }
@@ -202,17 +221,32 @@ public class Agenda implements AgendaObservable{
 
     @Override
     public void notifyObservers() {
+        if(parent == null) {
+            observers.forEachKey(2, o -> o.update(this));
+        }
+        else{
+            parent.notifyObservers();
+        }
+    }
+
+    @Override
+    public String toString(){
         try {
+            StringBuffer sb = new StringBuffer("{\n");
             lock.getReadAccess();
-            if(parent == null) {
-                observers.forEachKey(2, o -> o.update(this));
+            if (topics.isEmpty()) {
+                return "{}";
             }
             else{
-                parent.notifyObservers();
+                topics.forEach(t -> sb.append(", ").append(t.toString()));
+                sb.append("\n}");
+                return sb.toString();
             }
-        } catch (InterruptedException ignored) {
-
-        } finally {
+        }
+        catch (InterruptedException e){
+            return "";
+        }
+        finally {
             lock.finishRead();
         }
 

@@ -117,7 +117,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
             String text = table.getString("content");
             boolean approved = table.getBoolean("approved");
 
-            String name = table.getString("requestName");
+            String name = table.getString("requestableName");
             Requestable requestable = new Requestable() {
                 @Override
                 public String getName() {
@@ -181,7 +181,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 long timestamp = table.getInt("timestamps");
                 String text = table.getString("content");
                 boolean approved = table.getBoolean("approved");
-                String name = table.getString("requestName");
+                String name = table.getString("requestableName");
                 Requestable requestable = new Requestable() {
                     @Override
                     public String getName() {
@@ -237,23 +237,24 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
     @Override
     public boolean update(Request r) {
         this.openConnection();
-        String sqlstatement = "UPDATE requests SET approved = ? , "
-                + "requestableName = ? ,"
-                + "timestamps = ?"
+        String sqlstatement = "UPDATE requests SET approved = ?, requestableName = ?, timestamps = ?, userID = ?, content = ?"
                 + " WHERE requestID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             if (r instanceof ChangeRequest) {
                 stmt.setBoolean(1, ((ChangeRequest) r).isApproved());
+                stmt.setString(5, ((ChangeRequest) r).getMessage());
             } else if (r instanceof SpeechRequest) {
                 stmt.setNull(1, Types.BOOLEAN);
+                stmt.setNull(5, Types.VARCHAR);
             } else {
                 System.err.println("Requestable Type not supported by Database implementation.");
                 return false;
             }
             stmt.setString(2, r.getRequestable().getName());
             stmt.setLong(3, r.getTimeStamp());
-            stmt.setInt(4, r.ID);
-            stmt.executeQuery();
+            stmt.setInt(4, r.getRequester().getID());
+            stmt.setInt(6, r.ID);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An error occurred while updating a request.");
             System.err.println(e.getMessage());

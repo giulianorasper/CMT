@@ -186,7 +186,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setNull(1, java.sql.Types.VARCHAR);
             stmt.setNull(2, java.sql.Types.VARCHAR);
             stmt.setInt(3, userID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An exception occurred while logging out/invalidating a user.");
             System.err.println(e.getMessage());
@@ -243,7 +243,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, token);
             stmt.setInt(2, userID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An exception occurred while storing a new user token.");
             System.err.println(e.getMessage());
@@ -268,7 +268,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, password);
             stmt.setInt(2, userID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An exception occurred while storing a new user password.");
             System.err.println(e.getMessage());
@@ -291,12 +291,10 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         String sqlstatement = "SELECT * FROM users WHERE username = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, userName);
-            ResultSet table  = stmt.executeQuery();
-            if (!table.next()) {
-                return true;
-            } else {
-                return false;
+            try (ResultSet table  = stmt.executeQuery()) {
+                return !table.isAfterLast();
             }
+
         } catch (SQLException ex) {
             System.err.println("An exception occurred while checking whether a username was already used.");
             System.err.println(ex.getMessage());
@@ -349,7 +347,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setString(3, a.getUserName());
             stmt.setString(4, password);
             stmt.setString(5, token);
-            stmt.setString(6, a.getMail());
+            stmt.setString(6, a.getEmail());
             stmt.setString(7, a.getGroup());
             stmt.setString(8, a.getFunction());
             stmt.setString(9, a.getResidence());
@@ -380,7 +378,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 attendees.add(new Attendee(table.getString("fullname"),
                         table.getString("email"),
                         table.getString("username"),
-                        table.getString("group"),
+                        table.getString("groups"),
                         table.getString("residence"),
                         table.getString("function"),
                         table.getInt("userID")));
@@ -443,7 +441,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 + " WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, a.getName());
-            stmt.setString(2, a.getMail());
+            stmt.setString(2, a.getEmail());
             stmt.setString(3, a.getUserName());
             stmt.setString(4, a.getGroup());
             stmt.setString(5, a.getResidence());
@@ -480,7 +478,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setString(3, a.getUserName());
             stmt.setString(4, password);
             stmt.setString(5, token);
-            stmt.setString(6, a.getMail());
+            stmt.setString(6, a.getEmail());
             stmt.setString(7, a.getGroup());
             stmt.setString(8, a.getFunction());
             stmt.setString(9, a.getResidence());
@@ -512,7 +510,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                     admins.add(new Admin(table.getString("fullname"),
                             table.getString("email"),
                             table.getString("username"),
-                            table.getString("group"),
+                            table.getString("groups"),
                             table.getString("residence"),
                             table.getString("function"),
                             table.getInt("userID")));
@@ -577,7 +575,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 + " WHERE userID = ? AND isAdmin = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);) {
             stmt.setString(1, a.getName());
-            stmt.setString(2, a.getMail());
+            stmt.setString(2, a.getEmail());
             stmt.setString(3, a.getGroup());
             stmt.setString(4, a.getResidence());
             stmt.setString(5, a.getFunction());

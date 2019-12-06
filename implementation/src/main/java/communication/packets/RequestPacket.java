@@ -13,7 +13,6 @@ public abstract class RequestPacket extends BasePacket {
         super(packetType);
     }
 
-    //TODO try catch?
     /**
      * A method which is called on any incoming packet.
      * Each subclass calls this method to handle it's associated request properly.

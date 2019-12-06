@@ -35,13 +35,19 @@ function failAgendaReq() {
 function renderAgenda(data, $e) {
     // create an inner item
     agendaContainer.html("");
+    if(data.topics.length == 0){
+        createDefault($e);
+        return;
+    }
+
     var fontSize = 26;
     var fontSizeDifference = 4;
+    
     function createInner(obj, $target, preOrder) {
         var li = generateAgendaRow(obj.name, preOrder, fontSize).appendTo($target);
         fontSize = fontSize - fontSizeDifference
         if (obj.subTopics.topics != undefined && obj.subTopics.topics.length > 0) {
-            var innerList = $('<div class="list"><ul>').appendTo(li);
+            var innerList = $('<div class="list agendaList"><ul>').appendTo(li);
             for (var i = 0; i < obj.subTopics.topics.length; i++) {
                 var child = obj.subTopics.topics[i];
                 createInner(child, innerList,  preOrder+"."+(i+1));
@@ -49,6 +55,11 @@ function renderAgenda(data, $e) {
         }
         fontSize = fontSize + fontSizeDifference
     }
+
+    function createDefault($target){
+        $('<span onclick = "appendToAgenda(\"0\")">Click here to add the first topic</span>').appendTo($target);
+    }
+
     for (var i = 0; i < data.topics.length; i++) {
         createInner(data.topics[i], $e, i+1);
     }
@@ -58,8 +69,7 @@ function renderAgenda(data, $e) {
 function append(preorder){
     var split = (""+preorder).split(".");
     var elem = split.pop()
-    var newOrder = split + (parseInt(elem) +1);
-    alert(newOrder);
+    var newOrder = split.join(".")+ "." + (parseInt(elem) +1);
 
 
     const packet = new AddTopicRequestPacket(newOrder, prompt("topic name?"));
@@ -125,8 +135,8 @@ function edit(preorder){
 
 function generateAgendaRow(name, preorder, fontSize){
     return $(
-        '<li style="font-size: '+fontSize+'px;">'+name+
-        '<span style="display:inline-block; width: 30px;">'+
+        '<li class = "agendaRow" style="font-size: '+fontSize+'px;">'+name+
+        '<span style="display:inline-block; width: 60px;">'+
         '</span><span class="glyphicon glyphicon-plus" onclick = "appendToAgenda('+preorder+')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
         '</span><span class="glyphicon glyphicon-chevron-down" onclick = "subtopicToAgenda('+preorder+')"></span>'+

@@ -57,7 +57,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                 null
         );
 
-        this.addAdmin(new Admin("test", "test", "test", "test", "test", "test", 0));
+        this.addAdmin(new Admin("Test Name", "test@test.tes", "test", "test group", "test street", "e^x", 0));
+
+        this.addAttendee(new Attendee("A1", "A1", "a@a.a", "RCDS", "Illingen", "Mayor", 1));
+        this.addAttendee(new Attendee("A2", "A2", "b@b.b", "RCDS", "Illingen", "Press", 2));
         System.out.println(this.getAttendeePassword(0).second());
 
         agenda.addTopic(new Topic("Testing com 1", agenda), 0);
@@ -117,6 +120,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private HashMap<Integer,Request> requests;
     private Voting activeVoting;
     private HashMap<String, Boolean> adminTokens; // a map backed Set
+    private HashMap<String, Boolean> volatileUserNames = new HashMap<>(); // user names that are reserved even though the corresponding user is not added (jet)
 
     //Database System //TODO add urls
     private DB_DocumentManagement db_documentManagement = new DB_DocumentManager("./testdb/testdb.db");
@@ -181,12 +185,15 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void addAdmin(Admin a) {
         try{
             adminLock.lock();
+            attendeeLock.lock();
+            volatileUserNames.remove(a.getUserName());
             if(!db_userManagement.addAdmin(a, gen.generatePassword(), gen.generateToken())){
                 throw new IllegalArgumentException("Database addition failed");
             }
             admins.put(a.getID(), a);
         }
         finally {
+            attendeeLock.unlock();
             adminLock.unlock();
         }
     }
@@ -269,7 +276,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     @Override
     public void addAttendee( Attendee a) {
         try{
+            adminLock.lock();
             attendeeLock.lock();
+            volatileUserNames.remove(a.getUserName());
             if(!db_userManagement.addAttendee(a, gen.generatePassword(), gen.generateToken())){
                 throw new IllegalArgumentException("Attendee can not be edited for unknown reasons");
             }
@@ -277,6 +286,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
         finally {
             attendeeLock.unlock();
+            adminLock.unlock();
         }
     }
 
@@ -507,10 +517,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             name = name.replaceAll("[^A-Za-z0-9]", ".");
             String nameAux = name;
             int i =1;
-            while (db_userManagement.userNameAlreadyUsed(nameAux)){
+            while (volatileUserNames.containsKey(nameAux) || db_userManagement.userNameAlreadyUsed(nameAux)){
                 nameAux = name + i;
                 i++;
             }
+            volatileUserNames.put(nameAux, true);
             return nameAux;
         }
         finally {

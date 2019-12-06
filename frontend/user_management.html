@@ -125,11 +125,9 @@
                             <div class="col-lg-1"></div>
                             <div class="col-lg-10" style="padding-bottom: 20px;">
 
-                                <table class="table table-hover">
-                                    <div id="attendeeListID">
-                                        <!--Print incoming Attendees HERE-->
-                                    </div>
-                                </table>
+                                <div id="attendeeListID">
+                                    <!--Print incoming Attendees HERE-->
+                                </div>
 
 
                                 <!--Old hardcoded list, just to be safe-->
@@ -141,22 +139,9 @@
                                     <th>Present</th>
                                     </thead>
 
-                                    <tbody>
+                                    <tbody id = "attendeeList">
 
-                                        <tr data-toggle="collapse" data-target="#accordion" class="clickable">
-                                            <td>Max Mustermann</td>
-                                            <td>RCDS</td>
-                                            <td>Party Leader</td>
-                                            <td>Yes</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4">
-                                                <div id="accordion" class="collapse">
-                                                    <h4 style="color:grey;">Residence: Saarland University Saarbrücken</h4>
-                                                    <h4 style="color:grey;">Email: attendee@cmt.de</h4>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                       
                                     </tbody>
                                 </table>
                             </div>
@@ -202,38 +187,6 @@
 <script type="module" src="js/not_libs/attendees.js"></script>
 
 
-<script>
-    $("#form-submit").submit(function (e) {
-
-        <!--var textValue = document.getElementById("name").value-->
-
-        <!--console.log(textValue);-->
-        <!--if (textValue !== "project23") {-->
-        <!--console.log(textValue);-->
-        <!--$("#name").focus();-->
-        <!--&lt;!&ndash;$('#message').html('Passwords need to match').css('color', 'red');&ndash;&gt;-->
-        <!--$('#message').html('Incorrect password').css('color', 'red');-->
-        e.preventDefault();
-        $("#submit-message").empty();
-
-        $("#submit-message").addClass("row").addClass("contact-title");
-        $("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Request Submitted</h2>");
-        return false;
-
-
-
-        <!--}-->
-
-    });
-
-
-    $("#btnclose").on("click", function (e) {
-        setTimeout(function(){
-            location.reload();
-        }, 2000)
-    });
-
-</script>
 
 
 

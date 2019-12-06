@@ -7,6 +7,7 @@ import org.junit.Assert.*;
 import org.junit.rules.ExpectedException;
 import utils.Pair;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -73,6 +74,34 @@ public class AgendaTests {
 
         assertNotNull(ag);
 
+    }
+
+    @Test
+    public void testPreorder(){
+        Agenda agenda = new Agenda();
+        Topic firstTopic = new Topic("Käsebrot", agenda);
+        Topic firstSubTopic = new Topic("Käse", firstTopic.getSubTopics());
+        Topic secondSubTopic = new Topic("Brot", firstTopic.getSubTopics());
+
+        agenda.addTopic(firstTopic,0);
+        firstTopic.getSubTopics().addTopic(firstSubTopic, 0);
+        firstTopic.getSubTopics().addTopic(secondSubTopic, 1);
+
+        List<Pair<List<Integer>, String>> tops = new ArrayList<>();
+        List<Integer> first = new ArrayList<>();
+        first.add(0);
+        tops.add(new Pair<>(first, "Käsebrot"));
+        List<Integer> second = new ArrayList<>();
+        second.add(0);
+        second.add(0);
+        tops.add(new Pair<>(second, "Käse"));
+        List<Integer> third = new ArrayList<>();
+        third.add(0);
+        third.add(1);
+        tops.add(new Pair<>(third, "Brot"));
+
+        Agenda secondAgenda = new Agenda(tops);
+        System.out.println(secondAgenda);
     }
 
     @Test(expected = IllegalArgumentException.class)

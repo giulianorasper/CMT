@@ -2,8 +2,10 @@ package communication.packets.request.admin;
 
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.response.ValidResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
+import user.Attendee;
 
 public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
 
@@ -24,12 +26,15 @@ public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
-        setNotNull(email);
-        setNotNull(group);
-        setNotNull(residence);
-        setNotNull(function);
-        //TODO implement
-        //OperationResponse response = conference.addAttendee(getToken(), new Attendee(name, email, group, residence, function));
+        if(isPermitted(conference, webSocket, true)) {
+            setNotNull(email);
+            setNotNull(group);
+            setNotNull(residence);
+            setNotNull(function);
+            Attendee attendee = new Attendee(name, conference.getFreeUserName(name), email, group, residence, function);
+            conference.addAttendee(attendee);
+            new ValidResponsePacket().send(webSocket);
+        }
     }
 
     private void setNotNull(String s) {

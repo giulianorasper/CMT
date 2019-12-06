@@ -60,11 +60,11 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             if (!table.next()) {
                 return new Pair<>(LoginResponse.UserDoesNotExist, null);
             } else {
-                if (table.getString("password") == null) {
-                    return new Pair<>(LoginResponse.PasswordAlreadyUsed, null);
+                if (table.getString("password") == null && table.getString("token") == null) {
+                    return new Pair<>(LoginResponse.AccountBlocked, null);
                 } else {
-                    if (table.getString("token") == null) {
-                        return new Pair<>(LoginResponse.AccountBlocked, null);
+                    if (table.getString("password") == null) {
+                        return new Pair<>(LoginResponse.PasswordAlreadyUsed, null);
                     } else if (!table.getString("password").equals(password)) {
                         return new Pair<>(LoginResponse.WrongPassword, null);
                     } else {
@@ -447,7 +447,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setString(5, a.getResidence());
             stmt.setString(6, a.getFunction());
             stmt.setInt(7, a.getID());
-            stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An exception occurred while trying to overwrite an attendee.");
             System.err.println(e.getMessage());
@@ -581,7 +581,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setString(5, a.getFunction());
             stmt.setInt(6, a.getID());
             stmt.setBoolean(7, true);
-            stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An exception occurred while trying to overwrite an admin.");
             System.err.println(e.getMessage());

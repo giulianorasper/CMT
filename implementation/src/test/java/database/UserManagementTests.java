@@ -6,8 +6,7 @@ import utils.Pair;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class UserManagementTests extends DatabaseTests {
 
@@ -141,10 +140,9 @@ public class UserManagementTests extends DatabaseTests {
 
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAdmin(stephan, "1111", "9999");
-        String a = dbGen.getAttendeeData(0).getUserName();
         assertTrue(dbGen.userNameAlreadyUsed(max.getUserName()));
         assertTrue(dbGen.userNameAlreadyUsed(stephan.getUserName()));
-        assertTrue(!(dbGen.userNameAlreadyUsed("username")));
+        assertFalse(dbGen.userNameAlreadyUsed("username"));
     }
 
     @Test
@@ -168,4 +166,38 @@ public class UserManagementTests extends DatabaseTests {
         assertEquals(admins.get(1).getID(), Kamran.getID());
     }
 
+    @Test
+    public void editUser(){
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
+        DB_UserManagement dbGen = this.getGeneralUserDB();
+
+        dbGen.addAttendee(max, "1234", "42");
+        dbGen.addAdmin(stephan, "1111", "9999");
+
+        max.setName("MusterMax");
+        dbGen.editAttendee(max);
+        assertEquals(dbGen.getAttendeeData(0).getName(), max.getName());
+        stephan.setEmail("test@mail.de");
+        dbGen.editAdmin(stephan);
+        assertEquals(dbGen.getAdminData(1).getEmail(), stephan.getEmail());
+    }
+
+    @Test
+    public void diffrentCheckLoginAndTokenCases(){
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
+        DB_UserManagement dbGen = this.getGeneralUserDB();
+
+        dbGen.addAttendee(max, "1234", "42");
+        dbGen.addAdmin(stephan, "1111", "9999");
+
+        assertEquals(LoginResponse.WrongPassword, dbGen.checkLogin("AlmightyStephan", "rue1831978").first());
+        assertEquals(TokenResponse.TokenDoesNotExist, dbGen.checkToken("token"));
+        assertEquals(LoginResponse.UserDoesNotExist, dbGen.checkLogin("Stephan", "rue1831978").first());
+        //assertEquals(TokenResponse., dbGen.checkToken("token"));
+        dbGen.logoutUser(1);
+        assertEquals(LoginResponse.AccountBlocked, dbGen.checkLogin("AlmightyStephan", "1111").first());
+        assertEquals(TokenResponse.TokenDoesNotExist, dbGen.checkToken("9999"));
+    }
 }

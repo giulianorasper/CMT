@@ -19,7 +19,7 @@ public class UserManagementTests extends DatabaseTests {
         assertTrue("Attendee couldn't be added", dbGen.addAttendee(max, "1234", "42"));
         assertEquals(TokenResponse.ValidAttendee, dbGen.checkToken("42"));
         assertEquals(dbGen.getAttendeeData(max.getID()).getName(), max.getName());
-        assertEquals(dbGen.getAttendeeData(max.getID()).getMail(), max.getMail());
+        assertEquals(dbGen.getAttendeeData(max.getID()).getEmail(), max.getEmail());
         assertEquals(dbGen.getAttendeeData(max.getID()).getUserName(), max.getUserName());
         assertEquals(dbGen.getAttendeeData(max.getID()).getGroup(), max.getGroup());
         assertEquals(dbGen.getAttendeeData(max.getID()).getResidence(), max.getResidence());
@@ -40,7 +40,7 @@ public class UserManagementTests extends DatabaseTests {
 
 
         assertEquals(dbGen.getAdminData(stephan.getID()).getName(), stephan.getName());
-        assertEquals(dbGen.getAdminData(stephan.getID()).getMail(), stephan.getMail());
+        assertEquals(dbGen.getAdminData(stephan.getID()).getEmail(), stephan.getEmail());
         assertEquals(dbGen.getAdminData(stephan.getID()).getUserName(), stephan.getUserName());
         assertEquals(dbGen.getAdminData(stephan.getID()).getGroup(), stephan.getGroup());
         assertEquals(dbGen.getAdminData(stephan.getID()).getFunction(), stephan.getFunction());

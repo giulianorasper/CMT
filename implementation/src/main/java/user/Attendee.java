@@ -4,31 +4,45 @@ import com.google.gson.annotations.Expose;
 
 public class Attendee extends User {
 
-    @Expose
-    private String function;
     private int numberOfDevices;
     @Expose
     private boolean present;
 
-    public Attendee(String name, String email, String userName, String group, String residence, String function, int ID){
-        super(name, email, userName, group, residence, ID);
-        this.function = function;
+    public Attendee(String name, String userName, String email, String group, String residence, String function, int ID){
+        super(name, userName, email, group, function, residence, ID);
 
         this.numberOfDevices = 0;
         this.present = false;
     }
 
-    //TODO implement this constructor
-    public Attendee(String name, String email, String group, String residence, String function) {
-        this(null,null,null,null,null,null, -1);
+    public Attendee(String name, String userName, String email, String group, String residence, String function) {
+        this(name, userName, email,group,residence,function,  nextFreeId());
     }
 
     public void additionalDevice(){
-        this.numberOfDevices++;
+        try {
+            lock.getWriteAccess();
+            numberOfDevices++;
+        }
+            catch (InterruptedException e){
+            //do nothing
+        }
+            finally {
+            lock.finishWrite();
+        }
     }
 
     public void attendedConference(){
-        this.present = true;
+        try {
+            lock.getWriteAccess();
+            this.present = true;
+        }
+        catch (InterruptedException e){
+            //do nothing
+        }
+        finally {
+            lock.finishWrite();
+        }
     }
 
     public void logout(){
@@ -36,22 +50,41 @@ public class Attendee extends User {
     }
 
     public boolean isPresent() {
-        return present;
+        try {
+            lock.getReadAccess();
+            return present;
+        }
+        catch (InterruptedException e){
+            return false;
+        }
+        finally {
+            lock.finishRead();
+        }
     }
 
     public int getNumberOfDevices() {
-        return this.numberOfDevices;
-    }
-
-    public String getFunction() {
-        return this.function;
-    }
-
-    public void setFunction(String function) {
-        this.function = function;
+        try {
+            lock.getReadAccess();
+            return numberOfDevices;
+        }
+        catch (InterruptedException e){
+            return -1;
+        }
+        finally {
+            lock.finishRead();
+        }
     }
 
     public void setPresent(boolean present) {
-        this.present = present;
+        try {
+            lock.getWriteAccess();
+            this.present = present;
+        }
+        catch (InterruptedException e){
+            //do nothing
+        }
+        finally {
+            lock.finishWrite();
+        }
     }
 }

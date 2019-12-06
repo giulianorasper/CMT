@@ -349,7 +349,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setString(3, a.getUserName());
             stmt.setString(4, password);
             stmt.setString(5, token);
-            stmt.setString(6, a.getMail());
+            stmt.setString(6, a.getEmail());
             stmt.setString(7, a.getGroup());
             stmt.setString(8, a.getFunction());
             stmt.setString(9, a.getResidence());
@@ -443,7 +443,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 + " WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, a.getName());
-            stmt.setString(2, a.getMail());
+            stmt.setString(2, a.getEmail());
             stmt.setString(3, a.getUserName());
             stmt.setString(4, a.getGroup());
             stmt.setString(5, a.getResidence());
@@ -480,7 +480,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setString(3, a.getUserName());
             stmt.setString(4, password);
             stmt.setString(5, token);
-            stmt.setString(6, a.getMail());
+            stmt.setString(6, a.getEmail());
             stmt.setString(7, a.getGroup());
             stmt.setString(8, a.getFunction());
             stmt.setString(9, a.getResidence());
@@ -577,7 +577,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 + " WHERE userID = ? AND isAdmin = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);) {
             stmt.setString(1, a.getName());
-            stmt.setString(2, a.getMail());
+            stmt.setString(2, a.getEmail());
             stmt.setString(3, a.getGroup());
             stmt.setString(4, a.getResidence());
             stmt.setString(5, a.getFunction());

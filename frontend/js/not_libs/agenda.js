@@ -41,7 +41,7 @@ function renderAgenda(data, $e) {
         var li = generateAgendaRow(obj.name, preOrder, fontSize).appendTo($target);
         fontSize = fontSize - fontSizeDifference
         if (obj.subTopics.topics != undefined && obj.subTopics.topics.length > 0) {
-            var innerList = $('<div class="list"><ul>').appendTo(li);
+            var innerList = $('<div class="list agendaList"><ul>').appendTo(li);
             for (var i = 0; i < obj.subTopics.topics.length; i++) {
                 var child = obj.subTopics.topics[i];
                 createInner(child, innerList,  preOrder+"."+(i+1));
@@ -58,7 +58,7 @@ function renderAgenda(data, $e) {
 function append(preorder){
     var split = (""+preorder).split(".");
     var elem = split.pop()
-    var newOrder = split + (parseInt(elem) +1);
+    var newOrder = split.join(".")+ "." + (parseInt(elem) +1);
     alert(newOrder);
 
 
@@ -125,8 +125,8 @@ function edit(preorder){
 
 function generateAgendaRow(name, preorder, fontSize){
     return $(
-        '<li style="font-size: '+fontSize+'px;">'+name+
-        '<span style="display:inline-block; width: 30px;">'+
+        '<li class = "agendaRow" style="font-size: '+fontSize+'px;">'+name+
+        '<span style="display:inline-block; width: 60px;">'+
         '</span><span class="glyphicon glyphicon-plus" onclick = "appendToAgenda('+preorder+')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
         '</span><span class="glyphicon glyphicon-chevron-down" onclick = "subtopicToAgenda('+preorder+')"></span>'+

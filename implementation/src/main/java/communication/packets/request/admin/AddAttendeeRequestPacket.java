@@ -31,7 +31,7 @@ public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
             setNotNull(group);
             setNotNull(residence);
             setNotNull(function);
-            Attendee attendee = new Attendee(name, email, group, residence, function);
+            Attendee attendee = new Attendee(name, conference.getFreeUserName(name), email, group, residence, function);
             conference.addAttendee(attendee);
             new ValidResponsePacket().send(webSocket);
         }

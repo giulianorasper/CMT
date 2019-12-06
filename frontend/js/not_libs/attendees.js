@@ -3,11 +3,10 @@ import CommunicationManager from "../../communication/CommunicationManager.js";
 
 $(document).ready( function() {
 
-    var attendeeContainer =  $('#attendeeListID');
-
     function success(packet){
+        console.log(packet)
         if(packet.result === "Valid"){
-            printAttendeeList(packet.attendees, attendeeContainer);
+            printAttendeeList(packet.attendees);
         }
     }
 
@@ -21,51 +20,34 @@ $(document).ready( function() {
 
 });
 
-function printAttendeeList(attendeeList, $listID){
+function printAttendeeList(attendeeList){
 
-    //List declaration
-    $('<table class="table table-hover">').appendTo($listID);
+    console.log(attendeeList);
 
-    //List header
-    $('<thead>\n' +
-        '        <th>Name</th>\n' +
-        '        <th>Group</th>\n' +
-        '        <th>Function</th>\n' +
-        '        <th>Present</th>\n' +
-        ' </thead>\n' +
-        '<tbody>').appendTo($listID);
+    var attendeeContainer = $('#attendeeList');
 
-    //Iterate over all given attendees
-    for (var currAttendee in attendeeList){
-        //Head of new entry
+     for (var currAttendee of attendeeList){
+        generateAttendee(currAttendee).appendTo(attendeeContainer);
+     }
 
-        $('<tr data-toggle="collapse" data-target="#accordion" class="clickable">\n').appendTo($listID);
 
-        //Add data related to list header
-        $('<td>' + currAttendee.name + '</td>').appendTo($listID);
-
-        $('<td>' + currAttendee.group + '</td>').appendTo($listID);
-
-        $('<td>' + currAttendee.function + '</td>').appendTo($listID);
-
-        $('<td>' + currAttendee.present + '</td>').appendTo($listID);
-
-        //Add rest of the data to expandable accordion part
-        $('</tr>\n' +
-            '<tr>\n' +
-            '<td colspan="4">\n' +
-            '<div id="accordion" class="collapse">').appendTo($listID);
-
-        $('<h4 style="color:grey;">Residence: ' + currAttendee.residence + '</h4>').appendTo($listID);
-        $('<h4 style="color:grey;">Email:  ' + currAttendee.email + '</h4>').appendTo($listID);
-
-        //Close blocks
-        $('</div>\n' +
-            '</td>\n' +
-            '</tr>').appendTo($listID);
+    function generateAttendee(attendee){
+        return $('<tr data-toggle="collapse" data-target="#accordion" class="clickable">'+
+                                            '<td>'+attendee.name+'</td>'+
+                                            '<td>'+attendeeList.group+'</td>'+
+                                            '<td>'+attendee.function+'</td>'+
+                                            '<td>'+attendee.present+'</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td colspan="4">'+
+                                                '<div id="accordion" class="collapse">'+
+                                                    '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
+                                                    '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
+                                                '</div>'+
+                                            '</td>'+
+                                        '</tr>');
     }
 
-    $('</tbody>' +
-        '</table>').appendTo($listID);
-
 }
+
+

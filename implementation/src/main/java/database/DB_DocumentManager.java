@@ -105,7 +105,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
                 stmt.setInt(1, res.getInt("revision") + 1);
                 stmt.setString(2, newName);
                 stmt.setString(3, oldName);
-                stmt.executeQuery();
+                stmt.executeUpdate();
             }
         } catch (SQLException e) {
             System.err.println("An error occurred while updating a document.");

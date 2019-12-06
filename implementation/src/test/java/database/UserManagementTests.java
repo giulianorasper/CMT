@@ -24,9 +24,6 @@ public class UserManagementTests extends DatabaseTests {
         assertEquals(dbGen.getAttendeeData(max.getID()).getResidence(), max.getResidence());
         assertEquals(dbGen.getAttendeeData(max.getID()).getFunction(), max.getFunction());
         assertEquals(dbGen.getAttendeeData(max.getID()).getID(), max.getID());
-
-
-
     }
 
     @Test

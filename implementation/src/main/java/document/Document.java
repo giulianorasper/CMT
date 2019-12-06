@@ -25,4 +25,8 @@ public class Document implements Requestable {
     public String getName() {
         return this.name;
     }
+
+    public Integer getRevisionNumber() { return this.revisionNumber;}
+
+    public String getPath() {return this.file.getAbsolutePath();}
 }

@@ -58,9 +58,10 @@ public abstract class Request implements RequestObservable {
     protected Requestable requestable;
     @Expose
     protected User requester;
-
+    @Expose
     public final int ID;
 
+    @Expose
     protected boolean open;
 
     protected Request(int id, Requestable topic, User requester, long timestamp){
@@ -109,6 +110,7 @@ public abstract class Request implements RequestObservable {
         }
     }
 
+    public abstract Request shallowClone();
 
     @Override
     public void register(RequestObserver o) {

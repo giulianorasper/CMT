@@ -1,5 +1,6 @@
 package request;
 
+import com.google.gson.annotations.Expose;
 import user.User;
 
 public class SpeechRequest extends Request {
@@ -34,5 +35,10 @@ public class SpeechRequest extends Request {
         } finally {
             lock.finishWrite();
         }
+    }
+
+    @Override
+    public Request shallowClone() {
+        return new SpeechRequest(ID, getRequester(), new SimpleRequestable(requestable.getName()), getTimeStamp());
     }
 }

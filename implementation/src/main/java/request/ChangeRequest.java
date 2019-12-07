@@ -60,6 +60,11 @@ public class ChangeRequest extends Request {
         }
     }
 
+    @Override
+    public Request shallowClone() {
+        return new ChangeRequest(ID, getRequester(), new SimpleRequestable(requestable.getName()), getTimeStamp(), getMessage());
+    }
+
     public void disapprove(){
         try {
             lock.getWriteAccess();

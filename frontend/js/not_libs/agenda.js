@@ -74,8 +74,12 @@ function append(preorder){
         newOrder = split.join(".")+ "." + newOrder
     }
 
+    var res = prompt("topic name?")
 
-    const packet = new AddTopicRequestPacket(newOrder, prompt("topic name?"));
+    if(res){
+        const packet = new AddTopicRequestPacket(newOrder, res);
+        CommunicationManager.send(packet, success, fail);
+    }
 
     function success(packet) {
         console.log(packet);
@@ -90,7 +94,6 @@ function append(preorder){
     }
 
 
-    CommunicationManager.send(packet, success, fail);
 }
 
 function remove(preorder){
@@ -117,7 +120,11 @@ function subtopic(preorder){
 }
  
 function edit(preorder){
-    const packet = new RenameTopicRequestPacket(preorder, prompt("topic name?"));
+    var res = prompt("topic name?");
+    if(res){
+        const packet = new RenameTopicRequestPacket(preorder, res);
+        CommunicationManager.send(packet, success, fail);
+    }
 
     function success(packet) {
         console.log(packet);
@@ -132,7 +139,6 @@ function edit(preorder){
     }
 
 
-    CommunicationManager.send(packet, success, fail);
 } 
 
 

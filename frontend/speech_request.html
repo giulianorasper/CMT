@@ -99,28 +99,16 @@
 
                         </div>
 
-                        <form class="" action="speech_request.html" id="form-submit" method="POST">
                         <div class="row">
                             <div class="col-lg-3">
                             </div>
                             <div class="col-lg-6">
                                              <div class="form-group controls">
-                                                      <select class="form-control" name="language" required>
+                                                      <select class="form-control" name="language" id ="speachRequestOption">
 
-                                                          <option disabled selected hidden>please select here</option>
+                                                          <option disabled selected hidden>Select a topic</option>
 
-                                                          <option>Option 1</option>
-
-                                                          <option>Option 2</option>
-                                                          <option>Option 3</option>
-
-                                                          <option>Option 4</option>
-                                                          <option>Option 5</option>
-
-                                                          <option>Option 6</option>
-                                                          <option>Option 7</option>
-
-                                                          <option>Option 8</option>
+                    
 
 
                                                           <!--<option>Englisch</option>-->
@@ -134,10 +122,9 @@
                             <div class="col-lg-3">
                             </div>
                             <div class="form-group mt-3 col-lg-6" style="float: right;">
-                                <button type="submit" class="button button-contactForm boxed-btn pull-right" id="btnclose">Request</button>
+                                <button class="button button-contactForm boxed-btn pull-right" onclick="submitRequest()">Submit</button>
                             </div>
                         </div>
-                        </form>
 
                     </div>
                 </div>
@@ -175,45 +162,9 @@
 
    <script src="js/main.js"></script>
 
-
-        <script>
-        $("#form-submit").submit(function (e) {
-
-            <!--var textValue = document.getElementById("name").value-->
-
-            <!--console.log(textValue);-->
-            <!--if (textValue !== "project23") {-->
-                <!--console.log(textValue);-->
-                <!--$("#name").focus();-->
-                <!--&lt;!&ndash;$('#message').html('Passwords need to match').css('color', 'red');&ndash;&gt;-->
-                <!--$('#message').html('Incorrect password').css('color', 'red');-->
-
-                e.preventDefault();
-                $("#submit-message").empty();
-
-                $("#submit-message").addClass("row").addClass("contact-title");
-                $("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Request Submitted</h2>");
-
-                    <!--return false;-->
+  <script type="module" src="js/not_libs/request.js"></script>
 
 
-
-                 <!--location.reload-->
-
-
-            <!--}-->
-
-        });
-
-
-        $("#btnclose").on("click", function (e) {
-            setTimeout(function(){
-                location.reload();
-            }, 2000)
-        });
-
-
-</script>
 
 </body>
 

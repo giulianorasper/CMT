@@ -15,6 +15,8 @@ public class UserManagementTests extends DatabaseTests {
         Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
+        dbGen.checkLogin("MaxMustermann", "123");
+
         assertTrue("Attendee couldn't be added", dbGen.addAttendee(max, "1234", "42"));
         assertEquals(TokenResponse.ValidAttendee, dbGen.checkToken("42"));
         assertEquals(dbGen.getAttendeeData(max.getID()).getName(), max.getName());

@@ -54,24 +54,19 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                 "./docs",
                 new HashSet<String>(),
                 new HashMap<Integer, Request>(),
-                null
+                null,
+                "./testdb/testdb.db",
+                true
         );
 
-        this.addAdmin(new Admin("Test Name", "test@test.tes", "test", "test group", "test street", "e^x", 0));
-
-        this.addAttendee(new Attendee("A1", "A1", "a@a.a", "RCDS", "Illingen", "Mayor", 1));
-        this.addAttendee(new Attendee("A2", "A2", "b@b.b", "RCDS", "Illingen", "Press", 2));
-        System.out.println(this.getAttendeePassword(0).second());
-
-        agenda.addTopic(new Topic("Testing com 1", agenda), 0);
-        agenda.addTopic(new Topic("Testing com 2", agenda), 1);
-        agenda.addTopic(new Topic("Testing com 3", agenda), 2);
-        agenda.getTopic(1).getSubTopics().addTopic(new Topic("Testing com 2.1", agenda), 0);
-        agenda.getTopic(1).getSubTopics().addTopic(new Topic("Testing com 2.2", agenda), 1);
     }
 
 
-    public Conference(String name, String organizer, long startsAt, long endsAt, Agenda agenda, HashMap<Integer, Admin> admins, HashMap<Integer,Voting> votings, HashMap<String,Path> documents, String  documentsPath, Set<String> adminTokens, HashMap<Integer,Request> requests, Voting activeVoting) {
+    public Conference(String name, String organizer, long startsAt, long endsAt, Agenda agenda, HashMap<Integer,
+            Admin> admins, HashMap<Integer,Voting> votings, HashMap<String,Path> documents, String  documentsPath,
+                      Set<String> adminTokens, HashMap<Integer,Request> requests, Voting activeVoting,
+                      String databasePath,
+                      boolean deguggingInstance) {
         this.name = name;
         this.organizer = organizer;
         this.startsAt = startsAt;
@@ -82,23 +77,39 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         this.requests = requests;
         this.activeVoting = activeVoting;
         this.documentsPath = documentsPath;
+        this.databasePath = databasePath;
 
+        this.debugingInstance  = deguggingInstance;
         this.admins = admins;
 
         this.adminTokens = new HashMap<>();
         adminTokens.forEach(f -> this.adminTokens.put(f, true));
         DB_AgendaManager db_agendaManagement = new DB_AgendaManager("");
         agenda.register(db_agendaManagement);
-        File f = new File(documentsPath);
-        if(!f.exists() && !f.mkdir()){
+        File documentsFolder = new File(documentsPath);
+        if(!documentsFolder.exists() && !documentsFolder.mkdir()){
             throw new IllegalArgumentException("Could not create directory " + documentsPath);
         }
-        if(f.exists() && !f.isDirectory()){
+        if(documentsFolder.exists() && !documentsFolder.isDirectory()){
             throw new IllegalArgumentException("Could not create directory " + documentsPath +" , because a file with that name already exists");
         }
-        if(f.exists() && f.isDirectory()){
+        if(documentsFolder.exists() && documentsFolder.isDirectory()){
             //todo read files from directory
         }
+
+        File database = new File(databasePath);
+        if(database.exists()){
+            if(deguggingInstance){
+                database.delete();
+            }
+            else {
+                //todo read database
+            }
+        }
+        db_documentManagement = new DB_DocumentManager(databasePath);
+        db_userManagement = new DB_UserManager(databasePath);
+        db_requestManagement = new DB_RequestManager(databasePath);
+        db_votingManagement = new DB_VotingManager(databasePath);
     }
 
     //Conference Data
@@ -109,9 +120,12 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private long startsAt;
     private long endsAt;
 
+    private boolean debugingInstance;
+
     private Generator gen = new Generator_Imp();
 
     private String  documentsPath ;
+    private String databasePath;
 
     private Agenda agenda;
     private HashMap<Integer,Voting> votings;
@@ -122,11 +136,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private HashMap<String, Boolean> adminTokens; // a map backed Set
     private HashMap<String, Boolean> volatileUserNames = new HashMap<>(); // user names that are reserved even though the corresponding user is not added (jet)
 
-    //Database System //TODO add urls
-    private DB_DocumentManagement db_documentManagement = new DB_DocumentManager("./testdb/testdb.db");
-    private DB_UserManagement db_userManagement = new DB_UserManager("./testdb/testdb.db");
-    private DB_RequestManagement db_requestManagement = new DB_RequestManager("./testdb/testdb.db");
-    private DB_VotingManager db_votingManagement = new DB_VotingManager("./testdb/testdb.db");
+    //Database System
+    private DB_DocumentManagement db_documentManagement;
+    private DB_UserManagement db_userManagement;
+    private DB_RequestManagement db_requestManagement;
+    private DB_VotingManager db_votingManagement;
 
 
 
@@ -194,6 +208,22 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
         finally {
             attendeeLock.unlock();
+            adminLock.unlock();
+        }
+    }
+
+
+    //for debugging
+    public void addAdmin(Admin a, String pwd) {
+        assert (debugingInstance); // close the server since this operation is illegal
+        try{
+            adminLock.lock();
+            if(!db_userManagement.addAdmin(a, pwd, gen.generateToken())){
+                throw new IllegalArgumentException("Database addition failed");
+            }
+            admins.put(a.getID(), a);
+        }
+        finally {
             adminLock.unlock();
         }
     }

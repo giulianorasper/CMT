@@ -4,6 +4,7 @@ import agenda.Agenda;
 import agenda.AgendaManagement;
 import agenda.DB_AgendaManagement;
 import agenda.Topic;
+import com.google.gson.annotations.Expose;
 import database.*;
 import document.DB_DocumentManagement;
 import document.Document;
@@ -113,11 +114,13 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     //Conference Data
+    @Expose
     private String name;
-
+    @Expose
     private String organizer;
-
+    @Expose
     private long startsAt;
+    @Expose
     private long endsAt;
 
     private boolean debugingInstance;

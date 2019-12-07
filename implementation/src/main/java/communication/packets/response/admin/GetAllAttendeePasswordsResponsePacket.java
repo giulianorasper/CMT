@@ -1,5 +1,6 @@
 package communication.packets.response.admin;
 
+import com.google.gson.annotations.Expose;
 import communication.enums.PacketType;
 import communication.enums.RequestResult;
 import communication.packets.ResponsePacket;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class GetAllAttendeePasswordsResponsePacket extends ResponsePacket {
 
+    @Expose
     private List<Pair<User, String>> passwords;
 
     public GetAllAttendeePasswordsResponsePacket(List<Pair<User, String>> passwords) {

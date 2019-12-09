@@ -392,21 +392,60 @@
     <script src="js/main.js"></script>
 
     <script type="module" src="js/not_libs/voting.js"></script>
+    <!--<script src="data2.json"></script>-->
 
 
 
     <script>
-        $("#form-submit").submit(function (e) {
+    <!--console.log(data2);-->
+        <!--$("#form-submit").submit(function (e) {-->
 
-                e.preventDefault();
-                $("#submit-message").empty();
+                <!--e.preventDefault();-->
+                <!--$("#submit-message").empty();-->
 
-                $("#submit-message").addClass("row").addClass("contact-title");
-                $("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
-                    return false;
+                <!--$("#submit-message").addClass("row").addClass("contact-title");-->
+                <!--$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");-->
+                    <!--return false;-->
 
 
-        });
+        <!--});-->
+
+
+        <!--$(document).ready( function() {-->
+
+
+        <!--if(data2.exists){-->
+
+            <!--console.log(data2.voting.ID);-->
+
+            <!--optionList = data2.voting.options;-->
+
+            <!--//$("#voteQuestion").html('<h2 class="contact-title pull-left">'+ packet.voting.question + '</h2>')-->
+
+            <!--$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+data2.voting.id+'"><h2 class="contact-title pull-left">'+data2.voting.question+'</h2></div></div>');-->
+            <!--&lt;!&ndash;$("#voteQuestion").html('<div class="row"><h2 class="contact-title pull-left">'+data2.voting.question+'</h2></div>');&ndash;&gt;-->
+
+
+            <!--for(var i in data2.voting.options){-->
+
+            <!--console.log(i);-->
+
+            <!--var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+i+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="'+i+'">'+data2.voting.options[i].name+'</label></div></div></div>';-->
+            <!--$('#options').append(questionOptions);-->
+
+            <!--}-->
+
+        <!--}-->
+        <!--else {-->
+
+            <!--$("#submit-message").empty();-->
+            <!--$("#submit-message").addClass("row").addClass("contact-title");-->
+            <!--$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Currently no active vote!</h2>");-->
+        <!--}-->
+
+
+        <!--});-->
+
 
 
         <!--$("#btnclose").on("click", function (e) {-->

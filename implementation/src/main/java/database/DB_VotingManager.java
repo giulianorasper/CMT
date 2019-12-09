@@ -5,6 +5,7 @@ import voting.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -81,10 +82,18 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                         String insert = "INSERT INTO voting" + Integer.toString(v.getID()) +
                                 " (optionID, optionName, userID) VALUES (?,?,?)";
                         try (PreparedStatement in = connection.prepareStatement(insert)) {
-                            in.setString(1, "voting" + v.getID());
-                            in.setInt(2, p.getOptionID());
-                            in.setString(3, p.getName());
-                            in.setInt(4, i);
+                            in.setInt(1, p.getOptionID());
+                            in.setString(2, p.getName());
+                            in.setInt(3, i);
+                            in.executeUpdate();
+                        }
+                    } if (voters.isEmpty()) { // In case noone voted for this option.
+                        String insert = "INSERT INTO voting" + Integer.toString(v.getID()) +
+                                " (optionID, optionName, userID) VALUES (?,?,?)";
+                        try (PreparedStatement in = connection.prepareStatement(insert)) {
+                            in.setInt(1, p.getOptionID());
+                            in.setString(2, p.getName());
+                            in.setNull(3, Types.INTEGER);
                             in.executeUpdate();
                         }
                     }
@@ -138,22 +147,7 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                      ResultSet vot = optR.executeQuery()) {
                     List<VotingOption> options = new ArrayList<>();
                     if (table.getBoolean("isNamed")) {
-                        List<List<Integer>> res = new ArrayList<>();
-                        String[] map = new String[table.getInt("numberOfOptions")];
-                        for (int i = 0; i < table.getInt("numberOfOptions"); i++) {
-                            res.add(new LinkedList<>());
-                        }
-                        while (vot.next()) {
-                            if (map[vot.getInt("optionID")] == null) {
-                                map[vot.getInt("optionID")] = vot.getString("optionName");
-                            }
-                            res.get(vot.getInt("optionID")).add(vot.getInt("userID"));
-                        }
-                        for (List<Integer> p : res) {
-                            VotingOption v = new NamedVotingOption(res.indexOf(p),
-                                    map[res.indexOf(p)], p);
-                            options.add(v);
-                        }
+                        //TODO: Implement me
                     } else {
                         while (vot.next()) {
                             VotingOption v =
@@ -163,7 +157,8 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                             options.add(v);
                         }
                     }
-                    voting = new Voting(options, table.getString("question"), ID);
+                    voting = new Voting(options,
+                            table.getString("question"), ID, table.getBoolean("isNamed"));
                 }
             }
         } catch (SQLException ex) {

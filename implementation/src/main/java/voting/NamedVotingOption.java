@@ -43,7 +43,7 @@ public class NamedVotingOption extends VotingOption {
     public List<Integer> getVoters() {
         try {
             lock.getReadAccess();
-            return voters;
+            return new ArrayList<>(voters);
         } catch (InterruptedException e) {
             return null;
         } finally {

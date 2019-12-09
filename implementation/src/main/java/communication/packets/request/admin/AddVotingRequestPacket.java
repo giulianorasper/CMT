@@ -38,7 +38,7 @@ public class AddVotingRequestPacket extends AuthenticatedRequestPacket {
                 }
                 optionsObjectList.add(votingOptionObject);
             }
-            Voting voting = new Voting(optionsObjectList, question);
+            Voting voting = new Voting(optionsObjectList, question, namedVote);
         }
     }
 }

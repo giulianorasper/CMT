@@ -32,7 +32,7 @@ function displayActiveVote(packet){
 		 
 		for(var i in packet.voting.options){
 		
-		var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+i+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="1">'+packet.voting.options[i]+'</label></div></div></div>';
+		var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="1">'+packet.voting.options[i].name+'</label></div></div></div>';
 		$('#options > .col-lg-9').html(document.write(questionOptions));
 		
 		}	 

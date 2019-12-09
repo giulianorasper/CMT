@@ -3,6 +3,7 @@ import GetActiveVotingRequestPacket from "../../communication/packets/GetActiveV
 import AddVoteRequestPacket from "../../communication/packets/AddVoteRequestPacket.js";
 
 var optionList;
+var voteSubmitted;
 
 $(document).ready( function() {
 
@@ -20,6 +21,17 @@ $(document).ready( function() {
     const getActiveVote = new GetActiveVotingRequestPacket();
 
     CommunicationManager.send(getActiveVote, success, fail);
+	
+	
+	// To check weather vote is submitted or not if yes, then it will show only submitted vote message!
+	
+	if(voteSubmitted != ""){
+		
+		$("#submit-message").empty();
+		$("#submit-message").addClass("row").addClass("contact-title");
+		$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
+	}
+	
 
 });
 
@@ -53,6 +65,7 @@ function displayActiveVote(packet){
 }
 
 
+
         $("#form-submit").submit(function (e) {
 			
                 e.preventDefault();
@@ -62,6 +75,7 @@ function displayActiveVote(packet){
 				
 				    function success(packet){
 						if(packet.result === "Valid"){
+							voteSubmitted = "votsubmitted";
 							$("#submit-message").empty();
 							$("#submit-message").addClass("row").addClass("contact-title");
 							$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
@@ -81,7 +95,8 @@ function displayActiveVote(packet){
 					//selectedOption = $(this).val();
 					
 				//});
-                    return false;
+                   // return false;
 
 
         });
+		

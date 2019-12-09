@@ -17,8 +17,6 @@ $( document ).ready(function() {
 
     CommunicationManager.send(packet, successAgendaReq, failAgendaReq);
 
-
-
 });
 
 
@@ -35,7 +33,7 @@ function failAgendaReq() {
 function renderAgenda(data, $e) {
     // create an inner item
     agendaContainer.html("");
-    if(data.topics.length == 0){
+    if(data.topics.length === 0){
         createDefault($e);
         return;
     }
@@ -46,7 +44,7 @@ function renderAgenda(data, $e) {
     function createInner(obj, $target, preOrder) {
         var li = generateAgendaRow(obj.name, preOrder, fontSize).appendTo($target);
         fontSize = fontSize - fontSizeDifference
-        if (obj.subTopics.topics != undefined && obj.subTopics.topics.length > 0) {
+        if (obj.subTopics.topics !== undefined && obj.subTopics.topics.length > 0) {
             var innerList = $('<ul class="list agendaList"></ul>').appendTo(li);
             for (var i = 0; i < obj.subTopics.topics.length; i++) {
                 var child = obj.subTopics.topics[i];
@@ -70,7 +68,7 @@ function append(preorder){
     var split = (""+preorder).split(".");
     var elem = split.pop()
     var newOrder = (parseInt(elem) +1);
-    if(split.length != 0){
+    if(split.length !== 0){
         newOrder = split.join(".")+ "." + newOrder
     }
 

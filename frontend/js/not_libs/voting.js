@@ -85,7 +85,7 @@ function displayActiveVote(packet){
 						}
 						
 						else{
-							$("#failure").html("<h4 class='contact-title' style='float: right;'>You have already submitted vote!</h4>");	
+							$("#failure").html("<h4 style='float: right; margin-top:30px;'>You have already submitted vote!</h4>");	
 						}
 					}
 

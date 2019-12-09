@@ -197,7 +197,7 @@
                                 <!--</div>-->
                             <!--</div>-->
                         </div>
-                        <form class="" action="" id="form-submit" method="POST">
+                        <!--<form class="" action="" id="form-submit" method="POST">-->
                         <div id="options">
                             <!--<div class="row">-->
                                 <!--<div class="col-lg-2">-->
@@ -258,16 +258,16 @@
                             <!--</div>-->
                         </div>
                             <div class="row">
-                                <div class="custom-control custom-radio col-lg-2">
+                                <div class="custom-control custom-radio col-lg-8" id="failure">
 
                                 </div>
-                                <div class="form-group mt-3 col-lg-8" style="float: right; padding-bottom: 25px;">
+                                <div class="form-group mt-3 col-lg-3" style="float: right; padding-bottom: 25px;">
                                     <!--<button type="button" class="button button-contactForm boxed-btn">Cancel</button>-->
-                                    <button type="submit" class="button button-contactForm boxed-btn pull-right" style="border: 1px solid #00D363; color:#00D363!important;" id="submitButton">Vote</button>
+                                    <button type="submit" class="button button-contactForm boxed-btn" style="border: 1px solid #00D363; color:#00D363!important;" id="submitButton">Vote</button>
                                 </div>
                             </div>
 
-                        </form>
+                        <!--</form>-->
 
                     </div>
                 </div>
@@ -396,71 +396,7 @@
 
 
 
-    <script>
-    <!--console.log(data2);-->
-        <!--$("#form-submit").submit(function (e) {-->
 
-                <!--e.preventDefault();-->
-                <!--$("#submit-message").empty();-->
-
-                <!--$("#submit-message").addClass("row").addClass("contact-title");-->
-                <!--$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");-->
-                    <!--return false;-->
-
-
-        <!--});-->
-
-
-        <!--$(document).ready( function() {-->
-
-
-        <!--if(data2.exists){-->
-
-            <!--console.log(data2.voting.ID);-->
-
-            <!--optionList = data2.voting.options;-->
-
-            <!--//$("#voteQuestion").html('<h2 class="contact-title pull-left">'+ packet.voting.question + '</h2>')-->
-
-            <!--$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+data2.voting.id+'"><h2 class="contact-title pull-left">'+data2.voting.question+'</h2></div></div>');-->
-            <!--&lt;!&ndash;$("#voteQuestion").html('<div class="row"><h2 class="contact-title pull-left">'+data2.voting.question+'</h2></div>');&ndash;&gt;-->
-
-
-            <!--for(var i in data2.voting.options){-->
-
-            <!--console.log(i);-->
-
-            <!--var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+i+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="'+i+'">'+data2.voting.options[i].name+'</label></div></div></div>';-->
-            <!--$('#options').append(questionOptions);-->
-
-            <!--}-->
-
-        <!--}-->
-        <!--else {-->
-
-            <!--$("#submit-message").empty();-->
-            <!--$("#submit-message").addClass("row").addClass("contact-title");-->
-            <!--$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Currently no active vote!</h2>");-->
-        <!--}-->
-
-
-        <!--});-->
-
-
-
-        <!--$("#btnclose").on("click", function (e) {-->
-            <!--setTimeout(function(){-->
-                <!--location.reload();-->
-            <!--}, 2000)-->
-        <!--});-->
-
-
-        <!--var start = new Date;-->
-
-        <!--setInterval(function() {-->
-            <!--$('#submit-message').text(new Date + " Seconds");-->
-        <!--}, 1000);-->
-</script>
 
 
 </body>

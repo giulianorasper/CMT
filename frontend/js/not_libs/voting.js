@@ -3,7 +3,7 @@ import GetActiveVotingRequestPacket from "../../communication/packets/GetActiveV
 import AddVoteRequestPacket from "../../communication/packets/AddVoteRequestPacket.js";
 
 var optionList;
-var voteSubmitted = false;
+var voteID;
 
 $(document).ready( function() {
 
@@ -21,19 +21,9 @@ $(document).ready( function() {
     const getActiveVote = new GetActiveVotingRequestPacket();
 
     CommunicationManager.send(getActiveVote, success, fail);
-	
-	
-	// To check weather vote is submitted or not if yes, then it will show only submitted vote message!
-	
-	if(voteSubmitted){
-		
-		$("#submit-message").empty();
-		$("#submit-message").addClass("row").addClass("contact-title");
-		$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
-	}
-	
 
 });
+
 
 function displayActiveVote(packet){
 	// packet.exists,
@@ -44,9 +34,12 @@ function displayActiveVote(packet){
 		//console.log(packet.voting.id);
 
 		optionList = packet.voting.options;
+		console.log(optionList[0]);
+		
+		voteID = packet.voting.ID;
 		
 		//$("#voteQuestion").html('<h2 class="contact-title pull-left">'+ packet.voting.question + '</h2>')
-		$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.id+'"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');
+		$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.ID+'"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');
 		 
 		for(var i in packet.voting.options){
 		
@@ -66,20 +59,33 @@ function displayActiveVote(packet){
 }
 
 
-
-        $("#form-submit").submit(function (e) {
+        //$("#form-submit").submit(function (e) {
+        $("#submitButton").on("click", function () {
 			
-                e.preventDefault();
+                //e.preventDefault();
+				
 				
 				const selectedOptionId = $('input[name="radio"]:checked').attr('id');
-				const voteId = $('#voteQuestion').attr('id');
+				
+				//const voteId = $('#voteQuestion').attr('id');
+				//const voteId = $('#voteQuestion').find(":nth-child(2)"); 
+				
+				//console.log(selectedOptionId);
+				//console.log(questionID);
+				//console.log(voteId);
+				//console.log(optionList[selectedOptionId].optionID);
+				
 				
 				    function success(packet){
 						if(packet.result === "Valid"){
-							voteSubmitted = true;
+							
 							$("#submit-message").empty();
 							$("#submit-message").addClass("row").addClass("contact-title");
 							$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
+						}
+						
+						else{
+							$("#failure").html("<h4 class='contact-title' style='float: right;'>You have already submitted vote!</h4>");	
 						}
 					}
 
@@ -87,17 +93,9 @@ function displayActiveVote(packet){
 						console.log("sorry! your vote are not sumbiited");
 					}
 				
-				const sendVote = new AddVoteRequestPacket(voteId, optionList[selectedOptionId].optionID);
+				const sendVote = new AddVoteRequestPacket(voteID, selectedOptionId);
 
 				CommunicationManager.send(sendVote, success, fail);
-				
-				//$( "input[type='radio']" ).on( "click", function(){
-					
-					//selectedOption = $(this).val();
-					
-				//});
-                   // return false;
-
 
         });
 		

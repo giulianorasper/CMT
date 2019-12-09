@@ -14,6 +14,10 @@ import org.java_websocket.server.WebSocketServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -125,15 +129,27 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
                 case SET_REQUEST_APPROVAL_STATUS:
                     pack = gson.fromJson(message, SetRequestApprovalStatusRequestPacket.class);
                     break;
+                case UPDATE_FILE_REQUEST:
+                    pack = gson.fromJson(message, UpdateFileRequestPacket.class);
+                    break;
                     /* USER PACKETS */
                 case ADD_VOTE_REQUEST:
                     pack = gson.fromJson(message, AddVoteRequestPacket.class);
+                    break;
+                case DOWNLOAD_FILE_REQUEST:
+                    pack = gson.fromJson(message, DownloadFileRequestPacket.class);
                     break;
                 case GET_ACTIVE_VOTING_REQUEST:
                     pack = gson.fromJson(message, GetActiveVotingRequestPacket.class);
                     break;
                 case GET_AGENDA_REQUEST:
                     pack = gson.fromJson(message, GetAgendaRequestPacket.class);
+                    break;
+                case CONFERENCE_DATA_REQUEST:
+                    pack = gson.fromJson(message, GetConferenceDataRequestPacket.class);
+                    break;
+                case IS_ADMIN_REQUEST:
+                    pack = gson.fromJson(message, IsAdminRequestPacket.class);
                     break;
                 case LOGIN_REQUEST:
                     pack = gson.fromJson(message, LoginRequestPacket.class);
@@ -155,6 +171,7 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
 
         } catch (Exception e) {
             if(e instanceof IllegalArgumentException) {
+                e.printStackTrace();
                 new FailureResponsePacket(e.getMessage()).send(conn);
             } else {
                 e.printStackTrace();
@@ -163,6 +180,14 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
         }
     }
 
+    @Override
+    public void onMessage(WebSocket conn, ByteBuffer message) {
+        UpdateFileRequestPacket packet = UpdateFileRequestPacket.getRequestFromConnectionIfExists(conn);
+        if(packet != null) {
+            byte[] fileBytes = message.array();
+            packet.handleFileTransfer(conference, conn, fileBytes);
+        }
+    }
 
     @Override
     public void onError(WebSocket conn, Exception ex) {

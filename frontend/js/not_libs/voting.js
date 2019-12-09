@@ -1,5 +1,6 @@
 import CommunicationManager from "../../communication/CommunicationManager.js";
 import GetActiveVotingRequestPacket from "../../communication/packets/GetActiveVotingRequestPacket.js";
+import AddVoteRequestPacket from "../../communication/packets/AddVoteRequestPacket.js";
 
 $(document).ready( function() {
 
@@ -46,3 +47,38 @@ function displayActiveVote(packet){
 	}
 	
 }
+
+
+        $("#form-submit").submit(function (e) {
+			
+                e.preventDefault();
+				
+				selectedOptionId = $('input[name="radio"]:checked').val();
+				voteId = $('#voteQuestion').attr('id');
+				
+				    function success(packet){
+						console.log(packet)
+						if(packet.result === "Valid"){
+							$("#submit-message").empty();
+							$("#submit-message").addClass("row").addClass("contact-title");
+							$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
+						}
+					}
+
+					function fail() {
+						console.log("Something went wrong during Get All Attendees Request.");
+					}
+				
+				const sendVote = new AddVoteRequestPacket(voteId, selectedOptionId);
+
+				CommunicationManager.send(sendVote, success, fail);
+				
+				//$( "input[type='radio']" ).on( "click", function(){
+					
+					//selectedOption = $(this).val();
+					
+				//});
+                    return false;
+
+
+        });

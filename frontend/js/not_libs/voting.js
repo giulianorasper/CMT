@@ -2,6 +2,8 @@ import CommunicationManager from "../../communication/CommunicationManager.js";
 import GetActiveVotingRequestPacket from "../../communication/packets/GetActiveVotingRequestPacket.js";
 import AddVoteRequestPacket from "../../communication/packets/AddVoteRequestPacket.js";
 
+var optionList;
+
 $(document).ready( function() {
 
     function success(packet){
@@ -27,6 +29,8 @@ function displayActiveVote(packet){
 	console.log(voting.id);
 	
 	if(packet.exists){
+
+		optionList = packet.voting.options;
 		
 		//$("#voteQuestion").html('<h2 class="contact-title pull-left">'+ packet.voting.question + '</h2>')
 		$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.id+'"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');
@@ -53,11 +57,10 @@ function displayActiveVote(packet){
 			
                 e.preventDefault();
 				
-				selectedOptionId = $('input[name="radio"]:checked').val();
-				voteId = $('#voteQuestion').attr('id');
+				const selectedOptionId = $('input[name="radio"]:checked').attr('id');
+				const voteId = $('#voteQuestion').attr('id');
 				
 				    function success(packet){
-						console.log(packet)
 						if(packet.result === "Valid"){
 							$("#submit-message").empty();
 							$("#submit-message").addClass("row").addClass("contact-title");
@@ -69,7 +72,7 @@ function displayActiveVote(packet){
 						console.log("sorry! your vote are not sumbiited");
 					}
 				
-				const sendVote = new AddVoteRequestPacket(voteId, selectedOptionId);
+				const sendVote = new AddVoteRequestPacket(voteId, optionList[selectedOptionId].optionID);
 
 				CommunicationManager.send(sendVote, success, fail);
 				

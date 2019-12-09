@@ -154,6 +154,9 @@ public class Voting implements VotingObservable{
         try{
             lock.getWriteAccess();
             status = VotingStatus.Closed;
+            for(VotingOption votingOption : options) {
+                votingOption.publishVotes();
+            }
             notifyObservers();
             return true;
         }

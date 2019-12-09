@@ -16,11 +16,12 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
 
     private String name;
     private String originalName;
+    private boolean creation;
 
-    public UpdateFileRequestPacket(String name) {
+    public UpdateFileRequestPacket(String name, String originalName) {
         super(PacketType.UPDATE_FILE_REQUEST);
         this.name = name;
-        //this.fileBytes = fileBytes;
+        this.originalName = originalName;
     }
 
     @Override
@@ -33,7 +34,10 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
 
     public void handleFileTransfer(Conference conference, WebSocket webSocket, byte[] fileBytes) {
         if(isPermitted(conference, webSocket, true)) {
-            //TODO use conference to update file
+            String fileType = "";
+            String[] split = originalName.split("\\.");
+            if(split.length >= 2) fileType = "." + split[split.length-1];
+            conference.updateDocument(name, fileType, fileBytes, creation);
             new ValidResponsePacket().send(webSocket);
         }
     }

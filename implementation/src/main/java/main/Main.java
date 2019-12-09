@@ -56,6 +56,7 @@ public class Main {
         o1.changeName("I");
         o2.changeName("am");
         o3.changeName("the");
+        o4.changeName("Lorax");
         voting.startVote();
         conf.addVoting(voting);
         conf.update(voting);

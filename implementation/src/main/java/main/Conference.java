@@ -633,7 +633,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     /****************** The Document Management Interface *********/
 
     @Override
-    public void addDocument( String name, String content) {
+    public void updateDocument(String name, String fileType, byte[] fileBytes, boolean isCreation) {
         try {
             documentsLock.lock();
             if(documents.containsKey(name)){
@@ -653,10 +653,6 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         return;
     }
 
-    @Override
-    public void updateDocument( String name, String content) {
-        return;
-    }
 
     @Override
     public Document getDocument( String name) {

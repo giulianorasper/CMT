@@ -43,4 +43,9 @@ public class AnonymousVotingOption extends VotingOption {
     public List<Integer> getVoters() {
         return null;
     }
+
+    @Override
+    public void publishVotes() {
+        setPublicVotes(votes);
+    }
 }

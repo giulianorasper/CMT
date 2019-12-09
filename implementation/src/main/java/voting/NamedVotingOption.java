@@ -1,10 +1,13 @@
 package voting;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class NamedVotingOption extends VotingOption {
 
+    @Expose
     public List<Integer> voters = new ArrayList<>();
 
     /**
@@ -49,5 +52,10 @@ public class NamedVotingOption extends VotingOption {
         } finally {
             lock.finishRead();
         }
+    }
+
+    @Override
+    public void publishVotes() {
+        setPublicVotes(voters.size());
     }
 }

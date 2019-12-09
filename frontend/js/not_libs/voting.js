@@ -12,7 +12,7 @@ $(document).ready( function() {
     }
 
     function fail() {
-        console.log("Something went wrong during Get All Attendees Request.");
+        console.log("Something went wrong during, get active vote question & options.");
     }
 
     const getActiveVote = new GetActiveVotingRequestPacket();
@@ -66,7 +66,7 @@ function displayActiveVote(packet){
 					}
 
 					function fail() {
-						console.log("Something went wrong during Get All Attendees Request.");
+						console.log("sorry! your vote are not sumbiited");
 					}
 				
 				const sendVote = new AddVoteRequestPacket(voteId, selectedOptionId);

@@ -28,11 +28,11 @@ function displayActiveVote(packet){
 	if(packet.exists){
 		
 		//$("#voteQuestion").html('<h2 class="contact-title pull-left">'+ packet.voting.question + '</h2>')
-		$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.id+'"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>')
+		$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.id+'"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');
 		 
-		for(var i in package.voting.options){
+		for(var i in packet.voting.options){
 		
-		var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+i+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="1">'+package.voting.options[i]+'</label></div></div></div>';
+		var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+i+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="1">'+packet.voting.options[i]+'</label></div></div></div>';
 		$('#options > .col-lg-9').html(document.write(questionOptions));
 		
 		}	 

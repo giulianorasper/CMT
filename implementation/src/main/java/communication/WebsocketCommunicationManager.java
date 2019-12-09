@@ -15,9 +15,6 @@ import org.java_websocket.server.WebSocketServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -128,6 +125,9 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
                     break;
                 case SET_REQUEST_APPROVAL_STATUS:
                     pack = gson.fromJson(message, SetRequestApprovalStatusRequestPacket.class);
+                    break;
+                case START_VOTING_REQUEST:
+                    pack = gson.fromJson(message, StartVotingRequestPacket.class);
                     break;
                 case UPDATE_FILE_REQUEST:
                     pack = gson.fromJson(message, UpdateFileRequestPacket.class);

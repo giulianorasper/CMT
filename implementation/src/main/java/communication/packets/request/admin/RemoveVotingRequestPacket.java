@@ -18,6 +18,7 @@ public class RemoveVotingRequestPacket extends AuthenticatedRequestPacket {
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
         if(isPermitted(conference, webSocket, true)) {
+            //TODO check for only removing not started votings
             conference.removeVoting(conference.getVoting(id));
             new ValidResponsePacket().send(webSocket);
         }

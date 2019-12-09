@@ -87,7 +87,8 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                             in.setInt(3, i);
                             in.executeUpdate();
                         }
-                    } if (voters.isEmpty()) { // In case noone voted for this option.
+                    }
+                    if (voters.isEmpty()) { // In case noone voted for this option.
                         String insert = "INSERT INTO voting" + Integer.toString(v.getID()) +
                                 " (optionID, optionName, userID) VALUES (?,?,?)";
                         try (PreparedStatement in = connection.prepareStatement(insert)) {
@@ -147,7 +148,26 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                      ResultSet vot = optR.executeQuery()) {
                     List<VotingOption> options = new ArrayList<>();
                     if (table.getBoolean("isNamed")) {
-                        //TODO: Implement me
+                        List<List<Integer>> res = new ArrayList<>();
+                        String[] map = new String[table.getInt("numberOfOptions")];
+                        for (int i = 0; i < table.getInt("numberOfOptions"); i++) {
+                            res.add(new LinkedList<>());
+                        }
+                        while (vot.next()) {
+                            if (map[vot.getInt("optionID")] == null
+                                    && !vot.wasNull()) {
+                                map[vot.getInt("optionID")] = vot.getString("optionName");
+                            }
+                            int userID = vot.getInt("userID");
+                            if (!vot.wasNull()) {
+                                res.get(vot.getInt("optionID")).add(vot.getInt("userID"));
+                            }
+                        }
+                        for (List<Integer> p : res) {
+                            VotingOption v = new NamedVotingOption(res.indexOf(p),
+                                    map[res.indexOf(p)], p);
+                            options.add(v);
+                        }
                     } else {
                         while (vot.next()) {
                             VotingOption v =
@@ -159,6 +179,9 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                     }
                     voting = new Voting(options,
                             table.getString("question"), ID, table.getBoolean("isNamed"));
+                    for (VotingOption vo : voting.getOptions()) {
+                        vo.setParent(voting);
+                    }
                 }
             }
         } catch (SQLException ex) {

@@ -54,7 +54,6 @@ public class VotingManagementTests extends DatabaseTests {
 
         anon.addVote(0, 1);
         anon.addVote(1, 2);
-        anon.addVote(2, 3);
 
         named.endVote();
         anon.endVote();
@@ -100,16 +99,16 @@ public class VotingManagementTests extends DatabaseTests {
         List<Integer> resN1 = resn.getOptions().get(0).getVoters();
         List<Integer> resN2 = resn.getOptions().get(1).getVoters();
         List<Integer> resN3 = resn.getOptions().get(2).getVoters();
-        List<Integer> votersN1 = resn.getOptions().get(0).getVoters();
-        List<Integer> votersN2 = resn.getOptions().get(1).getVoters();
-        List<Integer> votersN3 = resn.getOptions().get(2).getVoters();
+        List<Integer> votersN1 = named.getOptions().get(0).getVoters();
+        List<Integer> votersN2 = named.getOptions().get(1).getVoters();
+        List<Integer> votersN3 = named.getOptions().get(2).getVoters();
 
         assertTrue("Wrong voters were saved.",
                 resN1.containsAll(votersN1) && votersN1.containsAll(resN1));
         assertTrue("Wrong voters were saved.",
-                resN1.containsAll(votersN2) && votersN1.containsAll(resN2));
+                resN2.containsAll(votersN2) && votersN2.containsAll(resN2));
         assertTrue("Wrong voters were saved.",
-                resN1.containsAll(votersN3) && votersN1.containsAll(resN3));
+                resN3.containsAll(votersN3) && votersN3.containsAll(resN3));
     }
 
     @Test

@@ -20,7 +20,6 @@ public abstract class VotingOption {
         lock  = v.lock;
     }
 
-
     public int getOptionID() {
         try {
             lock.getReadAccess();

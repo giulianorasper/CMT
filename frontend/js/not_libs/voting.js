@@ -38,9 +38,10 @@ $(document).ready( function() {
 function displayActiveVote(packet){
 	// packet.exists,
 	// packet.voting.id
-	console.log(voting.id);
 	
 	if(packet.exists){
+
+		//console.log(packet.voting.id);
 
 		optionList = packet.voting.options;
 		

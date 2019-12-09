@@ -1,5 +1,6 @@
 import CommunicationManager from "../../communication/CommunicationManager.js";
 import GetActiveVotingRequestPacket from "../../communication/packets/GetActiveVotingRequestPacket.js";
+import AddVoteRequestPacket from "../../communication/packets/AddVoteRequestPacket.js";
 
 $(document).ready( function() {
 
@@ -32,7 +33,7 @@ function displayActiveVote(packet){
 		 
 		for(var i in packet.voting.options){
 		
-		var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+i+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="1">'+packet.voting.options[i]+'</label></div></div></div>';
+		var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="1">'+packet.voting.options[i].name+'</label></div></div></div>';
 		$('#options > .col-lg-9').html(document.write(questionOptions));
 		
 		}	 
@@ -46,3 +47,38 @@ function displayActiveVote(packet){
 	}
 	
 }
+
+
+        $("#form-submit").submit(function (e) {
+			
+                e.preventDefault();
+				
+				selectedOptionId = $('input[name="radio"]:checked').val();
+				voteId = $('#voteQuestion').attr('id');
+				
+				    function success(packet){
+						console.log(packet)
+						if(packet.result === "Valid"){
+							$("#submit-message").empty();
+							$("#submit-message").addClass("row").addClass("contact-title");
+							$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
+						}
+					}
+
+					function fail() {
+						console.log("Something went wrong during Get All Attendees Request.");
+					}
+				
+				const sendVote = new AddVoteRequestPacket(voteId, selectedOptionId);
+
+				CommunicationManager.send(sendVote, success, fail);
+				
+				//$( "input[type='radio']" ).on( "click", function(){
+					
+					//selectedOption = $(this).val();
+					
+				//});
+                    return false;
+
+
+        });

@@ -10,9 +10,15 @@ import static org.junit.Assert.assertTrue;
 
 public class AgendaManagementTests extends DatabaseTests {
 
+    DB_AgendaManagement votA;
+
+    @Before
+    public void initVotingManger() {
+        votA = this.getAgendaDB();
+    }
+
     @Test
     public void addValidTopic(){
-        DB_AgendaManagement agendaDB = this.getAgendaDB();
         Agenda agenda = new Agenda();
         Topic firstTopic = new Topic("Käsebrot", agenda);
         Topic firstSubTopic = new Topic("Käse", firstTopic.getSubTopics());
@@ -22,9 +28,9 @@ public class AgendaManagementTests extends DatabaseTests {
         firstTopic.getSubTopics().addTopic(firstSubTopic, 0);
         firstTopic.getSubTopics().addTopic(secondSubTopic, 1);
 
-        agendaDB.update(agenda);
+        votA.update(agenda);
 
-        Agenda reference = agendaDB.getAgenda();
+        Agenda reference = votA.getAgenda();
 
         Topic refFirstTopic = reference.getTopic(0);
         Topic refFirstSubTopic = reference.getTopic(0).getSubTopics().getTopic(0);

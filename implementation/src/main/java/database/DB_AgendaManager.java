@@ -52,7 +52,7 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.execute();
         } catch (SQLException ex) {
-            System.err.println("An exception occurred while first Deleting the agenda.");
+            System.err.println("An exception occurred while first deleting the agenda.");
             System.err.println(ex.getMessage());
             return false;
         } finally {
@@ -61,19 +61,21 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
         this.openConnection();
         List<String> preOrder = a.preOrder();
         sqlstatement = "INSERT INTO agenda(topicPosition, topicName) VALUES(?,?)";
-        for (String s : preOrder) {
-            try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
-                String name = a.getTopicFromPreorderString(s).getName();
-                stmt.setString(1, s);
-                stmt.setString(2, name);
-                stmt.execute();
-            } catch (SQLException ex) {
-                System.err.println("An exception occurred while updating the agenda.");
-                System.err.println(ex.getMessage());
-                return false;
-            } finally {
-                this.closeConnection();
+        try {
+            for (String s : preOrder) {
+                try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+                    String name = a.getTopicFromPreorderString(s).getName();
+                    stmt.setString(1, s);
+                    stmt.setString(2, name);
+                    stmt.execute();
+                }
             }
+        } catch (SQLException ex) {
+            System.err.println("An exception occurred while updating the agenda.");
+            System.err.println(ex.getMessage());
+            return false;
+        } finally {
+            this.closeConnection();
         }
         return true;
     }
@@ -92,7 +94,7 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
             while (agenda.next()) {
                 String ord = agenda.getString("topicPosition");
                 List<Integer> order = new LinkedList<Integer>();
-                Arrays.asList(ord.split(" ")).forEach(s -> order.add(Integer.parseInt(s)));
+                Arrays.asList(ord.split("\\.")).forEach(s -> order.add(Integer.parseInt(s)));
                 String name = agenda.getString("topicName");
                 tops.add(new Pair<>(order, name));
             }

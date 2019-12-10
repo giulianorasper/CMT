@@ -76,7 +76,8 @@ public class Voting implements VotingObservable{
     @Expose
     private long openUntil;
     private VotingStatus status;
-
+    //the duration of the voting in seconds
+    private int duration;
     private static int lastUsedID=0;
     private static Lock idLock = new ReentrantLock();
     protected WriterBiasedRWLock lock = new WriterBiasedRWLock();
@@ -136,9 +137,23 @@ public class Voting implements VotingObservable{
         }
     }
 
+    public void setDuration(int seconds) {
+        try{
+            lock.getWriteAccess();
+            this.duration = seconds;
+        }
+        catch (InterruptedException e){
+
+        }
+        finally {
+            lock.finishWrite();
+        }
+    }
+
     public boolean startVote() {
         try{
             lock.getWriteAccess();
+            openUntil = System.currentTimeMillis() / 1000 + duration;
             status = VotingStatus.Running;
             return true;
         }

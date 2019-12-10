@@ -1,7 +1,6 @@
 package voting;
 
 import com.google.gson.annotations.Expose;
-import jdk.jshell.spi.ExecutionControl;
 import utils.WriterBiasedRWLock;
 
 import java.util.List;
@@ -71,15 +70,8 @@ public abstract class VotingOption {
         }
     }
 
-    public void setPublicVotes(int votes) {
-        try {
-            lock.getWriteAccess();
-            this.publicVotes = votes;
-        } catch (InterruptedException e) {
-
-        } finally {
-            lock.finishWrite();
-        }
+    protected void setPublicVotes(int votes) {
+        this.publicVotes = votes;
     }
 
     abstract protected void addVote(int userID);
@@ -92,5 +84,5 @@ public abstract class VotingOption {
         voting.notifyObservers();
     }
 
-    public abstract void publishVotes();
+    protected abstract void publishVotes();
 }

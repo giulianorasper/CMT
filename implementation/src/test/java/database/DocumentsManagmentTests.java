@@ -21,6 +21,7 @@ public class DocumentsManagmentTests extends DatabaseTests {
         DB_DocumentManagement docDb = this.getDocumentDB();
 
         assertTrue(docDb.addDocument(testdoc));
+        assertNull(docDb.getDocument("wrongname"));
         assertEquals(docDb.getDocument(testdoc.getName()).getName(), testdoc.getName());
         assertEquals(docDb.getDocument(testdoc.getName()).getRevisionNumber(), testdoc.getRevisionNumber());
         assertEquals(docDb.getDocument(testdoc.getName()).getPath(), testdoc.getPath());
@@ -47,19 +48,23 @@ public class DocumentsManagmentTests extends DatabaseTests {
         DB_DocumentManagement docDb = this.getDocumentDB();
 
         assertTrue(docDb.addDocument(testdoc));
-        assertTrue(docDb.deleteDocument("wrongName"));
+        assertFalse(docDb.deleteDocument("wrongname"));
         assertEquals(docDb.getDocument(testdoc.getName()).getName(), testdoc.getName());
     }
 
     @Test
     public void updateDocuments(){
         Document testdoc = new Document("/db/test/documentsfolder","TestDocument");
+        Document testdoc2 = new Document("/db/test/documentsfolder2","TestDocument2");
         DB_DocumentManagement docDb = this.getDocumentDB();
 
         assertTrue(docDb.addDocument(testdoc));
+        assertTrue(docDb.addDocument(testdoc2));
         assertTrue(docDb.updateDocument(testdoc.getName(), "UpdateDocument"));
         assertEquals(docDb.getDocument("UpdateDocument").getName(), "UpdateDocument");
         assertTrue(docDb.getDocument("UpdateDocument").getRevisionNumber() == 2);
+        assertFalse(docDb.updateDocument("wrongname", "newname"));
+        assertFalse(docDb.updateDocument("UpdateDocument", "TestDocument2"));
     }
 
     @Test
@@ -70,7 +75,16 @@ public class DocumentsManagmentTests extends DatabaseTests {
         assertTrue(docDb.addDocument(testdoc));
         assertTrue(docDb.isNameAlreadyUsed("TestDocument"));
         assertFalse(docDb.isNameAlreadyUsed("UpdateDocument"));
-
     }
 
+    @Test
+    public void addSameDocumenttwice(){
+        Document testdoc = new Document("/db/test/documentsfolder","TestDocument");
+        DB_DocumentManagement docDb = this.getDocumentDB();
+
+        assertTrue(docDb.addDocument(testdoc));
+        assertFalse(docDb.addDocument(testdoc));
+
+
+    }
 }

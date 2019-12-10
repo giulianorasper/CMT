@@ -5,11 +5,14 @@ import EditUserRequestPacket from "../../communication/packets/admin/EditUserReq
 import AddAttendeeRequestPacket from "../../communication/packets/admin/AddAttendeeRequestPacket.js";
 import LogoutAttendeeRequestPacket from "../../communication/packets/admin/LogoutAttendeeRequestPacket.js";
 import GenerateNewAttendeePasswordRequestPacket
-    from "../../communication/packets/admin/GenerateNewAttendeePasswordRequestPacket";
+    from "../../communication/packets/admin/GenerateNewAttendeePasswordRequestPacket.js";
 
 $(document).ready( function() {
     refresh();
 });
+
+//By default, always sort by attendee Name
+var sortingRelation = 'attendeeName';
 
 
 /**
@@ -223,23 +226,16 @@ function getNewAttendeePassword(attendeeID){
  * @param relation that the sorting algorithm shall use to sort by.
  */
 function sort(relation){
-    switch(relation){
-        case 'attendeeName':
-            //TODO sort list by name, then print again
-            break;
-        case 'attendeeGroup':
-            //TODO sort list by group, then print again
-            break;
-        default:
-            console.log("Invalid sorting relation.")
-    }
+    sortingRelation = relation;
+    const sortedList = getSortedList(getAttendeeList(), relation);
+    generateAttendeeList(sortedList);
 }
 
 
 /**
- * Gets called whenever the attendee list needs to reload.
+ * Gets called whenever the attendee list needs to reload. Automatically sorts by the current sortingRelation.
  */
 function refresh(){
-    generateAttendeeList(getAttendeeList());
+    sort(sortingRelation);
 }
 

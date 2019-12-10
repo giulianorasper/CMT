@@ -39,7 +39,16 @@ public class NamedVotingOption extends VotingOption {
 
     @Override
     public int getCurrentResult() {
-        return voters.size(); //TODO: Implement this
+        try {
+            lock.getReadAccess();
+            return voters.size();
+        }
+        catch (InterruptedException e){
+            return -1;
+        }
+        finally {
+            lock.finishRead();
+        }
     }
 
     @Override
@@ -55,7 +64,7 @@ public class NamedVotingOption extends VotingOption {
     }
 
     @Override
-    public void publishVotes() {
+    protected void publishVotes() {
         setPublicVotes(voters.size());
     }
 }

@@ -70,15 +70,8 @@ public abstract class VotingOption {
         }
     }
 
-    public void setPublicVotes(int votes) {
-        try {
-            lock.getWriteAccess();
-            this.publicVotes = votes;
-        } catch (InterruptedException e) {
-
-        } finally {
-            lock.finishWrite();
-        }
+    protected void setPublicVotes(int votes) {
+        this.publicVotes = votes;
     }
 
     abstract protected void addVote(int userID);
@@ -91,5 +84,5 @@ public abstract class VotingOption {
         voting.notifyObservers();
     }
 
-    public abstract void publishVotes();
+    protected abstract void publishVotes();
 }

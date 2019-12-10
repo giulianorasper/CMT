@@ -86,6 +86,7 @@ public class CommunicationManagerFactory {
             if(debugging) {
                 System.out.println("[]----------[SECURITY ALERT]----------[]");
                 System.out.println("No certificate found. Sever will be started in not encrypted debugging mode!");
+                e.printStackTrace();
             } else {
                 System.out.println("Could not retrieve certificate. The server can not be started for security reasons.");
                 System.exit(0);

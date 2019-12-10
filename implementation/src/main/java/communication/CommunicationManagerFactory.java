@@ -1,6 +1,7 @@
 package communication;
 
 import main.Conference;
+import org.apache.commons.codec.binary.Base64;
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 
 import javax.net.ssl.KeyManager;
@@ -20,7 +21,6 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Base64;
 
 /**
  * A factory for creating an {@link CommunicationManager} for a {@link Conference} handling incoming requests from the frontend.
@@ -130,7 +130,7 @@ public class CommunicationManagerFactory {
         String data = new String( pem );
         String[] tokens = data.split( beginDelimiter );
         tokens = tokens[1].split( endDelimiter );
-        return Base64.getDecoder().decode( tokens[0] );
+        return Base64.decodeBase64( tokens[0] );
     }
 
     private static RSAPrivateKey generatePrivateKeyFromDER( byte[] keyBytes ) throws InvalidKeySpecException, NoSuchAlgorithmException {

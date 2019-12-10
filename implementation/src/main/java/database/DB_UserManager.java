@@ -29,7 +29,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 + "     email TEXT NOT NULL UNIQUE,\n"
                 + "     groups TEXT NOT NULL,\n"
                 + "     function TEXT NOT NULL,\n"
-                + "     residence TEXT NOT NULL UNIQUE,\n"
+                + "     residence TEXT NOT NULL,\n"
                 + "     isAdmin BOOL NOT NULL,\n"
                 + "     present BOOL NOT NULL\n"
                 + ") WITHOUT ROWID;";

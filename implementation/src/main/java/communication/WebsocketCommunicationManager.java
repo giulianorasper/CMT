@@ -148,6 +148,9 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
                 case GET_AGENDA_REQUEST:
                     pack = gson.fromJson(message, GetAgendaRequestPacket.class);
                     break;
+                case GET_DOCUMENT_LIST_REQUEST:
+                    pack = gson.fromJson(message, GetDocumentListRequestPacket.class);
+                    break;
                 case CONFERENCE_DATA_REQUEST:
                     pack = gson.fromJson(message, GetConferenceDataRequestPacket.class);
                     break;

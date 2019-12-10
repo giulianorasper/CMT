@@ -16,18 +16,9 @@ public class DownloadFileResponsePacket extends ResponsePacket {
     @Expose
     private String fileName;
 
-    public DownloadFileResponsePacket(File file, String fileName) {
+    public DownloadFileResponsePacket(byte[] fileBytes, String fileName) {
         super(PacketType.DOWNLOAD_FILE_REQUEST, RequestResult.Valid);
-        fileBytes = new byte[(int) file.length()];
-
-        try {
-            FileInputStream fis = new FileInputStream(file);
-            fis.read(fileBytes); //read file into bytes[]
-            fis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        this.fileBytes = fileBytes;
         this.fileName = fileName;
     }
 }

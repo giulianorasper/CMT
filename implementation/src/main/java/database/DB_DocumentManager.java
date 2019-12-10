@@ -66,7 +66,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         this.openConnection();
         String sqlstatement = "INSERT INTO documents(path, documentName, revision) VALUES(?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
-            stmt.setString(1, document.file.getAbsolutePath());
+            stmt.setString(1, document.getFile().getAbsolutePath());
             stmt.setString(2, document.getName());
             stmt.setInt(3, 1);
             stmt.executeUpdate();

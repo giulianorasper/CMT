@@ -25,8 +25,13 @@ import voting.VotingManagement;
 import voting.VotingObserver;
 import voting.VotingStatus;
 
+import javax.print.Doc;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +56,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                 new Agenda(""),
                 new HashMap<Integer, Admin>(),
                 new HashMap<Integer, Voting>(),
-                new HashMap<String, Path>(),
+                new HashMap<String, Document>(),
                 "./docs",
                 new HashSet<String>(),
                 new HashMap<Integer, Request>(),
@@ -64,7 +69,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
 
     public Conference(String name, String organizer, long startsAt, long endsAt, Agenda agenda, HashMap<Integer,
-            Admin> admins, HashMap<Integer,Voting> votings, HashMap<String,Path> documents, String  documentsPath,
+            Admin> admins, HashMap<Integer,Voting> votings, HashMap<String,Document> documents, String  documentsPath,
                       Set<String> adminTokens, HashMap<Integer,Request> requests, Voting activeVoting,
                       String databasePath,
                       boolean deguggingInstance) {
@@ -132,7 +137,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     private Agenda agenda;
     private HashMap<Integer,Voting> votings;
-    private HashMap<String, Path> documents;
+    private HashMap<String, Document> documents;
     private HashMap<Integer,Admin> admins;
     private HashMap<Integer,Request> requests;
     private Voting activeVoting;
@@ -622,48 +627,6 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
-    /****************** The Agenda Management Interface *********/
-
-    @Override
-    public Agenda getAgenda() {
-        return agenda;
-    }
-
-
-    /****************** The Document Management Interface *********/
-
-    @Override
-    public void updateDocument(String name, String fileType, byte[] fileBytes, boolean isCreation) {
-        try {
-            documentsLock.lock();
-            if(documents.containsKey(name)){
-                throw new IllegalArgumentException();
-            }
-            //TODO
-
-
-        }
-        finally {
-            documentsLock.unlock();
-        }
-    }
-
-    @Override
-    public void deleteDocument( String name) {
-        return;
-    }
-
-
-    @Override
-    public Document getDocument( String name) {
-        return null;
-    }
-
-    @Override
-    public List<Document> getAllDocuments() {
-        return null;
-    }
-
     @Override
     public boolean update(Voting v) {
         try {
@@ -685,4 +648,138 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             votingLock.unlock();
         }
     }
+
+    /****************** The Agenda Management Interface *********/
+
+    @Override
+    public Agenda getAgenda() {
+        return agenda;
+    }
+
+
+    /****************** The Document Management Interface *********/
+
+    @Override
+    public void updateDocument(String name, String fileType, byte[] fileBytes, boolean isCreation) {
+        try {
+            documentsLock.lock();
+            String fullName = name+fileType;
+            File f;
+            if(!documents.containsKey(fullName)) {
+                f = new File(documentsPath + "/" + name);
+            }
+            else{
+                f = documents.get(fullName).getFile();
+            }
+            if(f.exists() && isCreation){
+                throw new IllegalArgumentException("File already exists");
+            }
+            if(!f.exists() && !isCreation){
+                throw new IllegalArgumentException("File does not exist");
+            }
+            try {
+                if(f.exists() ||  f.createNewFile()){
+                    Files.write(f.toPath(), fileBytes);
+                }
+                else{
+                    throw new IllegalArgumentException();
+                }
+
+            }
+            catch (IOException e){
+                throw new IllegalArgumentException(e.getMessage());
+            }
+            if(isCreation){
+                Document doc = new Document(f.getPath(), fullName);
+                if(db_documentManagement.addDocument(doc)) {
+                    documents.put(fullName, doc);
+                }
+            }
+            else{
+                documents.get(fullName).incrementRevision();
+            }
+
+        }
+        finally {
+            documentsLock.unlock();
+        }
+    }
+
+    @Override
+    public void deleteDocument( String name) {
+        try{
+            documentsLock.lock();
+            if(!documents.containsKey(name)){
+                throw new IllegalArgumentException("Document does not exist");
+            }
+            File f = documents.get(name).getFile();
+            if(!f.delete()){
+                throw new IllegalArgumentException("Could not remove document from server");
+            }
+            if(!db_documentManagement.deleteDocument(name)){
+                throw new IllegalArgumentException("Could not remove the document from the database");
+            }
+            documents.remove(name);
+
+        }
+        finally {
+            documentsLock.unlock();
+        }
+    }
+
+    @Override
+    public Document getDocument(String name){
+        try{
+            documentsLock.lock();
+            if(!documents.containsKey(name)){
+                throw new IllegalArgumentException("Document does not exist");
+            }
+            return documents.get(name);
+        }
+        finally {
+            documentsLock.unlock();
+        }
+    }
+
+
+    @Override
+    public byte[] getDocumentContent( String name) {
+        try{
+            documentsLock.lock();
+            if(!documents.containsKey(name)){
+                throw new IllegalArgumentException("file does not exist");
+            }
+
+            File f = documents.get(name).getFile();
+
+            byte[] fileBytes = new byte[(int)f.length()];
+            try{
+                FileInputStream fis = new FileInputStream(f);
+                fis.read(fileBytes);
+                fis.close();
+                return fileBytes;
+
+            }
+            catch (IOException e){
+                throw new IllegalArgumentException("Could not read file");
+            }
+        }
+        finally {
+            documentsLock.unlock();
+        }
+    }
+
+    @Override
+    public List<Document> getAllDocuments() {
+        try {
+            documentsLock.lock();
+            return new ArrayList<>(documents.values());
+        }
+        finally {
+            documentsLock.unlock();
+        }
+    }
+
+
+
 }

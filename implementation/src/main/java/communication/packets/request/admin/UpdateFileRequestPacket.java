@@ -50,7 +50,7 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
 
     private static void removeInvalidRequests() {
         for(WebSocket key : allowedRequests.keySet()) {
-            if(allowedRequests.get(key).second() > System.currentTimeMillis()) allowedRequests.remove(key);
+            if(allowedRequests.get(key).second() < System.currentTimeMillis()) allowedRequests.remove(key);
         }
     }
 }

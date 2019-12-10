@@ -6,6 +6,14 @@ import java.util.List;
 public interface DB_DocumentManagement {
 
     /**
+     * Look if a Documentname is already used inside the DocumentDatabase.
+     *
+     * @param name The Documentname to search into the DocumentDatabase.
+     * @return True, iff the Documentname is already used in DocumentDatabase.
+     */
+    boolean isNameAlreadyUsed(String name);
+
+    /**
      * Add a new {@link Document} to the database.
      *
      * @param document The new {@link Document}.

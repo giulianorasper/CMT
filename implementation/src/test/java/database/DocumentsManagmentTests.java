@@ -61,4 +61,16 @@ public class DocumentsManagmentTests extends DatabaseTests {
         assertEquals(docDb.getDocument("UpdateDocument").getName(), "UpdateDocument");
         assertTrue(docDb.getDocument("UpdateDocument").getRevisionNumber() == 2);
     }
+
+    @Test
+    public void documentnameIsAlreadyUsed(){
+        Document testdoc = new Document("/db/test/documentsfolder","TestDocument");
+        DB_DocumentManagement docDb = this.getDocumentDB();
+
+        assertTrue(docDb.addDocument(testdoc));
+        assertTrue(docDb.isNameAlreadyUsed("TestDocument"));
+        assertFalse(docDb.isNameAlreadyUsed("UpdateDocument"));
+
+    }
+
 }

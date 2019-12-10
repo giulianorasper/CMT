@@ -6,11 +6,13 @@ import AddAttendeeRequestPacket from "../../communication/packets/admin/AddAtten
 import LogoutAttendeeRequestPacket from "../../communication/packets/admin/LogoutAttendeeRequestPacket.js";
 import GenerateNewAttendeePasswordRequestPacket
     from "../../communication/packets/admin/GenerateNewAttendeePasswordRequestPacket.js";
-import SortingManager from "./attendeeSorting.js"
 
 $(document).ready( function() {
     refresh();
 });
+
+//By default, always sort by attendee Name
+var sortingRelation = 'attendeeName';
 
 
 /**
@@ -224,15 +226,16 @@ function getNewAttendeePassword(attendeeID){
  * @param relation that the sorting algorithm shall use to sort by.
  */
 function sort(relation){
+    sortingRelation = relation;
     const sortedList = getSortedList(getAttendeeList(), relation);
     generateAttendeeList(sortedList);
 }
 
 
 /**
- * Gets called whenever the attendee list needs to reload.
+ * Gets called whenever the attendee list needs to reload. Automatically sorts by the current sortingRelation.
  */
 function refresh(){
-    generateAttendeeList(getAttendeeList());
+    sort(sortingRelation);
 }
 

@@ -19,14 +19,6 @@ public class Agenda implements AgendaObservable{
     protected WriterBiasedRWLock lock;
     private ConcurrentHashMap<AgendaObserver, Boolean> observers = new ConcurrentHashMap<>(); // a map backed hashset
 
-    boolean removeTopic(Topic t) {
-        return this.topics.remove(t);
-    }
-
-    boolean reOrderTopic(Topic t, int pos) {
-        return t.moveToNewAgenda(this, pos);
-    }
-
     /**
      * TODO: Document this
      *
@@ -47,6 +39,43 @@ public class Agenda implements AgendaObservable{
         this("");
         this.lock = lock;
         this.parent = parent;
+    }
+
+    /**
+     *
+     * @param tops Preorder + Name list
+     */
+    public Agenda(List<Pair<List<Integer>, String>> tops) {
+        this("");
+        Agenda ag = this;
+        AtomicInteger depth = new AtomicInteger(1);
+        while (tops.stream().anyMatch(p -> p.first().size() == depth.get())) {
+            var ref = new Object() {
+                Agenda aux = ag;
+            };
+            AtomicInteger auxDepth = new AtomicInteger(1);
+            tops.stream().filter(p -> p.first().size() == depth.get()).sorted(new LexicographicalComparator())
+                    .forEach(p -> {auxDepth.set(1); ref.aux = ag; p.first().forEach(i -> {
+                        //   System.out.println("At position " + i + " maxDepth "+depth.get() + " depth" + auxDepth.get());
+                        if (auxDepth.get() < depth.get()) {
+                            ref.aux = ref.aux.getTopic(i).getSubTopics();
+                        } else {
+                            //   System.out.println("Added " + p.second() +" at position " + i+ "in" +ref.aux);
+                            ref.aux.addTopic(new Topic(p.second(), ref.aux), i);
+                        }
+                        auxDepth.getAndIncrement();
+                    });});
+            depth.incrementAndGet();
+        }
+    }
+
+
+    boolean removeTopic(Topic t) {
+        return this.topics.remove(t);
+    }
+
+    boolean reOrderTopic(Topic t, int pos) {
+        return t.moveToNewAgenda(this, pos);
     }
 
     public boolean addTopic(Topic t, int pos) {
@@ -179,34 +208,6 @@ public class Agenda implements AgendaObservable{
             throw new IllegalArgumentException();
         }
 
-    }
-
-    /**
-     *
-     * @param tops Preorder + Name list
-     */
-    public Agenda(List<Pair<List<Integer>, String>> tops) {
-        this("");
-        Agenda ag = this;
-        AtomicInteger depth = new AtomicInteger(1);
-        while (tops.stream().anyMatch(p -> p.first().size() == depth.get())) {
-            var ref = new Object() {
-                Agenda aux = ag;
-            };
-            AtomicInteger auxDepth = new AtomicInteger(1);
-            tops.stream().filter(p -> p.first().size() == depth.get()).sorted(new LexicographicalComparator())
-                    .forEach(p -> {auxDepth.set(1); ref.aux = ag; p.first().forEach(i -> {
-                     //   System.out.println("At position " + i + " maxDepth "+depth.get() + " depth" + auxDepth.get());
-                        if (auxDepth.get() < depth.get()) {
-                            ref.aux = ref.aux.getTopic(i).getSubTopics();
-                        } else {
-                         //   System.out.println("Added " + p.second() +" at position " + i+ "in" +ref.aux);
-                            ref.aux.addTopic(new Topic(p.second(), ref.aux), i);
-                        }
-                        auxDepth.getAndIncrement();
-                    });});
-            depth.incrementAndGet();
-        }
     }
 
     @Override

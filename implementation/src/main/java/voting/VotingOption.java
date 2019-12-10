@@ -14,12 +14,13 @@ public abstract class VotingOption {
     protected String name;
     @Expose
     protected int optionID;
+    @Expose
+    protected int publicVotes;
 
     public void setParent(Voting v){
         voting = v;
         lock  = v.lock;
     }
-
 
     public int getOptionID() {
         try {
@@ -69,6 +70,10 @@ public abstract class VotingOption {
         }
     }
 
+    protected void setPublicVotes(int votes) {
+        this.publicVotes = votes;
+    }
+
     abstract protected void addVote(int userID);
 
     abstract public int getCurrentResult();
@@ -78,4 +83,6 @@ public abstract class VotingOption {
     protected void notifyObservers(){
         voting.notifyObservers();
     }
+
+    protected abstract void publishVotes();
 }

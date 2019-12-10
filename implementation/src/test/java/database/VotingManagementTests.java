@@ -25,20 +25,20 @@ public class VotingManagementTests extends DatabaseTests {
         List<VotingOption> nl = new LinkedList<>();
         List<VotingOption> al = new LinkedList<>();
 
-        NamedVotingOption nv1 = new NamedVotingOption(1, "foo");
-        NamedVotingOption nv2 = new NamedVotingOption(2, "bar");
-        NamedVotingOption nv3 = new NamedVotingOption(3, "foobar");
+        NamedVotingOption nv1 = new NamedVotingOption(0, "foo");
+        NamedVotingOption nv2 = new NamedVotingOption(1, "bar");
+        NamedVotingOption nv3 = new NamedVotingOption(2, "foobar");
 
-        AnonymousVotingOption av1 = new AnonymousVotingOption(1, "Anonymous foo");
-        AnonymousVotingOption av2 = new AnonymousVotingOption(4, "Anonymous bar");
-        AnonymousVotingOption av3 = new AnonymousVotingOption(5, "Anonymous foobar");
+        AnonymousVotingOption av1 = new AnonymousVotingOption(0, "Anonymous foo");
+        AnonymousVotingOption av2 = new AnonymousVotingOption(1, "Anonymous bar");
+        AnonymousVotingOption av3 = new AnonymousVotingOption(2, "Anonymous foobar");
 
         nl.add(nv1); nl.add(nv2); nl.add(nv3);
         al.add(av1); al.add(av2); al.add(av3);
 
-        Voting named = new Voting(nl, "Should we have a named voting?");
+        Voting named = new Voting(nl, "Should we have a named voting?", true);
 
-        Voting anon = new Voting(al, "Should we keep it anonymous?");
+        Voting anon = new Voting(al, "Should we keep it anonymous?", false);
 
         nv1.setParent(named); nv2.setParent(named); nv3.setParent(named);
         av1.setParent(anon);av2.setParent(anon);av2.setParent(anon);
@@ -46,16 +46,14 @@ public class VotingManagementTests extends DatabaseTests {
         named.startVote();
         anon.startVote();
 
-        named.addVote(1, 0);
-        named.addVote(1, 1);
-        named.addVote(1, 2);
-        named.addVote(2, 4);
-        named.addVote(2, 5);
-        named.addVote(3, 7);
+        named.addVote(0, 0);
+        named.addVote(0, 1);
+        named.addVote(0, 2);
+        named.addVote(1, 4);
+        named.addVote(1, 7);
 
-        anon.addVote(1, 1);
-        anon.addVote(2, 2);
-        anon.addVote(3, 3);
+        anon.addVote(0, 1);
+        anon.addVote(1, 2);
 
         named.endVote();
         anon.endVote();
@@ -63,8 +61,8 @@ public class VotingManagementTests extends DatabaseTests {
         votM.addVoting(named);
         votM.addVoting(anon);
 
-        Voting resn = votM.getVoting(0);
-        Voting resa = votM.getVoting(1);
+        Voting resn = votM.getVoting(named.getID());
+        Voting resa = votM.getVoting(anon.getID());
 
         assertEquals("Different question than before.", named.getQuestion(),  resn.getQuestion());
         assertEquals("Different question than before.", anon.getQuestion(),  resa.getQuestion());
@@ -101,21 +99,21 @@ public class VotingManagementTests extends DatabaseTests {
         List<Integer> resN1 = resn.getOptions().get(0).getVoters();
         List<Integer> resN2 = resn.getOptions().get(1).getVoters();
         List<Integer> resN3 = resn.getOptions().get(2).getVoters();
-        List<Integer> votersN1 = resn.getOptions().get(0).getVoters();
-        List<Integer> votersN2 = resn.getOptions().get(1).getVoters();
-        List<Integer> votersN3 = resn.getOptions().get(2).getVoters();
+        List<Integer> votersN1 = named.getOptions().get(0).getVoters();
+        List<Integer> votersN2 = named.getOptions().get(1).getVoters();
+        List<Integer> votersN3 = named.getOptions().get(2).getVoters();
 
         assertTrue("Wrong voters were saved.",
                 resN1.containsAll(votersN1) && votersN1.containsAll(resN1));
         assertTrue("Wrong voters were saved.",
-                resN1.containsAll(votersN2) && votersN1.containsAll(resN2));
+                resN2.containsAll(votersN2) && votersN2.containsAll(resN2));
         assertTrue("Wrong voters were saved.",
-                resN1.containsAll(votersN3) && votersN1.containsAll(resN3));
+                resN3.containsAll(votersN3) && votersN3.containsAll(resN3));
     }
 
     @Test
     public void addOpenVoting() {
-        Voting vot = new Voting(new LinkedList<>(), "Should we allow open votings in the database?");
+        Voting vot = new Voting(new LinkedList<>(), "Should we allow open votings in the database?", true);
 
         assertEquals("Voting has incorrect status after creation.", VotingStatus.Created, vot.getStatus());
         votM.update(vot);

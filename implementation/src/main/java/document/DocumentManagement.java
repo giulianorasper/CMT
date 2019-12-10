@@ -7,11 +7,9 @@ import java.util.List;
 
 public interface DocumentManagement {
 
-    void addDocument(String name, String content);
+    void updateDocument(String name, String fileType, byte[] fileBytes, boolean isCreation);
 
     void deleteDocument(String name);
-
-    void updateDocument(String name, String content);
 
     Document getDocument(String name);
 

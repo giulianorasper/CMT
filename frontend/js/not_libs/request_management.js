@@ -22,12 +22,22 @@ $( document ).ready(function() {
 	}
 
 	function generateRequest(req){
-		console.log(req);
+		var dateObj = new Date(req.timeStamp * 1000); 
+		var split = ("" + dateObj).split(" ");
+		var day = split[2];
+		var month = split[1];
+		var hour = split[4].split(":")[0];
+		var min = split[4].split(":")[1];
+		var sec = split[4].split(":")[2];
+ 
+		
+
+		console.log(dateObj)
 		var isChangeRequest = !!req.message; // true iff the object has the field
 
 		return $("<tr data-toggle=\"collapse\" data-target=\"#accordion"+req.ID+"\" class=\"clickable\">"+
                                             "<td>"+req.requestable.name+"</td>"+
-                                            "<td>"+req.timeStamp+"</td>"+
+                                            "<td>"+(day + " " + month +" " + hour+":"+min+":"+sec)+"</td>"+
                                             "<td>"+(isChangeRequest?"Change":"Speech")+"</td>"+
                                             "<td>"+req.open+"</td>"+
                                         "</tr>"+

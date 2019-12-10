@@ -36,6 +36,25 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         closeConnection();
     }
 
+
+    /**
+     * Look if a Documentname is already used inside the DocumentDatabase.
+     *
+     * @param name The Documentname to search into the DocumentDatabase.
+     * @return True, iff the Documentname is already used in DocumentDatabase.
+     */
+    @Override
+    public boolean isNameAlreadyUsed(String name) {
+        List<Document> documentList = this.getAllDocuments();
+        for (int i = 0; i < documentList.size(); i++) {
+            String docname =documentList.get(i).getName();
+            if (docname.equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Add a new {@link Document} to the database.
      *
@@ -69,6 +88,9 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
      */
     @Override
     public boolean deleteDocument(String name) {
+        if (!this.isNameAlreadyUsed(name)) {
+            return false;
+        }
         this.openConnection();
         String sqlstatement = "DELETE FROM documents WHERE documentName = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -93,6 +115,9 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
      */
     @Override
     public boolean updateDocument(String oldName, String newName) {
+        if (!this.isNameAlreadyUsed(oldName)) {
+            return false;
+        }
         this.openConnection();
         String revisionNumber = "SELECT revision FROM documents WHERE documentName = ?";
         String sqlstatement = "UPDATE documents SET revision = ? , "

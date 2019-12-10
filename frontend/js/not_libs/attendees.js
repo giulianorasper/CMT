@@ -1,54 +1,241 @@
 import GetAllAttendeesRequestPacket from "../../communication/packets/admin/GetAllAttendeesRequestPacket.js";
 import CommunicationManager from "../../communication/CommunicationManager.js";
+import RemoveAttendeeRequestPacket from "../../communication/packets/admin/RemoveAttendeeRequestPacket.js";
+import EditUserRequestPacket from "../../communication/packets/admin/EditUserRequestPacket.js";
+import AddAttendeeRequestPacket from "../../communication/packets/admin/AddAttendeeRequestPacket.js";
+import LogoutAttendeeRequestPacket from "../../communication/packets/admin/LogoutAttendeeRequestPacket.js";
+import GenerateNewAttendeePasswordRequestPacket
+    from "../../communication/packets/admin/GenerateNewAttendeePasswordRequestPacket.js";
 
 $(document).ready( function() {
+    refresh();
+});
 
+//By default, always sort by attendee Name
+var sortingRelation = 'attendeeName';
+
+
+/**
+ * Sends a request to the server to get the current information about each and every attendee in the database.
+ *
+ * @return a list of attendee objects
+ */
+function getAttendeeList(){
     function success(packet){
-        console.log(packet)
         if(packet.result === "Valid"){
-            printAttendeeList(packet.attendees);
+            return packet.attendees;
+        }
+        else{
+            console.log("You aren't authorized to get the attendee list.")
         }
     }
 
     function fail() {
-        console.log("Something went wrong during Get All Attendees Request.");
+        console.log("Something went wrong while trying to access the server.");
     }
 
     const requestPacket = new GetAllAttendeesRequestPacket();
 
     CommunicationManager.send(requestPacket, success, fail);
+}
 
-});
 
-function printAttendeeList(attendeeList){
+function generateAttendeeList(attendeeList){
 
     console.log(attendeeList);
 
     var attendeeContainer = $('#attendeeList');
 
     var i = 0;
-     for (var currAttendee of attendeeList){
-        generateAttendee(currAttendee, i++).appendTo(attendeeContainer);
-     }
-
-
-    function generateAttendee(attendee, id){
-        return $('<tr data-toggle="collapse" data-target="#user_accordion'+i +'" class="clickable">'+
-                                            '<td>'+attendee.name+'</td>'+
-                                            '<td>'+attendee.group+'</td>'+
-                                            '<td>'+attendee.function+'</td>'+
-                                            '<td>'+attendee.present+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td colspan="4">'+
-                                                '<div id="user_accordion'+i +'"  class="collapse">'+
-                                                    '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
-                                                    '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
-                                                '</div>'+
-                                            '</td>'+
-                                        '</tr>');
+    for (var currAttendee of attendeeList){
+        generateAttendee(currAttendee, i).appendTo(attendeeContainer);
+        i++;
     }
 
 }
 
+
+function generateAttendee(attendee, id){
+    return $('<tr data-toggle="collapse" data-target="#user_accordion'+ id +'" class="clickable">'+
+        '<td>'+attendee.name+'</td>'+
+        '<td>'+attendee.group+'</td>'+
+        '<td>'+attendee.function+'</td>'+
+        '<td>'+attendee.present+'</td>'+
+        '</tr>'+
+        '<tr>'+
+        '<td colspan="4">'+
+        '<div id="user_accordion'+ id +'"  class="collapse">'+
+        '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
+        '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
+        '</div>'+
+        '</td>'+
+        '</tr>');
+}
+
+
+/**
+ * Can be called by "onclick" param of glyphicon for each attendee, sends request to the server to delete the attendee
+ * with corresponding ID. In case the deleting went on successfully, the attendee list will reload.
+ *
+ * @param attendeeID: ID of the attendee to be deleted.
+ */
+function deleteAttendee(attendeeID){
+    const requestPacket = new RemoveAttendeeRequestPacket(attendeeID);
+
+    function successDeleteAttendee(packet){
+        if(packet.result === "Valid"){
+            refresh();
+        }
+        else{
+            console.log("Something went wrong while trying to delete attendee " + attendeeID);
+        }
+    }
+
+    function failDeleteAttendee(){
+        console.log("Something went wrong while trying to access the server.");
+    }
+
+    CommunicationManager.send(requestPacket, successDeleteAttendee, failDeleteAttendee);
+
+}
+
+
+/**
+ * Sends an EditAttendeeRequest to the server. If the operation was successful, the attendee list will reload.
+ *
+ * @param attendeeID represents the ID of the attendee that is to edit
+ * @param name represents the (new) name of the attendee
+ * @param email represents the (new) email of the attendee
+ * @param group represents the (new) group of the attendee
+ * @param residence represents the (new) residence of the attendee
+ * @param fnctn represents the (new) function of the attendee
+ */
+
+function editAttendee(attendeeID, name, email, group, residence, fnctn){
+    const editRequestPacket = new EditUserRequestPacket(attendeeID, name, email, group, residence, fnctn);
+
+    function successEditAttendee(packet){
+        if(packet.result === "Valid"){
+            refresh();
+        }
+        else{
+            console.log("Something went wrong while trying to edit attendee " + attendeeID);
+        }
+    }
+
+    function failEditAttendee(){
+        console.log("Something went wrong while trying to access the server.")
+    }
+
+    CommunicationManager.send(editRequestPacket, successEditAttendee, failEditAttendee);
+}
+
+
+/**
+ * Sends a request to create a new attendee using the data given below. When the operation was successful, the attendee list will
+ * reload.
+ *
+ * @param name of the attendee
+ * @param email of the attendee
+ * @param group of the attendee
+ * @param residence of the attendee
+ * @param fnctn of the attendee
+ */
+function createAttendee(name, email, group, residence, fnctn){
+    const createRequestPacket = new AddAttendeeRequestPacket(name, email, group, residence, fnctn);
+
+    function successCreateAttendee(packet) {
+        if (packet.result === "Valid"){
+            refresh();
+        }
+        else{
+            console.log("Something went wrong while trying to create attendee " + name);
+        }
+    }
+
+    function failCreateAttendee(){
+        console.log("Something went wrong while trying to access the server.");
+    }
+
+    CommunicationManager.send(createRequestPacket, successCreateAttendee, failCreateAttendee);
+}
+
+/**
+ * Sends a request to logout an attendee, reloading the attendee list in case it was successful.
+ *
+ * @param attendeeID
+ */
+function logoutAttendee(attendeeID){
+    const logoutRequestPacket = new LogoutAttendeeRequestPacket(attendeeID);
+
+    function successLogoutAttendee(packet){
+        if(packet.result === "Valid"){
+            refresh();
+        }
+        else{
+            console.log("Something went wrong while trying to logout attendee " + attendeeID)
+        }
+    }
+
+    function failLogoutAttendee(){
+        console.log("Something went wrong while trying to access the server.");
+    }
+
+    CommunicationManager.send(logoutRequestPacket, successLogoutAttendee, failLogoutAttendee);
+}
+
+
+/**
+ * Gets called when a new password shall be generated for a certain attendee. First, the attendee shall be logged out
+ * since his old password shall not work anymore. After that, a request is sent to the server that responds with a new
+ * password.
+ *
+ * @param attendeeID of the attendee for which a new password shall be generated
+ */
+function getNewAttendeePassword(attendeeID){
+    const newPasswordRequestPacket = new GenerateNewAttendeePasswordRequestPacket(attendeeID);
+    const logoutAttendeeRequestPacket = new LogoutAttendeeRequestPacket(attendeeID);
+
+    function successNewPassword(packet){
+        if(packet.result === "Valid"){
+            //TODO print out the new password for the attendee
+        }
+        else{
+            console.log("Something went wrong while trying to generate a new password for attendee " + attendeeID);
+        }
+    }
+
+    function successLogout(packet){
+        if(! (packet.result === "Valid")){
+            console.log("Generating new password failed because attendee couldn't be logged out");
+        }
+    }
+
+    function failNewPassword(){
+        console.log("Something went wrong while trying to access the server.");
+    }
+
+    CommunicationManager.send(logoutAttendeeRequestPacket, successLogout, failNewPassword);
+    CommunicationManager.send(newPasswordRequestPacket, successNewPassword, failNewPassword);
+}
+
+
+/**
+ * Sends a request to get the current attendee list, sorts it and prints it after that.
+ *
+ * @param relation that the sorting algorithm shall use to sort by.
+ */
+function sort(relation){
+    sortingRelation = relation;
+    const sortedList = getSortedList(getAttendeeList(), relation);
+    generateAttendeeList(sortedList);
+}
+
+
+/**
+ * Gets called whenever the attendee list needs to reload. Automatically sorts by the current sortingRelation.
+ */
+function refresh(){
+    sort(sortingRelation);
+}
 

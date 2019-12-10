@@ -9,4 +9,8 @@ public class ValidResponsePacket extends ResponsePacket {
     public ValidResponsePacket() {
         super(PacketType.VALID_RESPONSE, RequestResult.Valid);
     }
+
+    public ValidResponsePacket(PacketType packetType) {
+        super(packetType, RequestResult.Valid);
+    }
 }

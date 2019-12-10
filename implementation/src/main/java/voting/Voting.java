@@ -20,7 +20,6 @@ public class Voting implements VotingObservable{
         return namedVote;
     }
 
-    //TODO handle setting this boolean
     @Expose
     private boolean namedVote;
     private ConcurrentHashMap<VotingObserver, Boolean> observers = new ConcurrentHashMap<>(); // a map backed hashset
@@ -77,14 +76,16 @@ public class Voting implements VotingObservable{
     @Expose
     private long openUntil;
     private VotingStatus status;
-
+    //the duration of the voting in seconds
+    private int duration;
     private static int lastUsedID=0;
     private static Lock idLock = new ReentrantLock();
     protected WriterBiasedRWLock lock = new WriterBiasedRWLock();
 
-    public Voting(List<VotingOption> options, String question){
+    public Voting(List<VotingOption> options, String question, boolean namedVote){
         this.options = options;
         this.question = question;
+        this.namedVote = namedVote;
         ID = getNextId();
         status = VotingStatus.Created;
         options.forEach(o -> o.setParent(this));
@@ -96,10 +97,11 @@ public class Voting implements VotingObservable{
      * @param question The question of the voting.
      * @param ID The ID of the voting that was already stored in the Database.
      */
-    public Voting(List<VotingOption> options, String question, int ID) {
+    public Voting(List<VotingOption> options, String question, int ID, boolean namedVote) {
         this.options = options;
         this.question = question;
         this.ID = ID;
+        this.namedVote = namedVote;
         status = VotingStatus.Closed;
         this.options.forEach(o -> o.setParent(this));
     }
@@ -135,9 +137,23 @@ public class Voting implements VotingObservable{
         }
     }
 
+    public void setDuration(int seconds) {
+        try{
+            lock.getWriteAccess();
+            this.duration = seconds;
+        }
+        catch (InterruptedException e){
+
+        }
+        finally {
+            lock.finishWrite();
+        }
+    }
+
     public boolean startVote() {
         try{
             lock.getWriteAccess();
+            openUntil = System.currentTimeMillis() / 1000 + duration;
             status = VotingStatus.Running;
             return true;
         }
@@ -153,6 +169,9 @@ public class Voting implements VotingObservable{
         try{
             lock.getWriteAccess();
             status = VotingStatus.Closed;
+            for(VotingOption votingOption : options) {
+                votingOption.publishVotes();
+            }
             notifyObservers();
             return true;
         }

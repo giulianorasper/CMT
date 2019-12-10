@@ -1,10 +1,13 @@
 package voting;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class NamedVotingOption extends VotingOption {
 
+    @Expose
     public List<Integer> voters = new ArrayList<>();
 
     /**
@@ -36,18 +39,32 @@ public class NamedVotingOption extends VotingOption {
 
     @Override
     public int getCurrentResult() {
-        return voters.size(); //TODO: Implement this
+        try {
+            lock.getReadAccess();
+            return voters.size();
+        }
+        catch (InterruptedException e){
+            return -1;
+        }
+        finally {
+            lock.finishRead();
+        }
     }
 
     @Override
     public List<Integer> getVoters() {
         try {
             lock.getReadAccess();
-            return voters;
+            return new ArrayList<>(voters);
         } catch (InterruptedException e) {
             return null;
         } finally {
             lock.finishRead();
         }
+    }
+
+    @Override
+    protected void publishVotes() {
+        setPublicVotes(voters.size());
     }
 }

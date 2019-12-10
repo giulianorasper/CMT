@@ -8,21 +8,24 @@ import org.java_websocket.WebSocket;
 import voting.Voting;
 import voting.VotingStatus;
 
-public class RemoveVotingRequestPacket extends AuthenticatedRequestPacket {
+public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
 
     private int id;
 
-    public RemoveVotingRequestPacket(int id) {
-        super(PacketType.REMOVE_VOTING_REQUEST);
+    public StartVotingRequestPacket(int id) {
+        super(PacketType.START_VOTING_REQUEST);
         this.id = id;
     }
 
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
         if(isPermitted(conference, webSocket, true)) {
-            Voting voting = conference.getVoting(id);
-            if(voting.getStatus() != VotingStatus.Created) throw new IllegalArgumentException();
-            conference.removeVoting(voting);
+            Voting activeVoting = conference.getActiveVoting();
+            Voting votingToStart = conference.getVoting(id);
+            if(activeVoting == null && votingToStart.getStatus() == VotingStatus.Created) {
+                votingToStart.startVote();
+                conference.update(votingToStart);
+            }
             new ValidResponsePacket().send(webSocket);
         }
     }

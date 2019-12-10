@@ -5,6 +5,8 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
+import voting.Voting;
+import voting.VotingStatus;
 
 public class RemoveVotingRequestPacket extends AuthenticatedRequestPacket {
 
@@ -18,8 +20,9 @@ public class RemoveVotingRequestPacket extends AuthenticatedRequestPacket {
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
         if(isPermitted(conference, webSocket, true)) {
-            //TODO check for only removing not started votings
-            conference.removeVoting(conference.getVoting(id));
+            Voting voting = conference.getVoting(id);
+            if(voting.getStatus() != VotingStatus.Created) throw new IllegalArgumentException();
+            conference.removeVoting(voting);
             new ValidResponsePacket().send(webSocket);
         }
     }

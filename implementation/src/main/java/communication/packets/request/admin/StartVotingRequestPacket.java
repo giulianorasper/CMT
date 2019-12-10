@@ -2,9 +2,11 @@ package communication.packets.request.admin;
 
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.response.ValidResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import voting.Voting;
+import voting.VotingStatus;
 
 public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
 
@@ -18,7 +20,13 @@ public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
         if(isPermitted(conference, webSocket, true)) {
-            //TODO implement
+            Voting activeVoting = conference.getActiveVoting();
+            Voting votingToStart = conference.getVoting(id);
+            if(activeVoting == null && votingToStart.getStatus() == VotingStatus.Created) {
+                votingToStart.startVote();
+                conference.update(votingToStart);
+            }
+            new ValidResponsePacket().send(webSocket);
         }
     }
 }

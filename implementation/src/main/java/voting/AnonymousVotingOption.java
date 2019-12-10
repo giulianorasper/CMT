@@ -35,8 +35,17 @@ public class AnonymousVotingOption extends VotingOption {
     }
 
     @Override
-    public int getCurrentResult() {
-        return votes; //TODO: Implement this
+    public int getCurrentResult(){
+        try {
+            lock.getReadAccess();
+            return votes;
+        }
+            catch (InterruptedException e){
+            return -1;
+        }
+            finally {
+            lock.finishRead();
+        }
     }
 
     @Override
@@ -45,7 +54,7 @@ public class AnonymousVotingOption extends VotingOption {
     }
 
     @Override
-    public void publishVotes() {
+    protected void publishVotes() {
         setPublicVotes(votes);
     }
 }

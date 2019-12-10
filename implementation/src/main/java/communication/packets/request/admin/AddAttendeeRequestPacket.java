@@ -27,17 +27,10 @@ public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
     @Override
     public void handle(Conference conference, WebSocket webSocket) {
         if(isPermitted(conference, webSocket, true)) {
-            setNotNull(email);
-            setNotNull(group);
-            setNotNull(residence);
-            setNotNull(function);
+            if(name == null) throw new IllegalArgumentException();
             Attendee attendee = new Attendee(name, conference.getFreeUserName(name), email, group, residence, function);
             conference.addAttendee(attendee);
             new ValidResponsePacket().send(webSocket);
         }
-    }
-
-    private void setNotNull(String s) {
-        if(s == null) s = "";
     }
 }

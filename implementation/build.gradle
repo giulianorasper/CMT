@@ -51,19 +51,18 @@ dependencies {
      * Licensed under Apache-2.0 license
      * https://tootallnate.github.io/Java-WebSocket/
      */
-    implementation("org.java-websocket:Java-WebSocket:1.4.0")
+    compile("org.java-websocket:Java-WebSocket:1.4.0")
 
     /**
      * Library used for converting objects to JSON and viceversa
      * Licensed under the MIT license
      * https://github.com/google/gson
      */
-    implementation("com.google.code.gson:gson:2.8.6")
+    compile("com.google.code.gson:gson:2.8.6")
 
-    implementation("org.xerial:sqlite-jdbc:3.27.2.1")
+    compile("org.xerial:sqlite-jdbc:3.27.2.1")
 
-    implementation("org.slf4j:slf4j-api:1.6.1")
-    runtimeOnly("org.slf4j:slf4j-simple:1.6.1")
+    compile("org.slf4j:slf4j-simple:1.6.1")
 }
 
 tasks.withType(JavaCompile) {
@@ -136,4 +135,16 @@ javadoc {
     options.addBooleanOption("html5", true)
     options.destinationDirectory = file("${buildDir}/reports/javadoc")
     source = sourceSets.main.allJava
+}
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Confernece Managemend Tool Backend',
+                'Implementation-Version': version,
+                'Main-Class': 'main.Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }

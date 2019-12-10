@@ -120,6 +120,7 @@ public class CommunicationManagerFactory {
 
             context.init( km, null, null );
         } catch ( Exception e ) {
+            e.printStackTrace();
             context = null;
         }
         return context;

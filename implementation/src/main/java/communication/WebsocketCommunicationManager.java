@@ -66,6 +66,9 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
                 case ADD_ATTENDEE_REQUEST:
                     pack = gson.fromJson(message, AddAttendeeRequestPacket.class);
                     break;
+                case ADD_MULTIPLE_ATTENDEES_REQUEST:
+                    pack = gson.fromJson(message, AddMultipleAttendeesRequestPacket.class);
+                    break;
                 case ADD_TOPIC_REQUEST:
                     pack = gson.fromJson(message, AddTopicRequestPacket.class);
                     break;

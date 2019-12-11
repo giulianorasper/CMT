@@ -153,55 +153,14 @@
                                         <th>Requests</th>
                                         <th>Time Stamp</th>
                                         <th>Request Type</th>
-                                        <th>Approved?</th>
+                                        <th>Open</th>
                                     </thead>
 
-                                    <tbody>
-                                        <tr data-toggle="collapse" data-target="#accordion" class="clickable">
-                                            <td>Request 1</td>
-                                            <td>Wed, 14:00 PM 11/28/2019</td>
-                                            <td>Change</td>
-                                            <td>Approved</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4">
-                                                <div id="accordion" class="collapse">
-                                                    <h4 style="color:grey;">Attendee: Project23</h4>
-                                                    <h4 style="color:grey;">Question: Question Bla Bla?</h4>
-                                                    <h4 style="color:grey;">Request Text: Bla Bla should be changed.</h4>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr data-toggle="collapse" data-target="#accordion1" class="clickable">
-                                            <td>Request 2</td>
-                                            <td>Wed, 10:00 AM 11/28/2019</td>
-                                            <td>Speak</td>
-                                            <td>Approved</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4">
-                                                <div id="accordion1" class="collapse">
-                                                    <h4 style="color:grey;">Attendee: Project23</h4>
-                                                    <h4 style="color:grey;">Question: Question Bla Bla I?</h4>
-                                                    <h4 style="color:grey;">Request Text: Wants to speak</h4>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr data-toggle="collapse" data-target="#accordion2" class="clickable">
-                                            <td>Request 3</td>
-                                            <td>Wed, 12:00 PM 11/28/2019</td>
-                                            <td>Change</td>
-                                            <td>Disapproved</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4">
-                                                <div id="accordion2" class="collapse">
-                                                    <h4 style="color:grey;">Attendee: Project23</h4>
-                                                    <h4 style="color:grey;">Question: Question Bla Bla II?</h4>
-                                                    <h4 style="color:grey;">Request Text: Bla Bla should be changed.</h4>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id = "requestContainer">
+
+                                        
+
+
                                     </tbody>
                                 </table>
                             </div>
@@ -242,38 +201,7 @@
 
 	<script src="js/main.js"></script>
 
-    <script>
-        $("#form-submit").submit(function (e) {
-
-            <!--var textValue = document.getElementById("name").value-->
-
-            <!--console.log(textValue);-->
-            <!--if (textValue !== "project23") {-->
-                <!--console.log(textValue);-->
-                <!--$("#name").focus();-->
-                <!--&lt;!&ndash;$('#message').html('Passwords need to match').css('color', 'red');&ndash;&gt;-->
-                <!--$('#message').html('Incorrect password').css('color', 'red');-->
-                e.preventDefault();
-                $("#submit-message").empty();
-
-                $("#submit-message").addClass("row").addClass("contact-title");
-                $("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Request Submitted</h2>");
-                    return false;
-
-
-
-            <!--}-->
-
-        });
-
-
-        $("#btnclose").on("click", function (e) {
-            setTimeout(function(){
-                location.reload();
-            }, 2000)
-        });
-
-</script>
+    <script type="module" src="js/not_libs/request_management.js"></script>
 
 
 

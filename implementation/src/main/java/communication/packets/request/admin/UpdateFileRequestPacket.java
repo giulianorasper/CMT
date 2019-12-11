@@ -51,7 +51,7 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
 
     private static void removeInvalidRequests() {
         new HashSet<>(allowedRequests.keySet()).forEach(key -> {
-            if(allowedRequests.get(key).second() > System.currentTimeMillis()) allowedRequests.remove(key);
+            if(allowedRequests.get(key).second() < System.currentTimeMillis()) allowedRequests.remove(key);
         });
     }
 }

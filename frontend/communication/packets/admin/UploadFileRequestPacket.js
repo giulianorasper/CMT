@@ -8,10 +8,11 @@ export default class UpdateFileRequestPacket extends AuthenticatedRequestPacket 
      * @param originalName the original name of the uploaded file
      * @param fileBytes an ArrayBuffer of the file's content
      */
-    constructor(name, originalName, fileBytes) {
+    constructor(name, originalName, fileBytes, creation) {
         super("UPDATE_FILE_REQUEST");
         this.name = name;
         this.originalName = originalName;
         this.fileBytes = fileBytes;
+        this.creation = creation;
     }
 }

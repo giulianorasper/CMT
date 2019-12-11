@@ -117,3 +117,7 @@ builds/**/images/*
 *.png
 *.jpeg
 *.psd
+
+#application specific files
+    testdb
+    db

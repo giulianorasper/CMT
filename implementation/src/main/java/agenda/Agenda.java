@@ -57,6 +57,7 @@ public class Agenda implements AgendaObservable{
             tops.stream().filter(p -> p.first().size() == depth.get()).sorted(new LexicographicalComparator())
                     .forEach(p -> {auxDepth.set(1); ref.aux = ag; p.first().forEach(i -> {
                         //   System.out.println("At position " + i + " maxDepth "+depth.get() + " depth" + auxDepth.get());
+                        i--;
                         if (auxDepth.get() < depth.get()) {
                             ref.aux = ref.aux.getTopic(i).getSubTopics();
                         } else {
@@ -71,7 +72,17 @@ public class Agenda implements AgendaObservable{
 
 
     boolean removeTopic(Topic t) {
-        return this.topics.remove(t);
+        try{
+            lock.getWriteAccess();
+            return this.topics.remove(t);
+        }
+        catch (InterruptedException e){
+            return false;
+        }
+        finally {
+            notifyObservers();
+            lock.finishWrite();
+        }
     }
 
     boolean reOrderTopic(Topic t, int pos) {
@@ -82,6 +93,7 @@ public class Agenda implements AgendaObservable{
         try {
             lock.getWriteAccess();
             if (pos >= 0 && pos <= topics.size()) {
+                System.out.println("Adding");
                 this.topics.add(pos, t);
                 return true;
             }
@@ -92,6 +104,8 @@ public class Agenda implements AgendaObservable{
             return false;
         }
         finally {
+            notifyObservers();
+            System.out.println("FInishing write");
             lock.finishWrite();
         }
     }

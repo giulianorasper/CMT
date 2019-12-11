@@ -33,12 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
@@ -53,12 +48,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                 "Team 23",
                 System.currentTimeMillis(),
                 System.currentTimeMillis() + 1000*60*60,
-                new Agenda(""),
                 new HashMap<Integer, Admin>(),
                 new HashMap<Integer, Voting>(),
                 new HashMap<String, Document>(),
                 "./docs",
-                new HashSet<String>(),
                 new HashMap<Integer, Request>(),
                 null,
                 "./testdb/testdb.db",
@@ -68,16 +61,15 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
 
-    public Conference(String name, String organizer, long startsAt, long endsAt, Agenda agenda, HashMap<Integer,
+    public Conference(String name, String organizer, long startsAt, long endsAt, HashMap<Integer,
             Admin> admins, HashMap<Integer,Voting> votings, HashMap<String,Document> documents, String  documentsPath,
-                      Set<String> adminTokens, HashMap<Integer,Request> requests, Voting activeVoting,
+                       HashMap<Integer,Request> requests, Voting activeVoting,
                       String databasePath,
                       boolean deguggingInstance) {
         this.name = name;
         this.organizer = organizer;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
-        this.agenda = agenda;
         this.votings = votings;
         this.documents = documents;
         this.requests = requests;
@@ -89,10 +81,29 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         this.admins = admins;
 
         this.adminTokens = new HashMap<>();
-        adminTokens.forEach(f -> this.adminTokens.put(f, true));
-        DB_AgendaManager db_agendaManagement = new DB_AgendaManager("");
-        agenda.register(db_agendaManagement);
+
+
+        File database = new File(databasePath);
+        if(database.exists()){
+            if(deguggingInstance){
+            //    database.delete();
+            }
+        }
+
+
+        db_votingManagement = new DB_VotingManager(databasePath);
+
+        initUsers();
+        initAgenda();
+        initDocuments();
+        initRequests();
+        initVotes();
+    }
+
+    private void initDocuments(){
+        db_documentManagement = new DB_DocumentManager(databasePath);
         File documentsFolder = new File(documentsPath);
+
         if(!documentsFolder.exists() && !documentsFolder.mkdir()){
             throw new IllegalArgumentException("Could not create directory " + documentsPath);
         }
@@ -100,22 +111,39 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             throw new IllegalArgumentException("Could not create directory " + documentsPath +" , because a file with that name already exists");
         }
         if(documentsFolder.exists() && documentsFolder.isDirectory()){
-            //todo read files from directory
+            File[] directoryListing = documentsFolder.listFiles();
+            for(int i = 0 ; i < directoryListing.length; i++){
+                Document d = db_documentManagement.getDocument(directoryListing[i].getName());
+                if(d == null){
+                    directoryListing[i].delete();
+                }
+                else{
+                    documents.put(d.getName(), d);
+                }
+            }
         }
+    }
 
-        File database = new File(databasePath);
-        if(database.exists()){
-            if(deguggingInstance){
-                database.delete();
-            }
-            else {
-                //todo read database
-            }
-        }
-        db_documentManagement = new DB_DocumentManager(databasePath);
+    private void initUsers(){
         db_userManagement = new DB_UserManager(databasePath);
+        db_userManagement.getAllAdmins().forEach(a -> admins.put(a.getID(), a));
+        db_userManagement.getAllAttendees();
+    }
+
+    private void initAgenda(){
+        DB_AgendaManager db_agendaManagement = new DB_AgendaManager(databasePath);
+        agenda = db_agendaManagement.getAgenda();
+        System.out.println(agenda);
+        agenda.register(db_agendaManagement);
+    }
+
+    private void initRequests(){
         db_requestManagement = new DB_RequestManager(databasePath);
-        db_votingManagement = new DB_VotingManager(databasePath);
+        db_requestManagement.getAllRequests().forEach(r -> requests.put(r.ID, r));
+    }
+
+    private void initVotes(){
+        //todo
     }
 
     //Conference Data
@@ -663,10 +691,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void updateDocument(String name, String fileType, byte[] fileBytes, boolean isCreation) {
         try {
             documentsLock.lock();
-            String fullName = name+fileType;
+            String fullName = name;
+            System.out.println(fullName);
             File f;
             if(!documents.containsKey(fullName)) {
-                f = new File(documentsPath + "/" + name);
+                f = new File(documentsPath + "/" + fullName);
             }
             else{
                 f = documents.get(fullName).getFile();

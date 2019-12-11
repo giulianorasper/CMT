@@ -60,7 +60,7 @@ public class Main {
         voting.startVote();
         conf.addVoting(voting);
         conf.update(voting);
-        conf.addAdmin(new Admin("test", "test", "test", "test", "test", "test", 0), "test");
+       // conf.addAdmin(new Admin("test", "test", "test", "test", "test", "test", 0), "test");
         CommunicationManager w = new CommunicationManagerFactory(conf).enableDebugging().create();
         w.start();
         System.out.println("Press 'q' to close the server");

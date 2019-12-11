@@ -6,7 +6,7 @@ import AddAttendeeRequestPacket from "../../communication/packets/admin/AddAtten
 import LogoutAttendeeRequestPacket from "../../communication/packets/admin/LogoutAttendeeRequestPacket.js";
 import GenerateNewAttendeePasswordRequestPacket
     from "../../communication/packets/admin/GenerateNewAttendeePasswordRequestPacket.js";
-import "./attendeeSorting";
+import "./attendeeSorting.js";
 
 $(document).ready( function() {
     refresh();

@@ -6,6 +6,7 @@ import AddAttendeeRequestPacket from "../../communication/packets/admin/AddAtten
 import LogoutAttendeeRequestPacket from "../../communication/packets/admin/LogoutAttendeeRequestPacket.js";
 import GenerateNewAttendeePasswordRequestPacket
     from "../../communication/packets/admin/GenerateNewAttendeePasswordRequestPacket.js";
+import "./attendeeSorting";
 
 $(document).ready( function() {
     refresh();
@@ -66,6 +67,14 @@ function generateAttendee(attendee, id){
         '<td colspan="4">'+
         '<div id="user_accordion'+ id +'"  class="collapse">'+
         '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
+        '<span style="display:inline-block; width: 30px;">' +
+        '</span><span class="glyphicon glyphicon-pencil" <!--onclick="editAttendee(...)"--> ></span>'+
+        '<span style="display:inline-block; width: 60px;">'+
+        '</span><span class="glyphicon glyphicon-log-in" onclick = "getNewAttendeePassword('+ attendee.ID +')"></span>'+
+        '<span style="display:inline-block; width: 30px;">' +
+        '</span><span class="glyphicon glyphicon-log-out" onclick = "logoutAttendee('+ attendee.ID +')"></span>'+
+        '<span style="display:inline-block; width: 30px;">'+
+        '</span><span class="glyphicon glyphicon-trash" onclick = "deleteAttendee('+ attendee.ID +')"></span>' +
         '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
         '</div>'+
         '</td>'+

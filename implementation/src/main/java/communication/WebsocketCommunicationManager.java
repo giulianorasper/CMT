@@ -15,6 +15,7 @@ import org.java_websocket.server.WebSocketServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,6 +45,12 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         conns.add(conn);
         System.out.println(System.currentTimeMillis() + ": New connection from " + conn.getRemoteSocketAddress().getAddress().getHostAddress());
+    }
+
+    @Override
+    protected boolean onConnect(SelectionKey key) {
+        System.out.println("Connect!");
+        return super.onConnect(key);
     }
 
     @Override

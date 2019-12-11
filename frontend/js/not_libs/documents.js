@@ -1,10 +1,16 @@
 import CommunicationManager from "../../communication/CommunicationManager.js";
 import GetDocumentListRequestPacket from "../../communication/packets/GetDocumentListRequestPacket.js";
 import UploadFileRequestPacket from "../../communication/packets/admin/UploadFileRequestPacket.js";
+import GetFileRequestPacket from "../../communication/packets/DownloadFileRequestPacket.js";
+import DeleteFileRequestPacket from "../../communication/packets/admin/DeleteFileRequestPacket.js";
 
 var documentContainer = $('#documentsContainer');
 
 $( document ).ready(function() {
+
+    window.downloadDocument = download// export the function to the global scope
+    window.editDocument = edit// export the function to the global scope
+    window.removeDocument = remove// export the function to the global scope
 
     const packet = new GetDocumentListRequestPacket();
 
@@ -58,8 +64,53 @@ $( document ).ready(function() {
 
 });
 
-function remove(name){
+function edit(name){
 
+}
+
+function remove(name){
+       
+    const packet = new DeleteFileRequestPacket(name);
+    CommunicationManager.send(packet, success, fail);
+    
+
+    function success(packet) {
+        console.log(packet);
+        if(packet.result === "Valid") {
+                location.reload();
+        }
+    }
+
+    function fail() {
+        console.log("This method is called if something went wrong during the general communication.");
+    }
+}
+
+
+function download(name){
+    function success(packet) {
+        console.log("This method is called if a response from the server is received.");
+        if(packet.result === "Valid") {
+            var bytes = new Uint8Array(packet.fileBytes);
+
+            //var blob=new Blob([bytes], {type: "application/pdf"});
+            var blob=new Blob([bytes]);
+
+            var link=document.createElement('a');
+            link.href=window.URL.createObjectURL(blob);
+            link.download=packet.fileName;
+            link.click();
+        }
+    }
+
+    function fail() {
+        console.log("This method is called if something went wrong during the general communication.");
+    }
+
+    const packet = new GetFileRequestPacket(name);
+
+    // Send the request to the server
+    CommunicationManager.send(packet, success, fail);
 }
 
 

@@ -40,9 +40,17 @@ $( document ).ready(function() {
                                             "<td>"+(day + " " + month +" " + hour+":"+min+":"+sec)+"</td>"+
                                             "<td>"+(isChangeRequest?"Change":"Speech")+"</td>"+
                                             "<td>"+req.open+"</td>"+
+                                            "<td>"+
+                                            (isChangeRequest?
+                                                 "<span onclick = \"downloadDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-ok \"></span>"+
+                                                 "<span style= 'display:inline-block; min-width:20px'></span>"+
+                                                 "<span onclick = \"downloadDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon glyphicon-remove \"></span>":
+                                                 "<span onclick = \"downloadDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-ok \"></span>")
+                                                 +
+                                            "</td>"+
                                         "</tr>"+
                                         "<tr>"+
-                                            "<td colspan=\"4\">"+
+                                            "<td colspan=\"5\">"+
                                                 "<div id=\"accordion"+req.ID+"\" class=\"collapse\">"+
                                                     "<h4 style=\"color:grey;\">Attendee: "+req.requester.name+"</h4>"+
                                                     (isChangeRequest?"<h4 style=\"color:grey;\">Request Text: "+req.message+"</h4>":"")+

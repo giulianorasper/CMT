@@ -15,6 +15,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * This class differs from {@link java.util.concurrent.locks.ReentrantReadWriteLock} since the java standard class is not biased towards writers
  * Please note that as of now this is a rudimentary implementation. For example it does not support the creation of a {@link java.util.concurrent.locks.Condition}. As such it does also not fully implement the interface {@link ReadWriteLock}.
  * Please be aware of this limitations when using the lock.
+ * Is reentrant
+ *
  */
 public class WriterBiasedRWLock {
 
@@ -25,6 +27,8 @@ public class WriterBiasedRWLock {
     private int waitingReaders = 0;
     private int activeReaders = 0;
     private int activeWriters = 0;
+    private Long holderId = null;
+    private int holderCount = 0; // how often the holder has aquired the lock
 
     /**
      * Constructor for the class. Creates an unfair, reentrant RWLock
@@ -50,6 +54,10 @@ public class WriterBiasedRWLock {
      */
     public void getReadAccess() throws InterruptedException {
         data.lock();
+        if(holderId != null && holderId.equals(Thread.currentThread().getId())){
+            data.unlock();
+            return; // if a thread has write access it does not care about reads
+        }
         if(activeWriters + waitingWriters == 0){
             readerSema.release();
             activeReaders++;
@@ -67,6 +75,10 @@ public class WriterBiasedRWLock {
      */
     public void finishRead(){
         data.lock();
+        if(holderId != null && holderId.equals(Thread.currentThread().getId())){
+            data.unlock();
+            return; // if a thread has write access it does not care about reads
+        }
         activeReaders--;
         if(activeReaders == 0 && waitingWriters > 0){
             writerSema.release();
@@ -81,6 +93,11 @@ public class WriterBiasedRWLock {
      */
     public void getWriteAccess() throws InterruptedException{
         data.lock();
+        if(holderId != null && holderId.equals(Thread.currentThread().getId())){
+            data.unlock();
+            holderCount++;
+            return;
+        }
         if(activeWriters + activeReaders + waitingWriters == 0){
             writerSema.release();
             activeWriters++;
@@ -90,6 +107,10 @@ public class WriterBiasedRWLock {
         }
         data.unlock();
         writerSema.acquire();
+        data.lock();
+        holderId = Thread.currentThread().getId();
+        holderCount = 0;
+        data.unlock();
 
     }
 
@@ -99,6 +120,13 @@ public class WriterBiasedRWLock {
      */
     public void finishWrite(){
         data.lock();
+        if(holderId != null && holderId.equals(Thread.currentThread().getId())){
+            if(holderCount != 0){
+                holderCount--;
+                data.unlock();
+                return;
+            }
+        }
         activeWriters--;
         if(waitingWriters > 0){
             writerSema.release();

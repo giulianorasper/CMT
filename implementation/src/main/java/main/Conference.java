@@ -32,7 +32,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Conference implements UserManagement, VotingManagement, RequestManagement, DocumentManagement, AgendaManagement, VotingObserver {
 
     //Creates a clean conference (for debugging)
-    public Conference(){
+    public Conference(boolean cleanStart){
         this (  "Test",
                 "Team 23",
                 System.currentTimeMillis(),
@@ -44,8 +44,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                 new HashMap<Integer, Request>(),
                 null,
                 "./testdb/testdb.db",
-                true
+                true,
+                cleanStart
         );
+
 
     }
 
@@ -54,7 +56,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             Admin> admins, HashMap<Integer,Voting> votings, HashMap<String,Document> documents, String  documentsPath,
                        HashMap<Integer,Request> requests, Voting activeVoting,
                       String databasePath,
-                      boolean deguggingInstance) {
+                      boolean deguggingInstance, boolean cleanStart) {
         this.name = name;
         this.organizer = organizer;
         this.startsAt = startsAt;
@@ -71,13 +73,23 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
         this.adminTokens = new HashMap<>();
 
-
         File database = new File(databasePath);
-        if(database.exists()){
-            if(deguggingInstance){
-            //    database.delete();
+        if(database.exists() && cleanStart){
+            database.delete();
+            File[] directoryListing =  new File(documentsPath).listFiles();
+            for(int i = 0 ; directoryListing != null && i < directoryListing.length; i++){
+                Document d = db_documentManagement.getDocument(directoryListing[i].getName());
+                if(d == null){
+                    directoryListing[i].delete();
+                }
+                else{
+                    documents.put(d.getName(), d);
+                }
             }
         }
+
+
+
 
 
         db_votingManagement = new DB_VotingManager(databasePath);
@@ -122,7 +134,6 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private void initAgenda(){
         DB_AgendaManager db_agendaManagement = new DB_AgendaManager(databasePath);
         agenda = db_agendaManagement.getAgenda();
-        System.out.println(agenda);
         agenda.register(db_agendaManagement);
     }
 

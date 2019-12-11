@@ -2,8 +2,6 @@ package main;
 
 import agenda.Agenda;
 import agenda.AgendaManagement;
-import agenda.DB_AgendaManagement;
-import agenda.Topic;
 import com.google.gson.annotations.Expose;
 import database.*;
 import document.DB_DocumentManagement;
@@ -15,26 +13,17 @@ import request.RequestManagement;
 import user.*;
 import utils.Generator;
 import utils.Generator_Imp;
-import utils.Log;
-import utils.Operation;
-import utils.OperationResponse;
 import utils.Pair;
-import voting.DB_VotingManagement;
 import voting.Voting;
 import voting.VotingManagement;
 import voting.VotingObserver;
 import voting.VotingStatus;
 
-import javax.print.Doc;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Time;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -254,7 +243,13 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         assert (debugingInstance); // close the server since this operation is illegal
         try{
             adminLock.lock();
-            if(!db_userManagement.addAdmin(a, pwd, gen.generateToken())){
+            AtomicBoolean alreadyExists = new AtomicBoolean(false);
+            db_userManagement.getAllAdmins().forEach(ad -> {
+                if(ad.getID() == a.getID()){
+                    alreadyExists.set(true);
+                }
+            });
+            if(!alreadyExists.get() && !db_userManagement.addAdmin(a, pwd, gen.generateToken())){
                 throw new IllegalArgumentException("Database addition failed");
             }
             admins.put(a.getID(), a);
@@ -559,18 +554,20 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public TokenResponse checkToken(String token) {
         try{
             adminLock.lock();
+            attendeeLock.lock();
             if(adminTokens.containsKey(token)){
                 return TokenResponse.ValidAdmin;
             }
-            else try{
-                attendeeLock.lock();
-                return db_userManagement.checkToken(token);
-            }
-            finally {
-                attendeeLock.unlock();
+            else {
+                TokenResponse res = db_userManagement.checkToken(token);
+                if (res == TokenResponse.ValidAdmin) {
+                    adminTokens.put(token, true);
+                }
+                return res;
             }
         }
         finally {
+            attendeeLock.unlock();
             adminLock.unlock();
         }
     }

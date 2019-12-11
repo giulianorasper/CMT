@@ -30,15 +30,16 @@ public class Main {
             }
             else{
                 switch (args[1]){
-                    case "normal": startNormalConference();
+                    case "normal": startNormalConference(true);
+                    case "normal-persistent": startNormalConference(false);
                 }
             }
         }
     }
 
     /** Starts a conference with a single admin (username and password 'test') **/
-    private static void startNormalConference(){
-        conf = new Conference();
+    private static void startNormalConference(boolean clean){
+        conf = new Conference(clean);
         LinkedList<VotingOption> votingOptions = new LinkedList<>();
         NamedVotingOption o1 = new NamedVotingOption();
         NamedVotingOption o2 = new NamedVotingOption();
@@ -78,6 +79,7 @@ public class Main {
 
     private static void printUsage(){
         System.out.println("Usage : 'test' <testID>");
+        System.out.println("Valid test ids : 'normal', 'normal-persistent'");
         System.exit(1);
     }
 

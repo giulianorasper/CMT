@@ -82,6 +82,9 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
                 case ADD_VOTING_REQUEST_PACKET:
                     pack = gson.fromJson(message, AddVotingRequestPacket.class);
                     break;
+                case DELETE_FILE_REQUEST:
+                    pack = gson.fromJson(message, DeleteFileRequestPacket.class);
+                    break;
                 case EDIT_USER_REQUEST:
                     pack = gson.fromJson(message, EditUserRequestPacket.class);
                     break;
@@ -157,6 +160,9 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
                     break;
                 case GET_AGENDA_REQUEST:
                     pack = gson.fromJson(message, GetAgendaRequestPacket.class);
+                    break;
+                case GET_DOCUMENT_LIST_REQUEST:
+                    pack = gson.fromJson(message, GetDocumentListRequestPacket.class);
                     break;
                 case CONFERENCE_DATA_REQUEST:
                     pack = gson.fromJson(message, GetConferenceDataRequestPacket.class);

@@ -11,6 +11,8 @@ public interface DocumentManagement {
 
     void deleteDocument(String name);
 
+    byte[] getDocumentContent(String name);
+
     Document getDocument(String name);
 
     List<Document> getAllDocuments();

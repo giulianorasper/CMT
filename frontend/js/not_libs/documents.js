@@ -26,6 +26,7 @@ $( document ).ready(function() {
 	document.getElementById('uploadFile').addEventListener('change', function (event) {
 
         const files = event.target.files;
+        console.log(files);
 
         // Initialize an instance of the `FileReader`
         const reader = new FileReader();
@@ -34,6 +35,7 @@ $( document ).ready(function() {
         reader.onload = function (e) {
 
             function success(packet) {
+                location.reload();
                 console.log("This method is called if a response from the server is received.");
             }
 
@@ -56,6 +58,9 @@ $( document ).ready(function() {
 
 });
 
+function remove(name){
+
+}
 
 
 
@@ -67,17 +72,17 @@ function generateDocument(document){
 
                                             "<div class=\"col-lg-1\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px;\">"+
-                                                      "<span class=\"glyphicon glyphicon-download-alt \"></span>"+
+                                                      "<span onclick = \"downloadDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-download-alt \"></span>"+
                                                     "</a>"+
                                             "</div>"+
                                             "<div class=\"col-lg-1\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px;\">"+
-                                                      "<span class=\"glyphicon glyphicon-edit\"></span>"+
+                                                      "<span onclick = \"editDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-edit\"></span>"+
                                                     "</a>"+
                                             "</div>"+
                                             "<div class=\"col-lg-1\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px;\">"+
-                                                      "<span class=\"glyphicon glyphicon-trash \"></span>"+
+                                                      "<span onclick = \"removeDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-trash \"></span>"+
                                                     "</a>"+
                                             "</div>"+
                                         "</div>");

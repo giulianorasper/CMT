@@ -8,6 +8,7 @@ import org.java_websocket.WebSocket;
 import utils.Pair;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
 
@@ -49,8 +50,8 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
     }
 
     private static void removeInvalidRequests() {
-        for(WebSocket key : allowedRequests.keySet()) {
+        new HashSet<>(allowedRequests.keySet()).forEach(key -> {
             if(allowedRequests.get(key).second() > System.currentTimeMillis()) allowedRequests.remove(key);
-        }
+        });
     }
 }

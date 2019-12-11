@@ -75,6 +75,9 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
                 case ADD_VOTING_REQUEST_PACKET:
                     pack = gson.fromJson(message, AddVotingRequestPacket.class);
                     break;
+                case DELETE_FILE_REQUEST:
+                    pack = gson.fromJson(message, DeleteFileRequestPacket.class);
+                    break;
                 case EDIT_USER_REQUEST:
                     pack = gson.fromJson(message, EditUserRequestPacket.class);
                     break;

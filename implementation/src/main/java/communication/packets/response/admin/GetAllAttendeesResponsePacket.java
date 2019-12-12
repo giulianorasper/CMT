@@ -24,7 +24,7 @@ public class GetAllAttendeesResponsePacket extends ResponsePacket {
     private List<Attendee> attendees;
 
     public GetAllAttendeesResponsePacket(List<Attendee> attendees) {
-        super(PacketType.GET_ALL_REQUESTS_RESPONSE, RequestResult.Valid);
+        super(PacketType.GET_ALL_ATTENDEES_RESPONSE, RequestResult.Valid);
         this.attendees = attendees;
     }
 }

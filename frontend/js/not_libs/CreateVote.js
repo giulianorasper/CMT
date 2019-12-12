@@ -11,13 +11,47 @@ $(document).ready(function() {
 		});
 
 
+		$("#deleteOption").on("click", function () {
+			if($('#newOption').val() != "" ){
+				
+				var deleteOption = $('#newOption').val();
+				$("#options option[value='"+deleteOption+"']").remove();
+				$("#newOption").val('');
+				$('#message').html('Option deleted!').css('color', 'grey');
+				
+			} else {
+				
+				$("#newOption").focus();
+				$('#message').html('Please select here').css('color', 'red');
+			}
+		});
+		
+
+		$("#addOption").on("click", function () {
+			if($('#newOption').val() != "" ){
+				
+				$('#options').append($('<option>', {
+					value: $('#newOption').val(),
+					//text: 'textValue'
+				}));
+				$('#message').html('Option Added!').css('color', 'grey');
+				
+			} else {
+				
+				$("#newOption").focus();
+				$('#message').html('Please enter here').css('color', 'red');
+			}
+		});
+		
+		
 
         $("#createVote").on("click", function () {
 			
 				var optionsList = [];
 				var voteType;
 				var voteQuestion = $('#voteQuestion').val();
-				var expirtyDate = $('#my_date_picker').val();
+				//var expirtyDate = $('#my_date_picker').val();
+				var expiryDate = parseInt((new Date($('#my_date_picker').val())).getTime() / 1000).toFixed(0);
 
 				
 				if($('input[name="radio"]:checked').attr('id') == 1){
@@ -32,7 +66,7 @@ $(document).ready(function() {
 				});
 				
 				console.log(voteQuestion);
-				console.log(expirtyDate);
+				console.log(expiryDate);
 				console.log(optionsList);
 				console.log(voteType);
 			
@@ -52,10 +86,13 @@ $(document).ready(function() {
 					}
 				
 				
-				const CreateVote = new AddVotingRequestPacket(voteQuestion, optionsList, voteType, expirtyDate);
+				const CreateVote = new AddVotingRequestPacket(voteQuestion, optionsList, voteType, expiryDate);
 
 				CommunicationManager.send(CreateVote, success, fail); 
 				
         });
+		
+		
+		
 		
 });

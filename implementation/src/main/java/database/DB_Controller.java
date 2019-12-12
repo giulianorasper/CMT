@@ -45,10 +45,8 @@ public abstract class DB_Controller {
     public void openConnection() {
         try {
             if (connection == null) {
-                System.out.println("A new database has been created.");
             }
             connection = DriverManager.getConnection(this.url);
-            System.out.println("Connection to SQLite has been established.");
 
         } catch (SQLException ex) {
             System.err.println("An exception occured in the database connection.");

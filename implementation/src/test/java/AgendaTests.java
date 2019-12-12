@@ -1,10 +1,8 @@
 import agenda.Agenda;
 import agenda.Topic;
-import org.junit.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert.*;
-import org.junit.rules.ExpectedException;
 import utils.Pair;
 
 import java.util.ArrayList;
@@ -12,7 +10,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 public class AgendaTests {
 
@@ -50,30 +48,30 @@ public class AgendaTests {
         String expected5 = "Second Subtopic of 3";
         String expected6 = "First Subtopic of the second subtopic of 3";
 
-        Assert.assertEquals(expected1, agenda.getTopicFromPreorderString("1").getName());
-        Assert.assertEquals(expected2, agenda.getTopicFromPreorderString("3").getName());
-        Assert.assertEquals(expected3, agenda.getTopicFromPreorderString("4").getName());
-        Assert.assertEquals(expected4, agenda.getTopicFromPreorderString("3.1").getName());
-        Assert.assertEquals(expected5, agenda.getTopicFromPreorderString("3.2.").getName());
-        Assert.assertEquals(expected6, agenda.getTopicFromPreorderString("3.2.1").getName());
+        assertEquals(expected1, agenda.getTopicFromPreorderString("1").getName());
+        assertEquals(expected2, agenda.getTopicFromPreorderString("3").getName());
+        assertEquals(expected3, agenda.getTopicFromPreorderString("4").getName());
+        assertEquals(expected4, agenda.getTopicFromPreorderString("3.1").getName());
+        assertEquals(expected5, agenda.getTopicFromPreorderString("3.2.").getName());
+        assertEquals(expected6, agenda.getTopicFromPreorderString("3.2.1").getName());
     }
 
     @Test
     public void testAgendaConstructorOrderedListSimple() {
         List<Pair<List<Integer>, String>> tops = new LinkedList<>();
-        tops.add(new Pair<>(Arrays.asList(2, 0), "Top 3.1"));
-        tops.add(new Pair<>(Arrays.asList(2, 0, 0), "Top 3.1.1"));
-        tops.add(new Pair<List<Integer>, String>(Arrays.asList(0), "Top 1"));
-        tops.add(new Pair<List<Integer>, String>(Arrays.asList(1), "Top 2"));
-        tops.add(new Pair<List<Integer>, String>(Arrays.asList(2), "Top 3"));
-        tops.add(new Pair<List<Integer>, String>(Arrays.asList(3), "Top 4"));
+        tops.add(new Pair<>(Arrays.asList(3, 1), "Top 3.1"));
+        tops.add(new Pair<>(Arrays.asList(3, 1, 1), "Top 3.1.1"));
+        tops.add(new Pair<List<Integer>, String>(Arrays.asList(1), "Top 1"));
+        tops.add(new Pair<List<Integer>, String>(Arrays.asList(2), "Top 2"));
+        tops.add(new Pair<List<Integer>, String>(Arrays.asList(3), "Top 3"));
+        tops.add(new Pair<List<Integer>, String>(Arrays.asList(4), "Top 4"));
 
         Agenda ag = new Agenda(tops);
 
-        List<String> preOrder = ag.preOrder();
-
-        assertNotNull(ag);
-
+        assertEquals("Preorder String invalid.",
+                Arrays.asList("1", "2", "3", "3.1", "3.1.1", "4"),ag.preOrder());
+        assertEquals("toString returning invalid results",
+                "{Top 1 {}, Top 2 {}, Top 3 {Top 3.1 {Top 3.1.1 {}}}, Top 4 {}}",ag.toString());
     }
 
     @Test
@@ -89,19 +87,20 @@ public class AgendaTests {
 
         List<Pair<List<Integer>, String>> tops = new ArrayList<>();
         List<Integer> first = new ArrayList<>();
-        first.add(0);
+        first.add(1);
         tops.add(new Pair<>(first, "Käsebrot"));
         List<Integer> second = new ArrayList<>();
-        second.add(0);
-        second.add(0);
+        second.add(1);
+        second.add(1);
         tops.add(new Pair<>(second, "Käse"));
         List<Integer> third = new ArrayList<>();
-        third.add(0);
         third.add(1);
+        third.add(2);
         tops.add(new Pair<>(third, "Brot"));
 
         Agenda secondAgenda = new Agenda(tops);
-        System.out.println(secondAgenda);
+
+        assertEquals("Agenda differs:", agenda.preOrder(), secondAgenda.preOrder());
     }
 
     @Test(expected = IllegalArgumentException.class)

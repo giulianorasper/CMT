@@ -29,7 +29,6 @@ var sortingRelation = 'attendeeName';
 function updateAttendeeList(){
     function success(packet){
         if(packet.result === "Valid"){
-            console.log(packet.attendees);
             sortAttendeeList(packet.attendees);
         }
         else{
@@ -48,7 +47,7 @@ function updateAttendeeList(){
 
 /**
  * Gets called by updateAttendeeList to sort the entries before printing them. Calls getSortedList from attendeeSorting,
- * generates the attendee List afterwards. Uses the current sorting relation state.
+ * uses the current sorting relation state. Calls generateAttendeeList after sorting.
  *
  * @param attendeeList that needs to be sorted.
  */
@@ -87,11 +86,14 @@ function refresh(){
 
 function generateAttendeeList(attendeeList){
 
-    console.log(attendeeList);
+    //console.log(attendeeList);
 
     const attendeeContainer = $('#attendeeList');
 
+    //Replaces old list content with empty HTML
+    $('#attendeeList').empty();
 
+    //Generates new list content
     for (var currAttendee of attendeeList){
         generateAttendee(currAttendee).appendTo(attendeeContainer);
         addIconListeners(currAttendee);

@@ -2,32 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="26c22b31-d958-45df-8695-21370eaab893" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/communication/packets/RequestOfChangeRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/RequestOfSpeechRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/admin/AddAttendeeRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/admin/EditUserRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/admin/GenerateMissingAttendeePasswordsRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/admin/GenerateNewAttendeePasswordRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/admin/GenerateNewAttendeeTokenRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/admin/GetAllAttendeePasswordsRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/admin/GetAllRequestsRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/admin/GetAttendeeDataRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/admin/GetAttendeePasswordRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/admin/LogoutAllAttendeesRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/admin/LogoutAttendeeRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication/packets/admin/RemoveAttendeeRequestPacket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../implementation/src/main/java/communication/packets/request/admin/GetAttendeeDataRequestPacket.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/communication/packets/admin/SetRequestStatusRequestPacket.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../implementation/src/main/java/communication/packets/request/admin/SetRequestStatusRequestPacket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/communication/packets/AddTopicRequestPacket.js" beforeDir="false" afterPath="$PROJECT_DIR$/communication/packets/admin/AddTopicRequestPacket.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/communication/packets/GetAllAttendeesRequestPacket.js" beforeDir="false" afterPath="$PROJECT_DIR$/communication/packets/admin/GetAllAttendeesRequestPacket.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/communication/packets/RemoveTopicRequestPacket.js" beforeDir="false" afterPath="$PROJECT_DIR$/communication/packets/admin/RemoveTopicRequestPacket.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/communication/packets/RenameTopicRequestPacket.js" beforeDir="false" afterPath="$PROJECT_DIR$/communication/packets/admin/RenameTopicRequestPacket.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/communication/packets/ReorderTopicRequestPacket.js" beforeDir="false" afterPath="$PROJECT_DIR$/communication/packets/admin/ReorderTopicRequestPacket.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_management.html" beforeDir="false" afterPath="$PROJECT_DIR$/user_management.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../implementation/src/main/java/communication/enums/PacketType.java" beforeDir="false" afterPath="$PROJECT_DIR$/../implementation/src/main/java/communication/enums/PacketType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../implementation/src/main/java/communication/packets/request/admin/GenerateMissingAttendeePasswords.java" beforeDir="false" afterPath="$PROJECT_DIR$/../implementation/src/main/java/communication/packets/request/admin/GenerateMissingAttendeePasswordsPacket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../implementation/src/main/java/communication/packets/request/admin/GenerateNewAttendeePasswordRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../implementation/src/main/java/communication/packets/request/admin/GenerateNewAttendeePasswordRequestPacket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../implementation/src/main/java/communication/packets/request/admin/GetAllAttendeePasswords.java" beforeDir="false" afterPath="$PROJECT_DIR$/../implementation/src/main/java/communication/packets/request/admin/GetAllAttendeePasswordsRequestPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../implementation/src/main/java/communication/packets/response/admin/GetAllAttendeesResponsePacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/../implementation/src/main/java/communication/packets/response/admin/GetAllAttendeesResponsePacket.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +40,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/communication/packets" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/communication/packets/admin" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -71,13 +50,13 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/communication/packets" />
-      <recent name="$PROJECT_DIR$/communication/packets/admin" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/communication/packets" />
       <recent name="$PROJECT_DIR$/communication/packets/admin" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/communication/packets/admin" />
+      <recent name="$PROJECT_DIR$/communication/packets" />
     </key>
   </component>
   <component name="ServiceViewManager">
@@ -104,6 +83,8 @@
       <updated>1575367071116</updated>
       <workItem from="1575571696479" duration="4523000" />
       <workItem from="1575577238642" duration="841000" />
+      <workItem from="1576099217640" duration="2647000" />
+      <workItem from="1576165351068" duration="628000" />
     </task>
     <servers />
   </component>

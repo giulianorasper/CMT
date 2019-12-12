@@ -31,7 +31,9 @@ public class Main {
             else{
                 switch (args[1]){
                     case "normal": startNormalConference(true);
+                        break;
                     case "normal-persistent": startNormalConference(false);
+                        break;
                 }
             }
         }

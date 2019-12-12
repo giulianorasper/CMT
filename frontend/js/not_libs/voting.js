@@ -4,6 +4,7 @@ import AddVoteRequestPacket from "../../communication/packets/AddVoteRequestPack
 
 var optionList;
 var voteID;
+var dateObject;
 
 $(document).ready( function() {
 
@@ -29,13 +30,16 @@ $(document).ready( function() {
 function displayActiveVote(packet){
 	// packet.exists,
 	// packet.voting.id
+	dateObject = packet.voting.openUntil;
 	
 	if(packet.exists){
 		
 		//var today = new Date(packet.voting.openUntil * 1000);
-		var today = new Date(packet.voting.openUntil);
 		
-		console.log(today.toUTCString());
+		
+		//var voteDateOnly = voteDate.toUTCString();
+		
+		//console.log(voteDate.toUTCString());
 
 		//console.log(packet.voting.id);
 
@@ -45,7 +49,7 @@ function displayActiveVote(packet){
 		voteID = packet.voting.ID;
 		
 		//$("#voteQuestion").html('<h2 class="contact-title pull-left">'+ packet.voting.question + '</h2>')
-		$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.ID+'"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');
+		$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.ID+'s"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');
 		 
 		for(var i in packet.voting.options){
 		
@@ -81,27 +85,41 @@ function displayActiveVote(packet){
 				//console.log(voteId);
 				//console.log(optionList[selectedOptionId].optionID);
 				
+				var voteDate = new Date(dateObject);
+				var currentDateOnly = new Date();
 				
+				console.log(voteDate.toUTCString());
+				console.log(currentDateOnly.toUTCString());
+				
+							//	if(voteDate.toUTCString() <= currentDateOnly.toUTCString())
+								
+				console.log(voteDate.toUTCString() <= currentDateOnly.toUTCString());
+
 				    function success(packet){
-						if(packet.result === "Valid"){
+						if(packet.result === "Valid" && voteDate.toUTCString() < currentDateOnly.toUTCString()){
 							
 							$("#submit-message").empty();
 							$("#submit-message").addClass("row").addClass("contact-title");
 							$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
 						}
-						
+						else if(packet.result === "Valid" && voteDate.toUTCString() >= currentDateOnly.toUTCString()) {
+							$("#failure").html("<h4 style='float: right; margin-top:30px;'>Vote has been expired!</h4>");
+							
+						}
 						else{
 							$("#failure").html("<h4 style='float: right; margin-top:30px;'>You have already submitted vote!</h4>");	
 						}
 					}
 
 					function fail() {
-						console.log("sorry! your vote are not sumbiited");
+						console.log("sorry! your vote is not sumbiited");
 					}
 				
 				const sendVote = new AddVoteRequestPacket(voteID, selectedOptionId);
 
 				CommunicationManager.send(sendVote, success, fail);
+				
+				
 
         });
 		

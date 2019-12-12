@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/slicknav.css">
     <link rel="stylesheet" href="css/style.css">
+
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
 
 
@@ -98,14 +99,14 @@
                             <h2 style="color:white;">Create Vote</h2>
                         </div>
                         <!--PLACEHOLDER ACTION REDIRECTS TO vote.html-->
-                        <form class="" action="vote.html" id="form-submit1" method="POST">
+                        <!--<form class="" action="vote.html" id="form-submit1" method="POST">-->
                         <div class="row" style="padding-top: 36px;">
                             <div class="col-lg-1">
                                 <!--<h2 class="contact-title pull-left">Conference Name</h2>-->
                             </div>
                             <div class="col-lg-6" >
                                <div class="form-group">
-                                    <input class="form-control valid" name="name" id="name" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'please enter here'" placeholder="please enter here">
+                                    <input class="form-control valid" name="voteQuestion" id="voteQuestion" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'please enter here'" placeholder="please enter here">
                                 </div>
                             </div>
                             <div class="col-lg-1"></div>
@@ -148,15 +149,40 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-1 form-group">
-                                <!--<h2 class="contact-title pull-left">Conference Name</h2>-->
+
+                            </div>
+                            <div class="col-lg-2"><h4>Named Vote:</h4></div>
+                            <div class="col-lg-1" style="margin-top: 11px;">
+
+                                <div class="custom-radio form-group">
+                                     <input type="radio" class="custom-control-input pull-left" id="1" checked name="radio" style="background:#2E004B;">
+                                     <label class="custom-control-label" for="1">Yes</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-1" style="margin-top: 11px;">
+                                <div class="custom-radio form-group">
+                                     <input type="radio" class="custom-control-input" id="0" checked name="radio" style="background:#2E004B;">
+                                     <label class="custom-control-label" for="0">No</label>
+                                </div>
+                            </div>
+                            <!--<div class="col-lg-1" style="margin-top: 11px;">-->
+                                <!--<div class="custom-radio form-group">-->
+                                     <!--<input type="radio" class="custom-control-input" id="2" checked name="radio" style="background:#2E004B;">-->
+                                     <!--<label class="custom-control-label" for="2">Both</label>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                        <div class="row">
+                            <div class="custom-control custom-radio col-lg-8" id="successful">
+
                             </div>
 
-                            <div class="form-group mt-3 col-lg-10" style="padding-bottom: 20px;">
+                            <div class="form-group mt-3 col-lg-3" style="padding-bottom: 20px;">
                                 <!--<button type="button" class="button button-contactForm boxed-btn">Cancel</button>-->
-                                <button type="submit" class="button button-contactForm boxed-btn" id="btnclose" style="float:right; border: 1px solid #00D363; color:#00D363!important;">Create Vote</button>
+                                <button type="submit" class="button button-contactForm boxed-btn" id="createVote" style="float:right; border: 1px solid #00D363; color:#00D363!important;">Create Vote</button>
                             </div>
                         </div>
-                        </form>
+                        <!--</form>-->
 
                     </div>
                 </div>
@@ -193,43 +219,45 @@
 
     <script src="js/main.js"></script>
 
-    <script>
-        $("#form-submit").submit(function (e) {
+    <script type="module" src="js/not_libs/CreateVote.js"></script>
 
-                e.preventDefault();
-                $("#submit-message").empty();
+    <!--<script>-->
+        <!--$("#form-submit").submit(function (e) {-->
 
-                $("#submit-message").addClass("row").addClass("contact-title");
-                $("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
-                    return false;
+                <!--e.preventDefault();-->
+                <!--$("#submit-message").empty();-->
+
+                <!--$("#submit-message").addClass("row").addClass("contact-title");-->
+                <!--$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");-->
+                    <!--return false;-->
 
 
-        });
-
-
-        <!--$("#btnclose").on("click", function (e) {-->
-            <!--setTimeout(function(){-->
-                <!--location.reload();-->
-            <!--}, 2000)-->
         <!--});-->
 
 
-        <!--var start = new Date;-->
+        <!--&lt;!&ndash;$("#btnclose").on("click", function (e) {&ndash;&gt;-->
+            <!--&lt;!&ndash;setTimeout(function(){&ndash;&gt;-->
+                <!--&lt;!&ndash;location.reload();&ndash;&gt;-->
+            <!--&lt;!&ndash;}, 2000)&ndash;&gt;-->
+        <!--&lt;!&ndash;});&ndash;&gt;-->
 
-        <!--setInterval(function() {-->
-            <!--$('#submit-message').text(new Date + " Seconds");-->
-        <!--}, 1000);-->
-</script>
 
-<script>
-        $(document).ready(function() {
+        <!--&lt;!&ndash;var start = new Date;&ndash;&gt;-->
 
-            $(function() {
-                $( "#my_date_picker" ).datepicker();
-                <!--$( "#my_date_picker" ).datetimepicker();-->
-            });
-        })
-    </script>
+        <!--&lt;!&ndash;setInterval(function() {&ndash;&gt;-->
+            <!--&lt;!&ndash;$('#submit-message').text(new Date + " Seconds");&ndash;&gt;-->
+        <!--&lt;!&ndash;}, 1000);&ndash;&gt;-->
+<!--</script>-->
+
+<!--<script>-->
+        <!--$(document).ready(function() {-->
+
+            <!--$(function() {-->
+                <!--$( "#my_date_picker" ).datepicker();-->
+                <!--&lt;!&ndash;$( "#my_date_picker" ).datetimepicker();&ndash;&gt;-->
+            <!--});-->
+        <!--})-->
+    <!--</script>-->
 
 
 </body>

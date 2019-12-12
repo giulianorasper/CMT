@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class AgendaTests {
 
@@ -37,6 +38,51 @@ public class AgendaTests {
         t3.getSubTopics().addTopic(t3_3, 2);
         Topic t3_2_1 = new Topic("First Subtopic of the second subtopic of 3", t3_2.getSubTopics());
         t3_2.getSubTopics().addTopic(t3_2_1, 0);
+    }
+
+    @Test
+    public void reOrderAndRemove() {
+        Agenda agenda = new Agenda();
+        Topic firstTopic = new Topic("Käsebrot", agenda);
+        Topic subTopic11 = new Topic("Käse", firstTopic.getSubTopics());
+        Topic subTopic12 = new Topic("Brot", firstTopic.getSubTopics());
+        agenda.addTopic(firstTopic,0);
+        firstTopic.getSubTopics().addTopic(subTopic11, 0);
+        firstTopic.getSubTopics().addTopic(subTopic12, 1);
+
+        Topic secondTopic = new Topic("Salamipizza", agenda);
+        Topic subTopic21 = new Topic("Salami", secondTopic.getSubTopics());
+        Topic subTopic22 = new Topic("Pizza", secondTopic.getSubTopics());
+        agenda.addTopic(secondTopic, 1);
+        secondTopic.getSubTopics().addTopic(subTopic21, 0);
+        secondTopic.getSubTopics().addTopic(subTopic22, 1);
+
+        assertEquals("toString not implemented properly",
+                "{Käsebrot {Käse {}, Brot {}}, Salamipizza {Salami {}, Pizza {}}}", agenda.toString());
+
+        agenda.getTopic(1).remove();
+        assertEquals("Not removing properly.", "{Käsebrot {Käse {}, Brot {}}}", agenda.toString());
+
+        try {
+            agenda.getTopic(1);
+            fail("Agenda was not updated properly");
+        } catch (IllegalArgumentException e) {
+
+        }
+
+        agenda.getTopic(0).getSubTopics().getTopic(1).moveToNewAgenda(agenda.getTopic(0).getSubTopics(), 0);
+        assertEquals("Not moving properly.", "{Käsebrot {Brot {}, Käse {}}}", agenda.toString());
+
+        agenda.addTopic(secondTopic, 1);
+        secondTopic.getSubTopics().addTopic(subTopic21, 0);
+        secondTopic.getSubTopics().addTopic(subTopic22, 1);
+        assertEquals("{Käsebrot {Brot {}, Käse {}}, Salamipizza {Salami {}, Pizza {}}}", agenda.toString());
+
+        agenda.getTopic(0).moveToNewAgenda(agenda.getTopic(1).getSubTopics(), 2);
+        assertEquals("{Salamipizza {Salami {}, Pizza {}, Käsebrot {Brot {}, Käse {}}}}", agenda.toString());
+
+        agenda.getTopic(0).reorder(1);
+        assertEquals("{Käsebrot {Brot {}, Käse {}}, Salamipizza {Salami {}, Pizza {}}}", agenda.toString());
     }
 
     @Test

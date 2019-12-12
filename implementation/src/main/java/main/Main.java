@@ -30,20 +30,23 @@ public class Main {
             }
             else{
                 switch (args[1]){
-                    case "normal": startNormalConference();
+                    case "normal": startNormalConference(true);
+                        break;
+                    case "normal-persistent": startNormalConference(false);
+                        break;
                 }
             }
         }
     }
 
     /** Starts a conference with a single admin (username and password 'test') **/
-    private static void startNormalConference(){
-        conf = new Conference();
+    private static void startNormalConference(boolean clean){
+        conf = new Conference(clean);
         LinkedList<VotingOption> votingOptions = new LinkedList<>();
-        NamedVotingOption o1 = new NamedVotingOption();
-        NamedVotingOption o2 = new NamedVotingOption();
-        NamedVotingOption o3 = new NamedVotingOption();
-        NamedVotingOption o4 = new NamedVotingOption();
+        NamedVotingOption o1 = new NamedVotingOption(0, "I");
+        NamedVotingOption o2 = new NamedVotingOption(1, "am");
+        NamedVotingOption o3 = new NamedVotingOption(2, "the");
+        NamedVotingOption o4 = new NamedVotingOption(3, "Lorax! (and I speak for the Trees)");
         votingOptions.add(o1);
         votingOptions.add(o2);
         votingOptions.add(o3);
@@ -53,10 +56,6 @@ public class Main {
         o2.setParent(voting);
         o3.setParent(voting);
         o4.setParent(voting);
-        o1.changeName("I");
-        o2.changeName("am");
-        o3.changeName("the");
-        o4.changeName("Lorax");
         voting.startVote();
         conf.addVoting(voting);
         conf.update(voting);
@@ -78,6 +77,7 @@ public class Main {
 
     private static void printUsage(){
         System.out.println("Usage : 'test' <testID>");
+        System.out.println("Valid test ids : 'normal', 'normal-persistent'");
         System.exit(1);
     }
 

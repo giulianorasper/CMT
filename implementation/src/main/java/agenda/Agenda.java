@@ -57,6 +57,7 @@ public class Agenda implements AgendaObservable{
             tops.stream().filter(p -> p.first().size() == depth.get()).sorted(new LexicographicalComparator())
                     .forEach(p -> {auxDepth.set(1); ref.aux = ag; p.first().forEach(i -> {
                         //   System.out.println("At position " + i + " maxDepth "+depth.get() + " depth" + auxDepth.get());
+                        i--;
                         if (auxDepth.get() < depth.get()) {
                             ref.aux = ref.aux.getTopic(i).getSubTopics();
                         } else {
@@ -71,7 +72,17 @@ public class Agenda implements AgendaObservable{
 
 
     boolean removeTopic(Topic t) {
-        return this.topics.remove(t);
+        try{
+            lock.getWriteAccess();
+            return this.topics.remove(t);
+        }
+        catch (InterruptedException e){
+            return false;
+        }
+        finally {
+            notifyObservers();
+            lock.finishWrite();
+        }
     }
 
     boolean reOrderTopic(Topic t, int pos) {
@@ -92,6 +103,7 @@ public class Agenda implements AgendaObservable{
             return false;
         }
         finally {
+            notifyObservers();
             lock.finishWrite();
         }
     }
@@ -231,16 +243,19 @@ public class Agenda implements AgendaObservable{
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         try {
-            StringBuffer sb = new StringBuffer("{\n");
+            StringBuffer sb = new StringBuffer("{");
             lock.getReadAccess();
             if (topics.isEmpty()) {
                 return "{}";
             }
-            else{
-                topics.forEach(t -> sb.append(", ").append(t.toString()));
-                sb.append("\n}");
+            else {
+                sb.append(topics.get(0).toString());
+                for (int i = 1; i < topics.size(); i++) {
+                   sb.append(", ").append(topics.get(i).toString());
+                }
+                sb.append("}");
                 return sb.toString();
             }
         }

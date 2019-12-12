@@ -72,7 +72,7 @@ function append(preorder){
         newOrder = split.join(".")+ "." + newOrder
     }
 
-    var res = prompt("topic name?")
+    var res = prompt("topic name?");
 
     if(res){
         const packet = new AddTopicRequestPacket(newOrder, res);

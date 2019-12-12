@@ -2,6 +2,7 @@ import CommunicationManager from "../../communication/CommunicationManager.js";
 import GetAgendaRequestPacket from "../../communication/packets/GetAgendaRequestPacket.js";
 import RequestOfSpeechRequestPacket from "../../communication/packets/RequestOfSpeechRequestPacket.js";
 import RequestOfChangeRequestPacket from "../../communication/packets/RequestOfChangeRequestPacket.js";
+import GetDocumentListRequestPacket from "../../communication/packets/GetDocumentListRequestPacket.js";
 
 var changeMessage = $("#requestMessage");
 var requestOptions = $(".requestSelect");
@@ -9,6 +10,7 @@ var requestOptions = $(".requestSelect");
 
 $( document ).ready(function() {
 	getAgenda();
+    getDocuments();
 
 	window.submitRequest = submit;
 });
@@ -84,5 +86,21 @@ function getAgenda(){
 }
 
 function getDocuments(){
-	//TODO
+	const packet = new GetDocumentListRequestPacket();
+
+    CommunicationManager.send(packet, success, fail);
+    function success(packet) {
+        if(packet.result === "Valid") {          
+            for(var doc of packet.documents){
+                requestOptions.each(function(i, option){
+                    $("<option data-id=\""+doc.name+"\" data-isTop = false>" +doc.name+"</option>").appendTo(option);
+                })
+            }
+        }
+    }
+
+    function fail() {
+        console.log("This method is called if something went wrong during the general communication.");
+    }
+
 }

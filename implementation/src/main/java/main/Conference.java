@@ -2,8 +2,6 @@ package main;
 
 import agenda.Agenda;
 import agenda.AgendaManagement;
-import agenda.DB_AgendaManagement;
-import agenda.Topic;
 import com.google.gson.annotations.Expose;
 import database.*;
 import document.DB_DocumentManagement;
@@ -15,31 +13,17 @@ import request.RequestManagement;
 import user.*;
 import utils.Generator;
 import utils.Generator_Imp;
-import utils.Log;
-import utils.Operation;
-import utils.OperationResponse;
 import utils.Pair;
-import voting.DB_VotingManagement;
 import voting.Voting;
 import voting.VotingManagement;
 import voting.VotingObserver;
 import voting.VotingStatus;
 
-import javax.print.Doc;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -48,36 +32,35 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Conference implements UserManagement, VotingManagement, RequestManagement, DocumentManagement, AgendaManagement, VotingObserver {
 
     //Creates a clean conference (for debugging)
-    public Conference(){
+    public Conference(boolean cleanStart){
         this (  "Test",
                 "Team 23",
                 System.currentTimeMillis(),
                 System.currentTimeMillis() + 1000*60*60,
-                new Agenda(""),
                 new HashMap<Integer, Admin>(),
                 new HashMap<Integer, Voting>(),
                 new HashMap<String, Document>(),
                 "./docs",
-                new HashSet<String>(),
                 new HashMap<Integer, Request>(),
                 null,
                 "./testdb/testdb.db",
-                true
+                true,
+                cleanStart
         );
+
 
     }
 
 
-    public Conference(String name, String organizer, long startsAt, long endsAt, Agenda agenda, HashMap<Integer,
+    public Conference(String name, String organizer, long startsAt, long endsAt, HashMap<Integer,
             Admin> admins, HashMap<Integer,Voting> votings, HashMap<String,Document> documents, String  documentsPath,
-                      Set<String> adminTokens, HashMap<Integer,Request> requests, Voting activeVoting,
+                       HashMap<Integer,Request> requests, Voting activeVoting,
                       String databasePath,
-                      boolean deguggingInstance) {
+                      boolean deguggingInstance, boolean cleanStart) {
         this.name = name;
         this.organizer = organizer;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
-        this.agenda = agenda;
         this.votings = votings;
         this.documents = documents;
         this.requests = requests;
@@ -89,10 +72,39 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         this.admins = admins;
 
         this.adminTokens = new HashMap<>();
-        adminTokens.forEach(f -> this.adminTokens.put(f, true));
-        DB_AgendaManager db_agendaManagement = new DB_AgendaManager("");
-        agenda.register(db_agendaManagement);
+
+        File database = new File(databasePath);
+        if(database.exists() && cleanStart){
+            database.delete();
+            File[] directoryListing =  new File(documentsPath).listFiles();
+            for(int i = 0 ; directoryListing != null && i < directoryListing.length; i++){
+                Document d = db_documentManagement.getDocument(directoryListing[i].getName());
+                if(d == null){
+                    directoryListing[i].delete();
+                }
+                else{
+                    documents.put(d.getName(), d);
+                }
+            }
+        }
+
+
+
+
+
+        db_votingManagement = new DB_VotingManager(databasePath);
+
+        initUsers();
+        initAgenda();
+        initDocuments();
+        initRequests();
+        initVotes();
+    }
+
+    private void initDocuments(){
+        db_documentManagement = new DB_DocumentManager(databasePath);
         File documentsFolder = new File(documentsPath);
+
         if(!documentsFolder.exists() && !documentsFolder.mkdir()){
             throw new IllegalArgumentException("Could not create directory " + documentsPath);
         }
@@ -100,22 +112,38 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             throw new IllegalArgumentException("Could not create directory " + documentsPath +" , because a file with that name already exists");
         }
         if(documentsFolder.exists() && documentsFolder.isDirectory()){
-            //todo read files from directory
+            File[] directoryListing = documentsFolder.listFiles();
+            for(int i = 0 ; i < directoryListing.length; i++){
+                Document d = db_documentManagement.getDocument(directoryListing[i].getName());
+                if(d == null){
+                    directoryListing[i].delete();
+                }
+                else{
+                    documents.put(d.getName(), d);
+                }
+            }
         }
+    }
 
-        File database = new File(databasePath);
-        if(database.exists()){
-            if(deguggingInstance){
-                database.delete();
-            }
-            else {
-                //todo read database
-            }
-        }
-        db_documentManagement = new DB_DocumentManager(databasePath);
+    private void initUsers(){
         db_userManagement = new DB_UserManager(databasePath);
+        db_userManagement.getAllAdmins().forEach(a -> admins.put(a.getID(), a));
+        db_userManagement.getAllAttendees();
+    }
+
+    private void initAgenda(){
+        DB_AgendaManager db_agendaManagement = new DB_AgendaManager(databasePath);
+        agenda = db_agendaManagement.getAgenda();
+        agenda.register(db_agendaManagement);
+    }
+
+    private void initRequests(){
         db_requestManagement = new DB_RequestManager(databasePath);
-        db_votingManagement = new DB_VotingManager(databasePath);
+        db_requestManagement.getAllRequests().forEach(r -> requests.put(r.ID, r));
+    }
+
+    private void initVotes(){
+        //todo
     }
 
     //Conference Data
@@ -226,7 +254,13 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         assert (debugingInstance); // close the server since this operation is illegal
         try{
             adminLock.lock();
-            if(!db_userManagement.addAdmin(a, pwd, gen.generateToken())){
+            AtomicBoolean alreadyExists = new AtomicBoolean(false);
+            db_userManagement.getAllAdmins().forEach(ad -> {
+                if(ad.getID() == a.getID()){
+                    alreadyExists.set(true);
+                }
+            });
+            if(!alreadyExists.get() && !db_userManagement.addAdmin(a, pwd, gen.generateToken())){
                 throw new IllegalArgumentException("Database addition failed");
             }
             admins.put(a.getID(), a);
@@ -531,18 +565,20 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public TokenResponse checkToken(String token) {
         try{
             adminLock.lock();
+            attendeeLock.lock();
             if(adminTokens.containsKey(token)){
                 return TokenResponse.ValidAdmin;
             }
-            else try{
-                attendeeLock.lock();
-                return db_userManagement.checkToken(token);
-            }
-            finally {
-                attendeeLock.unlock();
+            else {
+                TokenResponse res = db_userManagement.checkToken(token);
+                if (res == TokenResponse.ValidAdmin) {
+                    adminTokens.put(token, true);
+                }
+                return res;
             }
         }
         finally {
+            attendeeLock.unlock();
             adminLock.unlock();
         }
     }
@@ -663,10 +699,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void updateDocument(String name, String fileType, byte[] fileBytes, boolean isCreation) {
         try {
             documentsLock.lock();
-            String fullName = name+fileType;
+            String fullName = name;
+            System.out.println(fullName);
             File f;
             if(!documents.containsKey(fullName)) {
-                f = new File(documentsPath + "/" + name);
+                f = new File(documentsPath + "/" + fullName);
             }
             else{
                 f = documents.get(fullName).getFile();

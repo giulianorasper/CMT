@@ -119,7 +119,7 @@ public class Topic implements Requestable {
     public String toString(){
         try{
             lock.getReadAccess();
-            return name + subTopics.toString();
+            return name + " " + subTopics.toString();
         }
         catch (InterruptedException e){
             return "";

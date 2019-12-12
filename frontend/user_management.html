@@ -103,11 +103,11 @@
                                 <!--<div class="row">-->
                                 <!--<div class="custom-control custom-radio col-xl-12 col-md-12">-->
                                 <div class="form-group controls">
-                                    <select class="form-control" name="sorting" required>
+                                    <select id="sortingOptions" class="form-control" required>
 
-                                        <option selected onclick="sort('attendeeName')">Name</option>
-                                        <option onclick="sort('attendeeGroup')">Group</option>
-                                        <option onclick="sort('attendeeFunction')">Function</option>
+                                        <option selected value="attendeeName">Name</option>
+                                        <option value="attendeeGroup">Group</option>
+                                        <option value="attendeeFunction">Function</option>
 
 
                                         <!--<option>Englisch</option>-->
@@ -183,6 +183,7 @@
 <script src="js/main.js"></script>
 
 <script type="module" src="js/not_libs/attendees.js"></script>
+<!--<script type="module" src="js/not_libs/attendeeSorting.js"></script>-->
 
 
 

@@ -103,7 +103,7 @@
                                 <!--<div class="row">-->
                                 <!--<div class="custom-control custom-radio col-xl-12 col-md-12">-->
                                 <div class="form-group controls">
-                                    <select id="sortingOptions" class="form-control" required>
+                                    <select id="sortingOptions" class="form-control" style="height:100%" required>
 
                                         <option selected value="attendeeName">Name</option>
                                         <option value="attendeeGroup">Group</option>
@@ -181,6 +181,10 @@
 <script type="module" src="js/not_libs/attendees.js"></script>
 <!--<script type="module" src="js/not_libs/attendeeSorting.js"></script>-->
 
+
+<!--- IMPORTANT: find out why the other bootstrap imports are broken when trying to load glyphicons -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 
 

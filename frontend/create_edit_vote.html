@@ -68,7 +68,6 @@
                                                  <li><a href="request_management.html">Manage Requests</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="agenda_management.html">Manage Agenda</a></li>
                                         <li><a href="user_management.html">Manage Users</a></li>
                                         <li><a href="profile.html">Profile</a></li>
                                     </ul>
@@ -106,7 +105,7 @@
                             </div>
                             <div class="col-lg-6" >
                                <div class="form-group">
-                                    <input class="form-control valid" name="voteQuestion" id="voteQuestion" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'please enter here'" placeholder="please enter here">
+                                    <input class="form-control valid" name="voteQuestion" id="voteQuestion" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'please enter here'" placeholder="please enter here" required>
                                 </div>
                             </div>
                             <div class="col-lg-1"></div>
@@ -123,7 +122,7 @@
                                <div class="form-group controls">
                                     <!--<input class="form-control valid" name="name" id="name" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your name'" placeholder="Enter your name">-->
 
-                                    <input list="options" name="option1234" type="text" class="form-control" placeholder="please add or select here">
+                                    <input list="options" name="option1234" type="text" class="form-control" id="newOption" placeholder="please add or select here" required>
                                           <datalist id="options" >
                                             <option value="option 1">
                                             <option value="option 2">
@@ -131,17 +130,18 @@
                                             <option value="option 4">
                                             <option value="option 5">
                                           </datalist>
+                                   <span id="message"></span>
                                </div>
                             </div>
                             <div class="col-lg-2"></div>
                              <div class="col-lg-1">
                                    <a href="#" style="color: #00D363; font-size: 25px;">
-                                  <span class="glyphicon glyphicon-plus" style="float:right;"></span>
+                                  <span class="glyphicon glyphicon-plus" style="float:right;" id="addOption"></span>
                                 </a>
                             </div>
                             <div class="col-lg-1">
                                        <a href="#" style="color: #00D363; font-size: 25px;">
-                                      <span class="glyphicon glyphicon-trash " style="float:right;"></span>
+                                      <span class="glyphicon glyphicon-trash " style="float:right;" id="deleteOption"></span>
                                     </a>
                             </div>
                             <div class="col-lg-1"></div>

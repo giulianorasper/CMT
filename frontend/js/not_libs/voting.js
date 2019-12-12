@@ -11,6 +11,7 @@ $(document).ready( function() {
         console.log(packet)
         if(packet.result === "Valid"){
             displayActiveVote(packet);
+
         }
     }
 
@@ -30,6 +31,11 @@ function displayActiveVote(packet){
 	// packet.voting.id
 	
 	if(packet.exists){
+		
+		//var today = new Date(packet.voting.openUntil * 1000);
+		var today = new Date(packet.voting.openUntil);
+		
+		console.log(today.toUTCString());
 
 		//console.log(packet.voting.id);
 

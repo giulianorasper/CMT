@@ -9,7 +9,10 @@ import communication.packets.request.admin.*;
 import communication.packets.response.FailureResponsePacket;
 import main.Conference;
 import org.java_websocket.WebSocket;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.exceptions.InvalidDataException;
 import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.handshake.ServerHandshakeBuilder;
 import org.java_websocket.server.WebSocketServer;
 
 import java.io.IOException;
@@ -51,6 +54,13 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
     protected boolean onConnect(SelectionKey key) {
         System.out.println("Connect!");
         return super.onConnect(key);
+    }
+
+    @Override
+    public ServerHandshakeBuilder onWebsocketHandshakeReceivedAsServer(WebSocket conn, Draft draft, ClientHandshake request) throws InvalidDataException {
+        System.out.println("The handshake");
+        System.out.println(request.getResourceDescriptor());
+        return super.onWebsocketHandshakeReceivedAsServer(conn, draft, request);
     }
 
     @Override

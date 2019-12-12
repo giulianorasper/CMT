@@ -91,7 +91,7 @@
                             <h3>Requests Management Panel</h3>
                         </div>
 
-                        <form class="" action="request_management.html" method="POST" id="form-submit">
+            
                         <div class="row" style="padding-top: 36px;">
                             <div class="col-lg-1" style="float:left;">
                                 <!--Added back for layout purposes-->
@@ -100,14 +100,12 @@
                                     <!--<div class="row">-->
                                         <!--<div class="custom-control custom-radio col-xl-12 col-md-12">-->
                                              <div class="form-group controls">
-                                                      <select class="form-control" name="language" required>
+                                                      <select onchange = "rerenderRequests()" style="height:100%" class="form-control" id = "requestType" name="language" required>
 
-                                                          <option disabled selected hidden>select request type</option>
+                                                          <option data-type = "all">All requests</option>
 
-                                                          <option>All</option>
-
-                                                          <option>Change Request</option>
-                                                          <option>Speech Request</option>
+                                                          <option data-type = "change">Change Request</option>
+                                                          <option data-type = "speech">Speech Request</option>
 
 
                                                           <!--<option>Englisch</option>-->
@@ -118,21 +116,10 @@
                                     <!--<div class="row">-->
                                         <!--<div class="custom-control custom-radio col-xl-12 col-md-12">-->
                                              <div class="form-group controls">
-                                                      <select class="form-control" name="language" required>
+                                                      <select  onchange = "rerenderRequests()"  style="height:100%" class="form-control" id ="requestableType" name="language" required>
 
-                                                          <option disabled selected hidden>select request topic</option>
-
-                                                          <option>Agenda Topic 1</option>
-
-                                                          <option>Agenda Topic 2</option>
-                                                          <option>Agenda Topic 3</option>
-
-                                                          <option>Agenda Topic 4</option>
-                                                          <option>Document Topic 1</option>
-
-                                                          <option>Document Topic 2</option>
-                                                          <option>Document Topic 3</option>
-                                                          <option>Document Topic 4</option>
+                                                          <option>All requests</option>
+    
 
 
                                                           <!--<option>Englisch</option>-->
@@ -147,14 +134,14 @@
                         <!--<div class="row">-->
                             <br>
                             <br>
-                            <div class="col-lg-12" style="padding-bottom: 20px;">
+                            <div class="col-lg-12" >
                                 <table class="table table-hover">
                                     <thead>
                                         <th>Requests</th>
                                         <th>Time Stamp</th>
                                         <th>Request Type</th>
-                                       <!-- <th>Open</th>
-                                        <th></th>-->
+                                        <th>Status</th>
+                                        <th></th>
                                     </thead>
 
                                     <tbody id = "requestContainer">
@@ -165,14 +152,16 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-   
+   <!--- IMPORTANT: find out why the other bootstrap imports are broken when trying to load glyphicons -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
 	<!-- JS here -->
 	<script src="js/vendor/modernizr-3.5.0.min.js"></script>
 	<script src="js/vendor/jquery-1.12.4.min.js"></script>
@@ -203,6 +192,7 @@
 	<script src="js/main.js"></script>
 
     <script type="module" src="js/not_libs/request_management.js"></script>
+
 
 
 

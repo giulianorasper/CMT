@@ -21,10 +21,11 @@ var sortingRelation = 'attendeeName';
  *
  * @return a list of attendee objects
  */
-function getAttendeeList(){
+function updateAttendeeList(){
     function success(packet){
         if(packet.result === "Valid"){
-            return packet.attendees;
+            console.log(packet.attendees);
+            sortAttendeeList(packet.attendees);
         }
         else{
             console.log("You aren't authorized to get the attendee list.")
@@ -230,24 +231,40 @@ function getNewAttendeePassword(attendeeID){
 
 
 /**
- * Sends a request to get the current attendee list, sorts it and prints it after that.
+ * Gets called by updateAttendeeList to sort the entries before printing them. Calls getSortedList from attendeeSorting,
+ * generates the attendee List afterwards. Uses the current sorting relation state.
  *
- * @param relation that the sorting algorithm shall use to sort by.
+ * @param attendeeList that needs to be sorted.
  */
-function sort(relation){
-    //Sets general sorting relation to the new one
-    sortingRelation = relation;
+function sortAttendeeList(attendeeList){
 
     //Calls getSortedList from attendeeSorting.js
-    const sortedList = getSortedList(getAttendeeList(), sortingRelation);
+    const sortedList = getSortedList(attendeeList, sortingRelation);
     generateAttendeeList(sortedList);
 }
 
 
 /**
- * Gets called whenever the attendee list needs to reload. Automatically sorts by the current sortingRelation.
+ * Gets called from "Sort by" dropdown options in user_management.html, updates sorting relation and parses attendee List
+ * yet again.
+ *
+ * @param relation to be sorted by.
+ */
+function sort(relation){
+    //Sets general sorting relation to the new one
+    sortingRelation = relation;
+
+    //Refreshes page so list gets rendered with new sorting relation
+    refresh();
+}
+
+
+
+
+/**
+ * Gets called whenever the attendee list needs to reload.
  */
 function refresh(){
-    sort(sortingRelation);
+    updateAttendeeList();
 }
 

@@ -2,7 +2,7 @@ var sortingRelation;
 
 export function getSortedList(list, relation){
     sortingRelation = relation;
-    return mergeSort(parseToArray(list));
+    return mergeSort(list);
 }
 
 function mergeSort(list){
@@ -68,9 +68,4 @@ function merge(left, right){
 
     //Appending the remaining list after sorting
     return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
-}
-
-function parseToArray(jsonList){
-    console.log(jsonList);
-    return jsonList;
 }

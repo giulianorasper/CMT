@@ -103,11 +103,11 @@
                                 <!--<div class="row">-->
                                 <!--<div class="custom-control custom-radio col-xl-12 col-md-12">-->
                                 <div class="form-group controls">
-                                    <select class="form-control" name="sorting" required>
+                                    <select id="sortingOptions" class="form-control" required>
 
-                                        <option selected onclick="sort('attendeeName')">Name</option>
-                                        <option onclick="sort('attendeeGroup')">Group</option>
-                                        <option onclick="sort('attendeeFunction')">Function</option>
+                                        <option selected value="attendeeName">Name</option>
+                                        <option value="attendeeGroup">Group</option>
+                                        <option value="attendeeFunction">Function</option>
 
 
                                         <!--<option>Englisch</option>-->
@@ -123,12 +123,7 @@
                             <div class="col-lg-1"></div>
                             <div class="col-lg-10" style="padding-bottom: 20px;">
 
-                                <div id="attendeeListID">
-                                    <!--Print incoming Attendees HERE-->
-                                </div>
 
-
-                                <!--Old hardcoded list, just to be safe-->
                                 <table class="table table-hover">
                                     <thead>
                                     <th>Name</th>
@@ -139,6 +134,7 @@
 
                                     <tbody id = "attendeeList">
 
+                                    <!--Print incoming attendees HERE!!-->
                                        
                                     </tbody>
                                 </table>
@@ -183,6 +179,7 @@
 <script src="js/main.js"></script>
 
 <script type="module" src="js/not_libs/attendees.js"></script>
+<!--<script type="module" src="js/not_libs/attendeeSorting.js"></script>-->
 
 
 

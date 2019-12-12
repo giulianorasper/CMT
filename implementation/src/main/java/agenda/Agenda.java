@@ -93,7 +93,6 @@ public class Agenda implements AgendaObservable{
         try {
             lock.getWriteAccess();
             if (pos >= 0 && pos <= topics.size()) {
-                System.out.println("Adding");
                 this.topics.add(pos, t);
                 return true;
             }
@@ -105,7 +104,6 @@ public class Agenda implements AgendaObservable{
         }
         finally {
             notifyObservers();
-            System.out.println("FInishing write");
             lock.finishWrite();
         }
     }
@@ -245,16 +243,19 @@ public class Agenda implements AgendaObservable{
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         try {
-            StringBuffer sb = new StringBuffer("{\n");
+            StringBuffer sb = new StringBuffer("{");
             lock.getReadAccess();
             if (topics.isEmpty()) {
                 return "{}";
             }
-            else{
-                topics.forEach(t -> sb.append(", ").append(t.toString()));
-                sb.append("\n}");
+            else {
+                sb.append(topics.get(0).toString());
+                for (int i = 1; i < topics.size(); i++) {
+                   sb.append(", ").append(topics.get(i).toString());
+                }
+                sb.append("}");
                 return sb.toString();
             }
         }

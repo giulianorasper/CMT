@@ -1,6 +1,6 @@
 var sortingRelation;
 
-function getSortedList(list, relation){
+export function getSortedList(list, relation){
     sortingRelation = relation;
     return mergeSort(list);
 }

@@ -6,9 +6,11 @@ import AddAttendeeRequestPacket from "../../communication/packets/admin/AddAtten
 import LogoutAttendeeRequestPacket from "../../communication/packets/admin/LogoutAttendeeRequestPacket.js";
 import GenerateNewAttendeePasswordRequestPacket
     from "../../communication/packets/admin/GenerateNewAttendeePasswordRequestPacket.js";
-import "./attendeeSorting";
+import { getSortedList } from "./attendeeSorting.js";
 
 $(document).ready( function() {
+    document.getElementById("sortingOptions").addEventListener("change", changeSort, false);
+
     refresh();
 });
 
@@ -16,15 +18,18 @@ $(document).ready( function() {
 var sortingRelation = 'attendeeName';
 
 
+//----------------------------------- SENDING REQUEST AND SORTING METHODS ----------------------------------------------
+
+
 /**
  * Sends a request to the server to get the current information about each and every attendee in the database.
  *
  * @return a list of attendee objects
  */
-function getAttendeeList(){
+function updateAttendeeList(){
     function success(packet){
         if(packet.result === "Valid"){
-            return packet.attendees;
+            sortAttendeeList(packet.attendees);
         }
         else{
             console.log("You aren't authorized to get the attendee list.")
@@ -40,24 +45,65 @@ function getAttendeeList(){
     CommunicationManager.send(requestPacket, success, fail);
 }
 
+/**
+ * Gets called by updateAttendeeList to sort the entries before printing them. Calls getSortedList from attendeeSorting,
+ * uses the current sorting relation state. Calls generateAttendeeList after sorting.
+ *
+ * @param attendeeList that needs to be sorted.
+ */
+function sortAttendeeList(attendeeList){
+
+    //Calls getSortedList from attendeeSorting.js
+    const sortedList = getSortedList(attendeeList, sortingRelation);
+    generateAttendeeList(sortedList);
+}
+
+
+/**
+ * Gets called from changeSort hook when dropdown option in user_management.html gets changed (Listener for that dropdown
+ * menu got added in ready method of the document)
+ *
+ * @param relation to be sorted by.
+ */
+function sort(relation){
+    //Sets general sorting relation to the new one
+    sortingRelation = relation;
+
+    //Refreshes page so list gets rendered with new sorting relation
+    refresh();
+}
+
+
+//---------------------------------- RENDERING ATTENDEE LIST METHODS ---------------------------------------------------
+
+/**
+ * Gets called whenever the attendee list needs to reload.
+ */
+function refresh(){
+    updateAttendeeList();
+}
+
 
 function generateAttendeeList(attendeeList){
 
-    console.log(attendeeList);
+    //console.log(attendeeList);
 
-    var attendeeContainer = $('#attendeeList');
+    const attendeeContainer = $('#attendeeList');
 
-    var i = 0;
+    //Replaces old list content with empty HTML
+    $('#attendeeList').empty();
+
+    //Generates new list content
     for (var currAttendee of attendeeList){
-        generateAttendee(currAttendee, i).appendTo(attendeeContainer);
-        i++;
+        generateAttendee(currAttendee).appendTo(attendeeContainer);
+        addIconListeners(currAttendee);
     }
 
 }
 
 
-function generateAttendee(attendee, id){
-    return $('<tr data-toggle="collapse" data-target="#user_accordion'+ id +'" class="clickable">'+
+function generateAttendee(attendee){
+    return  $('<tr data-toggle="collapse" data-target="#user_accordion'+ attendee.ID +'" class="clickable">'+
         '<td>'+attendee.name+'</td>'+
         '<td>'+attendee.group+'</td>'+
         '<td>'+attendee.function+'</td>'+
@@ -65,21 +111,38 @@ function generateAttendee(attendee, id){
         '</tr>'+
         '<tr>'+
         '<td colspan="4">'+
-        '<div id="user_accordion'+ id +'"  class="collapse">'+
+        '<div id="user_accordion'+ attendee.ID +'"  class="collapse">'+
         '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
+        '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
         '<span style="display:inline-block; width: 30px;">' +
         '</span><span class="glyphicon glyphicon-pencil" <!--onclick="editAttendee(...)"--> ></span>'+
         '<span style="display:inline-block; width: 60px;">'+
-        '</span><span class="glyphicon glyphicon-log-in" onclick = "getNewAttendeePassword('+ attendee.ID +')"></span>'+
+        '</span><span class="glyphicon glyphicon-log-in" id="newPassword'+ attendee.ID +'"></span>'+
         '<span style="display:inline-block; width: 30px;">' +
-        '</span><span class="glyphicon glyphicon-log-out" onclick = "logoutAttendee('+ attendee.ID +')"></span>'+
+        '</span><span class="glyphicon glyphicon-log-out" id="logout'+ attendee.ID +'"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-trash" onclick = "deleteAttendee('+ attendee.ID +')"></span>' +
-        '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
+        '</span><span class="glyphicon glyphicon-trash" id="delete'+ attendee.ID +'"></span>' +
         '</div>'+
         '</td>'+
         '</tr>');
 }
+
+/**
+ * Adds click EventListeners to the IDs of the glyph icons. NewPassword buttons call clickNewPassword, Logout buttons call
+ * clickLogout and delete buttons call clickDelete.
+ *
+ * @param attendee whose glyphicons shall call certain click hooks
+ */
+function addIconListeners(attendee) {
+    //TODO edit attendee EventListener
+    document.getElementById("newPassword" + attendee.ID).addEventListener("click", clickNewPassword, false);
+    document.getElementById("logout" + attendee.ID).addEventListener("click", clickLogout, false);
+    document.getElementById("delete" + attendee.ID).addEventListener("click", clickDelete, false);
+}
+
+
+
+//-------------------------------- FUNCTIONS TO BE CALLED BY GLYPHICONS ------------------------------------------------
 
 
 /**
@@ -229,22 +292,36 @@ function getNewAttendeePassword(attendeeID){
 }
 
 
+
+//----------------------------------------- HOOKS FOR ONCLICK EVENTS ---------------------------------------------------
+
 /**
- * Sends a request to get the current attendee list, sorts it and prints it after that.
- *
- * @param relation that the sorting algorithm shall use to sort by.
+ * Hook that gets called by EventListener on Dropdown menu
  */
-function sort(relation){
-    sortingRelation = relation;
-    const sortedList = getSortedList(getAttendeeList(), relation);
-    generateAttendeeList(sortedList);
+function changeSort(){
+    const selectedOption = this.options[this.selectedIndex].value;
+
+    sort(selectedOption);
 }
 
+/**
+ * Hook that gets called by EventListener on each getNewPassword button for an attendee
+ */
+function clickNewPassword() {
+    //TODO implement this
+}
 
 /**
- * Gets called whenever the attendee list needs to reload. Automatically sorts by the current sortingRelation.
+ * Hook that gets called by EventListener on each logout button for an attendee
  */
-function refresh(){
-    sort(sortingRelation);
+function clickLogout(){
+    //TODO implement this
+}
+
+/**
+ * Hook that gets called by EventListener on each delete button for an attendee
+ */
+function clickDelete(){
+    //TODO implement this
 }
 

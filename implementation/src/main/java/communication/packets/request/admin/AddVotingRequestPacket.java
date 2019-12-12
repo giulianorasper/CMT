@@ -33,13 +33,15 @@ public class AddVotingRequestPacket extends AuthenticatedRequestPacket {
         if(isPermitted(conference, webSocket, true)) {
             VotingOption votingOptionObject;
             List<VotingOption> optionsObjectList = new LinkedList<>();
+            int id = 0;
             for(String option : options) {
                 if(namedVote) {
-                    votingOptionObject = new NamedVotingOption();
+                    votingOptionObject = new NamedVotingOption(id, option);
                 } else {
-                    votingOptionObject = new AnonymousVotingOption(0);
+                    votingOptionObject = new AnonymousVotingOption(id, option);
                 }
                 optionsObjectList.add(votingOptionObject);
+                id++;
             }
             Voting voting = new Voting(optionsObjectList, question, namedVote);
             voting.setDuration(duration);

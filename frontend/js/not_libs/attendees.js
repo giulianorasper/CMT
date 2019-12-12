@@ -32,7 +32,7 @@ function updateAttendeeList(){
             sortAttendeeList(packet.attendees);
         }
         else{
-            console.log("You aren't authorized to get the attendee list.")
+            console.log(packet.details);
         }
     }
 
@@ -159,7 +159,7 @@ function deleteAttendee(attendeeID){
             refresh();
         }
         else{
-            console.log("Something went wrong while trying to delete attendee " + attendeeID);
+            console.log(packet.details);
         }
     }
 
@@ -191,7 +191,7 @@ function editAttendee(attendeeID, name, email, group, residence, fnctn){
             refresh();
         }
         else{
-            console.log("Something went wrong while trying to edit attendee " + attendeeID);
+            console.log(packet.details);
         }
     }
 
@@ -221,7 +221,7 @@ function createAttendee(name, email, group, residence, fnctn){
             refresh();
         }
         else{
-            console.log("Something went wrong while trying to create attendee " + name);
+            console.log(packet.details);
         }
     }
 
@@ -245,7 +245,7 @@ function logoutAttendee(attendeeID){
             refresh();
         }
         else{
-            console.log("Something went wrong while trying to logout attendee " + attendeeID)
+            console.log(packet.details);
         }
     }
 
@@ -273,13 +273,13 @@ function getNewAttendeePassword(attendeeID){
             //TODO print out the new password for the attendee
         }
         else{
-            console.log("Something went wrong while trying to generate a new password for attendee " + attendeeID);
+            console.log(packet.details);
         }
     }
 
     function successLogout(packet){
         if(! (packet.result === "Valid")){
-            console.log("Generating new password failed because attendee couldn't be logged out");
+            console.log(packet.details);
         }
     }
 

@@ -115,7 +115,7 @@ function generateAttendee(attendee){
         '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
         '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
         '<span style="display:inline-block; width: 30px;">' +
-        '</span><span class="glyphicon glyphicon-pencil" <!--onclick="editAttendee(...)"--> ></span>'+
+        '</span><span class="glyphicon glyphicon-pencil"></span>'+
         '<span style="display:inline-block; width: 60px;">'+
         '</span><span class="glyphicon glyphicon-log-in" id="newPassword'+ attendee.ID +'"></span>'+
         '<span style="display:inline-block; width: 30px;">' +

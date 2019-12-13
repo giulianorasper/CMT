@@ -45,6 +45,7 @@ function submit(isSpeechRequest){
      function success(packet){
     	if(packet.result === "Valid") {          
         	alert("Your request has been succesfully submited");
+            window.location = "./home.html"
     	}
     }
 

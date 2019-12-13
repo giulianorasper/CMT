@@ -31,6 +31,8 @@ $( document ).ready(function() {
 
 	document.getElementById('uploadFile').addEventListener('change', function (event) {
 
+
+
         const files = event.target.files;
         console.log(files);
 
@@ -39,6 +41,13 @@ $( document ).ready(function() {
 
         // Specify the handler for the `load` event
         reader.onload = function (e) {
+
+            if (confirm('Are you sure you wish to upload \"'+files[0].name+'\"?')) {
+                
+            } else {
+                $(document.getElementById('uploadFile')).val("")
+                return;
+            }
 
             function success(packet) {
                 location.reload();

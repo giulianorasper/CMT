@@ -388,6 +388,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void removeAttendee( int userID) {
         try{
             attendeeLock.lock();
+            if(isAdmin(userID)) { //todo more granularity
+                adminTokens.clear();
+            }
             if(!db_userManagement.removeUser(userID)){
                 throw new IllegalArgumentException("Admin can not be removed for unknown reasons");
             }
@@ -558,7 +561,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     @Override
     public boolean isAdmin(int id) {
-        return false;
+        return db_userManagement.getAdminData(id) != null;
     }
 
     @Override
@@ -567,10 +570,12 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             adminLock.lock();
             attendeeLock.lock();
             if(adminTokens.containsKey(token)){
+                System.out.println("Hit 1");
                 return TokenResponse.ValidAdmin;
             }
             else {
                 TokenResponse res = db_userManagement.checkToken(token);
+                System.out.println(res);
                 if (res == TokenResponse.ValidAdmin) {
                     adminTokens.put(token, true);
                 }

@@ -7,6 +7,9 @@ import LogoutAttendeeRequestPacket from "../../communication/packets/admin/Logou
 import GenerateNewAttendeePasswordRequestPacket
     from "../../communication/packets/admin/GenerateNewAttendeePasswordRequestPacket.js";
 import { getSortedList } from "./attendeeSorting.js";
+import GenerateNewAttendeeTokenRequestPacket
+    from "../../communication/packets/admin/GenerateNewAttendeeTokenRequestPacket";
+import GetAttendeePasswordRequestPacket from "../../communication/packets/admin/GetAttendeePasswordRequestPacket";
 
 $(document).ready( function() {
     //Move functions to global scope so onclick parameters can call them
@@ -241,16 +244,27 @@ function createAttendee(name, email, group, residence, fnctn){
 }
 
 /**
- * Sends a request to logout an attendee, reloading the attendee list in case it was successful.
+ * Sends a request to logout an attendee. Note that after destroying the old token, a new one has to be generated. To
+ * prevent as much concurrency as possible between sent requests, "Successful" message only gets sent after successfully
+ * generating a new token.
  *
  * @param attendeeID
  */
 function logoutAttendee(attendeeID){
     const logoutRequestPacket = new LogoutAttendeeRequestPacket(attendeeID);
+    const newTokenRequestPacket = new GenerateNewAttendeeTokenRequestPacket(attendeeID);
+
+    function successNewToken(packet){
+        if(packet.result === "Valid"){
+            alert("Attendee has successfully been logged out!");
+        } else{
+            console.log(packet.details);
+        }
+    }
 
     function successLogoutAttendee(packet){
         if(packet.result === "Valid"){
-            refresh();
+            CommunicationManager.send(newTokenRequestPacket, successNewToken, failLogoutAttendee);
         }
         else{
             console.log(packet.details);
@@ -266,30 +280,29 @@ function logoutAttendee(attendeeID){
 
 
 /**
- * Gets called when a new password shall be generated for a certain attendee. First, the attendee shall be logged out
- * since his old password shall not work anymore. After that, a request is sent to the server that responds with a new
- * password.
+ * Gets called when a new password shall be generated for a certain attendee. Note that after generating a new password,
+ * a separate request to get the password has to be sent.
  *
  * @param attendeeID of the attendee for which a new password shall be generated
  */
 function getNewAttendeePassword(attendeeID){
+    const getPasswordRequestPacket = new GetAttendeePasswordRequestPacket(attendeeID);
     const newPasswordRequestPacket = new GenerateNewAttendeePasswordRequestPacket(attendeeID);
-    const logoutAttendeeRequestPacket = new LogoutAttendeeRequestPacket(attendeeID);
 
-    function successNewPassword(packet){
+
+    function successGetPassword(packet){
         if(packet.result === "Valid"){
-            //TODO make this prettier
-            alert("New password:\n" + packet.password);
-        }
-        else{
+            alert("New Attendee Password: " + packet.password);
+        } else{
             console.log(packet.details);
         }
     }
 
-    function successLogout(packet){
+    function successNewPassword(packet){
         if(packet.result === "Valid"){
-            CommunicationManager.send(newPasswordRequestPacket, successNewPassword, failNewPassword);
-        } else {
+            CommunicationManager.send(getPasswordRequestPacket, successGetPassword, failNewPassword);
+        }
+        else{
             console.log(packet.details);
         }
     }
@@ -298,7 +311,7 @@ function getNewAttendeePassword(attendeeID){
         console.log("Something went wrong while trying to access the server.");
     }
 
-    CommunicationManager.send(logoutAttendeeRequestPacket, successLogout, failNewPassword);
+    CommunicationManager.send(newPasswordRequestPacket, successNewPassword, failNewPassword);
 }
 
 

@@ -321,10 +321,19 @@ function clickCreate(event){
     event.preventDefault();
 
     const name = prompt("Enter Name of the Attendee:");
+    if(name === null){ return; }
+
     const email = prompt("Enter Email of the Attendee:");
+    if(email === null){ return; }
+
     const group = prompt("Enter Group of the Attendee:");
+    if(group === null){ return; }
+
     const residence = prompt("Enter Residence of the Attendee:");
+    if(residence === null){ return; }
+
     const fnctn = prompt("Enter Function of the Attendee:");
+    if(fnctn === null){ return; }
 
     //console.log("Data: " + name + " " + email + " " + group + " " + residence + " " + fnctn);
 
@@ -338,10 +347,19 @@ function clickEdit(event, attendeeID){
     event.preventDefault();
 
     const name = prompt("Enter new Name of the Attendee:");
+    if(name === null){ return; }
+
     const email = prompt("Enter new Email of the Attendee:");
+    if(email === null){ return; }
+
     const group = prompt("Enter new Group of the Attendee:");
+    if(group === null){ return; }
+
     const residence = prompt("Enter new Residence of the Attendee:");
+    if(residence === null){ return; }
+
     const fnctn = prompt("Enter new Function of the Attendee:");
+    if(fnctn === null){ return; }
 
     editAttendee(attendeeID, name, email, group, residence, fnctn);
 }

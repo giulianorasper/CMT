@@ -10,7 +10,7 @@ import org.java_websocket.WebSocket;
 public class GenerateMissingAttendeePasswordsRequestPacket extends AuthenticatedRequestPacket {
 
     public GenerateMissingAttendeePasswordsRequestPacket() {
-        super(PacketType.GENERATE_MESSING_ATTENDEE_PASSWORDS);
+        super(PacketType.GENERATE_MISSING_ATTENDEE_PASSWORDS);
     }
 
     @Override

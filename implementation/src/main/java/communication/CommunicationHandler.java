@@ -68,8 +68,11 @@ public class CommunicationHandler {
                 case EDIT_VOTING_REQUEST:
                     pack = gson.fromJson(message, EditVotingRequestPacket.class);
                     break;
-                case GENERATE_MESSING_ATTENDEE_PASSWORDS:
+                case GENERATE_MISSING_ATTENDEE_PASSWORDS:
                     pack = gson.fromJson(message, GenerateMissingAttendeePasswordsRequestPacket.class);
+                    break;
+                case GENERATE_NEW_ATTENDEE_TOKEN:
+                    pack = gson.fromJson(message, GenerateNewAttendeeTokenRequestPacket.class);
                     break;
                 case GENERATE_NEW_ATTENDEE_PASSWORD:
                     pack = gson.fromJson(message, GenerateNewAttendeePasswordRequestPacket.class);

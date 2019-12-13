@@ -19,16 +19,14 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame frame) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame frame) throws UnsupportedOperationException {
         Connection connection = new NettyConnectionWrapper(ctx);
         if(frame instanceof TextWebSocketFrame) {
             String request = ((TextWebSocketFrame) frame).text();
             handler.onMessage(connection, request);
-            System.out.println("Text");
         } else if(frame instanceof BinaryWebSocketFrame) {
             BinaryWebSocketFrame binaryWebSocketFrame = (BinaryWebSocketFrame) frame;
             handler.onMessage(connection, frame.content().nioBuffer());
-            System.out.println("Binary");
         } else {
             String message = "unsupported frame type: " + frame.getClass().getName();
             throw new UnsupportedOperationException(message);

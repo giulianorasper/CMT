@@ -178,9 +178,7 @@ public class CommunicationHandler {
 
     public void onMessage(Connection conn, ByteBuffer message) {
         UpdateFileRequestPacket packet = UpdateFileRequestPacket.getRequestFromConnectionIfExists(conn);
-        System.out.println("AAAA");
         if(packet != null) {
-            System.out.println("BBBB");
             byte[] fileBytes = message.array();
             packet.handleFileTransfer(conference, conn, fileBytes);
         }

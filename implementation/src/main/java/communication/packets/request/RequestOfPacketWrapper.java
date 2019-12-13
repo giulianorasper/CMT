@@ -35,7 +35,6 @@ public class RequestOfPacketWrapper extends AuthenticatedRequestPacket {
     @Override
     public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, false)) {
-            System.out.println("ADAWDAA: " + refersToTopic);
             Requestable requestable;
             if(refersToTopic) {
                 requestable = conference.getAgenda().getTopicFromPreorderString(reference);

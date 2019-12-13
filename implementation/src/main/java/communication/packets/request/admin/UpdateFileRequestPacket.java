@@ -45,10 +45,6 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
     }
 
     public static UpdateFileRequestPacket getRequestFromConnectionIfExists(Connection webSocket) {
-        System.out.println("SIZE IS: " + allowedRequests.size());
-        if(allowedRequests.size() > 0) {
-            System.out.println(allowedRequests.containsKey(webSocket));
-        }
         removeInvalidRequests();
         if(allowedRequests.containsKey(webSocket)) return allowedRequests.get(webSocket).first();
         return null;
@@ -57,7 +53,6 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
     private static void removeInvalidRequests() {
         new HashSet<>(allowedRequests.keySet()).forEach(key -> {
             if(allowedRequests.get(key).second() < System.currentTimeMillis()) {
-                System.out.println("DAAAA REMOVE");
                 allowedRequests.remove(key);
             }
         });

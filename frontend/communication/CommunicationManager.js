@@ -12,7 +12,7 @@ export default class CommunicationManager {
     static send(packet, successHook = new function(packet){}, errorHook = new function(){}) {
         var socket = CommunicationManager.openConnection();
         function onmessage(event) {
-            console.log(event.data);
+         //   console.log(event.data);
             let responsePacket = JSON.parse(event.data);
             successHook(responsePacket);
             socket.onclose = function() {};

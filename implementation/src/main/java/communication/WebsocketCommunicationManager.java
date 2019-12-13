@@ -135,6 +135,9 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
                 case SET_REQUEST_APPROVAL_STATUS:
                     pack = gson.fromJson(message, SetRequestApprovalStatusRequestPacket.class);
                     break;
+                case SET_REQUEST_STATUS_REQUEST:
+                    pack = gson.fromJson(message, SetRequestStatusRequestPacket.class);
+                    break;
                 case START_VOTING_REQUEST:
                     pack = gson.fromJson(message, StartVotingRequestPacket.class);
                     break;

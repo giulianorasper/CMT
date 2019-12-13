@@ -86,6 +86,14 @@ public interface DB_UserManagement {
     boolean userNameAlreadyUsed(String username);
 
     /**
+     * This methods checks whether a userid was already used to enable unique ids creation.
+     *
+     * @param id The username that should be checked.
+     * @return True, iff the username was already in the database.
+     */
+    boolean userIDAlreadyUsed(int id);
+
+    /**
      *
      * @return a list of all IDs.
      */

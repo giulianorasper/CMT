@@ -62,6 +62,7 @@ public class UserManagementTests extends DatabaseTests {
         assertTrue(dbGen.removeUser(id));
         int id1 = dbGen.tokenToID("9999");
         assertTrue(dbGen.removeUser(id1));
+        assertFalse(dbGen.removeUser(9));
     }
 
     @Test

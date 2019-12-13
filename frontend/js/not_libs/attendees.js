@@ -287,7 +287,9 @@ function getNewAttendeePassword(attendeeID){
     }
 
     function successLogout(packet){
-        if(! (packet.result === "Valid")){
+        if(packet.result === "Valid"){
+            CommunicationManager.send(newPasswordRequestPacket, successNewPassword, failNewPassword);
+        } else {
             console.log(packet.details);
         }
     }
@@ -297,7 +299,6 @@ function getNewAttendeePassword(attendeeID){
     }
 
     CommunicationManager.send(logoutAttendeeRequestPacket, successLogout, failNewPassword);
-    CommunicationManager.send(newPasswordRequestPacket, successNewPassword, failNewPassword);
 }
 
 

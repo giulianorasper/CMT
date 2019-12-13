@@ -426,8 +426,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setInt(1, userID);
             ResultSet att  = stmt.executeQuery();
             attendee = new Attendee(att.getString("fullname"),
-                    att.getString("username"),
                     att.getString("email"),
+                    att.getString("username"),
                     att.getString("groups"),
                     att.getString("residence"),
                     att.getString("function"),

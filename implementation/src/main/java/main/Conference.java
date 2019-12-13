@@ -255,7 +255,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             AtomicBoolean alreadyExists = new AtomicBoolean(false);
-            db_userManagement.getAllAdmins().forEach(ad -> {
+            db_userManagement.getAllAttendees().forEach(ad -> {
                 if(ad.getID() == a.getID()){
                     alreadyExists.set(true);
                 }
@@ -552,8 +552,8 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             adminLock.lock();
             attendeeLock.lock();
             Pair<LoginResponse, String> response = db_userManagement.checkLogin(userName, password);
-
-            //System.out.println(response.first() + ", " + response.second() + ", " + userName + ", " + password);
+            db_userManagement.getAllAttendees().forEach(a -> System.out.println(a.getUserName()));
+            System.out.println(response.first() + ", " + response.second() + ", " + userName + ", " + password);
             if(response.first() != LoginResponse.Valid){
                 return new Pair<>(response.first(), null);
             }

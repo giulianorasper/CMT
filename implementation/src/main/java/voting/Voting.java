@@ -153,6 +153,7 @@ public class Voting implements VotingObservable{
     public boolean startVote() {
         try{
             lock.getWriteAccess();
+
             openUntil = System.currentTimeMillis() + duration*1000;
             status = VotingStatus.Running;
             return true;

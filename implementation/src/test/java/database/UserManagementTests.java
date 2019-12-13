@@ -164,6 +164,12 @@ public class UserManagementTests extends DatabaseTests {
         List<Admin> admins = dbGen.getAllAdmins();
         assertEquals(admins.get(0).getID(), Alex.getID());
         assertEquals(admins.get(1).getID(), Kamran.getID());
+
+        assertEquals(admins.get(0).getEmail(), Alex.getEmail());
+        assertEquals(admins.get(0).getUserName(), Alex.getUserName());
+
+        assertEquals(attendees.get(0).getEmail(), max.getEmail());
+        assertEquals(attendees.get(0).getUserName(), max.getUserName());
     }
 
     @Test

@@ -64,17 +64,15 @@ function renderRequests(){
 	        for(var req of packet.requests){
 	        	 generateRequest(req).appendTo(requestContainer);
 	        }
-
+	        console.log(id)
 	        if(!id){
-	        	return;
+	        	
+	        }
+	        else{
+	        	requestableSelect.val(id);
 	        }
 
-	        for(var i = 0; i < requestableSelect.children("option").length; i++){
-	        	if($(requestableSelect.children("option")[i]).attr("data-id") === id){
-	        		requestableSelect.val($(requestableSelect.children("option")[i]).text());
-	        		break;
-	        	}
-	        }
+	        
 	    }
 	}
 

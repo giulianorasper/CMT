@@ -276,7 +276,8 @@ function getNewAttendeePassword(attendeeID){
 
     function successNewPassword(packet){
         if(packet.result === "Valid"){
-            //TODO print out the new password for the attendee
+            //TODO make this prettier
+            alert("New password:\n" + packet.password);
         }
         else{
             console.log(packet.details);

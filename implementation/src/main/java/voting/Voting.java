@@ -75,8 +75,10 @@ public class Voting implements VotingObservable{
 
     @Expose
     private long openUntil;
+    @Expose
     private VotingStatus status;
     //the duration of the voting in seconds
+    @Expose
     private int duration;
     private static int lastUsedID=0;
     private static Lock idLock = new ReentrantLock();

@@ -73,7 +73,6 @@ public class Main {
             while (c != 'q'){
                 c = (char)System.in.read();
             }
-            System.exit(0);
         }
         catch (IOException e){
             e.printStackTrace();

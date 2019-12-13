@@ -101,79 +101,46 @@
                         </div>
 
 
-                        <form class="" action="create_edit_vote.html" id="form-submit1" method="POST">
-                        <div class="row" style="padding-top: 36px;">
-                            <div class="col-lg-1">
-                                <!--<h2 class="contact-title pull-left">Conference Name</h2>-->
-                            </div>
-                            <div class="col-lg-6" >
-                                    <!--<div class="row">-->
-                                        <!--<div class="custom-control custom-radio col-xl-12 col-md-12">-->
-                                 <div class="form-group controls">
-                                      <!--<select class="form-control" name="language" required style="height: 34px; margin-left: 30px;">-->
-                                      <select class="form-control" name="language" required style="height: 34px;">
+                        <table class="table table-hover" style="font-size:20px">
+                                    <thead>
+                                    <th>Question</th>
+                                    <th>Type</th>
+                                    <th>Duration</th>
+                                
+                                    </thead>
 
-                                          <option disabled selected hidden>please select here</option>
+                                    <tbody id = "createdVotesList">
 
-                                          <option>Option 1</option>
-
-                                          <option>Option 2</option>
-                                          <option>Option 3</option>
-
-                                          <option>Option 4</option>
-                                          <option>Option 5</option>
-
-                                          <option>Option 6</option>
-                                          <option>Option 7</option>
-
-                                          <option>Option 8</option>
-
-
-                                          <!--<option>Englisch</option>-->
-                                      </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-1 form-group"></div>
-                            <div class="col-lg-1 form-group">
-                                       <a href="#" style="color: #00D363; font-size: 25px;">
-                                      <span class="glyphicon glyphicon-play"></span>
-                                    </a>
-                            </div>
-                            <div class="col-lg-1 form-group">
-                                       <a href="#" style="color: #00D363; font-size: 25px;">
-                                      <span class="glyphicon glyphicon-remove"></span>
-                                    </a>
-                            </div>
-                            <div class="col-lg-1 form-group">
-                                       <a href="create_edit_vote.html" style="color: #00D363; font-size: 25px;">
-                                      <span class="glyphicon glyphicon-pencil"></span>
-                                    </a>
-                            </div>
-                            <div class="col-lg-1 form-group">
-                                       <a href="#" style="color: #00D363; font-size: 25px;">
-                                      <span class="glyphicon glyphicon-trash "></span>
-                                    </a>
-                            </div>
-
-
-                        </div>
-                                <br>
-                                <br>
-                        <div class="row">
-                            <div class="col-lg-1">
-                                <!--<h2 class="contact-title pull-left">Conference Name</h2>-->
-                            </div>
-                            <div class="mt-3 col-lg-11" style="padding-bottom: 20px;">
-                                <!--shouldn't be submit-button of the form-->
-                                <a href="create_edit_vote.html">
-                                    <button type="button" class="button boxed-btn" id="btnclose" style="float:right; margin-right: 40px; border: 1px solid #00D363; color:#00D363!important;">
-                                        New Vote
-                                    </button>
-                                </a>
-                            </div>
-                        </div>
-                        </form>
-
+                                    <!--Print incoming attendees HERE!!-->
+                                    <tr data-toggle="collapse" data-target="#user_accordion" class="clickable">
+                                        <td>Bla?</td>
+                                        <td>Named</td>
+                                        <td>Duration</td>
+                                    </tr>
+                                    <tr>
+                                    <td colspan="3">
+                                        <div id="user_accordion"  class="collapse">
+                                            <div class = "row">
+                                            <div><input style="font-size:20px; margin-top: 5px;" class="form-control" type="text" value="yes"></div>
+                                            </div>
+                                            <div class = "row"><div><input style="font-size:20px; margin-top: 5px;" class="form-control" type="text" value="yes"></div>
+                                            </div>
+                                            <div style ="min-width:20px;">
+                                                
+                                            </div>
+                                            <div class="row" style="padding-top: 20px">
+                                            <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Start Vote</button>
+                                            <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Add Option</button>
+                                            <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Save Changes</button>
+                                            <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Delete</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    </tr>
+                                       
+                                    </tbody>
+                                </table>
+                                <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="createNewVoting()">New Voting</button>
                     </div>
                 </div>
             </div>
@@ -190,86 +157,19 @@
                             <h2 style="color:white;">Active Voting</h2>
                         </div>
                         <div id="voteQuestion">
-                             <!--<div class="row">-->
-                                <!--<div class="col-lg-2" style="float:left;">-->
-                                    <!--&lt;!&ndash;<h2 class="contact-title pull-left">Vote Question?</h2>&ndash;&gt;-->
-                                <!--</div>-->
-                                 <!--<div class="col-lg-10" style="float:left; padding-top: 50px;" id="">-->
-                                    <!--<h2 class="contact-title pull-left">Vote Question?</h2>-->
-                                <!--</div>-->
-                            <!--</div>-->
+
                         </div>
-                        <!--<form class="" action="" id="form-submit" method="POST">-->
                         <div id="options">
-                            <!--<div class="row">-->
-                                <!--<div class="col-lg-2">-->
-                                <!--</div>-->
-                                <!--<div class="custom-control custom-radio col-lg-10">-->
-                                     <!--<div class="form-group">-->
-                                         <!--<input type="radio" class="custom-control-input" id="1" checked name="radio" style="background:#2E004B;">-->
-                                         <!--<label class="custom-control-label" for="1">Item Option number one</label>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-
-                             <!--<div class="row">-->
-                                <!--<div class="col-lg-2">-->
-                                <!--</div>-->
-                                 <!--<div class="custom-control custom-radio col-lg-10">-->
-                                     <!--<div class="form-group">-->
-                                         <!--<input type="radio" class="custom-control-input" id="2" name="radio">-->
-                                         <!--<label class="custom-control-label" for="2">Item Option number two</label>-->
-                                     <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-
-                             <!--<div class="row">-->
-                                <!--<div class="custom-control custom-radio col-lg-2">-->
-
-                                <!--</div>-->
-                                 <!--<div class="custom-control custom-radio col-lg-10">-->
-                                     <!--<div class="form-group">-->
-                                        <!--<input type="radio" class="custom-control-input" id="3" name="radio">-->
-                                         <!--<label class="custom-control-label" for="3">Item Option number three</label>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-
-                             <!--<div class="row">-->
-                                <!--<div class="custom-control custom-radio col-lg-2">-->
-
-                                <!--</div>-->
-                                 <!--<div class="custom-control custom-radio col-lg-10">-->
-                                     <!--<div class="form-group">-->
-                                        <!--<input type="radio" class="custom-control-input" id="4" name="radio">-->
-                                         <!--<label class="custom-control-label" for="4">Item Option number four</label>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-
-                             <!--<div class="row">-->
-                                <!--<div class="custom-control custom-radio col-lg-2">-->
-
-                                <!--</div>-->
-                                 <!--<div class="custom-control custom-radio col-lg-10">-->
-                                     <!--<div class="form-group">-->
-                                        <!--<input type="radio" class="custom-control-input" id="5" name="radio">-->
-                                         <!--<label class="custom-control-label" for="5">Item Option number five</label>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
                         </div>
                             <div class="row">
                                 <div class="custom-control custom-radio col-lg-8" id="failure">
 
                                 </div>
                                 <div class="form-group mt-3 col-lg-3" style="float: right; padding-bottom: 25px;">
-                                    <!--<button type="button" class="button button-contactForm boxed-btn">Cancel</button>-->
                                     <button type="submit" class="button button-contactForm boxed-btn" style="border: 1px solid #00D363; color:#00D363!important;" id="submitButton">Vote</button>
                                 </div>
                             </div>
 
-                        <!--</form>-->
 
                     </div>
                 </div>

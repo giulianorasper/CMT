@@ -1,17 +1,69 @@
 import CommunicationManager from "../../communication/CommunicationManager.js";
 import GetActiveVotingRequestPacket from "../../communication/packets/GetActiveVotingRequestPacket.js";
 import AddVoteRequestPacket from "../../communication/packets/AddVoteRequestPacket.js";
+import GetVotingsRequestPacket from "../../communication/packets/admin/GetVotingsRequestPacket.js";
+import AddVotingRequestPacket from "../../communication/packets/admin/AddVotingRequestPacket.js";
+import EditVotingRequestPacket from "../../communication/packets/admin/EditVotingRequestPacket.js";
 
-var optionList;
-var voteID;
-var dateObject;
+var createdVotesContainer = $("#createdVotesList");
+
+var votings;
 
 $(document).ready( function() {
 
-    function success(packet){
-        console.log(packet)
+   renderVotings();
+
+    window.createNewVoting = create;
+    window.addVotingOption = addOption;
+    window.saveVoting = save;
+
+});
+
+function save(voteId){
+	var vote;
+	console.log(votings)
+	console.log(voteId);
+	for(var _vote of votings){
+		if(_vote.ID == voteId){
+			vote = _vote;
+			break;
+		}
+	}
+
+	var options =[]
+
+	for(var elem of $("#votingOptions"+voteId).children()){
+		var option = $($($(elem).children()[0]).children()[0]).val();
+		console.log(option);
+		options.push(option)
+	}
+	console.log(options)
+
+	const packet = new EditVotingRequestPacket(voteId, vote.question, options ,vote.named, vote.duration);
+
+	function success(packet){
+		console.log(packet);
+	}
+
+	 function fail() {
+        console.log("Something went wrong during, get active vote question & options.");
+    }
+
+    CommunicationManager.send(packet, success, fail);
+
+}
+
+function renderVotings(){
+	 function success(packet){
         if(packet.result === "Valid"){
-            displayActiveVote(packet);
+        	console.log(packet)
+        	createdVotesContainer.html("");
+        	votings = packet.votings;
+            for(var voting of packet.votings){
+            	if(voting.status === "Created"){
+					renderCreatedVote(voting)
+            	}
+            }
 
         }
     }
@@ -20,33 +72,87 @@ $(document).ready( function() {
         console.log("Something went wrong during, get active vote question & options.");
     }
 
-    const getActiveVote = new GetActiveVotingRequestPacket();
+    const packet = new GetVotingsRequestPacket();
 
-    CommunicationManager.send(getActiveVote, success, fail);
+    CommunicationManager.send(packet, success, fail);
+}
 
-});
+function addOption(voteId){
+	const optionsField = $("#votingOptions"+voteId);
+	
+	$("<div class = \"col-md-4\"><div><input style=\"font-size:20px; margin-top: 5px;\" class=\"form-control\" "+
+		"type=\"text\" value=\"\" placeholder = \"Please provide the voting option\"></div></div>").appendTo(optionsField);
+	
+}
+
+function create(){
+	var res = prompt("Please provide the voting question");
+	if(!res){return;}
+
+	const packet = new AddVotingRequestPacket(res, [], confirm("named vote?"), 1000*60*5);
+	CommunicationManager.send(packet, success, fail);
+
+	 function fail() {
+        console.log("Something went wrong during, get active vote question & options.");
+    }
+
+	function success(packet){
+ 		if(packet.result === "Valid"){
+            renderVotings();
+
+        }
+	}
+}
+
+function renderCreatedVote(vote){
+	var durationAux = (vote.duration/1000).toFixed(0);
+	var secondsAux = (durationAux % 60).toFixed(0);
+	var seconds = (secondsAux < 10 ? "0"+secondsAux:secondsAux);
+	var durationMinutes = (durationAux/60).toFixed(0)+":"+seconds;
+
+	$( "<tr data-toggle=\"collapse\" data-target=\"#user_accordion"+vote.ID+"\" class=\"clickable\">"+
+                                        "<td>"+vote.question+"</td>"+
+                                        "<td>"+(vote.namedVote?"Named":"Anonymous")+"</td>"+
+                                        "<td>"+durationMinutes+"</td>"+
+                                    "</tr>"+
+                                    "<tr>"+
+                                    "<td colspan=\"3\">"+
+                                        "<div id=\"user_accordion"+vote.ID+"\"  class=\"collapse\">"+
+                                            "<div style='padding:20px;' class = \"row\" id = \"votingOptions"+vote.ID+"\">"+
+                                            "</div>"+
+                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"alert('not implemented')\">Start Vote</button>"+
+                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"addVotingOption('"+vote.ID+"')\">Add Option</button>"+
+                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"saveVoting('"+vote.ID+"')\">Save Changes</button>"+
+                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"alert('not implemented')\">Delete</button>"+
+                                            "</div>"+
+                                        "</div>"+
+                                    "</td>"+
+                                    "</tr>"
+
+		).appendTo(createdVotesContainer);
+
+	const optionsField = $("#votingOptions"+vote.ID);
+	for(option of vote.options){
+		$("<div class = \"row\"><div><input style=\"font-size:20px; margin-top: 5px;\" class=\"form-control\" "+
+		"type=\"text\" value=\""+option.name+"\"></div>").appendTo(optionsField);
+	}
+
+	 
+
+}
 
 
-function displayActiveVote(packet){
+/*function displayActiveVote(packet){
 	// packet.exists,
 	// packet.voting.id
-	dateObject = packet.voting.openUntil;
+	var dateObject = packet.voting.openUntil;
 	
 	if(packet.exists){
-		
-		//var today = new Date(packet.voting.openUntil * 1000);
-		
-		
-		//var voteDateOnly = voteDate.toUTCString();
-		
-		//console.log(voteDate.toUTCString());
 
-		//console.log(packet.voting.id);
-
-		optionList = packet.voting.options;
+		var optionList = packet.voting.options;
 		console.log(optionList[0]);
 		
-		voteID = packet.voting.ID;
+		var voteID = packet.voting.ID;
 		
 		//$("#voteQuestion").html('<h2 class="contact-title pull-left">'+ packet.voting.question + '</h2>')
 		$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.ID+'s"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');
@@ -121,5 +227,5 @@ function displayActiveVote(packet){
 				
 				
 
-        });
+        });*/
 		

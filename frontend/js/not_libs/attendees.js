@@ -9,7 +9,15 @@ import GenerateNewAttendeePasswordRequestPacket
 import { getSortedList } from "./attendeeSorting.js";
 
 $(document).ready( function() {
+    //Move functions to global scope so onclick parameters can call them
+    window.deleteAttendeeGlobal = deleteAttendee;
+    window.editAttendeeGlobal = editAttendee;
+    window.getNewAttendeePasswordGlobal = getNewAttendeePassword;
+    window.logoutAttendeeGlobal = logoutAttendee;
+
+    //Add listeners to buttons/dropdown menus that don't need to be generated dynamically
     document.getElementById("sortingOptions").addEventListener("change", changeSort, false);
+    document.getElementById("createAttendee").addEventListener("click", clickCreate, false);
 
     refresh();
 });
@@ -96,7 +104,6 @@ function generateAttendeeList(attendeeList){
     //Generates new list content
     for (var currAttendee of attendeeList){
         generateAttendee(currAttendee).appendTo(attendeeContainer);
-        addIconListeners(currAttendee);
     }
 
 }
@@ -117,28 +124,22 @@ function generateAttendee(attendee){
         '<span style="display:inline-block; width: 30px;">' +
         '</span><span class="glyphicon glyphicon-pencil"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-log-in" id="newPassword'+ attendee.ID +'"></span>'+
+        '</span><span class="glyphicon glyphicon-log-in" onclick="getNewAttendeePasswordGlobal(' + attendee.ID +')"></span>'+
         '<span style="display:inline-block; width: 30px;">' +
-        '</span><span class="glyphicon glyphicon-log-out" id="logout'+ attendee.ID +'"></span>'+
+        '</span><span class="glyphicon glyphicon-log-out" onclick="logoutAttendeeGlobal(' + attendee.ID +')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-trash" id="delete'+ attendee.ID +'"></span>' +
+        '</span><span class="glyphicon glyphicon-trash" onclick="deleteAttendeeGlobal(' + attendee.ID +')"></span>' +
         '</div>'+
         '</td>'+
         '</tr>');
 }
 
-/**
- * Adds click EventListeners to the IDs of the glyph icons. NewPassword buttons call clickNewPassword, Logout buttons call
- * clickLogout and delete buttons call clickDelete.
- *
- * @param attendee whose glyphicons shall call certain click hooks
- */
+/*
 function addIconListeners(attendee) {
-    //TODO edit attendee EventListener
     document.getElementById("newPassword" + attendee.ID).addEventListener("click", clickNewPassword, false);
     document.getElementById("logout" + attendee.ID).addEventListener("click", clickLogout, false);
     document.getElementById("delete" + attendee.ID).addEventListener("click", clickDelete, false);
-}
+} */
 
 
 
@@ -304,25 +305,11 @@ function changeSort(){
     sort(selectedOption);
 }
 
-/**
- * Hook that gets called by EventListener on each getNewPassword button for an attendee
- */
-function clickNewPassword() {
-    //TODO implement this
-
-}
 
 /**
- * Hook that gets called by EventListener on each logout button for an attendee
+ * Hook that gets called by EventListener for each click on the create attendee button
  */
-function clickLogout(){
-    //TODO implement this
-}
-
-/**
- * Hook that gets called by EventListener on each delete button for an attendee
- */
-function clickDelete(){
+function clickCreate(){
     //TODO implement this
 }
 

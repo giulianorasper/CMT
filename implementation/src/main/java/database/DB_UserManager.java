@@ -394,8 +394,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
              ResultSet table  = stmt.executeQuery()) {
             while (table.next()) {
                 attendees.add(new Attendee(table.getString("fullname"),
-                        table.getString("email"),
                         table.getString("username"),
+                        table.getString("email"),
                         table.getString("groups"),
                         table.getString("residence"),
                         table.getString("function"),
@@ -426,8 +426,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setInt(1, userID);
             ResultSet att  = stmt.executeQuery();
             attendee = new Attendee(att.getString("fullname"),
-                    att.getString("email"),
                     att.getString("username"),
+                    att.getString("email"),
                     att.getString("groups"),
                     att.getString("residence"),
                     att.getString("function"),

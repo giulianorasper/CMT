@@ -1,6 +1,9 @@
 package communication;
 
+import communication.netty.NettyCommunicationManagerFactory;
 import main.Conference;
+
+import java.io.File;
 
 /**
  * A factory for creating an {@link CommunicationManager} for a {@link Conference} handling incoming requests from the frontend.
@@ -14,6 +17,7 @@ public class CommunicationManagerFactory {
 
     /**
      * Initialized the {@link CommunicationManagerFactory} using a not guaranteed to
+     *
      * @param conference the conference to handle communication for
      */
     public CommunicationManagerFactory(Conference conference) {
@@ -24,8 +28,8 @@ public class CommunicationManagerFactory {
     }
 
     /**
-     *
      * @param port the port to listen on for incoming requests
+     *
      * @return this
      */
     public CommunicationManagerFactory setPort(int port) {
@@ -34,8 +38,8 @@ public class CommunicationManagerFactory {
     }
 
     /**
-     *
      * @param timeoutAfter the number of seconds a request is allowed to wait for a response before the connection gets forcefully closed
+     *
      * @return this
      */
     public CommunicationManagerFactory setTimeoutAfter(int timeoutAfter) {
@@ -45,6 +49,7 @@ public class CommunicationManagerFactory {
 
     /**
      * Enables debugging functionaries such as fancy printing for JSON and more detailed logs
+     *
      * @return this
      */
     public CommunicationManagerFactory enableDebugging() {
@@ -53,10 +58,26 @@ public class CommunicationManagerFactory {
     }
 
     /**
-     *
      * @return A communication manager produced using the given information
      */
     public CommunicationManager create() {
-        return new WebsocketCommunicationManager(conference, port, timeoutAfter, debugging);
+        //TODO notify where to add cert if not present / create dir
+        String pathname = "pem";
+        File cert = new File(pathname + File.separator + "cert.pem");
+        File key = new File(pathname + File.separator + "privkey.pem");
+        CommunicationHandler handler = new CommunicationHandler(conference, timeoutAfter, debugging);
+        CommunicationManager manager = new NettyCommunicationManagerFactory(handler, port, cert, key).create();
+        if(!manager.isSecure()) {
+            if(debugging) {
+                System.out.println("[]----------[SECURITY ALERT]----------[]");
+                System.out.println("No certificate found. Sever will be started in not encrypted debugging mode!");
+            } else {
+                System.out.println("Could not retrieve certificate. The server can not be started for security reasons.");
+                System.exit(0);
+            }
+        }
+        return manager;
     }
+
+
 }

@@ -25,4 +25,6 @@ public interface CommunicationManager {
      */
     void stop() throws IOException, InterruptedException;
 
+    boolean isSecure();
+
 }

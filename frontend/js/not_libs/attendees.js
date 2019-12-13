@@ -15,9 +15,12 @@ $(document).ready( function() {
     window.getNewAttendeePasswordGlobal = getNewAttendeePassword;
     window.logoutAttendeeGlobal = logoutAttendee;
 
+    //Click functions in global scope
+    window.clickCreateGlobal = clickCreate;
+    window.clickEditGlobal = clickEdit;
+
     //Add listeners to buttons/dropdown menus that don't need to be generated dynamically
     document.getElementById("sortingOptions").addEventListener("change", changeSort, false);
-    document.getElementById("createAttendee").addEventListener("click", clickCreate, false);
 
     refresh();
 });
@@ -122,7 +125,7 @@ function generateAttendee(attendee){
         '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
         '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
         '<span style="display:inline-block; width: 30px;">' +
-        '</span><span class="glyphicon glyphicon-pencil"></span>'+
+        '</span><span class="glyphicon glyphicon-pencil" onclick="clickEditGlobal(' + attendee.ID + ')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
         '</span><span class="glyphicon glyphicon-log-in" onclick="getNewAttendeePasswordGlobal(' + attendee.ID +')"></span>'+
         '<span style="display:inline-block; width: 30px;">' +
@@ -216,6 +219,7 @@ function editAttendee(attendeeID, name, email, group, residence, fnctn){
  */
 function createAttendee(name, email, group, residence, fnctn){
     const createRequestPacket = new AddAttendeeRequestPacket(name, email, group, residence, fnctn);
+    console.log("Data: " + name + " " + email + " " + group + " " + residence + " " + fnctn);
 
     function successCreateAttendee(packet) {
         if (packet.result === "Valid"){
@@ -306,10 +310,26 @@ function changeSort(){
 }
 
 
-/**
- * Hook that gets called by EventListener for each click on the create attendee button
- */
 function clickCreate(){
-    //TODO implement this
+    //TODO make this prettier than just using five prompts
+    const name = prompt("Enter Name of the Attendee:");
+    const email = prompt("Enter Email of the Attendee:");
+    const group = prompt("Enter Group of the Attendee:");
+    const residence = prompt("Enter Residence of the Attendee:");
+    const fnctn = prompt("Enter Function of the Attendee:");
+
+    createAttendee(name, email, group, residence, fnctn);
+}
+
+function clickEdit(attendeeID){
+    //TODO make this prettier than just using five prompts
+
+    const name = prompt("Enter new Name of the Attendee:");
+    const email = prompt("Enter new Email of the Attendee:");
+    const group = prompt("Enter new Group of the Attendee:");
+    const residence = prompt("Enter new Residence of the Attendee:");
+    const fnctn = prompt("Enter new Function of the Attendee:");
+
+    editAttendee(attendeeID, name, email, group, residence, fnctn);
 }
 

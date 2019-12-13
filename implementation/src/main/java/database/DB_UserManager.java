@@ -156,6 +156,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public boolean removeUser(int userID) {
+        if (!this.userIDAlreadyUsed(userID)) {
+            return false;
+        }
         this.openConnection();
         String sqlstatement = "DELETE FROM users WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -302,6 +305,21 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         } finally {
             this.closeConnection();
         }
+    }
+
+    /**
+     * This methods checks whether a userid was already used to enable unique ids creation.
+     *
+     * @param id The username that should be checked.
+     * @return True, iff the username was already in the database.
+     */
+    @Override
+    public boolean userIDAlreadyUsed(int id) {
+        List<Integer> ids = this.getIDs();
+        if (ids.contains(id)) {
+            return true;
+        }
+        return false;
     }
 
     /**

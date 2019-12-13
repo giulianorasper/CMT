@@ -3,6 +3,7 @@ package communication.packets.request;
 import communication.packets.Packet;
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import communication.packets.response.GetActiveVotingResponsePacket;
@@ -18,7 +19,7 @@ public class GetActiveVotingRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, WebSocket webSocket) {
+    public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, false)) {
             Voting voting = conference.getActiveVoting();
             Packet response;

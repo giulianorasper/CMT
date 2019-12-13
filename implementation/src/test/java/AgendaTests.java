@@ -121,6 +121,15 @@ public class AgendaTests {
     }
 
     @Test
+    public void stringConstructor() {
+        String agendaString = "\n\n1\tKäsebrot \n" +
+                " 1.1 Kä se\n" +
+                "\t 1.2\t\t Brot\n\n";
+        Agenda agenda = new Agenda(agendaString);
+        assertEquals("Agenda differs from original", "{Käsebrot {Kä se {}, Brot {}}}" , agenda.toString());
+    }
+
+    @Test
     public void testPreorder(){
         Agenda agenda = new Agenda();
         Topic firstTopic = new Topic("Käsebrot", agenda);

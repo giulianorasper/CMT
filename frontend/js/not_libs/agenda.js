@@ -144,13 +144,13 @@ function generateAgendaRow(name, preorder, fontSize){
     return $(
         '<li class = "agendaRow" style="font-size: '+fontSize+'px;">'+name+
         '<span style="display:inline-block; width: 60px;">'+
-        '</span><span class="glyphicon glyphicon-plus" onclick = "appendToAgenda('+preorder+')"></span>'+
+        '</span><span class="glyphicon glyphicon-plus" onclick = "appendToAgenda(\''+preorder+'\')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-chevron-down" onclick = "subtopicToAgenda('+preorder+')"></span>'+
+        '</span><span class="glyphicon glyphicon-chevron-down" onclick = "subtopicToAgenda(\''+preorder+'\')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-pencil" onclick = "editAgenda('+preorder+')"></span>'+
+        '</span><span class="glyphicon glyphicon-pencil" onclick = "editAgenda(\''+preorder+'\')"></span>'+
          '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-trash" onclick = "removeFromAgenda('+preorder+')"></span>'+
+        '</span><span class="glyphicon glyphicon-trash" onclick = "removeFromAgenda(\''+preorder+'\')"></span>'+
         '</li>');
 }
 

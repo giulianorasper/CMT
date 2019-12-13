@@ -6,6 +6,7 @@ import communication.enums.PacketType;
 import communication.packets.RequestPacket;
 import communication.packets.ResponsePacket;
 import communication.packets.response.LoginResponsePacket;
+import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import user.LoginResponse;
@@ -26,7 +27,7 @@ public class LoginRequestPacket extends RequestPacket {
     private String password;
 
     @Override
-    public void handle(Conference conference, WebSocket webSocket) {
+    public void handle(Conference conference, Connection webSocket) {
         Pair<LoginResponse, Pair<String,Long>> result;
         result = conference.login(username, password);
 

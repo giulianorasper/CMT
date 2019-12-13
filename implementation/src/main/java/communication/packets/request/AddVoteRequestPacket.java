@@ -6,6 +6,7 @@ import communication.enums.PacketType;
 import communication.packets.ResponsePacket;
 import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.FailureResponsePacket;
+import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import voting.Voting;
@@ -30,7 +31,7 @@ public class AddVoteRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, WebSocket webSocket) {
+    public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, false)) {
             Voting voting = conference.getVoting(voteID);
             int userID = conference.tokenToID(getToken());

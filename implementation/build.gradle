@@ -62,7 +62,11 @@ dependencies {
 
     compile("org.xerial:sqlite-jdbc:3.27.2.1")
 
-    compile("org.slf4j:slf4j-simple:1.6.1")
+    implementation("org.slf4j:slf4j-simple:1.6.1")
+
+    implementation(group: 'commons-codec', name: 'commons-codec', version: '1.5')
+
+    compile group: 'io.netty', name: 'netty-all', version: '4.1.43.Final'
 }
 
 tasks.withType(JavaCompile) {

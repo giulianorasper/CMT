@@ -40,6 +40,7 @@ var sortingRelation = 'attendeeName';
 function updateAttendeeList(){
     function success(packet){
         if(packet.result === "Valid"){
+            console.log(packet);
             sortAttendeeList(packet.attendees);
         }
         else{
@@ -66,6 +67,7 @@ function sortAttendeeList(attendeeList){
 
     //Calls getSortedList from attendeeSorting.js
     const sortedList = getSortedList(attendeeList, sortingRelation);
+    console.log(sortedList);
     generateAttendeeList(sortedList);
 }
 
@@ -125,7 +127,7 @@ function generateAttendee(attendee){
         '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
         '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
         '<span style="display:inline-block; width: 30px;">' +
-        '</span><span class="glyphicon glyphicon-pencil" onclick="clickEditGlobal(' + attendee.ID + ')"></span>'+
+        '</span><span class="glyphicon glyphicon-pencil" onclick="clickEditGlobal(event, '+ attendee.ID + ')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
         '</span><span class="glyphicon glyphicon-log-in" onclick="getNewAttendeePasswordGlobal(' + attendee.ID +')"></span>'+
         '<span style="display:inline-block; width: 30px;">' +
@@ -224,6 +226,7 @@ function createAttendee(name, email, group, residence, fnctn){
     function successCreateAttendee(packet) {
         if (packet.result === "Valid"){
             refresh();
+            //console.log("the d")
         }
         else{
             console.log(packet.details);
@@ -275,7 +278,8 @@ function getNewAttendeePassword(attendeeID){
 
     function successNewPassword(packet){
         if(packet.result === "Valid"){
-            //TODO print out the new password for the attendee
+            //TODO make this prettier
+            alert("New password:\n" + packet.password);
         }
         else{
             console.log(packet.details);
@@ -310,25 +314,52 @@ function changeSort(){
 }
 
 
-function clickCreate(){
+function clickCreate(event){
     //TODO make this prettier than just using five prompts
+
+    //Reloading gets prevented
+    event.preventDefault();
+
     const name = prompt("Enter Name of the Attendee:");
+    if(name === null){ return; }
+
     const email = prompt("Enter Email of the Attendee:");
+    if(email === null){ return; }
+
     const group = prompt("Enter Group of the Attendee:");
+    if(group === null){ return; }
+
     const residence = prompt("Enter Residence of the Attendee:");
+    if(residence === null){ return; }
+
     const fnctn = prompt("Enter Function of the Attendee:");
+    if(fnctn === null){ return; }
+
+    //console.log("Data: " + name + " " + email + " " + group + " " + residence + " " + fnctn);
 
     createAttendee(name, email, group, residence, fnctn);
 }
 
-function clickEdit(attendeeID){
+function clickEdit(event, attendeeID){
     //TODO make this prettier than just using five prompts
 
+    //Reloading gets prevented
+    event.preventDefault();
+
     const name = prompt("Enter new Name of the Attendee:");
+    if(name === null){ return; }
+
     const email = prompt("Enter new Email of the Attendee:");
+    if(email === null){ return; }
+
     const group = prompt("Enter new Group of the Attendee:");
+    if(group === null){ return; }
+
     const residence = prompt("Enter new Residence of the Attendee:");
+    if(residence === null){ return; }
+
     const fnctn = prompt("Enter new Function of the Attendee:");
+    if(fnctn === null){ return; }
 
     editAttendee(attendeeID, name, email, group, residence, fnctn);
 }

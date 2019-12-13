@@ -4,6 +4,8 @@ import AddVoteRequestPacket from "../../communication/packets/AddVoteRequestPack
 import GetVotingsRequestPacket from "../../communication/packets/admin/GetVotingsRequestPacket.js";
 import AddVotingRequestPacket from "../../communication/packets/admin/AddVotingRequestPacket.js";
 import EditVotingRequestPacket from "../../communication/packets/admin/EditVotingRequestPacket.js";
+import RemoveVotingRequestPacket from "../../communication/packets/admin/RemoveVotingRequestPacket.js";
+import StartVotingRequestPacket from "../../communication/packets/admin/StartVotingRequestPacket.js";
 
 var createdVotesContainer = $("#createdVotesList");
 
@@ -16,13 +18,14 @@ $(document).ready( function() {
     window.createNewVoting = create;
     window.addVotingOption = addOption;
     window.saveVoting = save;
+    window.deleteVote = remove;
+    window.startVote = start;
 
 });
 
 function save(voteId){
 	var vote;
-	console.log(votings)
-	console.log(voteId);
+
 	for(var _vote of votings){
 		if(_vote.ID == voteId){
 			vote = _vote;
@@ -34,10 +37,8 @@ function save(voteId){
 
 	for(var elem of $("#votingOptions"+voteId).children()){
 		var option = $($($(elem).children()[0]).children()[0]).val();
-		console.log(option);
 		options.push(option)
 	}
-	console.log(options)
 
 	const packet = new EditVotingRequestPacket(voteId, vote.question, options ,vote.named, vote.duration);
 
@@ -50,13 +51,28 @@ function save(voteId){
     }
 
     CommunicationManager.send(packet, success, fail);
+}
 
+function remove(voteId){
+    const packet = new RemoveVotingRequestPacket(voteId);
+
+    function success(packet){
+    	if(packet.result === "Valid"){
+            renderVotings();
+
+        }
+    }
+
+     function fail() {
+        console.log("Something went wrong during, get active vote question & options.");
+    } 
+
+    CommunicationManager.send(packet, success, fail);
 }
 
 function renderVotings(){
 	 function success(packet){
         if(packet.result === "Valid"){
-        	console.log(packet)
         	createdVotesContainer.html("");
         	votings = packet.votings;
             for(var voting of packet.votings){
@@ -104,6 +120,24 @@ function create(){
 	}
 }
 
+function start(voteId){
+	const packet = new StartVotingRequestPacket(voteId);
+
+    function success(packet){
+    	console.log(packet)
+    	if(packet.result === "Valid"){
+            renderVotings();
+
+        }
+    }
+
+     function fail() {
+        console.log("Something went wrong during, get active vote question & options.");
+    } 
+
+    CommunicationManager.send(packet, success, fail);
+}
+
 function renderCreatedVote(vote){
 	var durationAux = (vote.duration/1000).toFixed(0);
 	var secondsAux = (durationAux % 60).toFixed(0);
@@ -120,10 +154,10 @@ function renderCreatedVote(vote){
                                         "<div id=\"user_accordion"+vote.ID+"\"  class=\"collapse\">"+
                                             "<div style='padding:20px;' class = \"row\" id = \"votingOptions"+vote.ID+"\">"+
                                             "</div>"+
-                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"alert('not implemented')\">Start Vote</button>"+
+                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"startVote('"+vote.ID+"')\">Start Vote</button>"+
                                             "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"addVotingOption('"+vote.ID+"')\">Add Option</button>"+
                                             "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"saveVoting('"+vote.ID+"')\">Save Changes</button>"+
-                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"alert('not implemented')\">Delete</button>"+
+                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"deleteVote('"+vote.ID+"')\">Delete</button>"+
                                             "</div>"+
                                         "</div>"+
                                     "</td>"+

@@ -394,8 +394,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
              ResultSet table  = stmt.executeQuery()) {
             while (table.next()) {
                 attendees.add(new Attendee(table.getString("fullname"),
-                        table.getString("username"),
                         table.getString("email"),
+                        table.getString("username"),
                         table.getString("groups"),
                         table.getString("residence"),
                         table.getString("function"),

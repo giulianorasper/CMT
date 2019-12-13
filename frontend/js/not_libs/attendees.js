@@ -40,6 +40,7 @@ var sortingRelation = 'attendeeName';
 function updateAttendeeList(){
     function success(packet){
         if(packet.result === "Valid"){
+            console.log(packet);
             sortAttendeeList(packet.attendees);
         }
         else{
@@ -66,6 +67,7 @@ function sortAttendeeList(attendeeList){
 
     //Calls getSortedList from attendeeSorting.js
     const sortedList = getSortedList(attendeeList, sortingRelation);
+    console.log(sortedList);
     generateAttendeeList(sortedList);
 }
 

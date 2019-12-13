@@ -12,7 +12,7 @@ function mergeSort(list){
     }
 
     const left = list.slice(0, Math.floor(list.length / 2));
-    const right = list.slice(Math.floor(list.length), list.length);
+    const right = list.slice(Math.floor(list.length / 2 ));
 
     return merge(mergeSort(left), mergeSort(right));
 }

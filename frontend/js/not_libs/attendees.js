@@ -8,8 +8,8 @@ import GenerateNewAttendeePasswordRequestPacket
     from "../../communication/packets/admin/GenerateNewAttendeePasswordRequestPacket.js";
 import { getSortedList } from "./attendeeSorting.js";
 import GenerateNewAttendeeTokenRequestPacket
-    from "../../communication/packets/admin/GenerateNewAttendeeTokenRequestPacket";
-import GetAttendeePasswordRequestPacket from "../../communication/packets/admin/GetAttendeePasswordRequestPacket";
+    from "../../communication/packets/admin/GenerateNewAttendeeTokenRequestPacket.js";
+import GetAttendeePasswordRequestPacket from "../../communication/packets/admin/GetAttendeePasswordRequestPacket.js";
 
 $(document).ready( function() {
     //Move functions to global scope so onclick parameters can call them

@@ -26,7 +26,7 @@ public class NettyCommunicationManagerFactory {
         SslContext sslContext = null;
         try {
             sslContext = SslContextBuilder.forServer(cert, key).build();
-        } catch (SSLException e) {
+        } catch (Exception e) {
 
         }
         NettyCommunicationManager manager;

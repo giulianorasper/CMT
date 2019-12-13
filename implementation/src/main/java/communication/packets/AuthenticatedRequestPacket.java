@@ -3,6 +3,7 @@ package communication.packets;
 import communication.enums.PacketType;
 import communication.packets.response.FailureResponsePacket;
 import communication.packets.response.InvalidTokenResponsePacket;
+import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import user.TokenResponse;
@@ -39,7 +40,7 @@ public abstract class AuthenticatedRequestPacket extends RequestPacket {
      * @param adminOperation weather to check if the token provides {@link TokenResponse#ValidAdmin}
      * @return true iff the requesting client has the necessary permissions for the desired request
      */
-    public boolean isPermitted(Conference conference, WebSocket socket, boolean adminOperation) {
+    public boolean isPermitted(Conference conference, Connection socket, boolean adminOperation) {
         TokenResponse value = conference.checkToken(getToken());
         if(value == TokenResponse.ValidAdmin || (value == TokenResponse.ValidAttendee && !adminOperation)) {
             return true;

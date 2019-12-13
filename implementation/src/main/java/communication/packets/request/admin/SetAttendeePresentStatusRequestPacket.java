@@ -3,6 +3,7 @@ package communication.packets.request.admin;
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
+import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import user.Attendee;
@@ -19,7 +20,7 @@ public class SetAttendeePresentStatusRequestPacket extends AuthenticatedRequestP
     }
 
     @Override
-    public void handle(Conference conference, WebSocket webSocket) {
+    public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
             Attendee attendee = conference.getAttendeeData(id);
             attendee.setPresent(present);

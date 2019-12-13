@@ -1,14 +1,15 @@
 package main;
 
 
+import communication.CommunicationHandler;
 import communication.CommunicationManager;
 import communication.CommunicationManagerFactory;
+import communication.netty.NettyCommunicationManager;
 import user.Admin;
 import voting.NamedVotingOption;
 import voting.Voting;
 import voting.VotingOption;
 
-import javax.naming.Name;
 import java.io.IOException;
 import java.util.LinkedList;
 

@@ -3,6 +3,7 @@ package communication.packets.request.admin;
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
+import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import request.ChangeRequest;
@@ -20,7 +21,7 @@ public class SetRequestApprovalStatusRequestPacket extends AuthenticatedRequestP
     }
 
     @Override
-    public void handle(Conference conference, WebSocket webSocket) {
+    public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
             Request request = conference.getRequest(id);
             if(request instanceof ChangeRequest) {

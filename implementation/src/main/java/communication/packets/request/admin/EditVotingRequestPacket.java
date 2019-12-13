@@ -3,6 +3,7 @@ package communication.packets.request.admin;
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
+import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import voting.*;
@@ -25,7 +26,7 @@ public class EditVotingRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, WebSocket webSocket) {
+    public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
             Voting voting = conference.getVoting(id);
             if(voting.getStatus() != VotingStatus.Created) throw new IllegalArgumentException();

@@ -4,6 +4,7 @@ import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.Packet;
 import communication.packets.response.DownloadFileResponsePacket;
+import communication.wrapper.Connection;
 import document.Document;
 import main.Conference;
 import org.java_websocket.WebSocket;
@@ -22,7 +23,7 @@ public class DownloadFileRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, WebSocket webSocket) {
+    public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, false)) {
             byte[] document = conference.getDocumentContent(name);
             Packet response = new DownloadFileResponsePacket(document, name);

@@ -2,6 +2,7 @@ package communication.packets.request;
 
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
@@ -19,7 +20,7 @@ public class RequestOfChangeRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, WebSocket webSocket) {
+    public void handle(Conference conference, Connection webSocket) {
         new RequestOfPacketWrapper(getPacketType(), refersToTopic, reference, request).setToken(getToken()).handle(conference, webSocket);
     }
 }

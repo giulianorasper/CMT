@@ -1,6 +1,7 @@
 package communication.packets;
 
 import communication.enums.PacketType;
+import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
@@ -17,7 +18,7 @@ public abstract class RequestPacket extends BasePacket {
      * A method which is called on any incoming packet.
      * Each subclass calls this method to handle it's associated request properly.
      * @param conference An {@link Conference} which enables handling the request by calling provided backend methods.
-     * @param webSocket An {@link WebSocket} to send an {@link ResponsePacket} to if required.
+     * @param webSocket An {@link Connection} to send an {@link ResponsePacket} to if required.
      */
-    public abstract void handle(Conference conference, WebSocket webSocket);
+    public abstract void handle(Conference conference, Connection webSocket);
 }

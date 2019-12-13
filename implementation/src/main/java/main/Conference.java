@@ -409,9 +409,6 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void removeAttendee( int userID) {
         try{
             attendeeLock.lock();
-            if(isAdmin(userID)) { //todo more granularity
-                adminTokens.clear();
-            }
             if(!db_userManagement.removeUser(userID)){
                 throw new IllegalArgumentException("Admin can not be removed for unknown reasons");
             }

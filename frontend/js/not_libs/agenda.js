@@ -55,12 +55,20 @@ function renderAgenda(data, $e) {
     }
 
     function createDefault(target){
-        $("<div class=\"row\">"+
+       if(window.isAdmin) {$("<div class=\"row \">"+
 
                             "<div class=\"form-group mt-3 col-lg-12\" style=\"float: left;\">"+
                             "    <button class=\"button button-contactForm boxed-btn \" onclick=\"appendToAgenda(\'0\')\">Add Topic</button>"+
                             "</div>"+
+                        "</div>").appendTo(target);}
+        else{
+            $("<div class=\"row \">"+
+
+                            "<div class=\"form-group mt-3 col-lg-12\" style=\"float: left;\">"+
+                            "    Currently the agenda is empty"+
+                            "</div>"+
                         "</div>").appendTo(target);
+        }
     
 
     }
@@ -149,7 +157,7 @@ function edit(preorder){
 
 function generateAgendaRow(name, preorder, fontSize){
     return $(
-        '<li class = "agendaRow" style="font-size: '+fontSize+'px;">'+name+
+        '<li class = "agendaRow" style="font-size: '+fontSize+'px;">'+name+(window.isAdmin?
         '<span style="display:inline-block; width: 60px;">'+
         '</span><span class="glyphicon glyphicon-plus" onclick = "appendToAgenda(\''+preorder+'\')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
@@ -157,7 +165,7 @@ function generateAgendaRow(name, preorder, fontSize){
         '<span style="display:inline-block; width: 30px;">'+
         '</span><span class="glyphicon glyphicon-pencil" onclick = "editAgenda(\''+preorder+'\')"></span>'+
          '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-trash" onclick = "removeFromAgenda(\''+preorder+'\')"></span>'+
+        '</span><span class="glyphicon glyphicon-trash" onclick = "removeFromAgenda(\''+preorder+'\')"></span>':"")+
         '</li>');
 }
 

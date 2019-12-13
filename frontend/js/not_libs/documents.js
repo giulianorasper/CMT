@@ -17,7 +17,10 @@ $( document ).ready(function() {
     CommunicationManager.send(packet, success, fail);
 
     function success(packet) {
-	    if(packet.result === "Valid") {          
+	    if(packet.result === "Valid") {
+        if(packet.documents.length === 0 && window.isAdmin){
+            $("<div class=\"col-lg-9\">"+"Currently no document is available"+"</div>").appendTo(documentContainer);
+        }          
 	        for(var doc of packet.documents){
 	        	console.log(generateDocument(doc));
 	        	generateDocument(doc).appendTo(documentContainer);
@@ -134,7 +137,7 @@ function generateDocument(document){
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px;\">"+
                                                       "<span onclick = \"downloadDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-download-alt \"></span>"+
                                                     "</a>"+
-                                            "</div>"+
+                                            "</div>"+(window.isAdmin?
                                             "<div class=\"col-lg-1\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px;\">"+
                                                       "<span onclick = \"editDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-edit\"></span>"+
@@ -143,7 +146,7 @@ function generateDocument(document){
                                             "<div class=\"col-lg-1\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px;\">"+
                                                       "<span onclick = \"removeDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-trash \"></span>"+
-                                                    "</a>"+
+                                                    "</a>":"")+
                                             "</div>"+
                                         "</div>");
 }

@@ -219,6 +219,7 @@ function editAttendee(attendeeID, name, email, group, residence, fnctn){
  */
 function createAttendee(name, email, group, residence, fnctn){
     const createRequestPacket = new AddAttendeeRequestPacket(name, email, group, residence, fnctn);
+    console.log("Data: " + name + " " + email + " " + group + " " + residence + " " + fnctn);
 
     function successCreateAttendee(packet) {
         if (packet.result === "Valid"){
@@ -314,7 +315,7 @@ function clickCreate(){
     const name = prompt("Enter Name of the Attendee:");
     const email = prompt("Enter Email of the Attendee:");
     const group = prompt("Enter Group of the Attendee:");
-    const residence = prompt("Enter Prompt of the Attendee:");
+    const residence = prompt("Enter Residence of the Attendee:");
     const fnctn = prompt("Enter Function of the Attendee:");
 
     createAttendee(name, email, group, residence, fnctn);
@@ -326,7 +327,7 @@ function clickEdit(attendeeID){
     const name = prompt("Enter new Name of the Attendee:");
     const email = prompt("Enter new Email of the Attendee:");
     const group = prompt("Enter new Group of the Attendee:");
-    const residence = prompt("Enter new Prompt of the Attendee:");
+    const residence = prompt("Enter new Residence of the Attendee:");
     const fnctn = prompt("Enter new Function of the Attendee:");
 
     editAttendee(attendeeID, name, email, group, residence, fnctn);

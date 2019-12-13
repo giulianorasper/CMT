@@ -125,7 +125,7 @@ function generateAttendee(attendee){
         '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
         '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
         '<span style="display:inline-block; width: 30px;">' +
-        '</span><span class="glyphicon glyphicon-pencil" onclick="clickEditGlobal(' + attendee.ID + ')"></span>'+
+        '</span><span class="glyphicon glyphicon-pencil" onclick="clickEditGlobal(event, '+ attendee.ID + ')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
         '</span><span class="glyphicon glyphicon-log-in" onclick="getNewAttendeePasswordGlobal(' + attendee.ID +')"></span>'+
         '<span style="display:inline-block; width: 30px;">' +
@@ -224,6 +224,7 @@ function createAttendee(name, email, group, residence, fnctn){
     function successCreateAttendee(packet) {
         if (packet.result === "Valid"){
             refresh();
+            //console.log("the d")
         }
         else{
             console.log(packet.details);
@@ -310,19 +311,28 @@ function changeSort(){
 }
 
 
-function clickCreate(){
+function clickCreate(event){
     //TODO make this prettier than just using five prompts
+
+    //Reloading gets prevented
+    event.preventDefault();
+
     const name = prompt("Enter Name of the Attendee:");
     const email = prompt("Enter Email of the Attendee:");
     const group = prompt("Enter Group of the Attendee:");
     const residence = prompt("Enter Residence of the Attendee:");
     const fnctn = prompt("Enter Function of the Attendee:");
 
+    //console.log("Data: " + name + " " + email + " " + group + " " + residence + " " + fnctn);
+
     createAttendee(name, email, group, residence, fnctn);
 }
 
-function clickEdit(attendeeID){
+function clickEdit(event, attendeeID){
     //TODO make this prettier than just using five prompts
+
+    //Reloading gets prevented
+    event.preventDefault();
 
     const name = prompt("Enter new Name of the Attendee:");
     const email = prompt("Enter new Email of the Attendee:");

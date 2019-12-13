@@ -29,7 +29,7 @@ public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
     public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
             if(name == null) throw new IllegalArgumentException();
-            Attendee attendee = new Attendee(name, conference.getFreeUserName(name), email, group, residence, function);
+            Attendee attendee = new Attendee(name, email, conference.getFreeUserName(name), group, residence, function);
             conference.addAttendee(attendee);
             new ValidResponsePacket().send(webSocket);
         }

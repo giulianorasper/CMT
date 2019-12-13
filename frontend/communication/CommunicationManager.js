@@ -1,12 +1,20 @@
+import {ip, port, useSSL} from "../config/config.js"
 var timeout = 2000;
 
 export default class CommunicationManager {
 
     static openConnection() {
-        //TODO make this configurable
         var socket;
-        //socket = new WebSocket('ws://127.0.0.1:17699');
-        socket = new WebSocket("wss://math-edu.eu:17699/websocket");
+        var address;
+        if(useSSL) {
+            address = "wss://"
+        } else {
+            address = "ws://"
+        }
+        const endpoint = "websocket";
+        address = address + ip + ":" + port + "/" + endpoint;
+        console.log(address);
+        socket = new WebSocket(address);
         return socket;
     }
 

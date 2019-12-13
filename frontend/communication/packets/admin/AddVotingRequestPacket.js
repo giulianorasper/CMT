@@ -7,6 +7,6 @@ export default class AddVotingRequestPacket extends AuthenticatedRequestPacket {
         this.question = question;
         this.options = options;
         this.namedVote = namedVote;
-	this.duration = duration;
+	    this.duration = duration;
     }
 }

@@ -7,6 +7,9 @@ import LogoutAttendeeRequestPacket from "../../communication/packets/admin/Logou
 import GenerateNewAttendeePasswordRequestPacket
     from "../../communication/packets/admin/GenerateNewAttendeePasswordRequestPacket.js";
 import { getSortedList } from "./attendeeSorting.js";
+import GenerateNewAttendeeTokenRequestPacket
+    from "../../communication/packets/admin/GenerateNewAttendeeTokenRequestPacket.js";
+import GetAttendeePasswordRequestPacket from "../../communication/packets/admin/GetAttendeePasswordRequestPacket.js";
 
 $(document).ready( function() {
     //Move functions to global scope so onclick parameters can call them
@@ -40,6 +43,7 @@ var sortingRelation = 'attendeeName';
 function updateAttendeeList(){
     function success(packet){
         if(packet.result === "Valid"){
+            console.log(packet);
             sortAttendeeList(packet.attendees);
         }
         else{
@@ -66,6 +70,7 @@ function sortAttendeeList(attendeeList){
 
     //Calls getSortedList from attendeeSorting.js
     const sortedList = getSortedList(attendeeList, sortingRelation);
+    console.log(sortedList);
     generateAttendeeList(sortedList);
 }
 
@@ -125,7 +130,7 @@ function generateAttendee(attendee){
         '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
         '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
         '<span style="display:inline-block; width: 30px;">' +
-        '</span><span class="glyphicon glyphicon-pencil" onclick="clickEditGlobal(' + attendee.ID + ')"></span>'+
+        '</span><span class="glyphicon glyphicon-pencil" onclick="clickEditGlobal(event, '+ attendee.ID + ')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
         '</span><span class="glyphicon glyphicon-log-in" onclick="getNewAttendeePasswordGlobal(' + attendee.ID +')"></span>'+
         '<span style="display:inline-block; width: 30px;">' +
@@ -219,10 +224,12 @@ function editAttendee(attendeeID, name, email, group, residence, fnctn){
  */
 function createAttendee(name, email, group, residence, fnctn){
     const createRequestPacket = new AddAttendeeRequestPacket(name, email, group, residence, fnctn);
+    console.log("Data: " + name + " " + email + " " + group + " " + residence + " " + fnctn);
 
     function successCreateAttendee(packet) {
         if (packet.result === "Valid"){
             refresh();
+            //console.log("the d")
         }
         else{
             console.log(packet.details);
@@ -237,16 +244,27 @@ function createAttendee(name, email, group, residence, fnctn){
 }
 
 /**
- * Sends a request to logout an attendee, reloading the attendee list in case it was successful.
+ * Sends a request to logout an attendee. Note that after destroying the old token, a new one has to be generated. To
+ * prevent as much concurrency as possible between sent requests, "Successful" message only gets sent after successfully
+ * generating a new token.
  *
  * @param attendeeID
  */
 function logoutAttendee(attendeeID){
     const logoutRequestPacket = new LogoutAttendeeRequestPacket(attendeeID);
+    const newTokenRequestPacket = new GenerateNewAttendeeTokenRequestPacket(attendeeID);
+
+    function successNewToken(packet){
+        if(packet.result === "Valid"){
+            alert("Attendee has successfully been logged out!");
+        } else{
+            console.log(packet.details);
+        }
+    }
 
     function successLogoutAttendee(packet){
         if(packet.result === "Valid"){
-            refresh();
+            CommunicationManager.send(newTokenRequestPacket, successNewToken, failLogoutAttendee);
         }
         else{
             console.log(packet.details);
@@ -262,27 +280,29 @@ function logoutAttendee(attendeeID){
 
 
 /**
- * Gets called when a new password shall be generated for a certain attendee. First, the attendee shall be logged out
- * since his old password shall not work anymore. After that, a request is sent to the server that responds with a new
- * password.
+ * Gets called when a new password shall be generated for a certain attendee. Note that after generating a new password,
+ * a separate request to get the password has to be sent.
  *
  * @param attendeeID of the attendee for which a new password shall be generated
  */
 function getNewAttendeePassword(attendeeID){
+    const getPasswordRequestPacket = new GetAttendeePasswordRequestPacket(attendeeID);
     const newPasswordRequestPacket = new GenerateNewAttendeePasswordRequestPacket(attendeeID);
-    const logoutAttendeeRequestPacket = new LogoutAttendeeRequestPacket(attendeeID);
 
-    function successNewPassword(packet){
+
+    function successGetPassword(packet){
         if(packet.result === "Valid"){
-            //TODO print out the new password for the attendee
-        }
-        else{
+            alert("New Attendee Password: " + packet.password);
+        } else{
             console.log(packet.details);
         }
     }
 
-    function successLogout(packet){
-        if(! (packet.result === "Valid")){
+    function successNewPassword(packet){
+        if(packet.result === "Valid"){
+            CommunicationManager.send(getPasswordRequestPacket, successGetPassword, failNewPassword);
+        }
+        else{
             console.log(packet.details);
         }
     }
@@ -291,7 +311,6 @@ function getNewAttendeePassword(attendeeID){
         console.log("Something went wrong while trying to access the server.");
     }
 
-    CommunicationManager.send(logoutAttendeeRequestPacket, successLogout, failNewPassword);
     CommunicationManager.send(newPasswordRequestPacket, successNewPassword, failNewPassword);
 }
 
@@ -309,25 +328,52 @@ function changeSort(){
 }
 
 
-function clickCreate(){
+function clickCreate(event){
     //TODO make this prettier than just using five prompts
+
+    //Reloading gets prevented
+    event.preventDefault();
+
     const name = prompt("Enter Name of the Attendee:");
+    if(name === null){ return; }
+
     const email = prompt("Enter Email of the Attendee:");
+    if(email === null){ return; }
+
     const group = prompt("Enter Group of the Attendee:");
-    const residence = prompt("Enter Prompt of the Attendee:");
+    if(group === null){ return; }
+
+    const residence = prompt("Enter Residence of the Attendee:");
+    if(residence === null){ return; }
+
     const fnctn = prompt("Enter Function of the Attendee:");
+    if(fnctn === null){ return; }
+
+    //console.log("Data: " + name + " " + email + " " + group + " " + residence + " " + fnctn);
 
     createAttendee(name, email, group, residence, fnctn);
 }
 
-function clickEdit(attendeeID){
+function clickEdit(event, attendeeID){
     //TODO make this prettier than just using five prompts
 
+    //Reloading gets prevented
+    event.preventDefault();
+
     const name = prompt("Enter new Name of the Attendee:");
+    if(name === null){ return; }
+
     const email = prompt("Enter new Email of the Attendee:");
+    if(email === null){ return; }
+
     const group = prompt("Enter new Group of the Attendee:");
-    const residence = prompt("Enter new Prompt of the Attendee:");
+    if(group === null){ return; }
+
+    const residence = prompt("Enter new Residence of the Attendee:");
+    if(residence === null){ return; }
+
     const fnctn = prompt("Enter new Function of the Attendee:");
+    if(fnctn === null){ return; }
 
     editAttendee(attendeeID, name, email, group, residence, fnctn);
 }

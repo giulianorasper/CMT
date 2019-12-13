@@ -77,6 +77,9 @@ public class Topic implements Requestable {
         }
     }
 
+    /**
+     * Moves the topic to the given agenda, deleting it from the old parent agenda
+     */
     public boolean moveToNewAgenda(Agenda agenda, int pos) {
         try {
             lock.getWriteAccess();

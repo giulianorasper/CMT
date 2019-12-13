@@ -3,6 +3,7 @@ import GetAgendaRequestPacket from "../../communication/packets/GetAgendaRequest
 import AddTopicRequestPacket from "../../communication/packets/admin/AddTopicRequestPacket.js";
 import RemoveTopicRequestPacket from "../../communication/packets/admin/RemoveTopicRequestPacket.js";
 import RenameTopicRequestPacket from "../../communication/packets/admin/RenameTopicRequestPacket.js";
+import IsAdminRequestPacket from "../../communication/packets/IsAdminRequestPacket.js";
 
 var agendaContainer = $('#agendaContainer');
 
@@ -13,6 +14,8 @@ $( document ).ready(function() {
     window.removeFromAgenda = remove// export the function to the global scope
     window.editAgenda = edit// export the function to the global scope
 
+    checkAdminStatus();
+
     const packet = new GetAgendaRequestPacket();
 
     CommunicationManager.send(packet, successAgendaReq, failAgendaReq);
@@ -21,7 +24,8 @@ $( document ).ready(function() {
 
 
  function successAgendaReq(packet) {
-    if(packet.result === "Valid") {          
+    if(packet.result === "Valid") {      
+    checkAdminStatus()    
         renderAgenda(packet.agenda, agendaContainer);
     }
 }
@@ -38,7 +42,7 @@ function renderAgenda(data, $e) {
         return;
     }
 
-    var fontSize = 26;
+    var fontSize = 32;
     var fontSizeDifference = 4;
     
     function createInner(obj, $target, preOrder) {
@@ -55,12 +59,20 @@ function renderAgenda(data, $e) {
     }
 
     function createDefault(target){
-        $("<div class=\"row\">"+
+       if(window.isAdmin) {$("<div class=\"row \">"+
 
                             "<div class=\"form-group mt-3 col-lg-12\" style=\"float: left;\">"+
                             "    <button class=\"button button-contactForm boxed-btn \" onclick=\"appendToAgenda(\'0\')\">Add Topic</button>"+
                             "</div>"+
+                        "</div>").appendTo(target);}
+        else{
+            $("<div class=\"row \">"+
+
+                            "<div class=\"form-group mt-3 col-lg-12\" style=\"float: left;\">"+
+                            "    Currently the agenda is empty"+
+                            "</div>"+
                         "</div>").appendTo(target);
+        }
     
 
     }
@@ -149,18 +161,45 @@ function edit(preorder){
 
 function generateAgendaRow(name, preorder, fontSize){
     return $(
-        '<li class = "agendaRow" style="font-size: '+fontSize+'px;">'+name+
+        '<li class = "agendaRow" style="font-size: '+fontSize+'px;">'+name+(window.isAdmin?
         '<span style="display:inline-block; width: 60px;">'+
-        '</span><span class="glyphicon glyphicon-plus" onclick = "appendToAgenda(\''+preorder+'\')"></span>'+
+        '</span><span style="font-size:32px;" class="glyphicon glyphicon-plus" onclick = "appendToAgenda(\''+preorder+'\')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-chevron-down" onclick = "subtopicToAgenda(\''+preorder+'\')"></span>'+
+        '</span><span style="font-size:32px" class="glyphicon glyphicon-chevron-down" onclick = "subtopicToAgenda(\''+preorder+'\')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-pencil" onclick = "editAgenda(\''+preorder+'\')"></span>'+
+        '</span><span style="font-size:32px" class="glyphicon glyphicon-pencil" onclick = "editAgenda(\''+preorder+'\')"></span>'+
          '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-trash" onclick = "removeFromAgenda(\''+preorder+'\')"></span>'+
+        '</span><span style="font-size:32px" class="glyphicon glyphicon-trash" onclick = "removeFromAgenda(\''+preorder+'\')"></span>':"")+
         '</li>');
 }
 
 
 
+function checkAdminStatus(){
+    const packet = new IsAdminRequestPacket();
+
+    CommunicationManager.send(packet, success, fail);
+
+    function success(packet) {
+        console.log(packet);
+        if(packet.result === "Valid") {
+
+            if(!packet.admin){
+                $(".adminField").each(function(i, field){
+                    console.log(field)
+                    $(field).css("display", "none");
+                })
+            }
+            window.isAdmin = packet.admin;          
+            
+        }
+        else if(packet.result =="InvalidToken"){
+             window.location = "./index.html"
+        }
+    }
+
+    function fail() {
+        console.log("This method is called if something went wrong during the general communication.");
+    }
+}
 

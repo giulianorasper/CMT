@@ -3,6 +3,7 @@ import GetDocumentListRequestPacket from "../../communication/packets/GetDocumen
 import UploadFileRequestPacket from "../../communication/packets/admin/UploadFileRequestPacket.js";
 import GetFileRequestPacket from "../../communication/packets/DownloadFileRequestPacket.js";
 import DeleteFileRequestPacket from "../../communication/packets/admin/DeleteFileRequestPacket.js";
+import IsAdminRequestPacket from "../../communication/packets/IsAdminRequestPacket.js";
 
 var documentContainer = $('#documentsContainer');
 
@@ -12,12 +13,20 @@ $( document ).ready(function() {
     window.editDocument = edit// export the function to the global scope
     window.removeDocument = remove// export the function to the global scope
 
+
+    checkAdminStatus();
+
     const packet = new GetDocumentListRequestPacket();
 
     CommunicationManager.send(packet, success, fail);
 
     function success(packet) {
-	    if(packet.result === "Valid") {          
+	    if(packet.result === "Valid") {
+            console.log(packet.documents.length);
+        if(packet.documents.length === 0){
+            $("<div class=\"col-lg-9\">"+"Currently no document is available"+"</div>").appendTo(documentContainer);
+            return;
+        }          
 	        for(var doc of packet.documents){
 	        	console.log(generateDocument(doc));
 	        	generateDocument(doc).appendTo(documentContainer);
@@ -72,6 +81,34 @@ $( document ).ready(function() {
     }, false);
 
 });
+
+function checkAdminStatus(){
+    const packet = new IsAdminRequestPacket();
+
+    CommunicationManager.send(packet, success, fail);
+
+    function success(packet) {
+        console.log(packet);
+        if(packet.result === "Valid") {
+
+            if(!packet.admin){
+                $(".adminField").each(function(i, field){
+                    console.log(field)
+                    $(field).css("display", "none");
+                })
+            }
+            window.isAdmin = packet.admin;          
+            
+        }
+        else if(packet.result =="InvalidToken"){
+             window.location = "./index.html"
+        }
+    }
+
+    function fail() {
+        console.log("This method is called if something went wrong during the general communication.");
+    }
+}
 
 function edit(name){
 
@@ -134,7 +171,7 @@ function generateDocument(document){
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px;\">"+
                                                       "<span onclick = \"downloadDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-download-alt \"></span>"+
                                                     "</a>"+
-                                            "</div>"+
+                                            "</div>"+(window.isAdmin?
                                             "<div class=\"col-lg-1\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px;\">"+
                                                       "<span onclick = \"editDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-edit\"></span>"+
@@ -143,7 +180,7 @@ function generateDocument(document){
                                             "<div class=\"col-lg-1\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px;\">"+
                                                       "<span onclick = \"removeDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-trash \"></span>"+
-                                                    "</a>"+
+                                                    "</a>":"")+
                                             "</div>"+
                                         "</div>");
 }

@@ -156,6 +156,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public boolean removeUser(int userID) {
+        if (!this.userIDAlreadyUsed(userID)) {
+            return false;
+        }
         this.openConnection();
         String sqlstatement = "DELETE FROM users WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -305,6 +308,21 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     }
 
     /**
+     * This methods checks whether a userid was already used to enable unique ids creation.
+     *
+     * @param id The username that should be checked.
+     * @return True, iff the username was already in the database.
+     */
+    @Override
+    public boolean userIDAlreadyUsed(int id) {
+        List<Integer> ids = this.getIDs();
+        if (ids.contains(id)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @return a list of all IDs.
      */
     @Override
@@ -376,8 +394,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
              ResultSet table  = stmt.executeQuery()) {
             while (table.next()) {
                 attendees.add(new Attendee(table.getString("fullname"),
-                        table.getString("email"),
                         table.getString("username"),
+                        table.getString("email"),
                         table.getString("groups"),
                         table.getString("residence"),
                         table.getString("function"),
@@ -408,8 +426,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setInt(1, userID);
             ResultSet att  = stmt.executeQuery();
             attendee = new Attendee(att.getString("fullname"),
-                    att.getString("email"),
                     att.getString("username"),
+                    att.getString("email"),
                     att.getString("groups"),
                     att.getString("residence"),
                     att.getString("function"),

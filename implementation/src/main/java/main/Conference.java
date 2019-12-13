@@ -255,7 +255,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             AtomicBoolean alreadyExists = new AtomicBoolean(false);
-            db_userManagement.getAllAdmins().forEach(ad -> {
+            db_userManagement.getAllAttendees().forEach(ad -> {
                 if(ad.getID() == a.getID()){
                     alreadyExists.set(true);
                 }
@@ -269,6 +269,27 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             adminLock.unlock();
         }
     }
+
+    //for debugging
+    public void addAttendee(Attendee a, String pwd) {
+        assert (debugingInstance); // close the server since this operation is illegal
+        try{
+            adminLock.lock();
+            AtomicBoolean alreadyExists = new AtomicBoolean(false);
+            db_userManagement.getAllAttendees().forEach(ad -> {
+                if(ad.getID() == a.getID()){
+                    alreadyExists.set(true);
+                }
+            });
+            if(!alreadyExists.get() && !db_userManagement.addAttendee(a, pwd, gen.generateToken())){
+                throw new IllegalArgumentException("Database addition failed");
+            }
+        }
+        finally {
+            adminLock.unlock();
+        }
+    }
+
 
     @Override
     public List<Admin> getAllAdmins() {
@@ -531,8 +552,8 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             adminLock.lock();
             attendeeLock.lock();
             Pair<LoginResponse, String> response = db_userManagement.checkLogin(userName, password);
-
-            //System.out.println(response.first() + ", " + response.second() + ", " + userName + ", " + password);
+            db_userManagement.getAllAttendees().forEach(a -> System.out.println(a.getUserName()));
+            System.out.println(response.first() + ", " + response.second() + ", " + userName + ", " + password);
             if(response.first() != LoginResponse.Valid){
                 return new Pair<>(response.first(), null);
             }

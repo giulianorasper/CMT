@@ -50,7 +50,7 @@
                         <div class="main-menu  d-none d-lg-block">
                             <nav>
                                 <ul id="navigation">
-                                    <li><a href="home.html">Home</a></li>
+                                    <li><a href="home.html">Agenda</a></li>
                                     <li><a href="documents.html">Documents</a></li>
                                     <li><a href="vote.html">Vote</a></li>
                                     <li><a href="#">Requests<i class="ti-angle-down"></i></a>
@@ -142,9 +142,11 @@
                             </div>
                             <div class="col-lg-1"></div>
                             <div class=\"row\">
-                                <div class="form-group mt-3 col-lg-12" style="float: left;">
-                                   <button class="button button-contactForm boxed-btn" onclick="clickCreateGlobal()">Add Topic</button>
+                                <div class="col-lg-1"></div>
+                                <div class="form-group mt-3 col-lg-10" style="float: left;">
+                                   <button class="button button-contactForm boxed-btn" onclick="clickCreateGlobal(event)">Add Attendee</button>
                                 </div>
+                                <div class="col-lg-1"></div>
                             </div>
                         </div>
                     </form>
@@ -185,6 +187,7 @@
 <script src="js/main.js"></script>
 
 <script type="module" src="js/not_libs/attendees.js"></script>
+            <script type="module" src="js/not_libs/general.js"></script>
 <!--<script type="module" src="js/not_libs/attendeeSorting.js"></script>-->
 
 

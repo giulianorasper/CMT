@@ -8,15 +8,15 @@ public class Attendee extends User {
     @Expose
     private boolean present;
 
-    public Attendee(String name, String userName, String email, String group, String residence, String function, int ID){
-        super(name, userName, email, group, function, residence, ID);
+    public Attendee(String name, String email, String userName, String group, String residence, String function, int ID){
+        super(name, email, userName, group, function, residence, ID);
 
         this.numberOfDevices = 0;
         this.present = false;
     }
 
-    public Attendee(String name, String userName, String email, String group, String residence, String function) {
-        this(name, userName, email,group,residence,function,  nextFreeId());
+    public Attendee(String name, String email, String userName, String group, String residence, String function) {
+        this(name, email, userName,group,residence,function,  nextFreeId());
     }
 
     public void additionalDevice(){

@@ -9,7 +9,7 @@ var requestTypeSelect = $('#requestType')
 $( document ).ready(function() {
 
     window.approveRequest = function(id){submitUpdate(id, true, false);}// export the function to the global scope
-    window.disapproveRequest = function(id){submitUpdate(id, true, false);}// export the function to the global scope
+    window.disapproveRequest = function(id){submitUpdate(id, false, false);}// export the function to the global scope
     window.closeRequest = function(id){submitUpdate(id, true, false);}// export the function to the global scope
     window.rerenderRequests = renderRequests;
 

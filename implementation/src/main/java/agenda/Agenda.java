@@ -6,10 +6,14 @@ import utils.LexicographicalComparator;
 import utils.Pair;
 import utils.WriterBiasedRWLock;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Agenda implements AgendaObservable{
 
@@ -20,23 +24,20 @@ public class Agenda implements AgendaObservable{
     private ConcurrentHashMap<AgendaObserver, Boolean> observers = new ConcurrentHashMap<>(); // a map backed hashset
 
     /**
-     * TODO: Document this
      *
      * @param agenda String that got extracted from a CSV file, please parse topics using this
      */
     public Agenda(String agenda) {
-        //TODO: Implement this
+        this(convertStringToTopicList(agenda));
+    }
 
+    public Agenda() {
         this.topics = new LinkedList<>();
         this.lock = new WriterBiasedRWLock();
     }
 
-    public Agenda(){
-        this("");
-    }
-
     protected Agenda (Agenda parent, WriterBiasedRWLock lock){
-        this("");
+        this();
         this.lock = lock;
         this.parent = parent;
     }
@@ -46,7 +47,7 @@ public class Agenda implements AgendaObservable{
      * @param tops Preorder + Name list
      */
     public Agenda(List<Pair<List<Integer>, String>> tops) {
-        this("");
+        this();
         Agenda ag = this;
         AtomicInteger depth = new AtomicInteger(1);
         while (tops.stream().anyMatch(p -> p.first().size() == depth.get())) {
@@ -267,4 +268,36 @@ public class Agenda implements AgendaObservable{
         }
 
     }
+
+    private static List<Pair<List<Integer>, String>> convertStringToTopicList(String agenda) {
+        List<String> lines
+                = Arrays.stream(agenda.trim().split("\\r?\\n")).map(String :: trim).collect(Collectors.toList());
+        List<List<String>> splitLines = new ArrayList<>();
+        for (String s : lines) {
+            splitLines.add(Arrays.asList(s.split("\\s+", 2)));
+        }
+
+        boolean format1 = true;
+        for (List<String> l : splitLines) {
+            if (l.size() != 2) {
+                format1 = false;
+                break;
+            }
+        } if (!format1) {
+            throw new IllegalArgumentException("String format incorrect.");
+        }
+
+        List<Pair<List<Integer>, String>> tops = new ArrayList<>();
+        try {
+            for (List<String> l : splitLines) {
+                tops.add( new Pair<>(Arrays.stream(l.get(0).split("\\.+"))
+                        .map(Integer :: parseInt).collect(Collectors.toList())
+                        , l.get(1)));
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("String format incorrect.");
+        }
+        return tops;
+    }
+
 }

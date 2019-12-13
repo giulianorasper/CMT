@@ -21,6 +21,7 @@ public class SpeechRequest extends Request {
         } catch (InterruptedException e) {
             //do nothing
         } finally {
+            notifyObservers();
             lock.finishWrite();
         }
     }
@@ -33,6 +34,7 @@ public class SpeechRequest extends Request {
         } catch (InterruptedException e) {
             //do nothing
         } finally {
+            notifyObservers();
             lock.finishWrite();
         }
     }

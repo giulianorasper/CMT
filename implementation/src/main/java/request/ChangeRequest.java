@@ -43,6 +43,7 @@ public class ChangeRequest extends Request {
         } catch (InterruptedException e) {
             //do nothing
         } finally {
+            notifyObservers();
             lock.finishWrite();
         }
     }
@@ -56,6 +57,7 @@ public class ChangeRequest extends Request {
         } catch (InterruptedException e) {
             //do nothing
         } finally {
+            notifyObservers();
             lock.finishWrite();
         }
     }
@@ -84,6 +86,7 @@ public class ChangeRequest extends Request {
         } catch (InterruptedException e) {
             //do nothing
         } finally {
+            notifyObservers();
             lock.finishWrite();
         }
     }

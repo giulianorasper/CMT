@@ -127,8 +127,9 @@ function generateAttendee(attendee){
         '<tr>'+
         '<td colspan="4">'+
         '<div id="user_accordion'+ attendee.ID +'"  class="collapse">'+
-        '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
+        '<h4 style="color:grey;">Username: '+attendee.userName +'</h4>'+
         '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
+        '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
         '<span style="display:inline-block; width: 30px;">' +
         '</span><span class="glyphicon glyphicon-pencil" onclick="clickEditGlobal(event, '+ attendee.ID + ')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+

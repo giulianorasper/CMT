@@ -16,7 +16,9 @@ public class GetAllAttendeesRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, Connection webSocket) {
-        Packet response = new GetAllAttendeesResponsePacket(conference.getAllAttendees());
-        response.send(webSocket);
+        if(isPermitted(conference, webSocket, true)) {
+            Packet response = new GetAllAttendeesResponsePacket(conference.getAllAttendees());
+            response.send(webSocket);
+        }
     }
 }

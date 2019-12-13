@@ -7,54 +7,38 @@ import communication.packets.RequestPacket;
 import communication.packets.request.*;
 import communication.packets.request.admin.*;
 import communication.packets.response.FailureResponsePacket;
+import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.exceptions.InvalidDataException;
 import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.handshake.ServerHandshakeBuilder;
 import org.java_websocket.server.WebSocketServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
 import java.util.HashSet;
 import java.util.Set;
 
-class WebsocketCommunicationManager extends WebSocketServer implements CommunicationManager {
+public class CommunicationHandler {
 
     private Gson gson = new Gson();
-    private Set<WebSocket> conns;
     private Conference conference;
     //TODO implement timeout
     private int timeoutAfter;
-    private  boolean debugging;
+    private boolean debugging;
 
-    public WebsocketCommunicationManager(Conference conference, int port, int timeoutAfter, boolean debugging) {
-        super(new InetSocketAddress(port));
+    public CommunicationHandler(Conference conference, int timeoutAfter, boolean debugging) {
         this.conference = conference;
         this.timeoutAfter = timeoutAfter;
         this.debugging = debugging;
-        conns = new HashSet<>();
-    }
-
-    @Override
-    public void onStart() {
-        System.out.println("Starting socket server on port: " + getPort());
-    }
-
-    @Override
-    public void onOpen(WebSocket conn, ClientHandshake handshake) {
-        conns.add(conn);
-        System.out.println(System.currentTimeMillis() + ": New connection from " + conn.getRemoteSocketAddress().getAddress().getHostAddress());
-    }
-
-    @Override
-    public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        conns.remove(conn);
-        System.out.println("Closed connection to " + conn.getRemoteSocketAddress().getAddress().getHostAddress());
     }
 
     //TODO connection closed during request?
-    @Override
-    public void onMessage(WebSocket conn, String message) {
+    public void onMessage(Connection conn, String message) {
         try {
             if(debugging) System.out.println(message);
 
@@ -195,27 +179,11 @@ class WebsocketCommunicationManager extends WebSocketServer implements Communica
         }
     }
 
-    @Override
-    public void onMessage(WebSocket conn, ByteBuffer message) {
+    public void onMessage(Connection conn, ByteBuffer message) {
         UpdateFileRequestPacket packet = UpdateFileRequestPacket.getRequestFromConnectionIfExists(conn);
         if(packet != null) {
             byte[] fileBytes = message.array();
             packet.handleFileTransfer(conference, conn, fileBytes);
         }
-    }
-
-    @Override
-    public void onError(WebSocket conn, Exception ex) {
-        //ex.printStackTrace();
-        if (conn != null) {
-            conns.remove(conn);
-            // do some thing if required
-        }
-    }
-
-    @Override
-    public void stop() throws IOException, InterruptedException {
-        //TODO handle open requests and only then call stop causing the socket server to stop and close all connections
-        super.stop();
     }
 }

@@ -69,9 +69,11 @@ public class Main {
         System.out.println("Press 'q' to close the server");
         try{
             char c = (char)System.in.read();
+            System.out.println(c);
             while (c != 'q'){
                 c = (char)System.in.read();
             }
+            System.exit(0);
         }
         catch (IOException e){
             e.printStackTrace();

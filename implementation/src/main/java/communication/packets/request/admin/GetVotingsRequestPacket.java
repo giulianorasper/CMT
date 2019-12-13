@@ -4,6 +4,7 @@ import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.Packet;
 import communication.packets.response.admin.GetVotingsResponsePacket;
+import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
@@ -17,7 +18,7 @@ public class GetVotingsRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, WebSocket webSocket) {
+    public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
             Packet response = new GetVotingsResponsePacket(conference.getVotings());
             response.send(webSocket);

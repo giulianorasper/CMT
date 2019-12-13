@@ -4,6 +4,7 @@ import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.Packet;
 import communication.packets.response.PersonalDataResponsePacket;
+import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
@@ -17,7 +18,7 @@ public class GetAttendeeDataRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, WebSocket webSocket) {
+    public void handle(Conference conference, Connection webSocket) {
         Packet response = new PersonalDataResponsePacket(conference.getAttendeeData(id));
         response.send(webSocket);
     }

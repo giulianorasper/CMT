@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import communication.enums.PacketType;
+import communication.wrapper.Connection;
 import org.java_websocket.WebSocket;
 
 /**
@@ -36,7 +37,7 @@ public class BasePacket implements Packet {
         return gson.toJson(this);
     }
 
-    public void send(WebSocket socket) {
+    public void send(Connection socket) {
         socket.send(toJson());
     }
 

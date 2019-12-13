@@ -55,7 +55,14 @@ function renderAgenda(data, $e) {
     }
 
     function createDefault(target){
-        $('<li onclick = "appendToAgenda(\'0\')"><span>Click here to add the first topic</span></li>').appendTo(target);
+        $("<div class=\"row\">"+
+
+                            "<div class=\"form-group mt-3 col-lg-12\" style=\"float: left;\">"+
+                            "    <button class=\"button button-contactForm boxed-btn \" onclick=\"appendToAgenda(\'0\')\">Add Topic</button>"+
+                            "</div>"+
+                        "</div>").appendTo(target);
+    
+
     }
 
     for (var i = 0; i < data.topics.length; i++) {

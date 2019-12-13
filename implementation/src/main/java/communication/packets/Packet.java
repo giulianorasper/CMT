@@ -1,10 +1,11 @@
 package communication.packets;
 
 import communication.enums.PacketType;
+import communication.wrapper.Connection;
 import org.java_websocket.WebSocket;
 
 /**
- * An interface representing a data packet which can be sent through an open {@link WebSocket} connection.
+ * An interface representing a data packet which can be sent through an open {@link Connection} connection.
  */
 public interface Packet {
 
@@ -18,5 +19,5 @@ public interface Packet {
      * Sends this packet through an open {@link WebSocket} connection.
      * @param socket the socket to send data through
      */
-    public void send(WebSocket socket);
+    public void send(Connection socket);
 }

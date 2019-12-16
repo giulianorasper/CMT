@@ -158,6 +158,7 @@ public class Voting implements VotingObservable{
 
             openUntil = System.currentTimeMillis() + duration*1000;
             status = VotingStatus.Running;
+            notifyObservers();
             return true;
         }
         catch (InterruptedException e){

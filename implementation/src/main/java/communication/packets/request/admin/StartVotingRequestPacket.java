@@ -2,6 +2,8 @@ package communication.packets.request.admin;
 
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.Packet;
+import communication.packets.response.FailureResponsePacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
@@ -21,13 +23,19 @@ public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
     @Override
     public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
+            Packet response;
             Voting activeVoting = conference.getActiveVoting();
             Voting votingToStart = conference.getVoting(id);
-            if(activeVoting == null && votingToStart.getStatus() == VotingStatus.Created) {
+            if(activeVoting == null) {
+                response = new FailureResponsePacket("The voting with the id " + id + " does not exist.");
+            } else if (votingToStart.getStatus() != VotingStatus.Created){
+                response = new FailureResponsePacket("Vote could not be started since it's status is " + votingToStart.getStatus());
+            } else {
                 votingToStart.startVote();
                 conference.update(votingToStart);
+                response = new ValidResponsePacket();
             }
-            new ValidResponsePacket().send(webSocket);
+            response.send(webSocket);
         }
     }
 }

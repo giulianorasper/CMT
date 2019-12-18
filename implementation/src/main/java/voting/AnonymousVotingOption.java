@@ -29,6 +29,10 @@ public class AnonymousVotingOption extends VotingOption {
 
     }
 
+    /**
+     * increase Number of user that vote for the NamedVotingOption.
+     * @param userID
+     */
     @Override
     protected void addVote(int userID) {
         votes++;
@@ -48,11 +52,19 @@ public class AnonymousVotingOption extends VotingOption {
         }
     }
 
+    /**
+     * AnonymousVote cant get userids
+     * return Null
+     */
     @Override
     public List<Integer> getVoters() {
         return null;
     }
 
+    /**
+     * Get Number of User that vote for the NamedVotingOption.
+     * return Number of User
+     */
     @Override
     protected void publishVotes() {
         setPublicVotes(votes);

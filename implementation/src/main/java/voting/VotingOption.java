@@ -9,7 +9,6 @@ public abstract class VotingOption {
 
     private Voting voting;
     protected WriterBiasedRWLock lock;
-
     @Expose
     protected String name;
     @Expose
@@ -17,11 +16,19 @@ public abstract class VotingOption {
     @Expose
     protected int publicVotes;
 
+    /**
+     * Set voting for which the voting option is valid
+     * @param v voting
+     */
     public void setParent(Voting v){
         voting = v;
         lock  = v.lock;
     }
 
+    /**
+     * Get VoteOptionID from VotingOption.
+     * @return VoteOptionID
+     */
     public int getOptionID() {
         try {
             lock.getReadAccess();
@@ -35,6 +42,10 @@ public abstract class VotingOption {
         }
     }
 
+    /**
+     * Change Name of the VoteOption
+     * @param newName for the VoteOption
+     */
     public void changeName(String newName) {
         try {
             lock.getWriteAccess();
@@ -48,6 +59,10 @@ public abstract class VotingOption {
         }
     }
 
+    /**
+     * Get Name of the VoteOption
+     * @return VoteOptionName
+     */
     public String getName() {
         try {
             lock.getReadAccess();
@@ -59,6 +74,10 @@ public abstract class VotingOption {
         }
     }
 
+    /**
+     * Set the VoteOptionID to newID.
+     * @param newID
+     */
     public void setOptionID(int newID) {
         try {
             lock.getWriteAccess();
@@ -70,6 +89,10 @@ public abstract class VotingOption {
         }
     }
 
+    /**
+     * Set the number of users that vote for this vote to votes.
+     * @param votes
+     */
     protected void setPublicVotes(int votes) {
         this.publicVotes = votes;
     }

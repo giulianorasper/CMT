@@ -29,14 +29,20 @@ public class NamedVotingOption extends VotingOption {
         this.voters = voters;
     }
 
-    public NamedVotingOption() {
-    }
-
+    /**
+     * Add user with userID to the list of user that vote for the NamedVotingOption.
+     * @param userID
+     */
     @Override
     protected void addVote(int userID) {
         voters.add(userID);
     }
 
+
+    /**
+     * Get Number of User that vote for the NamedVotingOption.
+     * return Number of User or -1
+     */
     @Override
     public int getCurrentResult() {
         try {
@@ -51,6 +57,10 @@ public class NamedVotingOption extends VotingOption {
         }
     }
 
+    /**
+     * Get UserIDs of User that vote for the NamedVotingOption.
+     * return List<UserIDs>
+     */
     @Override
     public List<Integer> getVoters() {
         try {
@@ -63,6 +73,9 @@ public class NamedVotingOption extends VotingOption {
         }
     }
 
+    /**
+     * Publish the Number of User that vote for the NamedVotingOption.
+     */
     @Override
     protected void publishVotes() {
         setPublicVotes(voters.size());

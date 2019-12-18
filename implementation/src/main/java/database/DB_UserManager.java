@@ -43,6 +43,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         closeConnection();
     }
 
+    /**********************************GeneralUserFunctionality********************************************/
+
     /**
      * This method checks whether a pair of a username and a password is a valid combination in the database.
      *
@@ -201,7 +203,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     }
 
     /**
-     * Returns a list of all passwords to be handed out to the users, combined with their ID.
+     * Returns a list of all passwords to be handed out to the users, combined with their Userdata.
      *
      * @return A list pairing {@link User}-objects with their passwords.
      */
@@ -346,6 +348,32 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     }
 
     /**
+     * Reads all different groups types of all users and return the groups as a list.
+     * @return a list of all existing groups.
+     */
+    public List<String> getAllGroupsFromUser() {
+        this.openConnection();
+        List<String> groups = new LinkedList<>();
+        String sqlstatement = "SELECT Distinct groups FROM users";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
+             ResultSet table  = stmt.executeQuery()) {
+            while (table.next()) {
+                groups.add(table.getString("groups"));
+            }
+        } catch (SQLException ex) {
+            System.err.println("An exception occurred while reading all user IDs in the database.");
+            System.err.println(ex.getMessage());
+            return null;
+        } finally {
+            this.closeConnection();
+        }
+        return groups;
+    }
+
+
+    /**********************************specialAttendeeFunctionality********************************************/
+
+    /**
      * Adds a new {@link Attendee} to the database that is not an admin.
      *
      * @param a        The new {@link Attendee}.
@@ -386,14 +414,14 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * @return a list of all {@link Attendee}s in the database.
      */
     @Override
-    public List<Attendee> getAllAttendees() {
+    public List<Attendee> getAllUsers() {
         this.openConnection();
-        List<Attendee> attendees = new LinkedList<>();
+        List<Attendee> users = new LinkedList<>();
         String sqlstatement = "SELECT * FROM users";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
              ResultSet table  = stmt.executeQuery()) {
             while (table.next()) {
-                attendees.add(new Attendee(table.getString("fullname"),
+                users.add(new Attendee(table.getString("fullname"),
                         table.getString("email"),
                         table.getString("username"),
                         table.getString("groups"),
@@ -408,7 +436,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         } finally {
             this.closeConnection();
         }
-        return attendees;
+        return users;
     }
 
     /**
@@ -475,6 +503,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         }
         return true;
     }
+
+    /**********************************specialAdminFunctionality********************************************/
+
 
     /**
      * Adds a new {@link Admin} to the database.

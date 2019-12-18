@@ -153,7 +153,7 @@ public class UserManagementTests extends DatabaseTests {
 
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAttendee(stephan, "1111", "9999");
-        List<Attendee> attendees = dbGen.getAllAttendees();
+        List<Attendee> attendees = dbGen.getAllUsers();
         assertEquals(attendees.get(0).getID(),max.getID());
         assertEquals(attendees.get(1).getID(), stephan.getID());
 

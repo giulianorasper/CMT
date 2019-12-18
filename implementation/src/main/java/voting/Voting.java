@@ -155,7 +155,7 @@ public class Voting implements VotingObservable{
     public boolean startVote() {
         try{
             lock.getWriteAccess();
-
+            if(status != VotingStatus.Created) throw new IllegalArgumentException("Votes which are already running or ended can not be started.");
             openUntil = System.currentTimeMillis() + duration*1000;
             status = VotingStatus.Running;
             notifyObservers();

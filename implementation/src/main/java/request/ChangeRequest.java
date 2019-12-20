@@ -5,22 +5,18 @@ import user.User;
 
 public class ChangeRequest extends Request {
 
-    public boolean isApproved() {
-        try {
-            lock.getReadAccess();
-            return this.approved;
-        } catch (InterruptedException e) {
-            return this.approved;//TODO: Well, ...
-        } finally {
-            lock.finishRead();
-        }
-    }
-
     @Expose
     private boolean approved;
     @Expose
     private String message;
 
+    /**
+     * Construct a ChangeRequest Object with the following Parameters, especially without fixed id (next free Id is used):
+     * @param requester
+     * @param topic
+     * @param timestamp
+     * @param message
+     */
     public ChangeRequest(User requester, Requestable topic, long timestamp, String message){
         super(topic, requester, timestamp);
         this.message = message;
@@ -28,13 +24,38 @@ public class ChangeRequest extends Request {
         this.approved = false;
     }
 
+    /**
+     * Construct a ChangeRequest Object with the following Parameters, especially with fixed id:
+     * @param id
+     * @param requester
+     * @param topic
+     * @param timestamp
+     * @param message
+     */
     public ChangeRequest(int id, User requester, Requestable topic, long timestamp, String message) {
         super(id, topic, requester, timestamp);
         this.message = message;
         this.approved = false;
     }
 
+    /**
+     * Checks if a ChangeRequest is approved.
+     * @return true iff CR is approved
+     */
+    public boolean isApproved() {
+        try {
+            lock.getReadAccess();
+            return this.approved;
+        } catch (InterruptedException e) {
+            return this.approved;                           //TODO: Well, ...
+        } finally {
+            lock.finishRead();
+        }
+    }
 
+    /**
+     * Approve a ChangeRequest
+     */
     public void approve(){
         try {
             lock.getWriteAccess();
@@ -48,6 +69,9 @@ public class ChangeRequest extends Request {
         }
     }
 
+    /**
+     * Revert a aprroved ChangeRequest
+     */
     @Override
     public void reopen() {
         try {
@@ -78,6 +102,9 @@ public class ChangeRequest extends Request {
         return res;
     }
 
+    /**
+     * Disapprove a ChangeRequest
+     */
     public void disapprove(){
         try {
             lock.getWriteAccess();
@@ -91,6 +118,10 @@ public class ChangeRequest extends Request {
         }
     }
 
+    /**
+     * Get the Reuqest Message
+     * @return Message
+     */
     public String getMessage(){
 
         try{

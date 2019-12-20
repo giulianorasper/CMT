@@ -17,8 +17,11 @@ public class UserManagementTests extends DatabaseTests {
 
         dbGen.checkLogin("MaxMustermann", "123");
 
+        //Add right Attendee
         assertTrue("Attendee couldn't be added", dbGen.addAttendee(max, "1234", "42"));
+        //Check if Token 42 is valid for an user
         assertEquals(TokenResponse.ValidAttendee, dbGen.checkToken("42"));
+        //Check if Attendee is correctly stored in Db
         assertEquals(dbGen.getAttendeeData(max.getID()).getName(), max.getName());
         assertEquals(dbGen.getAttendeeData(max.getID()).getEmail(), max.getEmail());
         assertEquals(dbGen.getAttendeeData(max.getID()).getUserName(), max.getUserName());
@@ -33,11 +36,12 @@ public class UserManagementTests extends DatabaseTests {
         Admin stephan = new Admin("Stephan Mustermann", "email@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
+        //Add right Admin & Check if Admin Token is Valid
         assertTrue("Admin couldn't be added", dbGen.addAdmin(stephan, "rue1831978", "token"));
         assertEquals(LoginResponse.Valid, dbGen.checkLogin("AlmightyStephan", "rue1831978").first());
         assertEquals(TokenResponse.ValidAdmin, dbGen.checkToken("token"));
 
-
+        //Check if Attendee is correctly stored in Db
         assertEquals(dbGen.getAdminData(stephan.getID()).getName(), stephan.getName());
         assertEquals(dbGen.getAdminData(stephan.getID()).getEmail(), stephan.getEmail());
         assertEquals(dbGen.getAdminData(stephan.getID()).getUserName(), stephan.getUserName());
@@ -56,12 +60,15 @@ public class UserManagementTests extends DatabaseTests {
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAdmin(stephan, "1111", "9999");
         List<Integer> ids = dbGen.getIDs();
+        //Check if getIDs get the right ids
         assertTrue(ids.get(0) == max.getID());
         assertTrue(ids.get(1) == stephan.getID());
         int id = dbGen.tokenToID("42");
+        // Check Removing Right Attendee and Admin
         assertTrue(dbGen.removeUser(id));
         int id1 = dbGen.tokenToID("9999");
         assertTrue(dbGen.removeUser(id1));
+        // Check Removing false User
         assertFalse(dbGen.removeUser(9));
     }
 
@@ -73,6 +80,7 @@ public class UserManagementTests extends DatabaseTests {
 
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAdmin(stephan, "1111", "9999");
+        // Check token to ID & Logout Attendee and Admin
         int id = dbGen.tokenToID("42");
         assertTrue(dbGen.logoutUser(id));
         int id1 = dbGen.tokenToID("9999");
@@ -88,6 +96,7 @@ public class UserManagementTests extends DatabaseTests {
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAdmin(stephan, "1111", "9999");
         List<Pair<User, String>> pw = dbGen.getAllPasswords();
+        // Check Correctness of Passwords
         assertEquals(pw.get(0).second(), "1234");
         assertEquals(pw.get(0).first().getID(),max.getID());
         assertEquals(pw.get(1).second(), "1111");
@@ -103,9 +112,9 @@ public class UserManagementTests extends DatabaseTests {
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAdmin(stephan, "1111", "9999");
 
+        // Check Storing new Token to Attendee and Admin & if old Token does not exist
         assertTrue(dbGen.storeNewToken(0, "11"));
         assertTrue(dbGen.storeNewToken(1, "22"));
-
         assertEquals(dbGen.tokenToID("11"), 0);
         assertEquals(dbGen.tokenToID("22"), 1);
         try {
@@ -125,9 +134,9 @@ public class UserManagementTests extends DatabaseTests {
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAdmin(stephan, "1111", "9999");
 
+        // Check Storing new Password to Attendee and Admin
         assertTrue(dbGen.storeNewPassword(0, "121"));
         assertTrue(dbGen.storeNewPassword(1, "2222"));
-
         assertEquals(dbGen.getAllPasswords().get(0).second(), "121");
         assertEquals(dbGen.getAllPasswords().get(1).second(),"2222");
     }
@@ -140,6 +149,7 @@ public class UserManagementTests extends DatabaseTests {
 
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAdmin(stephan, "1111", "9999");
+        // CHeck if a UserName exist/ dont exist in the Db
         assertTrue(dbGen.userNameAlreadyUsed(max.getUserName()));
         assertTrue(dbGen.userNameAlreadyUsed(stephan.getUserName()));
         assertFalse(dbGen.userNameAlreadyUsed("username"));
@@ -151,6 +161,7 @@ public class UserManagementTests extends DatabaseTests {
         Attendee stephan = new Attendee("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
+        //Test creating and Adding more Admins and Attendees
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAttendee(stephan, "1111", "9999");
         List<Attendee> attendees = dbGen.getAllUsers();
@@ -181,6 +192,7 @@ public class UserManagementTests extends DatabaseTests {
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAdmin(stephan, "1111", "9999");
 
+        // Check editing an Attendee or an Admin works fine
         max.setName("MusterMax");
         dbGen.editAttendee(max);
         assertEquals(dbGen.getAttendeeData(0).getName(), max.getName());
@@ -198,6 +210,7 @@ public class UserManagementTests extends DatabaseTests {
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAdmin(stephan, "1111", "9999");
 
+        // CHeck if the right LoginResponse / TokenResponse Value
         assertEquals(LoginResponse.WrongPassword, dbGen.checkLogin("AlmightyStephan", "rue1831978").first());
         assertEquals(TokenResponse.TokenDoesNotExist, dbGen.checkToken("token"));
         assertEquals(LoginResponse.UserDoesNotExist, dbGen.checkLogin("Stephan", "rue1831978").first());
@@ -220,6 +233,7 @@ public class UserManagementTests extends DatabaseTests {
         dbGen.addAttendee(alex, "1653", "42qwe");
         dbGen.addAdmin(stephan, "1111", "9999");
 
+        // Check if we can load all different groups from the Db without duplications
         List<String> groups = dbGen.getAllGroupsFromUser();
         assertEquals(3, groups.size());
         assertTrue(groups.contains(max.getGroup()));

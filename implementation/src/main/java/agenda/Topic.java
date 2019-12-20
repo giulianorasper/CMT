@@ -16,6 +16,11 @@ public class Topic implements Requestable {
     private Agenda parent;
     private WriterBiasedRWLock lock; //used for the agenda
 
+    /**
+     * Create a new Topic Object with the Name and the Parent of the Topic.
+     * @param name
+     * @param parent
+     */
     public Topic(String name, Agenda parent){
         this.parent = parent;
         this.name = name;
@@ -24,6 +29,10 @@ public class Topic implements Requestable {
         this.subTopics = new Agenda(parent, lock);
     }
 
+    /**
+     * Remove Topic from Parent List.
+     * @return true iff removing was successful
+     */
     public boolean remove() {
         try {
             lock.getWriteAccess();
@@ -39,6 +48,10 @@ public class Topic implements Requestable {
         }
     }
 
+    /**
+     * Rename Topic.
+     * @param name new Name
+     */
     public void rename(String name) {
         try {
             lock.getWriteAccess();
@@ -53,6 +66,10 @@ public class Topic implements Requestable {
         }
     }
 
+    /**
+     * Get the actual Topic Name.
+     * @return Topic Name
+     */
     public String getName(){
         try {
             lock.getReadAccess();
@@ -67,6 +84,11 @@ public class Topic implements Requestable {
         }
     }
 
+    /**
+     * Get the Topic at the Position preorder.
+     * @param preorder Position in the  subTopics
+     * @return
+     */
     protected Topic getTopicFromPreorderList(List<Integer> preorder) {
         if (preorder.isEmpty()) {
             return this;
@@ -94,6 +116,11 @@ public class Topic implements Requestable {
         }
     }
 
+    /**
+     * Reorder the Topic inside the Agenda
+     * @param pos
+     * @return true iff it was successful
+     */
     public boolean reorder(int pos) {
         try {
             lock.getWriteAccess();
@@ -107,6 +134,10 @@ public class Topic implements Requestable {
         }
     }
 
+    /**
+     * Get all SubTopics
+     * @return Agenda with all SubTopics
+     */
     public Agenda getSubTopics(){
         try{
             lock.getReadAccess();
@@ -119,6 +150,11 @@ public class Topic implements Requestable {
             lock.finishRead();
         }
     }
+
+    /**
+     * ToString Method to compare.
+     * @return
+     */
     public String toString(){
         try{
             lock.getReadAccess();

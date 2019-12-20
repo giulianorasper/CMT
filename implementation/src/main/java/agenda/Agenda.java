@@ -43,7 +43,7 @@ public class Agenda implements AgendaObservable{
     }
 
     /**
-     *
+     * Construct an Agenda with Preorder and Name of Topics.
      * @param tops Preorder + Name list
      */
     public Agenda(List<Pair<List<Integer>, String>> tops) {
@@ -71,7 +71,11 @@ public class Agenda implements AgendaObservable{
         }
     }
 
-
+    /**
+     * Remove Topic from actual Agenda.
+     * @param t Topic
+     * @return true iff removing was successful
+     */
     boolean removeTopic(Topic t) {
         try{
             lock.getWriteAccess();
@@ -86,10 +90,22 @@ public class Agenda implements AgendaObservable{
         }
     }
 
+    /**
+     * ReOrder Topic in Agenda.
+     * @param t Topic
+     * @param pos Position
+     * @return true iff reorder is successful
+     */
     boolean reOrderTopic(Topic t, int pos) {
         return t.moveToNewAgenda(this, pos);
     }
 
+    /**
+     * Add Topic to the existing Agenda at Position pos.
+     * @param t Topic
+     * @param pos Position
+     * @return true iff adding was successful
+     */
     public boolean addTopic(Topic t, int pos) {
         try {
             lock.getWriteAccess();
@@ -109,6 +125,11 @@ public class Agenda implements AgendaObservable{
         }
     }
 
+    /**
+     * Get specific Topic at Position pos.
+     * @param pos Position
+     * @return Topic
+     */
     public Topic getTopic(int pos) {
         try {
             lock.getReadAccess();
@@ -127,6 +148,10 @@ public class Agenda implements AgendaObservable{
         }
     }
 
+    /**
+     * Calculate PreOrder String List from actual Agenda.
+     * @return PreOrder String List
+     */
     public List<String> preOrder () {
         try {
             lock.getReadAccess();
@@ -145,6 +170,10 @@ public class Agenda implements AgendaObservable{
         }
     }
 
+    /**
+     * Calculate the Number of Topics inside the Agenda.
+     * @return Number of Topics
+     */
     public int getNumberOfTopics() {
         try {
             lock.getReadAccess();
@@ -156,7 +185,11 @@ public class Agenda implements AgendaObservable{
         }
     }
 
-
+    /**
+     * Get Topic from PreoderString
+     * @param preorder preorder String
+     * @return Topic
+     */
     public Topic getTopicFromPreorderString(String preorder) {
         List<Integer> preorderList = getPreorderListFromPreorderString(preorder);
         try {
@@ -171,6 +204,11 @@ public class Agenda implements AgendaObservable{
         }
     }
 
+    /**
+     * Convert a PreOrderString to a PreOrder IntegerList.
+     * @param preorder String List
+     * @return  Integer List
+     */
     public List<Integer> getPreorderListFromPreorderString(String preorder) {
         String[] preorderArray = preorder.split("\\.");
         List<Integer> preorderList = new LinkedList<>();
@@ -182,6 +220,11 @@ public class Agenda implements AgendaObservable{
     }
 
 
+    /**
+     * Create Topic from preoder List
+     * @param preorder List of Integer
+     * @return Topic
+     */
     protected Topic getTopicFromPreorderList(List<Integer> preorder) {
         try {
             Topic topic = topics.get(preorder.get(0));
@@ -194,6 +237,12 @@ public class Agenda implements AgendaObservable{
 
     //TODO @Giuliano Add documentation to preorder methods
     //TODO @Stephan It would be great if you would look into weather / how these methods should be locked. I think you are more proficient with that.
+
+    /**
+     * Creates an Agenda from a PreOrder list.
+     * @param preorder List of Strings
+     * @return Agenda
+     */
     public Agenda getAgendaFromPreorderString(String preorder) {
         List<Integer> preorderList = getPreorderListFromPreorderString(preorder);
         try {
@@ -208,6 +257,11 @@ public class Agenda implements AgendaObservable{
         }
     }
 
+    /**
+     * Creates an Agenda from a PreOrder list.
+     * @param preorder List of Integers
+     * @return Agenda
+     */
     private Agenda getAgendaFromPreorderList(List<Integer> preorder) {
         if(!preorder.isEmpty()) {
             preorder.remove(preorder.size()-1);
@@ -269,6 +323,11 @@ public class Agenda implements AgendaObservable{
 
     }
 
+    /**
+     * Convert a CSV String into an TopicList.
+     * @param agenda
+     * @return
+     */
     private static List<Pair<List<Integer>, String>> convertStringToTopicList(String agenda) {
         List<String> lines
                 = Arrays.stream(agenda.trim().split("\\r?\\n")).map(String :: trim).collect(Collectors.toList());

@@ -206,4 +206,24 @@ public class UserManagementTests extends DatabaseTests {
         assertEquals(LoginResponse.AccountBlocked, dbGen.checkLogin("AlmightyStephan", "1111").first());
         assertEquals(TokenResponse.TokenDoesNotExist, dbGen.checkToken("9999"));
     }
+
+    @Test
+    public void getallGroupsFromDb(){
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee herbert = new Attendee("herbert Mustermann", "herbert@email.muster", "herbert.Mustermann", "RCDS", "Differten2", "Straßenkehrer2", 2);
+        Attendee alex = new Attendee("alex Mustermann", "alex@email.muster", "alex.Mustermann", "Groupe23", "Differten43", "Tester", 3);
+        Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
+        DB_UserManagement dbGen = this.getGeneralUserDB();
+
+        dbGen.addAttendee(max, "1234", "42");
+        dbGen.addAttendee(herbert, "123", "4245");
+        dbGen.addAttendee(alex, "1653", "42qwe");
+        dbGen.addAdmin(stephan, "1111", "9999");
+
+        List<String> groups = dbGen.getAllGroupsFromUser();
+        assertEquals(3, groups.size());
+        assertTrue(groups.contains(max.getGroup()));
+        assertTrue(groups.contains(stephan.getGroup()));
+        assertTrue(groups.contains(alex.getGroup()));
+    }
 }

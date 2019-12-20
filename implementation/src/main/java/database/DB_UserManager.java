@@ -351,6 +351,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * Reads all different groups types of all users and return the groups as a list.
      * @return a list of all existing groups.
      */
+    @Override
     public List<String> getAllGroupsFromUser() {
         this.openConnection();
         List<String> groups = new LinkedList<>();

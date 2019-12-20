@@ -166,7 +166,8 @@ function renderCreatedVote(vote){
 		).appendTo(createdVotesContainer);
 
 	const optionsField = $("#votingOptions"+vote.ID);
-	for(option of vote.options){
+    for (var i = 0; i < vote.options.length; i++) {
+        var option = vote.options[i];
 		$("<div class = \"row\"><div><input style=\"font-size:20px; margin-top: 5px;\" class=\"form-control\" "+
 		"type=\"text\" value=\""+option.name+"\"></div>").appendTo(optionsField);
 	}

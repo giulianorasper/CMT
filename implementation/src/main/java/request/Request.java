@@ -13,46 +13,9 @@ public abstract class Request implements RequestObservable {
 
     protected static int lastUsedID = 0;
     private ConcurrentHashMap<RequestObserver, Boolean> observers = new ConcurrentHashMap<>(); // a map backed hashset
-
-
     //Locking static variable lastUsedID for multiple admins
     private static Lock idLock = new ReentrantLock();
-
     protected WriterBiasedRWLock lock = new WriterBiasedRWLock();
-
-    public long getTimeStamp() {
-        return timeStamp;
-    }
-
-    @Expose
-    protected final long timeStamp;
-
-
-    public abstract void reopen();
-
-    public Requestable getRequestable() {
-        try {
-            lock.getReadAccess();
-            return requestable;
-        }
-        catch (InterruptedException e){
-            return null;
-        }
-        finally {
-            lock.finishRead();
-        }
-    }
-
-    public User getRequester() {
-        try {
-            lock.getReadAccess();
-            return this.requester;
-        } catch (InterruptedException e) {
-            return null;
-        } finally {
-            lock.finishRead();
-        }
-    }
 
     @Expose
     protected Requestable requestable;
@@ -60,10 +23,18 @@ public abstract class Request implements RequestObservable {
     protected User requester;
     @Expose
     public final int ID;
-
     @Expose
     protected boolean open;
+    @Expose
+    protected final long timeStamp;
 
+    /**
+     * Construct a Request Object with the following Parameters, especially with fixed id:
+     * @param id
+     * @param topic
+     * @param requester
+     * @param timestamp
+     */
     protected Request(int id, Requestable topic, User requester, long timestamp){
         try {
             idLock.lock();
@@ -84,10 +55,62 @@ public abstract class Request implements RequestObservable {
         }
     }
 
+    /**
+     * Construct a Request Object with the following Parameters, especially without Id (next free Id is used):
+     * @param topic
+     * @param requester
+     * @param timestamp
+     */
     protected Request(Requestable topic, User requester, long timestamp){
         this(getNextID(), topic, requester, timestamp);
     }
 
+    public abstract void reopen();
+
+    /**
+     * Get the TimeStamp of the Request
+     * @return Timestamp
+     */
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    /**
+     * Get the Requestable of the Request, for example Dokumentname or Agenda topic.
+     * @return Requestable
+     */
+    public Requestable getRequestable() {
+        try {
+            lock.getReadAccess();
+            return requestable;
+        }
+        catch (InterruptedException e){
+            return null;
+        }
+        finally {
+            lock.finishRead();
+        }
+    }
+
+    /**
+     * Get the user who submit the Requets.
+     * @return User
+     */
+    public User getRequester() {
+        try {
+            lock.getReadAccess();
+            return this.requester;
+        } catch (InterruptedException e) {
+            return null;
+        } finally {
+            lock.finishRead();
+        }
+    }
+
+    /**
+     * Checks if the Request is still open or an Admin has closed the Request.
+     * @return true iff the Request is still open
+     */
     public boolean isOpen() {
         try {
             lock.getReadAccess();
@@ -100,6 +123,10 @@ public abstract class Request implements RequestObservable {
     }
 
 
+    /**
+     * Get next free ID to create Request.
+     * @return free ID
+     */
     protected static int getNextID(){
         try{
             idLock.lock();

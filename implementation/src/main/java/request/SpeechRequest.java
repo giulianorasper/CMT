@@ -5,10 +5,23 @@ import user.User;
 
 public class SpeechRequest extends Request {
 
+    /**
+     * Construct a SpeechRequest with the following Parameter, especially without fixed id (next free Id is used):
+     * @param requester
+     * @param topic
+     * @param timestamp
+     */
     public SpeechRequest(User requester, Requestable topic, long timestamp) {
         super(topic, requester, timestamp);
     }
 
+    /**
+     * Construct a ChangeRequest Object with the following Parameters, especially with fixed id:
+     * @param id
+     * @param requester
+     * @param topic
+     * @param timestamp
+     */
     public SpeechRequest(int id, User requester, Requestable topic, long timestamp) {
         super(id, topic, requester, timestamp);
     }
@@ -26,7 +39,9 @@ public class SpeechRequest extends Request {
         }
     }
 
-
+    /**
+     * Close SpeechRequest, if a user spoke to a topic.
+     */
     public void close() {
         try {
             lock.getWriteAccess();

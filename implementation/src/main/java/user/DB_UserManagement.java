@@ -99,6 +99,15 @@ public interface DB_UserManagement {
      */
     List<Integer> getIDs();
 
+
+    /**
+     * Reads all different groups types of all users and return the groups as a list.
+     * @return a list of all existing groups.
+     */
+    List<String> getAllGroupsFromUser();
+
+
+
     /**
      * Adds a new {@link Attendee} to the database that is not an admin.
      *
@@ -113,7 +122,7 @@ public interface DB_UserManagement {
      *
      * @return a list of all {@link Attendee}s in the database.
      */
-    List<Attendee> getAllAttendees();
+    List<Attendee> getAllUsers();
 
     /**
      * Returns the {@link Attendee} with the given userID.

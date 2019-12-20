@@ -31,6 +31,47 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Conference implements UserManagement, VotingManagement, RequestManagement, DocumentManagement, AgendaManagement, VotingObserver {
 
+    //Conference Data
+    @Expose
+    private String name;
+    @Expose
+    private String organizer;
+    @Expose
+    private long startsAt;
+    @Expose
+    private long endsAt;
+
+    private boolean debugingInstance;
+
+    private Generator gen = new Generator_Imp();
+
+    private String  documentsPath ;
+    private String databasePath;
+
+    private Agenda agenda;
+    private HashMap<Integer,Voting> votings;
+    private HashMap<String, Document> documents;
+    private HashMap<Integer,Admin> admins;
+    private HashMap<Integer,Request> requests;
+    private Voting activeVoting;
+    private HashMap<String, Boolean> adminTokens; // a map backed Set
+    private HashMap<String, Boolean> volatileUserNames = new HashMap<>(); // user names that are reserved even though the corresponding user is not added (jet)
+
+    //Database System
+    private DB_DocumentManagement db_documentManagement;
+    private DB_UserManagement db_userManagement;
+    private DB_RequestManagement db_requestManagement;
+    private DB_VotingManager db_votingManagement;
+
+    //Locks - always take in this order !!!
+    private Lock adminLock = new ReentrantLock();
+    private Lock attendeeLock = new ReentrantLock();
+    private Lock votingLock = new ReentrantLock();
+    private Lock requestLock = new ReentrantLock();
+    private Lock documentsLock = new ReentrantLock();
+
+
+
     //Creates a clean conference (for debugging)
     public Conference(boolean cleanStart){
         this (  "Test",
@@ -51,7 +92,22 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     }
 
-
+    /**
+     * Construct a new or persistent Conference with all the Data below and prepare all DataManagement.
+     * @param name
+     * @param organizer
+     * @param startsAt
+     * @param endsAt
+     * @param admins
+     * @param votings
+     * @param documents
+     * @param documentsPath
+     * @param requests
+     * @param activeVoting
+     * @param databasePath
+     * @param deguggingInstance
+     * @param cleanStart
+     */
     public Conference(String name, String organizer, long startsAt, long endsAt, HashMap<Integer,
             Admin> admins, HashMap<Integer,Voting> votings, HashMap<String,Document> documents, String  documentsPath,
                        HashMap<Integer,Request> requests, Voting activeVoting,
@@ -88,10 +144,6 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             }
         }
 
-
-
-
-
         db_votingManagement = new DB_VotingManager(databasePath);
 
         initUsers();
@@ -101,6 +153,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         initVotes();
     }
 
+    /**
+     * Initialize Documents for Conference
+     */
     private void initDocuments(){
         db_documentManagement = new DB_DocumentManager(databasePath);
         File documentsFolder = new File(documentsPath);
@@ -125,70 +180,45 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Initialize Users for Conference
+     */
     private void initUsers(){
         db_userManagement = new DB_UserManager(databasePath);
         db_userManagement.getAllAdmins().forEach(a -> admins.put(a.getID(), a));
-        db_userManagement.getAllAttendees();
+        db_userManagement.getAllUsers();
     }
 
+    /**
+     * Initialize Agenda for Conference
+     */
     private void initAgenda(){
         DB_AgendaManager db_agendaManagement = new DB_AgendaManager(databasePath);
         agenda = db_agendaManagement.getAgenda();
         agenda.register(db_agendaManagement);
     }
 
+    /**
+     * Initialize Requests for Conference
+     */
     private void initRequests(){
         db_requestManagement = new DB_RequestManager(databasePath);
         db_requestManagement.getAllRequests().forEach(r -> requests.put(r.ID, r));
     }
 
+    /**
+     * Initialize Votes for Conference
+     */
     private void initVotes(){
         //todo
     }
 
-    //Conference Data
-    @Expose
-    private String name;
-    @Expose
-    private String organizer;
-    @Expose
-    private long startsAt;
-    @Expose
-    private long endsAt;
-
-    private boolean debugingInstance;
-
-    private Generator gen = new Generator_Imp();
-
-    private String  documentsPath ;
-    private String databasePath;
-
-    private Agenda agenda;
-    private HashMap<Integer,Voting> votings;
-    private HashMap<String, Document> documents;
-    private HashMap<Integer,Admin> admins;
-    private HashMap<Integer,Request> requests;
-    private Voting activeVoting;
-    private HashMap<String, Boolean> adminTokens; // a map backed Set
-    private HashMap<String, Boolean> volatileUserNames = new HashMap<>(); // user names that are reserved even though the corresponding user is not added (jet)
-
-    //Database System
-    private DB_DocumentManagement db_documentManagement;
-    private DB_UserManagement db_userManagement;
-    private DB_RequestManagement db_requestManagement;
-    private DB_VotingManager db_votingManagement;
-
-
-
-    //Locks - always take in this order !!!
-    private Lock adminLock = new ReentrantLock();
-    private Lock attendeeLock = new ReentrantLock();
-    private Lock votingLock = new ReentrantLock();
-    private Lock requestLock = new ReentrantLock();
-    private Lock documentsLock = new ReentrantLock();
 
     /****************** The Request Management Interface *********/
 
+    /**
+     * Add Request to Request Database
+     */
     @Override
     public void addRequest( Request request) {
 
@@ -208,6 +238,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     }
 
+    /**
+     * Get specific Request from the Database
+     * @param ID of the Request
+     * @return Request
+     */
     @Override
     public Request getRequest( int ID) {
         try {
@@ -219,6 +254,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Read all Requests from Database and return them.
+     * @return List of Requests
+     */
     @Override
     public List<Request> getAllRequests() {
         try {
@@ -231,6 +270,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /****************** The User Management Interface *********/
+
+    /**
+     * Add an Admin with new generated Password and Token to the Database
+     * @param a Admin Data
+     */
     @Override
     public void addAdmin(Admin a) {
         try{
@@ -255,7 +299,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             AtomicBoolean alreadyExists = new AtomicBoolean(false);
-            db_userManagement.getAllAttendees().forEach(ad -> {
+            db_userManagement.getAllUsers().forEach(ad -> {
                 if(ad.getID() == a.getID()){
                     alreadyExists.set(true);
                 }
@@ -276,7 +320,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             AtomicBoolean alreadyExists = new AtomicBoolean(false);
-            db_userManagement.getAllAttendees().forEach(ad -> {
+            db_userManagement.getAllUsers().forEach(ad -> {
                 if(ad.getID() == a.getID()){
                     alreadyExists.set(true);
                 }
@@ -290,7 +334,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
-
+    /**
+     * Read all Admins from Database and return them.
+     * @return List of Admins
+     */
     @Override
     public List<Admin> getAllAdmins() {
         try {
@@ -302,6 +349,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Read all personal Data from Admin with AdminId ID and return an Admin Object containing the Data.
+     * @param ID AdminId
+     * @return Admin
+     */
     @Override
     public Admin getAdminPersonalData(int ID) {
         try {
@@ -313,6 +365,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Remove Admin with AdminId ID from Database, so he can´t login anymore and delete all Data from the Admin.
+     * @param ID AdminId
+     */
     @Override
     public void removeAdmin(int ID) {
         try {
@@ -329,6 +385,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Remove Admin with AdminId ID from Database, so he can´t login anymore.
+     * @param ID AdminId
+     */
     @Override
     public void logoutAdmin(int ID) {
         try{
@@ -348,6 +408,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Edit Admin with AdminId ID in Database.
+     * @param ID AdminId
+     * @param a New Admin Data
+     */
     @Override
     public void editAdmin(int ID, Admin a) {
         try {
@@ -365,7 +430,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
-
+    /**
+     * Add new Attendee to the Database.
+     * @param a Attendee Data
+     */
     @Override
     public void addAttendee( Attendee a) {
         try{
@@ -383,17 +451,26 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Read all Attendees from Database and return them in a List
+     * @return List of Attendees
+     */
     @Override
     public List<Attendee> getAllAttendees() {
         try{
             attendeeLock.lock();
-            return db_userManagement.getAllAttendees();
+            return db_userManagement.getAllUsers();
         }
         finally {
             attendeeLock.unlock();
         }
     }
 
+    /**
+     * Read specific Attendee Data from Attendee with AttendeeId unserID and return them.
+     * @param userID AttendeeId
+     * @return Attendee
+     */
     @Override
     public Attendee getAttendeeData(int userID) {
         try{
@@ -405,6 +482,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Remove Attendee with AttendeeId userId from Databse, so the Attendee cant login anymore and the Attende Data are deleted.
+     * @param userID AttendeeId
+     */
     @Override
     public void removeAttendee( int userID) {
         try{
@@ -419,6 +500,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Remove Attendee with AttendeeId userId from Databse, so the Attendee cant login anymore.
+     * @param userID AttendeeId
+     */
     @Override
     public void logoutAttendee( int userID) {
         try{
@@ -432,6 +517,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Edit existing Attendee in the Databse.
+     * @param attendee Attendee
+     */
     @Override
     public void editAttendee(Attendee attendee) {
         try{
@@ -445,6 +534,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Generate a new Password for an Attendee with AttendeeId userId and store it in Database.
+     * @param userID AttendeeId
+     */
     @Override
     public void generateNewAttendeePassword( int userID) {
         try{
@@ -458,6 +551,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     *  Generate a new Token for an Attendee with AttendeeId userId and store it in Database.
+     * @param userID AttendeeId
+     */
     @Override
     public void generateNewAttendeeToken( int userID) {
         try{
@@ -471,6 +568,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Generates for All Attendees new Passwords and store them in Database.
+     */
     @Override
     public void generateAllMissingAttendeePasswords() {
         try{
@@ -491,6 +591,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Read Password from Attendee with AttendeeId userId and return it.
+     * @param userID AttendeeId
+     * @return Pair with User & Password
+     */
     @Override
     public Pair<User, String> getAttendeePassword( int userID) {
         try{
@@ -507,6 +612,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Read Password from  all Attendee and return them.
+     * @return List of Pair with User & Password
+     */
     @Override
     public List<Pair<User, String>> getAllAttendeePasswords() {
         try{
@@ -518,12 +627,16 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Logout All Attendees from Conference. Invalidate all Token and Password in Database.
+     * @return true iff logout was successful
+     */
     @Override
     public boolean logoutAllAttendees() {
         try{
             attendeeLock.lock();
             boolean success = true;
-            for (Attendee a : db_userManagement.getAllAttendees()) {
+            for (Attendee a : db_userManagement.getAllUsers()) {
                 a.logout();
                 success = success && db_userManagement.logoutUser(a.getID());
             }
@@ -549,7 +662,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             adminLock.lock();
             attendeeLock.lock();
             Pair<LoginResponse, String> response = db_userManagement.checkLogin(userName, password);
-            db_userManagement.getAllAttendees().forEach(a -> System.out.println(a.getUserName()));
+            db_userManagement.getAllUsers().forEach(a -> System.out.println(a.getUserName()));
             System.out.println(response.first() + ", " + response.second() + ", " + userName + ", " + password);
             if(response.first() != LoginResponse.Valid){
                 return new Pair<>(response.first(), null);
@@ -564,6 +677,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Read the specific UserID from a User with Token token.
+     * @param token Token
+     * @return UserId
+     */
     @Override
     public int tokenToID(String token) {//todo check if keeping track of the tokens and ids is more performant
         try {
@@ -577,11 +695,21 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Check if Admin with AdminId id is an Admin.
+     * @param id AdminId
+     * @return true iff User is an Admin
+     */
     @Override
     public boolean isAdmin(int id) {
         return db_userManagement.getAdminData(id) != null;
     }
 
+    /**
+     * Checks the Status of the Token token.
+     * @param token Token
+     * @return TokenResponse
+     */
     @Override
     public TokenResponse checkToken(String token) {
         try{
@@ -606,6 +734,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Create an unique UserName from Name name, that isn´t stored in the Database.
+     * @param name Name
+     * @return Username
+     */
     @Override
     public  String getFreeUserName(String name){
         try{
@@ -629,6 +762,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
 
     /****************** The Voting Management Interface *********/
+
+    /**
+     * Get the Actual Active Voting
+     * @return Voting
+     */
     @Override
     public Voting getActiveVoting() {
         try {
@@ -640,6 +778,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Get created Voting with VotingId ID.
+     * @param ID VotingId
+     * @return Voting
+     */
     @Override
     public Voting getVoting( int ID) {
         try{
@@ -651,6 +794,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Get all created Votings.
+     * @return List of Voting
+     */
     @Override
     public List<Voting> getVotings() {
         try{
@@ -662,6 +809,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Add finished Voting to the Database
+     * @param voting Voting
+     */
     @Override
     public void addVoting( Voting voting) {
         try{
@@ -674,6 +825,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Delete Voting from created Votings
+     * @param voting Voting
+     */
     @Override
     public void removeVoting( Voting voting) {
         try{
@@ -686,6 +841,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Updated a specific Voting
+     * @param v The updates {@link Voting}.
+     * @return
+     */
     @Override
     public boolean update(Voting v) {
         try {
@@ -710,6 +870,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     /****************** The Agenda Management Interface *********/
 
+    /**
+     * Get the current Agenda.
+     * @return Agenda
+     */
     @Override
     public Agenda getAgenda() {
         return agenda;
@@ -718,6 +882,13 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     /****************** The Document Management Interface *********/
 
+    /**
+     * Update an existing Document and store the updated Document in the Database.
+     * @param name
+     * @param fileType
+     * @param fileBytes
+     * @param isCreation
+     */
     @Override
     public void updateDocument(String name, String fileType, byte[] fileBytes, boolean isCreation) {
         try {
@@ -765,6 +936,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Delete an existing Document with DocumentName name in the Database and in the folder.
+     * @param name DocumentName
+     */
     @Override
     public void deleteDocument( String name) {
         try{
@@ -787,6 +962,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Read Document Data with DocumentName name and return it.
+     * @param name DocumentName
+     * @return Document
+     */
     @Override
     public Document getDocument(String name){
         try{
@@ -801,7 +981,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
-
+    /**
+     * Read Content from Document with DocumentName name
+     * @param name DocumentName
+     * @return Byte List
+     */
     @Override
     public byte[] getDocumentContent( String name) {
         try{
@@ -829,6 +1013,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Read all Documents and return them.
+     * @return List of Documents
+     */
     @Override
     public List<Document> getAllDocuments() {
         try {

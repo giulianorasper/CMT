@@ -21,6 +21,10 @@ public class Main {
         parseArguments(args);
     }
 
+    /**
+     * Parse Arguments from main method and create a clean or persistent Conference
+     * @param args
+     */
     private static void parseArguments(String[] args){
         if(args.length != 2){
             printUsage();

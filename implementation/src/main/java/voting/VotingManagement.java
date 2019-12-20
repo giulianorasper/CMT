@@ -13,7 +13,6 @@ public interface VotingManagement {
 
     List<Voting> getVotings();
 
-
     void addVoting(Voting voting);
 
     void removeVoting(Voting voting);

@@ -39,6 +39,7 @@ public class EditVotingRequestPacket extends AuthenticatedRequestPacket {
             }
             boolean namedVote = voting.isNamedVote();
             AddVotingRequestPacket add = new AddVotingRequestPacket(question, options, namedVote, duration);
+            add.setToken(getToken());
             add.handle(conference, webSocket);
             conference.removeVoting(voting);
         }

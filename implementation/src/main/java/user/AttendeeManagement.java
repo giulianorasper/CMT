@@ -1,6 +1,5 @@
 package user;
 
-import utils.OperationResponse;
 import utils.Pair;
 
 import java.util.List;

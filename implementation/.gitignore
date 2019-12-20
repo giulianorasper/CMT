@@ -121,3 +121,4 @@ builds/**/images/*
 #application specific files
     testdb
     db
+/docs/

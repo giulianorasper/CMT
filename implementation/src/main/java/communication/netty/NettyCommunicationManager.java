@@ -39,7 +39,7 @@ public final class NettyCommunicationManager implements CommunicationManager {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.INFO))
+                    //.handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new WebSocketServerInitializer(sslContext, handler));
 
             channel = b.bind(port).sync().channel();

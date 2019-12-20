@@ -376,6 +376,6 @@ function clickEdit(event, attendeeID){
     const fnctn = prompt("Enter new Function of the Attendee:");
     if(fnctn === null){ return; }
 
-    editAttendee(attendeeID, name, email, group, residence, fnctn);
+    editAttendee(attendeeID, name, email, group, residence, fnctn);Did 
 }
 

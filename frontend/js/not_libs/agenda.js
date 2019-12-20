@@ -43,19 +43,32 @@ function renderAgenda(data, $e) {
     }
 
     var fontSize = 32;
-    var fontSizeDifference = 4;
+    var fontSizeDifference = 2;
+    var fontSizeMin = 26;
     
     function createInner(obj, $target, preOrder) {
         var li = generateAgendaRow(obj.name, preOrder, fontSize).appendTo($target);
-        fontSize = fontSize - fontSizeDifference
+
+        var decreased;
+
+        if(fontSize >= fontSizeMin){
+            fontSize -= fontSizeDifference;
+            decreased = true;
+        } else{
+            decreased = false;
+        }
+
         if (obj.subTopics.topics !== undefined && obj.subTopics.topics.length > 0) {
             var innerList = $('<ul class="list agendaList"></ul>').appendTo(li);
             for (var i = 0; i < obj.subTopics.topics.length; i++) {
                 var child = obj.subTopics.topics[i];
                 createInner(child, innerList,  preOrder+"."+(i+1));
             }
+
+            if(decreased){
+                fontSize += fontSizeDifference;
+            }
         }
-        fontSize = fontSize + fontSizeDifference
     }
 
     function createDefault(target){

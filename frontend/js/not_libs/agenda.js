@@ -9,8 +9,8 @@ var agendaContainer = $('#agendaContainer');
 
 $( document ).ready(function() {
 
-    window.appendToAgenda = append// export the function to the global scope
-    window.subtopicToAgenda = subtopic// export the function to the global scope
+    window.appendToAgenda = newTopic// export the function to the global scope
+    window.subtopicToAgenda = newSubtopic// export the function to the global scope
     window.removeFromAgenda = remove// export the function to the global scope
     window.editAgenda = edit// export the function to the global scope
 
@@ -25,7 +25,7 @@ $( document ).ready(function() {
 
  function successAgendaReq(packet) {
     if(packet.result === "Valid") {      
-    checkAdminStatus()    
+        checkAdminStatus();
         renderAgenda(packet.agenda, agendaContainer);
     }
 }
@@ -96,7 +96,7 @@ function renderAgenda(data, $e) {
 }
 
 
-function append(preorder){
+function append(preorder, isSubtopic){
     var split = (""+preorder).split(".");
     var elem = split.pop()
     var newOrder = (parseInt(elem) +1);
@@ -104,7 +104,12 @@ function append(preorder){
         newOrder = split.join(".")+ "." + newOrder
     }
 
-    var res = prompt("topic name?");
+    var res;
+    if(isSubtopic){
+        res = prompt("Enter name of new subtopic")
+    } else{
+        res = prompt("Enter name of new topic");
+    }
 
     if(res){
         const packet = new AddTopicRequestPacket(newOrder, res);
@@ -145,12 +150,16 @@ function remove(preorder){
     CommunicationManager.send(packet, success, fail);
 }
 
-function subtopic(preorder){
-    append(preorder+".0");
+function newSubtopic(preorder){
+    append(preorder+".0", true);
+}
+
+function newTopic(preorder){
+     append(preorder, false);
 }
  
 function edit(preorder){
-    var res = prompt("topic name?");
+    var res = prompt("Enter new topic name");
     if(res){
         const packet = new RenameTopicRequestPacket(preorder, res);
         CommunicationManager.send(packet, success, fail);

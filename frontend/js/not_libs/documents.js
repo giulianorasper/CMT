@@ -38,11 +38,18 @@ $( document ).ready(function() {
 	    console.log("This method is called if something went wrong during the general communication.");
 	}
 
+	let files = null;
 	document.getElementById('uploadFile').addEventListener('change', function (event) {
+	    files = event.target.files;
+	    console.log(files);
+    }, false);
 
-
-
-        const files = event.target.files;
+    document.getElementById('submitUpload').onclick = () => {
+        if(files == null) {
+            console.log("implement feedback");
+            //TODO feedback
+            return;
+        }
         console.log(files);
 
         // Initialize an instance of the `FileReader`
@@ -51,16 +58,10 @@ $( document ).ready(function() {
         // Specify the handler for the `load` event
         reader.onload = function (e) {
 
-            if (confirm('Are you sure you wish to upload \"'+files[0].name+'\"?')) {
-                
-            } else {
-                $(document.getElementById('uploadFile')).val("")
-                return;
-            }
-
             function success(packet) {
                 location.reload();
                 console.log("This method is called if a response from the server is received.");
+                //TODO implement feedback
             }
 
             function fail() {
@@ -78,7 +79,7 @@ $( document ).ready(function() {
 
         // Read the file
         reader.readAsArrayBuffer(files[0]);
-    }, false);
+    }
 
 });
 

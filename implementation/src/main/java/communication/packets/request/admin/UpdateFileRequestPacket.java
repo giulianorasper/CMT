@@ -5,15 +5,15 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import utils.Pair;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
 
-    //TODO lock
+    private static ReentrantLock lock = new ReentrantLock();
     private static HashMap<Connection, Pair<UpdateFileRequestPacket, Long>> allowedRequests = new HashMap<>();
 
     private String name;
@@ -29,7 +29,12 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
     @Override
     public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
-            allowedRequests.put(webSocket, new Pair<>(this, System.currentTimeMillis() + 10000));
+            try {
+                lock.lock();
+                allowedRequests.put(webSocket, new Pair<>(this, System.currentTimeMillis() + 10000));
+            } finally {
+                lock.unlock();
+            }
             new ValidResponsePacket(PacketType.UPDATE_FILE_RESPONSE).send(webSocket);
         }
     }
@@ -45,16 +50,30 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
     }
 
     public static UpdateFileRequestPacket getRequestFromConnectionIfExists(Connection webSocket) {
-        removeInvalidRequests();
-        if(allowedRequests.containsKey(webSocket)) return allowedRequests.get(webSocket).first();
-        return null;
+        try {
+            lock.lock();
+            removeInvalidRequests();
+            if(allowedRequests.containsKey(webSocket)) {
+                UpdateFileRequestPacket packet = allowedRequests.get(webSocket).first();
+                allowedRequests.remove(webSocket);
+                return packet;
+            }
+            return null;
+        } finally {
+            lock.unlock();
+        }
     }
 
     private static void removeInvalidRequests() {
-        new HashSet<>(allowedRequests.keySet()).forEach(key -> {
-            if(allowedRequests.get(key).second() < System.currentTimeMillis()) {
-                allowedRequests.remove(key);
-            }
-        });
+        try {
+            lock.lock();
+            new HashSet<>(allowedRequests.keySet()).forEach(key -> {
+                if(allowedRequests.get(key).second() < System.currentTimeMillis()) {
+                    allowedRequests.remove(key);
+                }
+            });
+        } finally {
+            lock.unlock();
+        }
     }
 }

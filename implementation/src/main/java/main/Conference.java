@@ -501,11 +501,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
-     * Remove Attendee with AttendeeId userId from Databse, so the Attendee cant login anymore.
-     * @param userID AttendeeId
+     * Remove User with UserId userId from Databse, so the User cant login anymore.
+     * @param userID UserId
      */
     @Override
-    public void logoutAttendee( int userID) {
+    public void logoutUser(int userID) {
         try{
             attendeeLock.lock();
             if(!db_userManagement.logoutUser(userID)){
@@ -535,11 +535,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
-     * Generate a new Password for an Attendee with AttendeeId userId and store it in Database.
-     * @param userID AttendeeId
+     * Generate a new Password for an User with UserId userId and store it in Database.
+     * @param userID UserId
      */
     @Override
-    public void generateNewAttendeePassword( int userID) {
+    public void generateNewUserPassword(int userID) {
         try{
             attendeeLock.lock();
             if(!db_userManagement.storeNewPassword(userID, gen.generatePassword())){
@@ -552,11 +552,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
-     *  Generate a new Token for an Attendee with AttendeeId userId and store it in Database.
-     * @param userID AttendeeId
+     *  Generate a new Token for an User with UserId userId and store it in Database.
+     * @param userID UserId
      */
     @Override
-    public void generateNewAttendeeToken( int userID) {
+    public void generateNewUserToken(int userID) {
         try{
             attendeeLock.lock();
             if(!db_userManagement.storeNewToken(userID, gen.generateToken())){
@@ -569,10 +569,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
-     * Generates for All Attendees new Passwords and store them in Database.
+     * Generates for All User new Passwords and store them in Database.
      */
     @Override
-    public void generateAllMissingAttendeePasswords() {
+    public void generateAllMissingUserPasswords() {
         try{
             attendeeLock.lock();
             boolean success = true;
@@ -592,12 +592,12 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
-     * Read Password from Attendee with AttendeeId userId and return it.
-     * @param userID AttendeeId
+     * Read Password from User with UserId userId and return it.
+     * @param userID UserId
      * @return Pair with User & Password
      */
     @Override
-    public Pair<User, String> getAttendeePassword( int userID) {
+    public Pair<User, String> getUserPassword(int userID) {
         try{
             attendeeLock.lock();
             for (Pair<User, String> p:db_userManagement.getAllPasswords()) {
@@ -613,11 +613,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
-     * Read Password from  all Attendee and return them.
+     * Read Password from  all User and return them.
      * @return List of Pair with User & Password
      */
     @Override
-    public List<Pair<User, String>> getAllAttendeePasswords() {
+    public List<Pair<User, String>> getAllUsersPasswords() {
         try{
             attendeeLock.lock();
             return db_userManagement.getAllPasswords();
@@ -628,11 +628,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
-     * Logout All Attendees from Conference. Invalidate all Token and Password in Database.
+     * Logout All User from Conference. Invalidate all Token and Password in Database.
      * @return true iff logout was successful
      */
     @Override
-    public boolean logoutAllAttendees() {
+    public boolean logoutAllUsers() {
         try{
             attendeeLock.lock();
             boolean success = true;

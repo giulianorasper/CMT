@@ -6,7 +6,6 @@ import communication.packets.Packet;
 import communication.packets.response.admin.GetAttendeePasswordResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 public class GetAttendeePasswordRequestPacket extends AuthenticatedRequestPacket {
 
@@ -19,7 +18,7 @@ public class GetAttendeePasswordRequestPacket extends AuthenticatedRequestPacket
 
     @Override
     public void handle(Conference conference, Connection webSocket) {
-        Packet response = new GetAttendeePasswordResponsePacket(conference.getAttendeePassword(id).second());
+        Packet response = new GetAttendeePasswordResponsePacket(conference.getUserPassword(id).second());
         response.send(webSocket);
     }
 }

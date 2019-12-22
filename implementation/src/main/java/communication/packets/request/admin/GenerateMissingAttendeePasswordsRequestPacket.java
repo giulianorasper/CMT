@@ -5,7 +5,6 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 public class GenerateMissingAttendeePasswordsRequestPacket extends AuthenticatedRequestPacket {
 
@@ -16,7 +15,7 @@ public class GenerateMissingAttendeePasswordsRequestPacket extends Authenticated
     @Override
     public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
-            conference.generateAllMissingAttendeePasswords();
+            conference.generateAllMissingUserPasswords();
             new ValidResponsePacket().send(webSocket);
         }
     }

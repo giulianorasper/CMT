@@ -5,5 +5,4 @@ public enum LoginResponse {
     WrongPassword,
     UserDoesNotExist,
     AccountBlocked,
-    PasswordAlreadyUsed;
 }

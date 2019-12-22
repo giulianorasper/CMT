@@ -65,9 +65,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 if (table.getString("password") == null && table.getString("token") == null) {
                     return new Pair<>(LoginResponse.AccountBlocked, null);
                 } else {
-                    if (table.getString("password") == null) {
-                        return new Pair<>(LoginResponse.PasswordAlreadyUsed, null);
-                    } else if (!table.getString("password").equals(password)) {
+                    if (!table.getString("password").equals(password)) {
                         return new Pair<>(LoginResponse.WrongPassword, null);
                     } else {
                         return new Pair<>(LoginResponse.Valid, table.getString("token"));
@@ -100,16 +98,12 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             if (!table.next()) {
                 return TokenResponse.TokenDoesNotExist;
             } else {
-                if (table.getString("token") == null &&
-                        table.getString("password") == null) {
-                    return TokenResponse.AccountBlocked;
+                if (table.getBoolean("isAdmin")) {
+                    return TokenResponse.ValidAdmin;
                 } else {
-                    if (table.getBoolean("isAdmin")) {
-                        return TokenResponse.ValidAdmin;
-                    } else {
-                        return TokenResponse.ValidAttendee;
-                    }
+                    return TokenResponse.ValidAttendee;
                 }
+
             }
         } catch (SQLException ex) {
             System.err.println("An exception occurred during a token check.");

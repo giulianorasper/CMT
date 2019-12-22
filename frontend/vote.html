@@ -101,45 +101,45 @@
                         </div>
 
 
-                        <table class="table table-hover" style="font-size:20px">
-                                    <thead>
-                                    <th>Question</th>
-                                    <th>Type</th>
-                                    <th>Duration</th>
+                        <!-- <table class="table table-hover" style="font-size:20px"> -->
+                                    <!-- <thead> -->
+                                    <!-- <th>Question</th> -->
+                                    <!-- <th>Type</th> -->
+                                    <!-- <th>Duration</th> -->
                                 
-                                    </thead>
+                                    <!-- </thead> -->
 
-                                    <tbody id = "createdVotesList">
+                                    <!-- <tbody id = "createdVotesList"> -->
 
-                                    <!--Print incoming attendees HERE!!-->
-                                    <tr data-toggle="collapse" data-target="#user_accordion" class="clickable">
-                                        <td>Bla?</td>
-                                        <td>Named</td>
-                                        <td>Duration</td>
-                                    </tr>
-                                    <tr>
-                                    <td colspan="3">
-                                        <div id="user_accordion"  class="collapse">
-                                            <div class = "row">
-                                            <div><input style="font-size:20px; margin-top: 5px;" class="form-control" type="text" value="yes"></div>
-                                            </div>
-                                            <div class = "row"><div><input style="font-size:20px; margin-top: 5px;" class="form-control" type="text" value="yes"></div>
-                                            </div>
-                                            <div style ="min-width:20px;">
+                                    <!-- Print incoming attendees HERE!! -->
+                                    <!-- <tr data-toggle="collapse" data-target="#user_accordion" class="clickable"> -->
+                                        <!-- <td>Bla?</td> -->
+                                        <!-- <td>Named</td> -->
+                                        <!-- <td>Duration</td> -->
+                                    <!-- </tr> -->
+                                    <!-- <tr> -->
+                                    <!-- <td colspan="3"> -->
+                                        <!-- <div id="user_accordion"  class="collapse"> -->
+                                            <!-- <div class = "row"> -->
+                                            <!-- <div><input style="font-size:20px; margin-top: 5px;" class="form-control" type="text" value="yes"></div> -->
+                                            <!-- </div> -->
+                                            <!-- <div class = "row"><div><input style="font-size:20px; margin-top: 5px;" class="form-control" type="text" value="yes"></div> -->
+                                            <!-- </div> -->
+                                            <!-- <div style ="min-width:20px;"> -->
                                                 
-                                            </div>
-                                            <div class="row" style="padding-top: 20px">
-                                            <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Start Vote</button>
-                                            <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Add Option</button>
-                                            <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Save Changes</button>
-                                            <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Delete</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    </tr>
+                                            <!-- </div> -->
+                                            <!-- <div class="row" style="padding-top: 20px"> -->
+                                            <!-- <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Start Vote</button> -->
+                                            <!-- <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Add Option</button> -->
+                                            <!-- <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Save Changes</button> -->
+                                            <!-- <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Delete</button> -->
+                                            <!-- </div> -->
+                                        <!-- </div> -->
+                                    <!-- </td> -->
+                                    <!-- </tr> -->
                                        
-                                    </tbody>
-                                </table>
+                                    <!-- </tbody> -->
+                                <!-- </table> -->
                                 <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="createNewVoting()">New Voting</button>
                     </div>
                 </div>
@@ -156,10 +156,13 @@
                         <div class="prising_header">
                             <h2 style="color:white;">Active Voting</h2>
                         </div>
-                        <div id="voteQuestion">
+                        <div id="voteQuestion" class="col-lg-8">
 
                         </div>
-                        <div id="options">
+						
+						<!-- <div class="countdown"></div> -->
+						<div id="timer" class="col-lg-4"></div>
+                        <div id="options" class="col-lg-12">
                         </div>
                             <div class="row">
                                 <div class="custom-control custom-radio col-lg-8" id="failure">
@@ -294,6 +297,7 @@
     <script src="js/main.js"></script>
 
     <script type="module" src="js/not_libs/voting.js"></script>
+    <script type="module" src="js/not_libs/displayActiveVote.js"></script>
                 <script type="module" src="js/not_libs/general.js"></script>
     <!--<script src="data2.json"></script>-->
 

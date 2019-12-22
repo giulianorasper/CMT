@@ -20,6 +20,9 @@ $(document).ready( function() {
     window.saveVoting = save;
     window.deleteVote = remove;
     window.startVote = start;
+    window.deleteVotingOption = deleteOption;
+	
+	
 
 });
 
@@ -58,6 +61,7 @@ function remove(voteId){
 
     function success(packet){
     	if(packet.result === "Valid"){
+			console.log(packet);
             renderVotings();
 
         }
@@ -75,8 +79,11 @@ function renderVotings(){
         if(packet.result === "Valid"){
         	createdVotesContainer.html("");
         	votings = packet.votings;
+			console.log(votings);
+			console.log("new");
             for(var voting of packet.votings){
             	if(voting.status === "Created"){
+					console.log(voting.status);
 					renderCreatedVote(voting)
             	}
             }
@@ -96,9 +103,16 @@ function renderVotings(){
 function addOption(voteId){
 	const optionsField = $("#votingOptions"+voteId);
 	
+	
 	$("<div class = \"col-md-4\"><div><input style=\"font-size:20px; margin-top: 5px;\" class=\"form-control\" "+
 		"type=\"text\" value=\"\" placeholder = \"Please provide the voting option\"></div></div>").appendTo(optionsField);
+}
+
+// function deleteOption will be called when you want to delete an option per Vote question.
+
+function deleteOption(voteId) {
 	
+	$("#votingOptions"+voteId).children().last().remove();
 }
 
 function create(){
@@ -156,6 +170,7 @@ function renderCreatedVote(vote){
                                             "</div>"+
                                             "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"startVote('"+vote.ID+"')\">Start Vote</button>"+
                                             "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"addVotingOption('"+vote.ID+"')\">Add Option</button>"+
+                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"deleteVotingOption('"+vote.ID+"')\">Delete Option</button>"+
                                             "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"saveVoting('"+vote.ID+"')\">Save Changes</button>"+
                                             "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"deleteVote('"+vote.ID+"')\">Delete</button>"+
                                             "</div>"+

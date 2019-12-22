@@ -26,11 +26,14 @@ public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
             Packet response;
             Voting activeVoting = conference.getActiveVoting();
             Voting votingToStart = conference.getVoting(id);
-            if(activeVoting == null) {
+            if(votingToStart == null) {
                 response = new FailureResponsePacket("The voting with the id " + id + " does not exist.");
             } else if (votingToStart.getStatus() != VotingStatus.Created){
-                response = new FailureResponsePacket("Vote could not be started since it's status is " + votingToStart.getStatus());
-            } else {
+                response = new FailureResponsePacket("Voting could not be started since it's status is " + votingToStart.getStatus());
+            } else if(activeVoting != null) {
+                response = new FailureResponsePacket("Voting could not be started since there is already an ongoing voting.");
+            }
+            else {
                 votingToStart.startVote();
                 conference.update(votingToStart);
                 response = new ValidResponsePacket();

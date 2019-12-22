@@ -855,7 +855,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             }
             if(v.getStatus() == VotingStatus.Running){
                 if(activeVoting != null){
-                    throw new IllegalStateException("trying to start a vote without closing the previous vote");
+                    throw new IllegalArgumentException("trying to start a vote without closing the previous vote");
                 }
                 else{
                     activeVoting = v;

@@ -7,12 +7,15 @@ var voteID;
 var dateObject;
 var timeOut = false;
 
- // $(document).ready( function() {
-	// export const values = "testing";
+ 
+/* export const values = "testing";
 	
 export function ActiveVotePacketCall(){
 	
 	console.log("working");
+} */
+	
+$(document).ready( function() {
 	
 	function success(packet){
 
@@ -32,16 +35,16 @@ export function ActiveVotePacketCall(){
     CommunicationManager.send(getActiveVote, success, fail); 
 		
 		
-	}
+	});
 
 
 
 function countdown(seconds) {
-  seconds = parseInt(sessionStorage.getItem("seconds"))||seconds;
+  seconds = parseInt(localStorage.getItem("seconds"))||seconds;
 
   function tick() {
     seconds--; 
-    sessionStorage.setItem("seconds", seconds)
+    localStorage.setItem("seconds", seconds)
     var counter = document.getElementById("timer");
     var current_minutes = parseInt(seconds/60);
     var current_seconds = seconds % 60;
@@ -52,7 +55,7 @@ function countdown(seconds) {
 	else {
 		
 		timeOut = true;
-		sessionStorage.setItem("timeOut", timeOut)
+		// sessionStorage.setItem("timeOut", timeOut)
 	}
 	
 	
@@ -72,14 +75,14 @@ function displayActiveVote(packet){
 		// console.log(typeof checkVoteExpiry);	
 
 			
-		if(checkVoteExpiry !== "true")
-		{	
+		// if(checkVoteExpiry !== "true")
+		// {	
 		countdown(120);
-		}
-		else
-		{
-			timeOut = true;
-		}
+		// }
+		// else
+		// {
+			// timeOut = true;
+		// }
 		
 		
 		
@@ -96,6 +99,7 @@ function displayActiveVote(packet){
 		// console.log(optionList[0]);
 		
 		voteID = packet.voting.ID;
+		$('#options').empty();
 		
 		//$("#voteQuestion").html('<h2 class="contact-title pull-left">'+ packet.voting.question + '</h2>')
 		$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.ID+'s"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');

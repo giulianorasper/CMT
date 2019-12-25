@@ -7,8 +7,9 @@ var voteID;
 var dateObject;
 var timeOut = false;
 
-// $(document).ready( function() {
-	export const values = "testing";
+ // $(document).ready( function() {
+	// export const values = "testing";
+	
 export function ActiveVotePacketCall(){
 	
 	console.log("working");
@@ -32,27 +33,7 @@ export function ActiveVotePacketCall(){
 		
 		
 	}
-/* function callForActiveVotePacket() {
 
-	console.log("working");
-
-function success(packet){
-        // console.log(packet)
-        if(packet.result === "Valid"){
-            displayActiveVote(packet);
-
-        }
-    }
-
-    function fail() {
-        console.log("Something went wrong during, get active vote question & options.");
-    }
-
-    const getActiveVote = new GetActiveVotingRequestPacket();
-
-    CommunicationManager.send(getActiveVote, success, fail); 
-} */
-// });
 
 
 function countdown(seconds) {

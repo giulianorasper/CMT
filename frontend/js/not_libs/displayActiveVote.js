@@ -7,10 +7,37 @@ var voteID;
 var dateObject;
 var timeOut = false;
 
-$(document).ready( function() {
+// $(document).ready( function() {
+	export const values = "testing";
+export function ActiveVotePacketCall(){
+	
+	console.log("working");
+	
+	function success(packet){
 
-    function success(packet){
-        console.log(packet)
+		if(packet.result === "Valid"){
+			
+			displayActiveVote(packet);
+
+		}
+    }
+
+    function fail() {
+        console.log("Something went wrong during, get active vote question & options.");
+    }
+
+    const getActiveVote = new GetActiveVotingRequestPacket();
+
+    CommunicationManager.send(getActiveVote, success, fail); 
+		
+		
+	}
+/* function callForActiveVotePacket() {
+
+	console.log("working");
+
+function success(packet){
+        // console.log(packet)
         if(packet.result === "Valid"){
             displayActiveVote(packet);
 
@@ -23,9 +50,9 @@ $(document).ready( function() {
 
     const getActiveVote = new GetActiveVotingRequestPacket();
 
-    CommunicationManager.send(getActiveVote, success, fail);
-
-});
+    CommunicationManager.send(getActiveVote, success, fail); 
+} */
+// });
 
 
 function countdown(seconds) {
@@ -85,7 +112,7 @@ function displayActiveVote(packet){
 		//console.log(packet.voting.id);
 
 		optionList = packet.voting.options;
-		console.log(optionList[0]);
+		// console.log(optionList[0]);
 		
 		voteID = packet.voting.ID;
 		
@@ -164,12 +191,12 @@ function displayActiveVote(packet){
 				var voteDate = new Date(dateObject);
 				var currentDateOnly = new Date();
 				
-				console.log(voteDate.toUTCString());
-				console.log(currentDateOnly.toUTCString());
+				// console.log(voteDate.toUTCString());
+				// console.log(currentDateOnly.toUTCString());
 				
 							//	if(voteDate.toUTCString() <= currentDateOnly.toUTCString())
 								
-				console.log(voteDate.toUTCString() <= currentDateOnly.toUTCString());
+				// console.log(voteDate.toUTCString() <= currentDateOnly.toUTCString());
 
 				if(timeOut){
 					$("#failure").html("<h4 style='float: right; margin-top:30px;'>Vote has been expired!</h4>");		

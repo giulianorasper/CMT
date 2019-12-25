@@ -6,6 +6,7 @@ import AddVotingRequestPacket from "../../communication/packets/admin/AddVotingR
 import EditVotingRequestPacket from "../../communication/packets/admin/EditVotingRequestPacket.js";
 import RemoveVotingRequestPacket from "../../communication/packets/admin/RemoveVotingRequestPacket.js";
 import StartVotingRequestPacket from "../../communication/packets/admin/StartVotingRequestPacket.js";
+import { ActiveVotePacketCall } from "./displayActiveVote.js";
 
 var createdVotesContainer = $("#createdVotesList");
 
@@ -46,7 +47,7 @@ function save(voteId){
 	const packet = new EditVotingRequestPacket(voteId, vote.question, options ,vote.named, vote.duration);
 
 	function success(packet){
-		console.log(packet);
+		// console.log(packet);
 	}
 
 	 function fail() {
@@ -61,7 +62,7 @@ function remove(voteId){
 
     function success(packet){
     	if(packet.result === "Valid"){
-			console.log(packet);
+			// console.log(packet);
             renderVotings();
 
         }
@@ -134,14 +135,21 @@ function create(){
 }
 
 function start(voteId){
-	
-	console.log*(voteId);
+
+
+	// callForActiveVotePacket();
+
+	// console.log(values);
+	ActiveVotePacketCall();
 
     function success(packet){
+		console.log(packet);
+		
+		
 
     	if(packet.result === "Valid"){
 			
-			console.log("testing");
+			// console.log("testing");
             // renderVotings();
 
         }

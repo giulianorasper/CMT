@@ -7,6 +7,10 @@ var voteID;
 var dateObject;
 var timeOut = false;
 
+var packetAssign;
+
+
+
  
 /* export const values = "testing";
 	
@@ -16,12 +20,19 @@ export function ActiveVotePacketCall(){
 } */
 	
 $(document).ready( function() {
+	 
 	
 	function success(packet){
 
 		if(packet.result === "Valid"){
 			
+			// var voteExpiryDate = new Date(packet.voting.openUntil);
+			
+			// console.log(voteExpiryDate.toLocaleTimeString());
+			packetAssign = packet;
+			
 			displayActiveVote(packet);
+
 
 		}
     }
@@ -38,13 +49,15 @@ $(document).ready( function() {
 	});
 
 
+ // Countdown function is used to countdown i.e. that '---' time is remaining in vote expiration.
+
 
 function countdown(seconds) {
-  seconds = parseInt(localStorage.getItem("seconds"))||seconds;
+  seconds = parseInt(sessionStorage.getItem("seconds"))||seconds;
 
   function tick() {
     seconds--; 
-    localStorage.setItem("seconds", seconds)
+    sessionStorage.setItem("seconds", seconds)
     var counter = document.getElementById("timer");
     var current_minutes = parseInt(seconds/60);
     var current_seconds = seconds % 60;
@@ -55,6 +68,8 @@ function countdown(seconds) {
 	else {
 		
 		timeOut = true;
+
+		displayActiveVote(packetAssign);
 		// sessionStorage.setItem("timeOut", timeOut)
 	}
 	
@@ -64,86 +79,58 @@ function countdown(seconds) {
 }
 
 
+// displayActiveVote will dispplay vote with options and also countdown timer. 
+// In addition, will also store cookies for the vote i.e. contains voteID, path and vote expiration time.
+
 function displayActiveVote(packet){
-	// packet.exists,
-	// packet.voting.id
-	dateObject = packet.voting.openUntil;
-	
-	
+
 	if(packet.exists){
-		var checkVoteExpiry = sessionStorage.getItem("timeOut");
-		// console.log(typeof checkVoteExpiry);	
+		
+		var voteExpiryDate = new Date(1577318532230);
 
+	
+		var currentDateOnly = new Date();
+		
+		console.log(currentDateOnly.getTime());
+
+		var diff = Math.abs(voteExpiryDate.getTime() - currentDateOnly.getTime());
+
+		var currentDifference = Math.round(diff/1000);
+
+
+		document.cookie = "voteID=" + packet.voting.ID + ";path=./vote.html;expires=" + voteExpiryDate.toGMTString();
+		
+		if( document.cookie && document.cookie.indexOf('voteID='+packet.voting.ID+'') != -1 ) {
+				// if cookie is not expired
+			sessionStorage.removeItem('voteID='+packet.voting.ID+'');
+
+			countdown(currentDifference)
 			
-		// if(checkVoteExpiry !== "true")
-		// {	
-		countdown(120);
-		// }
-		// else
-		// {
-			// timeOut = true;
-		// }
-		
-		
-		
-		//var today = new Date(packet.voting.openUntil * 1000);
-		
-		
-		//var voteDateOnly = voteDate.toUTCString();
-		
-		//console.log(voteDate.toUTCString());
 
-		//console.log(packet.voting.id);
-
-		optionList = packet.voting.options;
-		// console.log(optionList[0]);
+			optionList = packet.voting.options;
 		
-		voteID = packet.voting.ID;
-		$('#options').empty();
-		
-		//$("#voteQuestion").html('<h2 class="contact-title pull-left">'+ packet.voting.question + '</h2>')
-		$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.ID+'s"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');
-		 
-		for(var i in packet.voting.options){
-		
-		var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="'+packet.voting.options[i].optionID+'">'+packet.voting.options[i].name+'</label></div></div></div>';
-		$('#options').append(questionOptions);
-		
-		}	 
-		
-/* 		
-		//declare start time
-		var timer2 = "05:00";
-
-		//intercal for seconds
-		var interval = setInterval(function() {
-		  //timer will be [hour, minute, second]
-		  var timer = timer2.split(':');
-		  //var hours = parseInt(timer[0], 10);
-		  var minutes = parseInt(timer[0], 10);
-		  var seconds = parseInt(timer[1], 10);
-		  //reduce second by one
-		  --seconds;
-		  //calculate new minute and hours
-		  minutes = (seconds < 0) ? --minutes : minutes;
-		  //hours = minutes < 0 ? --hours : hours;
-
-		  if (minutes < 0) {
-			clearInterval(interval);
-			return;
-		  }
-
-		  seconds = (seconds < 0) ? 59 : seconds;
-		  seconds = (seconds < 10) ? '0' + seconds : seconds;
-		  // minutes = (minutes < 0) ? 59 : minutes;
-		  // minutes = (minutes < 10) ? '0' + minutes : minutes;
-		  
-		  timer2 = minutes + ':' + seconds;
-		  $(".countdown").html(timer2);
-		  
-			}, 1000);
+			voteID = packet.voting.ID;
+			$('#options').empty();
 			
-			 */
+			//$("#voteQuestion").html('<h2 class="contact-title pull-left">'+ packet.voting.question + '</h2>')
+			$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.ID+'s"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');
+			 
+			for(var i in packet.voting.options){
+			
+			var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="'+packet.voting.options[i].optionID+'">'+packet.voting.options[i].name+'</label></div></div></div>';
+			$('#options').append(questionOptions);
+			
+			}
+
+		} else {
+		// DO SOMETHING ELSE
+
+			$("#submit-message").empty();
+			$("#submit-message").addClass("row").addClass("contact-title");
+			$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote has been expired!</h2>");
+
+		}
+		
 
                		
 	}
@@ -156,6 +143,8 @@ function displayActiveVote(packet){
 	
 }
 
+// this Anonymous function will be called when click on submit vote button.
+// Further, data will be to the backend and will display the response successfull message.
 
         //$("#form-submit").submit(function (e) {
         $("#submitButton").on("click", function () {
@@ -165,23 +154,6 @@ function displayActiveVote(packet){
 				
 				const selectedOptionId = $('input[name="radio"]:checked').attr('id');
 				
-				//const voteId = $('#voteQuestion').attr('id');
-				//const voteId = $('#voteQuestion').find(":nth-child(2)"); 
-				
-				//console.log(selectedOptionId);
-				//console.log(questionID);
-				//console.log(voteId);
-				//console.log(optionList[selectedOptionId].optionID);
-				
-				var voteDate = new Date(dateObject);
-				var currentDateOnly = new Date();
-				
-				// console.log(voteDate.toUTCString());
-				// console.log(currentDateOnly.toUTCString());
-				
-							//	if(voteDate.toUTCString() <= currentDateOnly.toUTCString())
-								
-				// console.log(voteDate.toUTCString() <= currentDateOnly.toUTCString());
 
 				if(timeOut){
 					$("#failure").html("<h4 style='float: right; margin-top:30px;'>Vote has been expired!</h4>");		

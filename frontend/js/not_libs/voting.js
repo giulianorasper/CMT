@@ -155,7 +155,7 @@ function start(voteId){
 
         }
 		else {
-			alert(packet.result);
+			alert(packet.details);
 			
 		}
     }

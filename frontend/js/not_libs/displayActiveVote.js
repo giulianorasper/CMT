@@ -86,7 +86,7 @@ function displayActiveVote(packet){
 
 	if(packet.exists){
 		
-		var voteExpiryDate = new Date(1577318532230);
+		var voteExpiryDate = new Date(packet.voting.openUntil);
 
 	
 		var currentDateOnly = new Date();

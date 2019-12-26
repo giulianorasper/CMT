@@ -12,6 +12,7 @@ $( document ).ready(function() {
     function success(packet) {
     	console.log(packet);
 	    if(packet.result === "Valid") {
+			
 	    	 window.location = "./home.html"
 	    }
 	}

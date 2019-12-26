@@ -5,7 +5,10 @@ import GetFileRequestPacket from "../../communication/packets/DownloadFileReques
 import DeleteFileRequestPacket from "../../communication/packets/admin/DeleteFileRequestPacket.js";
 import IsAdminRequestPacket from "../../communication/packets/IsAdminRequestPacket.js";
 
+
+
 var documentContainer = $('#documentsContainer');
+
 
 $( document ).ready(function() {
 

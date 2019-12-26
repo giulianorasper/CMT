@@ -6,11 +6,12 @@ import AddVotingRequestPacket from "../../communication/packets/admin/AddVotingR
 import EditVotingRequestPacket from "../../communication/packets/admin/EditVotingRequestPacket.js";
 import RemoveVotingRequestPacket from "../../communication/packets/admin/RemoveVotingRequestPacket.js";
 import StartVotingRequestPacket from "../../communication/packets/admin/StartVotingRequestPacket.js";
-// import { ActiveVotePacketCall } from "./displayActiveVote.js";
 
 var createdVotesContainer = $("#createdVotesList");
 
 var votings;
+
+
 
 $(document).ready( function() {
 

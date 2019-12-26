@@ -8,8 +8,10 @@ var dateObject;
 var timeOut = false;
 
 var packetAssign;
+var currentDifference;
 
 
+// var testingVar;
 
  
 /* export const values = "testing";
@@ -25,6 +27,10 @@ $(document).ready( function() {
 	function success(packet){
 
 		if(packet.result === "Valid"){
+			
+			// export testingVar = true;
+			
+			// window.location.href = './vote.html';
 			
 			// var voteExpiryDate = new Date(packet.voting.openUntil);
 			
@@ -77,7 +83,23 @@ function countdown(seconds) {
   }
   tick();
 }
+// this function will handle cookies for vote expiry and session/localStorage save a value that is used as flag to redirect to vote page once if it starts.
+function cookiesSessionHandling(packet){
+	
+		localStorage.setItem("redirect", true)
+		var voteExpiryDate = new Date(packet.voting.openUntil);
+		
+		var currentDateOnly = new Date();
+		
+		// console.log(currentDateOnly.getTime());
+		var diff = Math.abs(voteExpiryDate.getTime() - currentDateOnly.getTime());
+		currentDifference = Math.round(diff/1000);
 
+		document.cookie = "voteID=" + packet.voting.ID + ";path=./vote.html;expires=" + voteExpiryDate.toGMTString();
+	
+	
+	
+}
 
 // displayActiveVote will dispplay vote with options and also countdown timer. 
 // In addition, will also store cookies for the vote i.e. contains voteID, path and vote expiration time.
@@ -86,39 +108,28 @@ function displayActiveVote(packet){
 
 	if(packet.exists){
 		
-		var voteExpiryDate = new Date(packet.voting.openUntil);
 
-	
-		var currentDateOnly = new Date();
-		
-		console.log(currentDateOnly.getTime());
-
-		var diff = Math.abs(voteExpiryDate.getTime() - currentDateOnly.getTime());
-
-		var currentDifference = Math.round(diff/1000);
-
-
-		document.cookie = "voteID=" + packet.voting.ID + ";path=./vote.html;expires=" + voteExpiryDate.toGMTString();
+		cookiesSessionHandling(packet);
 		
 		if( document.cookie && document.cookie.indexOf('voteID='+packet.voting.ID+'') != -1 ) {
+			
 				// if cookie is not expired
-			sessionStorage.removeItem('voteID='+packet.voting.ID+'');
+			sessionStorage.removeItem('seconds');
 
 			countdown(currentDifference)
 			
-
 			optionList = packet.voting.options;
 		
-			voteID = packet.voting.ID;
+			voteID = packet.voting.ID
+			
 			$('#options').empty();
 			
-			//$("#voteQuestion").html('<h2 class="contact-title pull-left">'+ packet.voting.question + '</h2>')
 			$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.ID+'s"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');
 			 
 			for(var i in packet.voting.options){
 			
-			var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="'+packet.voting.options[i].optionID+'">'+packet.voting.options[i].name+'</label></div></div></div>';
-			$('#options').append(questionOptions);
+				var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="'+packet.voting.options[i].optionID+'">'+packet.voting.options[i].name+'</label></div></div></div>';
+				$('#options').append(questionOptions);
 			
 			}
 

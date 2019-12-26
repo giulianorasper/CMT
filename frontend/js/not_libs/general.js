@@ -1,5 +1,7 @@
 import CommunicationManager from "../../communication/CommunicationManager.js";
 import IsAdminRequestPacket from "../../communication/packets/IsAdminRequestPacket.js";
+import GetActiveVotingRequestPacket from "../../communication/packets/GetActiveVotingRequestPacket.js";
+
 
 
 $( document ).ready(function() {
@@ -32,3 +34,58 @@ $( document ).ready(function() {
 
 
 });
+
+// checkVoteExistance function will first check that vote exits or not if it exists then
+// it will redirect only once if vote starts.
+
+function checkVoteExistance() {
+	
+	function success(packet){
+
+		if(packet.result === "Valid"){
+			
+			console.log(packet)
+			
+			// voteExists = true;
+	 		if(packet.exists){
+				
+				
+				var voteExpiryDate = new Date(packet.voting.openUntil);
+				
+				document.cookie = "voteID=" + packet.voting.ID + ";path=./vote.html;expires=" + voteExpiryDate.toGMTString();
+				
+				if(document.cookie && document.cookie.indexOf('voteID='+packet.voting.ID+'') != -1){
+			
+					var redirectToVote = localStorage.getItem("redirect");
+					console.log(redirectToVote);
+					
+					if (redirectToVote === null){
+						clearInterval(stopInterval);
+						window.location.href = './vote.html';
+					}
+				}
+					
+				else {
+					localStorage.removeItem("redirect");
+					
+				}
+				// }
+			} 
+			// redirectToVoting(voteExists)
+
+		}
+    }
+
+    function fail() {
+        console.log("Something went wrong during, get active vote question & options.");
+    }
+
+    const getActiveVote = new GetActiveVotingRequestPacket();
+
+    CommunicationManager.send(getActiveVote, success, fail); 
+		
+		
+	}
+	
+// setInterval function will check in every second that new vote has started or not.
+var stopInterval = setInterval(checkVoteExistance, 1000);

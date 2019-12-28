@@ -7,6 +7,8 @@ import EditVotingRequestPacket from "../../communication/packets/admin/EditVotin
 import RemoveVotingRequestPacket from "../../communication/packets/admin/RemoveVotingRequestPacket.js";
 import StartVotingRequestPacket from "../../communication/packets/admin/StartVotingRequestPacket.js";
 
+
+
 var createdVotesContainer = $("#createdVotesList");
 
 var votings;
@@ -15,8 +17,10 @@ var votings;
 
 $(document).ready( function() {
 
-   renderVotings();
+	// as the page ready RenderVotings will be called.
+	renderVotings();
 
+	// These functions are exposed to global scope by using window object.
     window.createNewVoting = create;
     window.addVotingOption = addOption;
     window.saveVoting = save;
@@ -27,6 +31,16 @@ $(document).ready( function() {
 	
 
 });
+
+/**
+ * save function will be called when the admin click on save changes button. Basically, Purpose of this funtion is to save changes that has been made in options of the vote question.
+ * The following paramters should be included in the request.
+ * @param ID of the vote,
+ * @param Vote question,
+ * @param Available Options for the question, 
+ * @param Need to specify vote type i.e Named vote or Anonymous vote. As this parameter only accepts boolean value so true for name vote & false for Anonymous,
+ * @param Need to specify duration of the vote,
+ */
 
 function save(voteId){
 	var vote;
@@ -58,6 +72,14 @@ function save(voteId){
     CommunicationManager.send(packet, success, fail);
 }
 
+
+/**
+ * remove function will be called when the admin click on delete button. This will delete a vote question.
+ * It will send a request to server to delate this vote from database by specifying vote ID. 
+ * @param ID of the vote,
+ * if everything is done successfully renderVotings function will be called in order to get all votes question again that are currently available in the database. 
+ */
+
 function remove(voteId){
     const packet = new RemoveVotingRequestPacket(voteId);
 
@@ -75,6 +97,13 @@ function remove(voteId){
 
     CommunicationManager.send(packet, success, fail);
 }
+
+
+/**
+ * send a request to the server to get all available votes question in Database.
+ * After for each vote question renderCreatedVote function will be called in order to display the vote quesiton. 
+ * @param vote object parameter will be passed to renderCreatedVote function, 
+ */
 
 function renderVotings(){
 	 function success(packet){
@@ -101,6 +130,11 @@ function renderVotings(){
     CommunicationManager.send(packet, success, fail);
 }
 
+/**
+ * To add a new option to the vote question addOption function will be called after clicking Add option button.
+ * New option will append to that particular vote question.
+ */
+
 function addOption(voteId){
 	const optionsField = $("#votingOptions"+voteId);
 	
@@ -109,12 +143,27 @@ function addOption(voteId){
 		"type=\"text\" value=\"\" placeholder = \"Please provide the voting option\"></div></div>").appendTo(optionsField);
 }
 
-// function deleteOption will be called when you want to delete an option per Vote question.
+// deleteOption function will be called when you want to delete an option per Vote question.
+
+/**
+ * To delete an option from the vote question deleteOption function will be called after clicking delete option button.
+ */
 
 function deleteOption(voteId) {
 	
 	$("#votingOptions"+voteId).children().last().remove();
 }
+
+
+/**
+ * send a request to the server to create a new vote question.
+ * The following paramters will be send along.
+ * @param Vote question 
+ * @param options parameter for vote question will be an empty array at first place.
+ * @param Need to specify vote type i.e Named vote or Anonymous vote. As this parameter only accepts boolean value so true for name vote & false for Anonymous,
+ * @param Duration of vote,
+ * if everything is done successfully renderVotings function will be called in order to get all votes question again that are currently available in the database. 
+ */
 
 function create(){
 	var res = prompt("Please provide the voting question");
@@ -134,6 +183,12 @@ function create(){
         }
 	}
 }
+
+/**
+ * start function will be called if admin wants to start a vote.
+ * The following paramter will be send along to specify which vote will start.
+ * @param Vote ID
+ */
 
 function start(voteId){
 
@@ -167,6 +222,20 @@ function start(voteId){
 	const startVote = new StartVotingRequestPacket(voteId);
     CommunicationManager.send(startVote, success, fail);
 }
+
+/**
+ * The purpose of the function is to display votes questions with the following attributes.
+ * Vote ID
+ * Vote Question
+ * Vote Type i.e. Named or Anonymous
+ * Vote Duration
+ * Further, it will also create the following buttons and append to the vote question.
+ * start
+ * Add option 
+ * Delete option
+ * Save
+ * Delete
+ */
 
 function renderCreatedVote(vote){
 	var durationAux = (vote.duration/1000).toFixed(0);

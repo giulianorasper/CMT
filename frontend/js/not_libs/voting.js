@@ -1,5 +1,5 @@
 import CommunicationManager from "../../communication/CommunicationManager.js";
-import GetActiveVotingRequestPacket from "../../communication/packets/GetActiveVotingRequestPacket.js";
+// import GetActiveVotingRequestPacket from "../../communication/packets/GetActiveVotingRequestPacket.js";
 import AddVoteRequestPacket from "../../communication/packets/AddVoteRequestPacket.js";
 import GetVotingsRequestPacket from "../../communication/packets/admin/GetVotingsRequestPacket.js";
 import AddVotingRequestPacket from "../../communication/packets/admin/AddVotingRequestPacket.js";
@@ -162,7 +162,7 @@ function deleteOption(voteId) {
  * @param options parameter for vote question will be an empty array at first place.
  * @param Need to specify vote type i.e Named vote or Anonymous vote. As this parameter only accepts boolean value so true for name vote & false for Anonymous,
  * @param Duration of vote,
- * if everything is done successfully renderVotings function will be called in order to get all votes question again that are currently available in the database. 
+ * if everything is done successfully renderVotings function will be called in order to get all votes question that are currently available in the database. 
  */
 
 function create(){

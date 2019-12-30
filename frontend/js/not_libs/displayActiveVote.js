@@ -4,7 +4,7 @@ import AddVoteRequestPacket from "../../communication/packets/AddVoteRequestPack
 
 var optionList;
 var voteID;
-var dateObject;
+// var dateObject;
 var timeOut = false;
 
 var packetAssign;
@@ -20,6 +20,11 @@ export function ActiveVotePacketCall(){
 	
 	console.log("working");
 } */
+
+/**
+ * A request will be send to server for Active Vote.
+ * If the packet result is valid in response then it will be passed as a parameter to displayActiveVote function in order to display a vote. 
+ */
 	
 $(document).ready( function() {
 	 
@@ -35,6 +40,8 @@ $(document).ready( function() {
 			// var voteExpiryDate = new Date(packet.voting.openUntil);
 			
 			// console.log(voteExpiryDate.toLocaleTimeString());
+			
+			// packet is exposed to global scope  later use.
 			packetAssign = packet;
 			
 			displayActiveVote(packet);
@@ -54,9 +61,16 @@ $(document).ready( function() {
 		
 	});
 
-
- // Countdown function is used to countdown i.e. that '---' time is remaining in vote expiration.
-
+/**
+ * Purpose of this function is to countdown a vote duration and to display it.
+ * sessionstorage is used to store and retreive seconds for timer.
+ * This function will take only one paramter i.e.
+ * @param seconds
+ * Once the timer ends it will call displayActiveVote function again to display vote expiry message.
+ * This will accept only one argument i.e.
+ * @param packetAssign
+ * packetAssign is already declared in a global scope.
+ */
 
 function countdown(seconds) {
   seconds = parseInt(sessionStorage.getItem("seconds"))||seconds;
@@ -65,6 +79,10 @@ function countdown(seconds) {
     seconds--; 
     sessionStorage.setItem("seconds", seconds)
     var counter = document.getElementById("timer");
+	
+	// In case hour is required.
+	// var hours = Math.floor(seconds / (60 * 60));
+	
     var current_minutes = parseInt(seconds/60);
     var current_seconds = seconds % 60;
     counter.innerHTML = current_minutes + ":" + (current_seconds < 10 ? "0" : "") + current_seconds;
@@ -83,7 +101,12 @@ function countdown(seconds) {
   }
   tick();
 }
-// this function will handle cookies for vote expiry and session/localStorage save a value that is used as flag to redirect to vote page once if it starts.
+
+/**
+ * this function will handle cookies for vote expiry and session/localStorage for storing a value for timer that will be used as a flag to redirect to vote page once it starts.
+ * This will accept only one argument i.e.
+ * @param packet
+ */
 function cookiesSessionHandling(packet){
 	
 		localStorage.setItem("redirect", true)
@@ -101,9 +124,14 @@ function cookiesSessionHandling(packet){
 	
 }
 
-// displayActiveVote will dispplay vote with options and also countdown timer. 
-// In addition, will also store cookies for the vote i.e. contains voteID, path and vote expiration time.
-
+/**
+ * displayActiveVote function will display vote with options and also countdown. In case vote is not expired otherwise will display only expire message.
+ * This will accept only one argument i.e.
+ * @param packet
+ * It will call cookiesSessionHandling function to check that vote is expired or not. In case vote is not expired will display vote with available options and also countdown otherwise will display only expire message.
+ * This will accept only one argument i.e.
+ * @param packet 
+ */
 function displayActiveVote(packet){
 
 	if(packet.exists){
@@ -154,8 +182,12 @@ function displayActiveVote(packet){
 	
 }
 
-// this Anonymous function will be called when click on submit vote button.
-// Further, data will be to the backend and will display the response successfull message.
+/**
+ * this Anonymous function will be called when click on submit vote button. Purpose of this function is to send attendee selected data to server.
+ * The following paramters should be included in the request.
+ * @param voteID
+ * @param selectedOptionId 
+ */
 
         //$("#form-submit").submit(function (e) {
         $("#submitButton").on("click", function () {

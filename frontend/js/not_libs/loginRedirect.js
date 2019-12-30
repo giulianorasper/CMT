@@ -3,6 +3,14 @@ import IsAdminRequestPacket from "../../communication/packets/IsAdminRequestPack
 import LoginRequestPacket from "../../communication/packets/LoginRequestPacket.js";
 import Cookies from "../../communication/utils/Cookies.js";
 
+
+/**
+ * When the document is ready it will send request to server to check who is logged in i.e Admin or attendee.
+ * In response from the server if the packet is valid it will redirect to website home page.
+ * For Admin and attendee will work differently. 
+ */
+
+
 $( document ).ready(function() {
 
     const packet = new IsAdminRequestPacket();
@@ -23,6 +31,16 @@ $( document ).ready(function() {
 
 
 });
+
+/**
+ * this Anonymous function will be called when click on submit vote button. Purpose of this function is to send use name and password for authentication.
+ * The following paramters should be included in the request.
+ * @param name
+ * @param password
+ * If username and password is correct, a token and it's expiry will be issued and will set as cookie. After, it will redirect to home html page.
+ */
+
+
 
             $("#test-form").submit(function (e) {
                 //This prevents the default redirection due to form submission

@@ -30,7 +30,7 @@
         <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
 
     <!--below link create conflict with icons-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
@@ -156,20 +156,52 @@
                         <div class="prising_header">
                             <h2 style="color:white;">Active Voting</h2>
                         </div>
-                        <div id="voteQuestion" class="col-lg-8">
-
+                        <div id="voteQuestion">
+						<!-- <div class="row"> -->
+							<!-- <div class="col-lg-2" style="float:left;"></div> -->
+							<div class="row">
+								<div class="col-lg-10" style="padding-top:50px; float:right; font-size: 25px; margin-right:30px; text-align: right;">05:144</div>
+								</div>
+							<div class="col-12" style="margin-left:30px; font-size: 25px; padding-bottom: 10px;" id="'+packet.voting.ID+'s">
+								this is questions my name is jonsone fffafd
+							<!-- </div> -->
+							
+						<!-- </div>	 -->
                         </div>
 						
 						<!-- <div class="countdown"></div> -->
-						<div id="timer" class="col-lg-4"></div>
-                        <div id="options" class="col-lg-12">
+                        <!-- <div id="options" class="col-lg-12"> -->
+							<!-- <div class="row"> -->
+								<!-- <div class="col-lg-2"></div> -->
+								<div class="row">
+								<div class="col-lg-10">
+								<div class="custom-control custom-radio" style="margin-left:42px;">
+									<!-- <div class="form-group"> -->
+										<input type="radio" class="custom-control-input" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;">
+										<label style="word-break: break-word;" class="custom-control-label" for="'+packet.voting.options[i].optionID+'">'+packet.voting.options[i].name+'sdfsdfsdfsdfsdfsfsadfa</label>
+									<!-- </div> -->
+								</div>
+								</div>
+								</div>
+								
+																<div class="custom-control custom-radio col-lg-auto" style="margin-left:42px;">
+									<div class="form-group">
+										<input type="radio" class="custom-control-input" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;">
+										<label style="word-break: break-word;" class="custom-control-label" for="'+packet.voting.options[i].optionID+'">'+packet.voting.options[i].name+'</label>
+									</div>
+								</div>
+							<!-- </div> -->
+				
+						
+						
+						
                         </div>
                             <div class="row">
-                                <div class="custom-control custom-radio col-lg-8" id="failure">
+                                <div class="custom-control col-lg-8" style="margin-left: 30px;" id="failure">
 
                                 </div>
                                 <div class="form-group mt-3 col-lg-3" style="float: right; padding-bottom: 25px;">
-                                    <button type="submit" class="button button-contactForm boxed-btn" style="border: 1px solid #00D363; color:#00D363!important;" id="submitButton">Vote</button>
+                                    <button type="submit" class="button button-contactForm boxed-btn pull-right" style="border: 1px solid #00D363; color:#00D363!important; margin-right: 25px;" id="submitButton">Vote</button>
                                 </div>
                             </div>
 
@@ -194,9 +226,12 @@
                             <div class="card">
                                 <div class="card-header" id="headingTwo" style="padding-top: 25px;">
                                     <h5 class="mb-0">
+									What weird food combinations do you really enjoy? 
                                         <button class="btn btn-link collapsed" data-toggle="collapse"
-                                            data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                             What weird food combinations do you really enjoy? <i>see full details</i>
+                                            data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="word-break: break-word;">
+                                            
+											
+											<i>see full details</i>
                                         </button>
 
                                     </h5>

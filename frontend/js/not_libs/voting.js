@@ -53,16 +53,19 @@ function save(voteId){
 	}
 
 	var options =[]
-
+	
 	for(var elem of $("#votingOptions"+voteId).children()){
-		var option = $($($(elem).children()[0]).children()[0]).val();
+		console.log($($(elem).children()[0]).val());
+		// var option = $($($(elem).children()[0]).children()[0]).val();
+		var option = $($(elem).children()[0]).val();
+		// console.log(option);
 		options.push(option)
 	}
 
 	const packet = new EditVotingRequestPacket(voteId, vote.question, options ,vote.named, vote.duration);
 
 	function success(packet){
-		// console.log(packet);
+		console.log(packet);
 	}
 
 	 function fail() {
@@ -139,9 +142,33 @@ function addOption(voteId){
 	const optionsField = $("#votingOptions"+voteId);
 	
 	
-	$("<div class = \"col-md-4\"><div><input style=\"font-size:20px; margin-top: 5px;\" class=\"form-control\" "+
-		"type=\"text\" value=\"\" placeholder = \"Please provide the voting option\"></div></div>").appendTo(optionsField);
+	// $("<div class = \"col-md-4\"><div><input style=\"font-size:20px; margin-top: 5px;\" class=\"form-control\" "+
+		// "type=\"text\" value=\"\" placeholder = \"Please provide the voting option\"></div></div>").appendTo(optionsField);
+		// var numberofButtons = $("#votingOptions"+voteId+" button");
+		// for(var i=0; i<=numberofButtons.length; i++) {
+			
+			// console.log(i);
+			
+					// }
+			// console.log(voteId);		
+			$('<div class="input-group mb-3">'+
+			'<input type="text" class="form-control" name="optionsList[]" placeholder="Please provide the voting option" aria-label="Please provide the voting option" aria-describedby="button-addon2">'+
+			'<div class="input-group-append">'+
+			// '<button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>'+
+			'<button type="button" class="btn btn-outline-info" onclick="deleteVotingOption(this);">cancel</button>'+
+			'</div>'+
+			'</div>').appendTo(optionsField);
+			
+
+
+		
+
+		// console.log(numberofButtons.length)
+		// console.log(numberofButtons.length)
+		
 }
+
+
 
 // deleteOption function will be called when you want to delete an option per Vote question.
 
@@ -149,9 +176,15 @@ function addOption(voteId){
  * To delete an option from the vote question deleteOption function will be called after clicking delete option button.
  */
 
-function deleteOption(voteId) {
+function deleteOption(btn) {
 	
-	$("#votingOptions"+voteId).children().last().remove();
+	((btn.parentNode.parentNode).parentNode).removeChild(btn.parentNode.parentNode);
+	
+	// ((btn.parentNode).parentNode).removeChild(btn.parentNode.previousElementSibling);
+	// ((btn.parentNode).parentNode).removeChild(btn.parentNode);
+	
+	// var div = document.getElementById('votingOptions'+voteId);
+	
 }
 
 
@@ -251,13 +284,19 @@ function renderCreatedVote(vote){
                                     "<tr>"+
                                     "<td colspan=\"3\">"+
                                         "<div id=\"user_accordion"+vote.ID+"\"  class=\"collapse\">"+
-                                            "<div style='padding:20px;' class = \"row\" id = \"votingOptions"+vote.ID+"\">"+
+                                            "<div style='padding:10px;' class = \"row\" id = \"votingOptions"+vote.ID+"\">"+
                                             "</div>"+
-                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"startVote('"+vote.ID+"')\">Start Vote</button>"+
-                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"addVotingOption('"+vote.ID+"')\">Add Option</button>"+
-                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"deleteVotingOption('"+vote.ID+"')\">Delete Option</button>"+
-                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"saveVoting('"+vote.ID+"')\">Save Changes</button>"+
-                                            "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"deleteVote('"+vote.ID+"')\">Delete</button>"+
+											  '<button type="button" class="btn btn-outline-primary" style="margin-right: 10px;" onclick="startVote('+vote.ID+')">Start Vote</button>' +
+											'<div class="btn-group" role="group" aria-label="Basic example">' +
+											'<button type="button" class="btn btn-outline-success" onclick="addVotingOption('+vote.ID+')">Add</button>' +
+											'<button type="button" class="btn btn-outline-success" onclick="saveVoting('+vote.ID+')">Save Changes</button>' +
+											'</div>' +
+											'<button type="button" class="btn btn-outline-danger" style="margin-left: 10px;" onclick="deleteVote('+vote.ID+')">Delete</button>' +
+                                            // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"startVote('"+vote.ID+"')\">Start Vote</button>"+
+                                            // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"addVotingOption('"+vote.ID+"')\">Add Option</button>"+
+                                            // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"deleteVotingOption('"+vote.ID+"')\">Delete Option</button>"+
+                                            // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"saveVoting('"+vote.ID+"')\">Save Changes</button>"+
+                                            // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"deleteVote('"+vote.ID+"')\">Delete</button>"+
                                             "</div>"+
                                         "</div>"+
                                     "</td>"+
@@ -268,8 +307,18 @@ function renderCreatedVote(vote){
 	const optionsField = $("#votingOptions"+vote.ID);
     for (var i = 0; i < vote.options.length; i++) {
         var option = vote.options[i];
-		$("<div class = \"row\"><div><input style=\"font-size:20px; margin-top: 5px;\" class=\"form-control\" "+
-		"type=\"text\" value=\""+option.name+"\"></div>").appendTo(optionsField);
+		// $("<div class = \"row\"><div><input style=\"font-size:20px; margin-top: 5px;\" class=\"form-control\" "+
+		// "type=\"text\" value=\""+option.name+"\"></div>").appendTo(optionsField);
+		console.log(option.name);
+		$('<div class="input-group mb-3">'+
+		'<input type="text" class="form-control" placeholder="Please provide the voting option" aria-label="Please provide the voting option" aria-describedby="button-addon2" value="'+option.name+'">'+
+		'<div class="input-group-append">'+
+		// '<button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>'+
+		'<button type="button" class="btn btn-outline-info" onclick="deleteVotingOption(this);">cancel</button>'+
+		'</div>'+
+		'</div>').appendTo(optionsField);	
+		
+		
 	}
 
 	 

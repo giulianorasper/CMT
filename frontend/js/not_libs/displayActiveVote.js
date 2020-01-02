@@ -85,7 +85,9 @@ function countdown(seconds) {
 	
     var current_minutes = parseInt(seconds/60);
     var current_seconds = seconds % 60;
-    counter.innerHTML = current_minutes + ":" + (current_seconds < 10 ? "0" : "") + current_seconds;
+    counter.innerHTML = "Time Left: " + "00hr: " + current_minutes + "min: " + (current_seconds < 10 ? "0" : "") + current_seconds + "sec";
+	// $('#voteQuestion').html('<div class="col-lg-12 " style="padding-top:50px; float:right; font-size: 25px; margin-right:30px; text-align: right;"></div>'+ 
+								// current_minutes + ":" + (current_seconds < 10 ? "0" : "") + current_seconds);
     if( seconds > 0 ) {
       setTimeout(tick, 1000);
     }
@@ -109,14 +111,20 @@ function countdown(seconds) {
  */
 function cookiesSessionHandling(packet){
 	
-		localStorage.setItem("redirect", true)
+		sessionStorage.setItem("redirect", true)
+		// var voteExpiryDate = new Date(packet.voting.openUntil);
 		var voteExpiryDate = new Date(packet.voting.openUntil);
 		
+		console.log(voteExpiryDate.toGMTString());
+		console.log(voteExpiryDate);
 		var currentDateOnly = new Date();
-		
+		console.log(packet.voting.openUntil);
+		console.log(currentDateOnly);
 		// console.log(currentDateOnly.getTime());
 		var diff = Math.abs(voteExpiryDate.getTime() - currentDateOnly.getTime());
+		console.log(diff);
 		currentDifference = Math.round(diff/1000);
+		console.log(currentDifference);
 
 		document.cookie = "voteID=" + packet.voting.ID + ";path=./vote.html;expires=" + voteExpiryDate.toGMTString();
 	
@@ -132,6 +140,7 @@ function cookiesSessionHandling(packet){
  * This will accept only one argument i.e.
  * @param packet 
  */
+ 
 function displayActiveVote(packet){
 
 	if(packet.exists){
@@ -151,13 +160,26 @@ function displayActiveVote(packet){
 			voteID = packet.voting.ID
 			
 			$('#options').empty();
+			$("#voteQuestion").html('<div class="col-lg-12" style="margin-left:30px; font-size:25px; padding-bottom:10px; word-break:break-word; margin-right:30px; margin-top: 10px;" id="'+packet.voting.ID+'">'+
+									'<span style="word-break:break-word; margin-right:30px;" class="d-flex p-2">'+packet.voting.question+
+									'</span>'+
+									'</div>');
 			
-			$("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.ID+'s"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');
+			// $("#voteQuestion").html('<div class="row"><div class="col-lg-2" style="float:left;"></div><div class="col-lg-10" style="float:left; padding-top: 50px;" id="'+packet.voting.ID+'"><h2 class="contact-title pull-left">'+packet.voting.question+'</h2></div></div>');
 			 
 			for(var i in packet.voting.options){
 			
-				var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="'+packet.voting.options[i].optionID+'">'+packet.voting.options[i].name+'</label></div></div></div>';
-				$('#options').append(questionOptions);
+				var questionOptions = '<div class="row">'+
+										'<div class="col-lg-12">'+
+										'<div class="custom-control custom-radio" style="margin-left:50px;">'+
+										'<input type="radio" class="custom-control-input d-flex p-2" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;">'+
+										'<label style="word-break: break-word; margin-right: 30px;" class="custom-control-label" for="'+packet.voting.options[i].optionID+'">'+packet.voting.options[i].name+'</label>'+
+										'</div>'+
+										'</div>'+
+										'</div>';
+				
+				// var questionOptions = '<div class="row"><div class="col-lg-2"></div><div class="custom-control custom-radio col-lg-10"><div class="form-group"><input type="radio" class="custom-control-input" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;"><label class="custom-control-label" for="'+packet.voting.options[i].optionID+'">'+packet.voting.options[i].name+'</label></div></div></div>';
+				$('#voteQuestion').append(questionOptions);
 			
 			}
 
@@ -226,9 +248,6 @@ function displayActiveVote(packet){
 					CommunicationManager.send(sendVote, success, fail);	
 					
 				}
-				    
-				
-				
-
+	
         });
 		

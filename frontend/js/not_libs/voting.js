@@ -152,7 +152,7 @@ function addOption(voteId){
 					// }
 			// console.log(voteId);		
 			$('<div class="input-group mb-3">'+
-			'<input type="text" class="form-control" name="optionsList[]" placeholder="Please provide the voting option" aria-label="Please provide the voting option" aria-describedby="button-addon2">'+
+			'<input type="text" class="form-control" placeholder="Please provide the voting option" aria-label="Please provide the voting option" aria-describedby="button-addon2">'+
 			'<div class="input-group-append">'+
 			// '<button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>'+
 			'<button type="button" class="btn btn-outline-info" onclick="deleteVotingOption(this);">cancel</button>'+
@@ -276,7 +276,7 @@ function renderCreatedVote(vote){
 	var seconds = (secondsAux < 10 ? "0"+secondsAux:secondsAux);
 	var durationMinutes = (durationAux/60).toFixed(0)+":"+seconds;
 
-	$( "<tr data-toggle=\"collapse\" data-target=\"#user_accordion"+vote.ID+"\" class=\"clickable\">"+
+	$( "<tr style ='word-break:break-all;' data-toggle=\"collapse\" data-target=\"#user_accordion"+vote.ID+"\" class=\"clickable\">"+
                                         "<td>"+vote.question+"</td>"+
                                         "<td>"+(vote.namedVote?"Named":"Anonymous")+"</td>"+
                                         "<td>"+durationMinutes+"</td>"+
@@ -286,12 +286,12 @@ function renderCreatedVote(vote){
                                         "<div id=\"user_accordion"+vote.ID+"\"  class=\"collapse\">"+
                                             "<div style='padding:10px;' class = \"row\" id = \"votingOptions"+vote.ID+"\">"+
                                             "</div>"+
-											  '<button type="button" class="btn btn-outline-primary" style="margin-right: 10px;" onclick="startVote('+vote.ID+')">Start Vote</button>' +
-											'<div class="btn-group" role="group" aria-label="Basic example">' +
-											'<button type="button" class="btn btn-outline-success" onclick="addVotingOption('+vote.ID+')">Add</button>' +
-											'<button type="button" class="btn btn-outline-success" onclick="saveVoting('+vote.ID+')">Save Changes</button>' +
-											'</div>' +
-											'<button type="button" class="btn btn-outline-danger" style="margin-left: 10px;" onclick="deleteVote('+vote.ID+')">Delete</button>' +
+											  '<button type="button" class="btn btn-outline-primary" style="margin-left: 10px; width: 200px; margin-bottom: 10px;" onclick="startVote('+vote.ID+')">Start Vote</button>' +
+											// '<div class="btn-group" role="group" aria-label="Basic example">' +
+											'<button type="button" class="btn btn-outline-success" style="margin-left: 10px; width: 200px; margin-bottom: 10px;" onclick="addVotingOption('+vote.ID+')">Add</button>' +
+											'<button type="button" class="btn btn-outline-success" style="margin-left: 10px; width: 200px; margin-bottom: 10px;" onclick="saveVoting('+vote.ID+')">Save Changes</button>' +
+											// '</div>' +
+											'<button type="button" class="btn btn-outline-danger" style="margin-left: 10px; width: 200px; margin-bottom: 10px;" onclick="deleteVote('+vote.ID+')">Delete</button>' +
                                             // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"startVote('"+vote.ID+"')\">Start Vote</button>"+
                                             // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"addVotingOption('"+vote.ID+"')\">Add Option</button>"+
                                             // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"deleteVotingOption('"+vote.ID+"')\">Delete Option</button>"+

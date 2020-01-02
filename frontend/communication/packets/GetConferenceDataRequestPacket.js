@@ -1,6 +1,6 @@
-import AuthenticatedRequestPacket from "./AuthenticatedRequestPacket.js";
+import Packet from "./Packet.js";
 
-export default class PersonalDataRequestPacket extends AuthenticatedRequestPacket {
+export default class GetConferenceDataRequestPacket extends Packet {
 
     constructor() {
         super("CONFERENCE_DATA_REQUEST");

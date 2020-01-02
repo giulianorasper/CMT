@@ -16,9 +16,7 @@ public class GetConferenceDataRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, false)) {
-            Packet response = new GetConferenceDataResponsePacket(conference);
-            response.send(webSocket);
-        }
+        Packet response = new GetConferenceDataResponsePacket(conference);
+        response.send(webSocket);
     }
 }

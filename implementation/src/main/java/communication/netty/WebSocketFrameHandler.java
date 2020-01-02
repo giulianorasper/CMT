@@ -33,4 +33,17 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
         }
     }
 
+    @Override
+    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+        super.channelRegistered(ctx);
+        Connection connection = new NettyConnectionWrapper(ctx);
+        handler.onRegistered(connection);
+    }
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        super.channelUnregistered(ctx);
+        Connection connection = new NettyConnectionWrapper(ctx);
+        handler.onUnregistered(connection);
+    }
 }

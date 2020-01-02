@@ -1,6 +1,8 @@
 package communication;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.BasePacket;
 import communication.enums.PacketType;
 import communication.packets.RequestPacket;
@@ -15,13 +17,24 @@ import org.java_websocket.exceptions.InvalidDataException;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.handshake.ServerHandshakeBuilder;
 import org.java_websocket.server.WebSocketServer;
+import request.Request;
+import user.TokenResponse;
+import utils.Pair;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class CommunicationHandler {
 
@@ -30,20 +43,54 @@ public class CommunicationHandler {
     //TODO implement timeout
     private int timeoutAfter;
     private boolean debugging;
+    private int maxUserConnections;
+    private  ScheduledExecutorService connectionLimitationService;
 
-    public CommunicationHandler(Conference conference, int timeoutAfter, boolean debugging) {
+    public CommunicationHandler(Conference conference, int timeoutAfter, int maxUserConnections, boolean debugging) {
         this.conference = conference;
         this.timeoutAfter = timeoutAfter;
         this.debugging = debugging;
+        this.maxUserConnections = maxUserConnections;
+
+        //TODO review
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(() -> {
+            try {
+                timeoutLock.lock();
+                new HashSet<>(timeout.keySet()).forEach((key) -> {
+                    if(timeout.get(key) < System.currentTimeMillis()) {
+                        timeout.remove(key);
+                        key.close();
+                    }
+                });
+            } finally {
+                timeoutLock.unlock();
+            }
+        }, 1,1, TimeUnit.SECONDS);
     }
 
-    //TODO connection closed during request?
     public void onMessage(Connection conn, String message) {
         try {
             if(debugging) System.out.println(message);
 
             RequestPacket pack;
             PacketType packetType = gson.fromJson(message, BasePacket.class).getPacketType();
+
+            String token = gson.fromJson(message, SimpleAuthenticatedRequestPacket.class).getToken();
+
+            if(token != null) {
+                TokenResponse tokenResponse = conference.checkToken(token);
+                if(tokenResponse == TokenResponse.ValidAttendee || tokenResponse == TokenResponse.ValidAdmin) {
+                    //TODO implement maxUserConnection limitation
+                    //removes the timeout since the connection is now authenticated
+                    try {
+                        timeoutLock.lock();
+                        timeout.remove(conn);
+                    } finally {
+                        timeoutLock.unlock();
+                    }
+                }
+            }
 
             switch(packetType) {
                 /* ADMIN PACKETS */
@@ -169,15 +216,19 @@ public class CommunicationHandler {
                     throw new IllegalArgumentException("Packet type " + packetType + " does not exist.");
             }
             pack.handle(conference, conn);
-
-
         } catch (Exception e) {
             if(e instanceof IllegalArgumentException) {
-                e.printStackTrace();
                 new FailureResponsePacket(e.getMessage()).send(conn);
-            } else {
+            } else if(e instanceof JsonSyntaxException || e instanceof NullPointerException)  {
+                if(debugging) {
+                    e.printStackTrace();
+                } else {
+                    //If this is no debugging instance, this is most likely a malicious request, therefore close the connection
+                    conn.close();
+                }
+            }
+            else {
                 e.printStackTrace();
-                //TODO this should basically never happen, therefore log occurrences
             }
         }
     }
@@ -187,6 +238,36 @@ public class CommunicationHandler {
         if(packet != null) {
             byte[] fileBytes = message.array();
             packet.handleFileTransfer(conference, conn, fileBytes);
+        } else {
+            //this is most likely a malicious request, therefore close the connection
+            conn.close();
         }
     }
-}
+
+    private ReentrantLock timeoutLock = new ReentrantLock();
+    private HashMap<Connection, Long> timeout = new HashMap<>();
+
+    public void onRegistered(Connection conn) {
+        try {
+            timeoutLock.lock();
+            timeout.put(conn, System.currentTimeMillis() + timeoutAfter*1000);
+            if(debugging) System.out.println("Reg: " + timeout.size());
+        } finally {
+            timeoutLock.unlock();
+        }
+    }
+
+    public void onUnregistered(Connection conn) {
+        try {
+            timeoutLock.lock();
+            timeout.remove(conn);
+            if(debugging) System.out.println("U-Reg: " + timeout.size());
+        } finally {
+            timeoutLock.unlock();
+        }
+    }
+
+    public void stop() {
+        connectionLimitationService.shutdown();
+    }
+ }

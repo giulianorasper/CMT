@@ -13,6 +13,7 @@ public class CommunicationManagerFactory {
     Conference conference;
     int port;
     int timeoutAfter;
+    int maxUserConnections;
     boolean debugging;
 
     /**
@@ -24,6 +25,7 @@ public class CommunicationManagerFactory {
         this.conference = conference;
         this.port = 17699;
         this.timeoutAfter = 10;
+        this.maxUserConnections = 20;
         this.debugging = false;
     }
 
@@ -65,7 +67,7 @@ public class CommunicationManagerFactory {
         String pathname = "pem";
         File cert = new File(pathname + File.separator + "cert.pem");
         File key = new File(pathname + File.separator + "privkey.pem");
-        CommunicationHandler handler = new CommunicationHandler(conference, timeoutAfter, debugging);
+        CommunicationHandler handler = new CommunicationHandler(conference, timeoutAfter, maxUserConnections, debugging);
         CommunicationManager manager = new NettyCommunicationManagerFactory(handler, port, cert, key).create();
         if(!manager.isSecure()) {
             if(debugging) {

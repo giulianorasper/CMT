@@ -9,6 +9,7 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.ssl.SslContext;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 
 public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel> {
 
@@ -36,5 +37,6 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         //one Gibibyte
         pipeline.addLast(new WebSocketServerProtocolHandler(WEBSOCKET_PATH, null, true, 1073741824));
         pipeline.addLast(new WebSocketFrameHandler(handler));
+        pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(60*60));
     }
 }

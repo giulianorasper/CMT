@@ -15,6 +15,7 @@ import io.netty.handler.ssl.SslContext;
 public final class NettyCommunicationManager implements CommunicationManager {
 
     EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+    //TODO
     EventLoopGroup workerGroup = new NioEventLoopGroup();
     Channel channel;
     int port;
@@ -55,6 +56,7 @@ public final class NettyCommunicationManager implements CommunicationManager {
 
     @Override
     public void stop() {
+        handler.stop();
         channel.close();
     }
 

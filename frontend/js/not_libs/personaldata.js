@@ -1,7 +1,22 @@
 import CommunicationManager from "../../communication/CommunicationManager.js";
 import PersonalDataRequestPacket from "../../communication/packets/PersonalDataRequestPacket.js";
 
+/**
+ * The furpose of the ready function is to assign id's to variables and to get packet from the server.
+ * Then printPersonalData function will be called to pass packet data.
+ * @param packet( with attendee details) 
+ * @param profileName
+ * @param profileEmail
+ * @param profileGroup
+ * @param profileFunction
+ * @param profileResidence
+ */
+
+
+
 $(document).ready( function(){
+	
+	// All input values are assigned to variables.
 
     var profileName = $('#personalDataID');
     var profileEmail = $('#profileEmail');
@@ -23,6 +38,18 @@ $(document).ready( function(){
 
     CommunicationManager.send(requestPacket, success, fail)
 });
+
+/**
+ * printPersonalData will print/display packet data.
+ * It requires the following arguments
+ * @param packet( with attendee details) 
+ * @param profileName
+ * @param profileEmail
+ * @param profileGroup
+ * @param profileFunction
+ * @param profileResidence
+ */
+
 
 function printPersonalData(attendee, $name, $email, $group, $function, $residence){
     //append all data to respective place

@@ -10,6 +10,7 @@ import communication.packets.request.*;
 import communication.packets.request.admin.*;
 import communication.packets.response.FailureResponsePacket;
 import communication.wrapper.Connection;
+import io.netty.buffer.ByteBuf;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
@@ -233,10 +234,11 @@ public class CommunicationHandler {
         }
     }
 
-    public void onMessage(Connection conn, ByteBuffer message) {
+    public void onMessage(Connection conn, ByteBuf message) {
         UpdateFileRequestPacket packet = UpdateFileRequestPacket.getRequestFromConnectionIfExists(conn);
         if(packet != null) {
-            byte[] fileBytes = message.array();
+            byte[] fileBytes = new byte[message.readableBytes()];
+            message.readBytes(fileBytes);
             packet.handleFileTransfer(conference, conn, fileBytes);
         } else {
             //this is most likely a malicious request, therefore close the connection

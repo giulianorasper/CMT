@@ -26,7 +26,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
             handler.onMessage(connection, request);
         } else if(frame instanceof BinaryWebSocketFrame) {
             BinaryWebSocketFrame binaryWebSocketFrame = (BinaryWebSocketFrame) frame;
-            handler.onMessage(connection, frame.content().nioBuffer());
+            handler.onMessage(connection, frame.content());
         } else {
             String message = "unsupported frame type: " + frame.getClass().getName();
             throw new UnsupportedOperationException(message);

@@ -14,20 +14,20 @@ public interface AttendeeManagement {
 
     void removeAttendee(int userID);
 
-    void logoutAttendee(int userID);
+    void logoutUser(int userID);
 
     void editAttendee(Attendee attendee);
 
-    void generateNewAttendeePassword(int userID);
+    void generateNewUserPassword(int userID);
 
-    void generateNewAttendeeToken(int userID);
+    void generateNewUserToken(int userID);
 
-    void generateAllMissingAttendeePasswords();
+    void generateAllMissingUserPasswords();
 
-    Pair<User, String> getAttendeePassword(int userID);
+    Pair<User, String> getUserPassword(int userID);
 
-    List<Pair<User, String>> getAllAttendeePasswords();
+    List<Pair<User, String>> getAllUsersPasswords();
 
-    boolean logoutAllAttendees();
+    boolean logoutAllUsers();
 
 }

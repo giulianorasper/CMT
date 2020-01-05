@@ -30,7 +30,7 @@
         <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
 
     <!--below link create conflict with icons-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
@@ -95,13 +95,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-lg-12">
-                    <div class="single_prising" id="submit-message1">
+                    <div class="single_prising" id="submit-message1" style="padding-bottom: 110px;">
                         <div class="prising_header">
                             <h2 style="color:white;">Create/Edit Vote</h2>
                         </div>
 
-
-                        <table class="table table-hover" style="font-size:20px">
+						<div class="table-responsive">
+                        <table class="table table-hover" style="font-size:20px; text-align:center;">
                                     <thead>
                                     <th>Question</th>
                                     <th>Type</th>
@@ -111,7 +111,7 @@
 
                                     <tbody id = "createdVotesList">
 
-                                    <!--Print incoming attendees HERE!!-->
+                                    <!-- Print incoming attendees HERE!! -->
                                     <tr data-toggle="collapse" data-target="#user_accordion" class="clickable">
                                         <td>Bla?</td>
                                         <td>Named</td>
@@ -139,9 +139,11 @@
                                     </tr>
                                        
                                     </tbody>
-                                </table>
-                                <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="createNewVoting()">New Voting</button>
-                    </div>
+						</table>
+						</div>
+                                <button style="margin-right: 20px; margin-left: 20px; margin-top: 20px;border: 1px solid #00D363; color:#00D363!important; float: right;" class="button boxed-btn" onclick="createNewVoting()">New Voting</button>
+								
+					</div>
                 </div>
             </div>
         </div>
@@ -156,17 +158,39 @@
                         <div class="prising_header">
                             <h2 style="color:white;">Active Voting</h2>
                         </div>
-                        <div id="voteQuestion">
+						<div class="row">
+						<div class="col-lg-11" style="padding-top:40px; float:right; font-size: 22px; margin-right:30px; text-align: right;" id="timer"></div>
+                        </div>
+						<div id="voteQuestion">
 
+							
+							<!-- <div class="col-lg-12" style="margin-left:30px; font-size: 25px; padding-bottom: 10px; word-break: break-word; margin-right: 30px;" id="'+packet.voting.ID+'s"> -->
+								<!-- <span style="word-break: break-word; margin-right: 30px;" class='d-flex p-2' id='voteQuestion'>this is questions my name is jonsone fffafd</span> -->
+							<!-- </div> -->
+						
+						<!-- <div class="countdown"></div> -->
+                        <!-- <div id="options" class="col-lg-12"> -->
+							<!-- <div class="row"> -->
+								<!-- <div class="col-lg-2"></div> -->
+								
+								
+								<!-- <div class="row"> -->
+									<!-- <div class="col-lg-12"> -->
+										<!-- <div class="custom-control custom-radio" style="margin-left:42px;"> -->
+											<!-- <input type="radio" class="custom-control-input d-flex p-2" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;"> -->
+											<!-- <label style="word-break: break-word; margin-right: 30px;" class="custom-control-label " for="'+packet.voting.options[i].optionID+'">'+packet.voting.optiosafasdfasdfasdfasdfasdfasdfadsfns[i].name+'sdfsdfsdfsdfsdfsfsadfa</label> -->
+										<!-- </div> -->
+									<!-- </div> -->
+								<!-- </div> -->
+								
                         </div>
-                        <div id="options">
-                        </div>
+						
                             <div class="row">
-                                <div class="custom-control custom-radio col-lg-8" id="failure">
+                                <div class="custom-control col-lg-8" style="margin-left: 30px;" id="failure">
 
                                 </div>
                                 <div class="form-group mt-3 col-lg-3" style="float: right; padding-bottom: 25px;">
-                                    <button type="submit" class="button button-contactForm boxed-btn" style="border: 1px solid #00D363; color:#00D363!important;" id="submitButton">Vote</button>
+                                    <button type="submit" class="button button-contactForm boxed-btn pull-right" style="border: 1px solid #00D363; color:#00D363!important; margin-right: 30px;" id="submitButton">Vote</button>
                                 </div>
                             </div>
 
@@ -188,47 +212,45 @@
 
                         <div id="accordion">
 
-                            <div class="card">
+                            <div class="card" style="margin-bottom:0px;">
                                 <div class="card-header" id="headingTwo" style="padding-top: 25px;">
-                                    <h5 class="mb-0">
+                                    <h5 class="mb-0" style="margin-left: 30px;">
+									What weird food combinations do you really enjoy? 
                                         <button class="btn btn-link collapsed" data-toggle="collapse"
-                                            data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                             What weird food combinations do you really enjoy? <i>see full details</i>
+                                            data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="word-break: break-word;">
+											<i>see full details</i>
                                         </button>
-
                                     </h5>
-
                                 </div>
-                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                    data-parent="#accordion">
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                                     <div class="card-body">
                                         Likes: 15%  & Dislikes: 85%
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
+                            <div class="card" style="margin-bottom:0px;">
                                 <div class="card-header" id="headingOne">
-                                    <h5 class="mb-0">
+                                    <h5 class="mb-0" style="margin-left: 30px;">
+										Question two
                                         <button class="btn btn-link collapsed" data-toggle="collapse"
-                                            data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                             Question two <i>see full details</i>
+                                            data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="word-break: break-word;">
+                                              <i>see full details</i>
                                         </button>
                                     </h5>
                                 </div>
-                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion"
-                                    style="">
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                                     <div class="card-body">
                                         Likes: 20%  & Dislikes: 80%
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
+                            <div class="card" style="margin-bottom:0px;">
                                 <div class="card-header" id="headingThree">
-                                    <h5 class="mb-0">
-                                        <button class="btn btn-link collapsed" data-toggle="collapse"
-                                            data-target="#collapseThree" aria-expanded="false"
-                                            aria-controls="collapseThree">
-                                            Question three <i>see full details</i>
+                                    <h5 class="mb-0" style="margin-left: 30px;">
+									Question three
+                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
+                                            aria-controls="collapseThree" style="word-break: break-word;">
+                                             <i>see full details</i>
                                         </button>
                                     </h5>
                                 </div>
@@ -239,13 +261,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
+                            <div class="card" style="margin-bottom:0px;">
                                 <div class="card-header" id="heading_4">
-                                    <h5 class="mb-0">
+									
+                                    <h5 class="mb-0" style="margin-left: 30px;">
+										Question Four
                                         <button class="btn btn-link collapsed" data-toggle="collapse"
 
-                                            data-target="#collapse_4" aria-expanded="false" aria-controls="collapse_4">
-                                            Question Four <i><span>see full details</span></i>
+                                            data-target="#collapse_4" aria-expanded="false" aria-controls="collapse_4" style="word-break: break-word;">
+                                             <i><span>see full details</span></i>
                                         </button>
                                     </h5>
                                 </div>
@@ -292,9 +316,13 @@
     <script src="js/mail-script.js"></script>
 
     <script src="js/main.js"></script>
+	
+	
+    <script type="module" defer src="js/not_libs/voting.js"></script>
+	<script type="module" src="js/not_libs/displayActiveVote.js"></script>
 
-    <script type="module" src="js/not_libs/voting.js"></script>
                 <script type="module" src="js/not_libs/general.js"></script>
+				
     <!--<script src="data2.json"></script>-->
 
 

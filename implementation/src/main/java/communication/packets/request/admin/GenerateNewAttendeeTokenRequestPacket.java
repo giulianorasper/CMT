@@ -5,7 +5,6 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 public class GenerateNewAttendeeTokenRequestPacket extends AuthenticatedRequestPacket {
 
@@ -19,7 +18,7 @@ public class GenerateNewAttendeeTokenRequestPacket extends AuthenticatedRequestP
     @Override
     public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
-            conference.generateNewAttendeeToken(id);
+            conference.generateNewUserToken(id);
             new ValidResponsePacket().send(webSocket);
         }
     }

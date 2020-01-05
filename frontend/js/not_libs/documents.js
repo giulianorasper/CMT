@@ -5,7 +5,10 @@ import GetFileRequestPacket from "../../communication/packets/DownloadFileReques
 import DeleteFileRequestPacket from "../../communication/packets/admin/DeleteFileRequestPacket.js";
 import IsAdminRequestPacket from "../../communication/packets/IsAdminRequestPacket.js";
 
+
+
 var documentContainer = $('#documentsContainer');
+
 
 $( document ).ready(function() {
 
@@ -164,22 +167,23 @@ function download(name){
 
 function generateDocument(document){
 	return $("<div class=\"row\">"+
-                                            "<div class=\"col-lg-9\">"+
-                                                "<li>"+document.name+"</li>"+
+                                            "<div class=\"col-sm-8 col-lg-8\" "+(!window.isAdmin? "onclick = \"downloadDocument(\'"+document.name+"\')\"":"")+">"+
+                                                "<li >"+(!window.isAdmin?"<a href ='#'>":"")+document.name+(!window.isAdmin?"</a>":"")+"</li>"+
                                             "</div>"+
 
-                                            "<div class=\"col-lg-1\">"+
-                                                       "<a href=\"#\" style=\"color: #00D363; font-size: 25px;\">"+
+                                            (window.isAdmin?"<div class=\"col-lg\">"+
+                                                       "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 42px; padding-left: 24px;\">"+
                                                       "<span onclick = \"downloadDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-download-alt \"></span>"+
                                                     "</a>"+
-                                            "</div>"+(window.isAdmin?
-                                            "<div class=\"col-lg-1\">"+
-                                                       "<a href=\"#\" style=\"color: #00D363; font-size: 25px;\">"+
+                                            
+                                            // "<div class=\"col-lg-auto\">"+
+                                                       "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 42px;\">"+
                                                       "<span onclick = \"editDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-edit\"></span>"+
                                                     "</a>"+
-                                            "</div>"+
-                                            "<div class=\"col-lg-1\">"+
-                                                       "<a href=\"#\" style=\"color: #00D363; font-size: 25px;\">"+
+                                            // "</div>"+
+                                            // "<div class=\"col-lg-auto\">"+
+											
+                                                       "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 20px;\">"+
                                                       "<span onclick = \"removeDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-trash \"></span>"+
                                                     "</a>":"")+
                                             "</div>"+

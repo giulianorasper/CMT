@@ -37,7 +37,7 @@ function renderRequests(){
 	    	
 
 	    	requestContainer.html("");
-			requestableSelect.html("<option data-type =\'\'>All requests</option>");
+			requestableSelect.html("<option data-type =\'\'>All Request Targets</option>");
 
 
 

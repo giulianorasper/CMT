@@ -167,15 +167,15 @@ function download(name){
 
 function generateDocument(document){
 	return $("<div class=\"row\">"+
-                                            "<div class=\"col-sm-8 col-lg-8\">"+
-                                                "<li>"+document.name+"</li>"+
+                                            "<div class=\"col-sm-8 col-lg-8\" "+(!window.isAdmin? "onclick = \"downloadDocument(\'"+document.name+"\')\"":"")+">"+
+                                                "<li >"+(!window.isAdmin?"<a href ='#'>":"")+document.name+(!window.isAdmin?"</a>":"")+"</li>"+
                                             "</div>"+
 
-                                            "<div class=\"col-lg\">"+
+                                            (window.isAdmin?"<div class=\"col-lg\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 42px; padding-left: 24px;\">"+
                                                       "<span onclick = \"downloadDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-download-alt \"></span>"+
                                                     "</a>"+
-                                            (window.isAdmin?
+                                            
                                             // "<div class=\"col-lg-auto\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 42px;\">"+
                                                       "<span onclick = \"editDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-edit\"></span>"+

@@ -11,9 +11,12 @@ import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketSe
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 
+import java.io.File;
+
 public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel> {
 
     private static final String WEBSOCKET_PATH = "/websocket";
+    private static final String tempPath = System.getProperty("user.dir") + "/tmp/";
 
     private final SslContext sslContext;
     private CommunicationHandler handler;
@@ -21,6 +24,12 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
     public WebSocketServerInitializer(SslContext sslContext, CommunicationHandler handler) {
         this.sslContext = sslContext;
         this.handler = handler;
+        File tempFolder = new File(tempPath);
+        if(tempFolder.exists()) {
+            for(File f : tempFolder.listFiles()) {
+                f.delete();
+            }
+        }
     }
 
     @Override
@@ -36,7 +45,7 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         pipeline.addLast(new WebSocketServerCompressionHandler());
         //one Gibibyte
         pipeline.addLast(new WebSocketServerProtocolHandler(WEBSOCKET_PATH, null, true, 1073741824));
-        pipeline.addLast(new WebSocketFrameHandler(handler));
+        pipeline.addLast(new WebSocketFrameHandler(handler, tempPath));
         pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(60*60));
     }
 }

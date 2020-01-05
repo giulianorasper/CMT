@@ -10,7 +10,6 @@ import communication.packets.request.*;
 import communication.packets.request.admin.*;
 import communication.packets.response.FailureResponsePacket;
 import communication.wrapper.Connection;
-import io.netty.buffer.ByteBuf;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
@@ -22,6 +21,8 @@ import request.Request;
 import user.TokenResponse;
 import utils.Pair;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.InetSocketAddress;
@@ -234,16 +235,18 @@ public class CommunicationHandler {
         }
     }
 
-    public void onMessage(Connection conn, ByteBuf message) {
+    public void onMessage(Connection conn, File file) {
         UpdateFileRequestPacket packet = UpdateFileRequestPacket.getRequestFromConnectionIfExists(conn);
         if(packet != null) {
-            byte[] fileBytes = new byte[message.readableBytes()];
-            message.readBytes(fileBytes);
-            packet.handleFileTransfer(conference, conn, fileBytes);
+            packet.handleFileTransfer(conference, conn, file);
         } else {
             //this is most likely a malicious request, therefore close the connection
             conn.close();
         }
+    }
+
+    public boolean mayTransferBinary(Connection conn) {
+        return UpdateFileRequestPacket.existingRequest(conn);
     }
 
     private ReentrantLock timeoutLock = new ReentrantLock();

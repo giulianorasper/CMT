@@ -4,9 +4,11 @@ import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
+import io.netty.buffer.ByteBuf;
 import main.Conference;
 import utils.Pair;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.locks.ReentrantLock;
@@ -31,7 +33,7 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
         if(isPermitted(conference, webSocket, true)) {
             try {
                 lock.lock();
-                allowedRequests.put(webSocket, new Pair<>(this, System.currentTimeMillis() + 10000));
+                allowedRequests.put(webSocket, new Pair<>(this, System.currentTimeMillis() + 1000*60*60*24));
             } finally {
                 lock.unlock();
             }
@@ -39,12 +41,12 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
         }
     }
 
-    public void handleFileTransfer(Conference conference, Connection webSocket, byte[] fileBytes) {
+    public void handleFileTransfer(Conference conference, Connection webSocket, File file) {
         if(isPermitted(conference, webSocket, true)) {
             String fileType = "";
             String[] split = originalName.split("\\.");
             if(split.length >= 2) fileType = "." + split[split.length-1];
-            conference.updateDocument(name, fileType, fileBytes, creation);
+            conference.updateDocument(name, fileType, file, creation);
             new ValidResponsePacket().send(webSocket);
         }
     }
@@ -59,6 +61,15 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
                 return packet;
             }
             return null;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public static boolean existingRequest(Connection connection) {
+        try {
+            lock.lock();
+            return allowedRequests.containsKey(connection);
         } finally {
             lock.unlock();
         }

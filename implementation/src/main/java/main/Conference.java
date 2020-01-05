@@ -7,6 +7,7 @@ import database.*;
 import document.DB_DocumentManagement;
 import document.Document;
 import document.DocumentManagement;
+import io.netty.buffer.ByteBuf;
 import request.DB_RequestManagement;
 import request.Request;
 import request.RequestManagement;
@@ -21,7 +22,9 @@ import voting.VotingStatus;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -886,11 +889,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
      * Update an existing Document and store the updated Document in the Database.
      * @param name
      * @param fileType
-     * @param fileBytes
+     * @param file
      * @param isCreation
      */
     @Override
-    public void updateDocument(String name, String fileType, byte[] fileBytes, boolean isCreation) {
+    public void updateDocument(String name, String fileType, File file, boolean isCreation) {
         try {
             documentsLock.lock();
             String fullName = name;
@@ -910,10 +913,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             }
             try {
                 if(f.exists() ||  f.createNewFile()){
-                    Files.write(f.toPath(), fileBytes);
-                }
-                else{
-                    throw new IllegalArgumentException();
+                    OutputStream os = new FileOutputStream(f, true);
+                    f.delete();
+                    Files.move(file.toPath(), f.toPath());
+                    os.close();
                 }
 
             }

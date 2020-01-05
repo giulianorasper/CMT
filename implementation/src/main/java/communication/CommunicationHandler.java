@@ -73,10 +73,11 @@ public class CommunicationHandler {
 
     public void onMessage(Connection conn, String message) {
         try {
-            if(debugging) System.out.println(message);
 
             RequestPacket pack;
             PacketType packetType = gson.fromJson(message, BasePacket.class).getPacketType();
+
+            if(debugging && packetType != PacketType.GET_ACTIVE_VOTING_REQUEST && packetType != PacketType.IS_ADMIN_REQUEST) System.out.println(message);
 
             String token = gson.fromJson(message, SimpleAuthenticatedRequestPacket.class).getToken();
 
@@ -256,7 +257,6 @@ public class CommunicationHandler {
         try {
             timeoutLock.lock();
             timeout.put(conn, System.currentTimeMillis() + timeoutAfter*1000);
-            if(debugging) System.out.println("Reg: " + timeout.size());
         } finally {
             timeoutLock.unlock();
         }
@@ -266,7 +266,6 @@ public class CommunicationHandler {
         try {
             timeoutLock.lock();
             timeout.remove(conn);
-            if(debugging) System.out.println("U-Reg: " + timeout.size());
         } finally {
             timeoutLock.unlock();
         }

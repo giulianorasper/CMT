@@ -17,11 +17,11 @@ $( document ).ready(function() {
 
 });
 
-
+/**
+Fetches all requests from the server and displays them to the admin.
+Currently sorting the requests involves fetching them from the server again. This is sub-optial
+*/
 function renderRequests(){
-
-
-	console.log("count")
 
 	const packet = new GetAllRequestsRequestPacket();
     CommunicationManager.send(packet, success, fail);
@@ -125,9 +125,13 @@ function renderRequests(){
 	}
 }
 
+/**
+Allows admins to interact with requests
+@param id: the id of the request
+@param approved / open : the status of the request as the admin wished to *set* it, 
+e.g. in order to aprove a request one would call this function with approved and closed set to 'false'
+*/
 function submitUpdate(id, approved, open){
-	
-
 	const packet = new SetRequestStatusRequestPacket(id, approved, open);
     CommunicationManager.send(packet, success, fail);
 

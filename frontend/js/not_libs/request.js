@@ -4,18 +4,22 @@ import RequestOfSpeechRequestPacket from "../../communication/packets/RequestOfS
 import RequestOfChangeRequestPacket from "../../communication/packets/RequestOfChangeRequestPacket.js";
 import GetDocumentListRequestPacket from "../../communication/packets/GetDocumentListRequestPacket.js";
 
-var changeMessage = $("#requestMessage");
-var requestOptions = $(".requestSelect");
+var changeMessage = $("#requestMessage"); // the DOM object representing the input for requests of change
+var requestOptions = $(".requestSelect"); // the dropdown that lets the user choose which type of request they wish to submit
 
 
 $( document ).ready(function() {
 	getAgenda();
     getDocuments();
 
-	window.submitRequest = submit;
+	window.submitRequest = submit; //export the function to the global scope 
 });
 
 
+/**
+Submits the request to the server if the data is valid, or prompt the user to change the request data if it is invalid
+@ param isSpeechRequest : determines the request type
+*/
 function submit(isSpeechRequest){
 	var selectedOption = requestOptions.find('option:selected');
 
@@ -55,6 +59,10 @@ function submit(isSpeechRequest){
     }
 }
 
+/**
+Fetches the agenda from the backend and adds the TOPs to the list of valid requestables.
+Note that requestable options need to store their type and an unique id using the data-id and the data-isTop attributes in html
+*/
 function getAgenda(){
  	const packet = new GetAgendaRequestPacket();
 
@@ -86,6 +94,10 @@ function getAgenda(){
     }
 }
 
+/**
+Fetches the documents from the backend and adds them to the list of valid requestables.
+Note that requestable options need to store their type and an unique id using the data-id and the data-isTop attributes in html
+*/
 function getDocuments(){
 	const packet = new GetDocumentListRequestPacket();
 

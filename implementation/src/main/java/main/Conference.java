@@ -2,6 +2,7 @@ package main;
 
 import agenda.Agenda;
 import agenda.AgendaManagement;
+import agenda.AgendaObserver;
 import com.google.gson.annotations.Expose;
 import database.*;
 import document.DB_DocumentManagement;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -890,6 +892,20 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     @Override
     public Agenda getAgenda() {
         return agenda;
+    }
+
+    @Override
+    public void updateAgenda(Agenda newAgenda) {
+        ConcurrentHashMap<AgendaObserver, Boolean> observers = this.agenda.getObservers();
+        for (Map.Entry<AgendaObserver, Boolean> o : observers.entrySet()) {
+            newAgenda.register(o.getKey());
+        } //Two loops to avoid ConcurrentModification
+        for (Map.Entry<AgendaObserver, Boolean> o : observers.entrySet()) {
+            newAgenda.unregister(o.getKey());
+        }
+        this.agenda = newAgenda;
+
+        this.agenda.notifyObservers();
     }
 
 

@@ -359,4 +359,7 @@ public class Agenda implements AgendaObservable{
         return tops;
     }
 
+    public ConcurrentHashMap<AgendaObserver, Boolean> getObservers() {
+        return this.observers;
+    }
 }

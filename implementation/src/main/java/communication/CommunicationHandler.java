@@ -100,6 +100,9 @@ public class CommunicationHandler {
                 case ADD_ATTENDEE_REQUEST:
                     pack = gson.fromJson(message, AddAttendeeRequestPacket.class);
                     break;
+                case ADD_FULL_AGENDA_REQUEST:
+                    pack = gson.fromJson(message, AddFullAgendaRequestPacket.class);
+                    break;
                 case ADD_MULTIPLE_ATTENDEES_REQUEST:
                     pack = gson.fromJson(message, AddMultipleAttendeesRequestPacket.class);
                     break;

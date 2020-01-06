@@ -8,6 +8,9 @@ import main.Conference;
 import org.java_websocket.WebSocket;
 import user.Attendee;
 
+/**
+ * This packet can be used by an admin to add an attendee to the conference. Responds with a {@link communication.packets.BasePacket}.
+ */
 public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
 
     private String name;
@@ -16,6 +19,15 @@ public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
     private String residence;
     private String function;
 
+    /**
+     * The only compulsory parameter is name. If any other parameter is null
+     * it is treated as if it was an empty string.
+     * @param name the attendee's full name
+     * @param email the attendee's email
+     * @param group the attendee's group
+     * @param residence the attendee's residence
+     * @param function the attendee's function
+     */
     public AddAttendeeRequestPacket(String name, String email, String group, String residence, String function) {
         super(PacketType.ADD_ATTENDEE_REQUEST);
         this.name = name;

@@ -14,6 +14,10 @@ import voting.VotingOption;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This packet can be used by an admin to add a voting to the conference. This voting is not started until
+ * a {@link StartVotingRequestPacket} is received. Responds with a {@link communication.packets.BasePacket}.
+ */
 public class AddVotingRequestPacket extends AuthenticatedRequestPacket {
 
     private String question;
@@ -21,6 +25,13 @@ public class AddVotingRequestPacket extends AuthenticatedRequestPacket {
     private boolean namedVote;
     private int duration;
 
+    /**
+     *
+     * @param question the question which should be decided by the voting
+     * @param options the possible voting options as a list of strings
+     * @param namedVote if the vote is named i.e. if it is public who voted for which option
+     * @param duration the duration of the voting after it started in seconds
+     */
     public AddVotingRequestPacket(String question, List<String> options, boolean namedVote, int duration) {
         super(PacketType.ADD_VOTING_REQUEST_PACKET);
         this.question = question;

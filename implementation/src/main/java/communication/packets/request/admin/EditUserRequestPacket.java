@@ -8,6 +8,10 @@ import main.Conference;
 import org.java_websocket.WebSocket;
 import user.Attendee;
 
+/**
+ * This packet can be used by an admin to edit the personal data of a user (internally an {@link Attendee} for both users and admins).
+ * Responds with a {{@link communication.packets.BasePacket}}.
+ */
 public class EditUserRequestPacket extends AuthenticatedRequestPacket {
 
     private int id;
@@ -17,6 +21,14 @@ public class EditUserRequestPacket extends AuthenticatedRequestPacket {
     private String residence;
     private String function;
 
+    /**
+     * @param id the id of the user
+     * @param name the new name of the user
+     * @param email the new email of the user
+     * @param group the new group of the user
+     * @param residence the new residence of the uer
+     * @param function the new function of the user
+     */
     public EditUserRequestPacket(int id, String name, String email, String group, String residence, String function) {
         super(PacketType.EDIT_USER_REQUEST);
         this.id = id;

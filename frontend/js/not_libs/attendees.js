@@ -12,6 +12,7 @@ import GenerateNewAttendeeTokenRequestPacket
 import GetAttendeePasswordRequestPacket from "../../communication/packets/admin/GetAttendeePasswordRequestPacket.js";
 
 import "../jquery-ui/jquery-ui.js";
+import "../jquery-ui/jquery-ui.css";
 
 $(document).ready( function() {
     //Move functions to global scope so onclick parameters can call them
@@ -26,14 +27,30 @@ $(document).ready( function() {
     refresh();
 });
 
-//By default, always sort by attendee Name
+// By default, always sort by attendee Name
 var sortingRelation = 'attendeeName';
 
-//The current state of the attendee list locally, used for edit commands
+// The current state of the attendee list locally, used for edit commands
 var localAttendeeList;
 
 // ID the attendeeList will be pasted into
 const attendeeContainer = $('#attendeeList');
+
+// Variables needed for the creation of a new attendee
+var dialog, form,
+    newNameID = $('#createName'),
+    newMailID = $('#createEmail'),
+    newGroupID = $('#createGroup'),
+    newResidenceID = $('#createResidence'),
+    newFunctionID = $('#createFnctn'),
+    requiredFields = $( [] ).add(newNameID).add(newMailID).add(newGroupID).add(newResidenceID).add(newFunctionID),
+    tipField = $(".validateTips");
+
+//Mail regex from https://www.w3resource.com/javascript/form/email-validation.php
+const mailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+//Name Regex just excluding letters that are not allowed for usernames
+const nameRegex = /[^\$%\^\*£=~@_]/;
 
 
 //----------------------------------- SENDING REQUEST AND SORTING METHODS ----------------------------------------------
@@ -314,8 +331,8 @@ function logoutAttendee(attendeeIndex){
 function getNewAttendeePassword(attendeeIndex){
     const attendeeID = localAttendeeList[attendeeIndex].ID;
 
-    const getPasswordRequestPacket = new GetAttendeePasswordRequestPacket(attendeeID);
     const newPasswordRequestPacket = new GenerateNewAttendeePasswordRequestPacket(attendeeID);
+    const getPasswordRequestPacket = new GetAttendeePasswordRequestPacket(attendeeID);
 
 
     function successGetPassword(packet){
@@ -358,6 +375,48 @@ function changeSort(){
 
 //--------------------------------- CREATE/EDIT DIALOG WINDOW FUNCTIONALITY --------------------------------------------
 
+function updateTips(newText){
+    tipField.text(newText).addClass("ui-state-highlight");
+    setTimeout(function () {
+        tipField.removeClass("ui-state-highlight", 1000)
+    }, 500);
+}
+
+function checkLength(checkedObject, fieldName, min, max){
+    if(checkedObject.val().length > max || checkedObject.val().length < min){
+        checkedObject.addClass("ui-state-error");
+        updateTips("Length of " + fieldName + " must be between " + min + " and " + max + " characters.");
+        return false;
+    }
+    return true;
+}
+
+function checkRegex(checkedObject, regex, message){
+    if( !( regex.test(checkedObject.val()) ) ){
+        checkedObject.addClass("ui-state-error");
+        updateTips(message);
+        return false;
+    }
+    return true;
+}
+
+function createUser(){
+    var validUser = true;
+    requiredFields.removeClass("ui-state-error");
+
+    validUser = validUser && checkLength(newNameID, "name", 5, 64);
+    validUser = validUser && checkLength(newMailID, "email", 6, 64);
+    validUser = validUser && checkLength(newGroupID, "group", 1, 64);
+    validUser = validUser && checkLength(newResidenceID, "residence", 1, 256);
+    validUser = validUser && checkLength(newFunctionID, "function", 1, 64);
+
+    validUser = validUser && checkRegex(newNameID, nameRegex, "Name mustn't contain $%^*£=~@_");
+    validUser = validUser && checkRegex(newMailID, mailRegex, "Invalid mail. Example for a valid mail: user@domain.com");
+
+    if(validUser){
+        console.log("worked");
+    }
+}
 
 
 /* function clickCreate(event){

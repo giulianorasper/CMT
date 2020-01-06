@@ -11,16 +11,14 @@ import GenerateNewAttendeeTokenRequestPacket
     from "../../communication/packets/admin/GenerateNewAttendeeTokenRequestPacket.js";
 import GetAttendeePasswordRequestPacket from "../../communication/packets/admin/GetAttendeePasswordRequestPacket.js";
 
+import "../jquery-ui/jquery-ui.js";
+
 $(document).ready( function() {
     //Move functions to global scope so onclick parameters can call them
     window.deleteAttendeeGlobal = deleteAttendee;
     window.editAttendeeGlobal = editAttendee;
     window.getNewAttendeePasswordGlobal = getNewAttendeePassword;
     window.logoutAttendeeGlobal = logoutAttendee;
-
-    //Click functions in global scope
-    window.clickCreateGlobal = clickCreate;
-    window.clickEditGlobal = clickEdit;
 
     //Add listeners to buttons/dropdown menus that don't need to be generated dynamically
     document.getElementById("sortingOptions").addEventListener("change", changeSort, false);
@@ -30,6 +28,11 @@ $(document).ready( function() {
 
 //By default, always sort by attendee Name
 var sortingRelation = 'attendeeName';
+
+//The current state of the attendee list locally, used for edit commands
+var localAttendeeList;
+
+// ID the attendeeList will be pasted into
 const attendeeContainer = $('#attendeeList');
 
 
@@ -45,6 +48,9 @@ function updateAttendeeList(){
     function success(packet){
         if(packet.result === "Valid"){
             console.log(packet);
+
+            //update local attendee list and sort/print it afterwards
+            localAttendeeList = packet.attendees;
             sortAttendeeList(packet.attendees);
         }
         else{
@@ -62,8 +68,8 @@ function updateAttendeeList(){
 }
 
 /**
- * Gets called by updateAttendeeList to sort the entries before printing them. Calls getSortedList from attendeeSorting,
- * uses the current sorting relation state. Calls generateAttendeeList after sorting.
+ * Gets called by updateAttendeeList to sort the entries before printing them. Calls {@link getSortedList} from attendeeSorting,
+ * uses the current {@link sortingRelation}. Calls {@link generateAttendeeList} after sorting.
  *
  * @param attendeeList that needs to be sorted.
  */
@@ -115,8 +121,8 @@ function generateAttendeeList(attendeeList){
     $('#attendeeList').empty();
 
     //Generates new list content
-    for (var currAttendee of attendeeList){
-        generateAttendee(currAttendee).appendTo(attendeeContainer);
+    for (var currIndex = 0; currIndex < attendeeList.length; currIndex++){
+        generateAttendee(currIndex, attendeeList[currIndex]).appendTo(attendeeContainer);
     }
 
 }
@@ -125,11 +131,12 @@ function generateAttendeeList(attendeeList){
  * Gets called by {@link generateAttendeeList } to deliver the data of the given attendee in a certain HTML format.
  * Each call creates one table entry.
  *
+ * @param listIndex tells the index of the attendee inside the list (which is important to get their data for editing later on)
  * @param attendee that shall be printed
  * @return {jQuery|HTMLElement} - HTML code for the table entry of that attendee
  */
-function generateAttendee(attendee){
-    return  $('<tr data-toggle="collapse" data-target="#user_accordion'+ attendee.ID +'" class="clickable">'+
+function generateAttendee(listIndex, attendee){
+    return  $('<tr data-toggle="collapse" data-target="#user_accordion'+ listIndex +'" class="clickable">'+
         '<td>'+attendee.name+'</td>'+
         '<td>'+attendee.group+'</td>'+
         '<td>'+attendee.function+'</td>'+
@@ -137,18 +144,18 @@ function generateAttendee(attendee){
         '</tr>'+
         '<tr>'+
         '<td colspan="4">'+
-        '<div id="user_accordion'+ attendee.ID +'"  class="collapse">'+
+        '<div id="user_accordion'+ listIndex +'"  class="collapse">'+
         '<h4 style="color:grey;">Username: '+attendee.userName +'</h4>'+
         '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
         '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
         '<span style="display:inline-block; width: 30px;">' +
-        '</span><span class="glyphicon glyphicon-pencil" onclick="clickEditGlobal(event, '+ attendee.ID + ')"></span>'+
+        '</span><span class="glyphicon glyphicon-pencil" id="editAttendee ' + listIndex + '"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-log-in" onclick="getNewAttendeePasswordGlobal(' + attendee.ID +')"></span>'+
+        '</span><span class="glyphicon glyphicon-log-in" onclick="getNewAttendeePasswordGlobal(' + listIndex +')"></span>'+
         '<span style="display:inline-block; width: 30px;">' +
-        '</span><span class="glyphicon glyphicon-log-out" onclick="logoutAttendeeGlobal(' + attendee.ID +')"></span>'+
+        '</span><span class="glyphicon glyphicon-log-out" onclick="logoutAttendeeGlobal(' + listIndex +')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-trash" onclick="deleteAttendeeGlobal(' + attendee.ID +')"></span>' +
+        '</span><span class="glyphicon glyphicon-trash" onclick="deleteAttendeeGlobal(' + listIndex +')"></span>' +
         '</div>'+
         '</td>'+
         '</tr>');
@@ -168,11 +175,14 @@ function addIconListeners(attendee) {
 
 /**
  * Can be called by "onclick" param of glyphicon for each attendee, sends request to the server to delete the attendee
- * with corresponding ID. In case the deleting went on successfully, the attendee list will reload.
+ * with the index corresponding to the given listIndex. In case the deleting went on successfully, the attendee list will
+ * reload.
  *
- * @param attendeeID: ID of the attendee to be deleted.
+ * @param attendeeIndex: list index of the attendee that is to be deleted.
  */
-function deleteAttendee(attendeeID){
+function deleteAttendee(attendeeIndex){
+    const attendeeID = localAttendeeList[attendeeIndex].ID;
+
     const requestPacket = new RemoveAttendeeRequestPacket(attendeeID);
 
     function successDeleteAttendee(packet){
@@ -196,7 +206,7 @@ function deleteAttendee(attendeeID){
 /**
  * Sends an EditAttendeeRequest to the server. If the operation was successful, the attendee list will reload.
  *
- * @param attendeeID represents the ID of the attendee that is to edit
+ * @param attendeeIndex represents the list index of the attendee that is to edit
  * @param name represents the (new) name of the attendee
  * @param email represents the (new) email of the attendee
  * @param group represents the (new) group of the attendee
@@ -204,7 +214,9 @@ function deleteAttendee(attendeeID){
  * @param fnctn represents the (new) function of the attendee
  */
 
-function editAttendee(attendeeID, name, email, group, residence, fnctn){
+function editAttendee(attendeeIndex, name, email, group, residence, fnctn){
+    const attendeeID = localAttendeeList[attendeeIndex].ID;
+
     const editRequestPacket = new EditUserRequestPacket(attendeeID, name, email, group, residence, fnctn);
 
     function successEditAttendee(packet){
@@ -260,9 +272,11 @@ function createAttendee(name, email, group, residence, fnctn){
  * prevent as much concurrency as possible between sent requests, "Successful" message only gets sent after successfully
  * generating a new token.
  *
- * @param attendeeID
+ * @param attendeeIndex - List index of the attendee that is to be logged out
  */
-function logoutAttendee(attendeeID){
+function logoutAttendee(attendeeIndex){
+    const attendeeID = localAttendeeList[attendeeIndex].ID;
+
     const logoutRequestPacket = new LogoutAttendeeRequestPacket(attendeeID);
     const newTokenRequestPacket = new GenerateNewAttendeeTokenRequestPacket(attendeeID);
 
@@ -295,9 +309,11 @@ function logoutAttendee(attendeeID){
  * Gets called when a new password shall be generated for a certain attendee. Note that after generating a new password,
  * a separate request to get the password has to be sent.
  *
- * @param attendeeID of the attendee for which a new password shall be generated
+ * @param attendeeIndex - List index of the attendee for which a new password shall be generated
  */
-function getNewAttendeePassword(attendeeID){
+function getNewAttendeePassword(attendeeIndex){
+    const attendeeID = localAttendeeList[attendeeIndex].ID;
+
     const getPasswordRequestPacket = new GetAttendeePasswordRequestPacket(attendeeID);
     const newPasswordRequestPacket = new GenerateNewAttendeePasswordRequestPacket(attendeeID);
 
@@ -340,7 +356,11 @@ function changeSort(){
 }
 
 
-function clickCreate(event){
+//--------------------------------- CREATE/EDIT DIALOG WINDOW FUNCTIONALITY --------------------------------------------
+
+
+
+/* function clickCreate(event){
     //TODO make this prettier than just using five prompts
 
     //Reloading gets prevented
@@ -388,5 +408,5 @@ function clickEdit(event, attendeeID){
     if(fnctn === null){ return; }
 
     editAttendee(attendeeID, name, email, group, residence, fnctn);Did 
-}
+} */
 

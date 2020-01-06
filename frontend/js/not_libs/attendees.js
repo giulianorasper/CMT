@@ -24,6 +24,61 @@ $(document).ready( function() {
     //Add listeners to buttons/dropdown menus that don't need to be generated dynamically
     document.getElementById("sortingOptions").addEventListener("change", changeSort, false);
 
+
+    /* //Global functions for click events
+    window.clickCreateAttendeeGlobal = clickCreateAttendee;
+    window.clickEditAttendeeGlobal = clickEditAttendee; */
+
+    //Initializing dialog options
+    createDialog = $('#creationDialog').dialog({
+        autoOpen: false,
+        height: 540,
+        width: 420,
+        modal: true,
+        buttons: {
+            "Confirm": clickCreateAttendee,
+            Cancel: function () {
+                createDialog.dialog("close");
+            }
+        },
+        close: function () {
+            createForm[ 0 ].reset();
+            createFields.removeClass("ui-state-error");
+        }
+    });
+
+    createForm = createDialog.find("form").on("submit", function(event){
+        event.preventDefault();
+        clickCreateAttendee();
+    });
+
+    $('#create-attendee').button.on("click", function () {
+        createDialog.dialog("open");
+    });
+
+    editDialog = $('#editDialog').dialog({
+        autoOpen: false,
+        height: 540,
+        width: 420,
+        modal: true,
+        buttons: {
+            "Confirm": clickEditAttendee,
+            Cancel: function () {
+                editDialog.dialog("close");
+            }
+        },
+        close: function () {
+            editForm[ 0 ].reset();
+            editFields.removeClass("ui-state-error");
+        }
+    });
+
+    editForm = editDialog.find("form").on("submit", function(event){
+        event.preventDefault();
+        clickEditAttendee();
+    });
+
+
     refresh();
 });
 
@@ -379,32 +434,6 @@ var createDialog;
 // Variable specifying the submit form
 var createForm;
 
-createDialog = $('#creationDialog').dialog({
-    autoOpen: false,
-    height: 540,
-    width: 420,
-    modal: true,
-    buttons: {
-        "Confirm": clickCreateAttendee,
-        Cancel: function () {
-            createDialog.dialog("close");
-        }
-    },
-    close: function () {
-        createForm[ 0 ].reset();
-        createFields.removeClass("ui-state-error");
-    }
-});
-
-createForm = createDialog.find("form").on("submit", function(event){
-    event.preventDefault();
-    clickCreateAttendee();
-});
-
-$('#create-attendee').button.on("click", function () {
-    createDialog.dialog("open");
-});
-
 
 // Variables needed for the creation of a new attendee
 var newNameID = $('#createName'),
@@ -483,28 +512,6 @@ function clickCreateAttendee(){
 var editDialog, editForm;
 var editedAttendeeIndex;
 
-editDialog = $('#editDialog').dialog({
-    autoOpen: false,
-    height: 540,
-    width: 420,
-    modal: true,
-    buttons: {
-        "Confirm": clickEditAttendee,
-        Cancel: function () {
-            editDialog.dialog("close");
-        }
-    },
-    close: function () {
-        editForm[ 0 ].reset();
-        editFields.removeClass("ui-state-error");
-    }
-});
-
-editForm = editDialog.find("form").on("submit", function(event){
-    event.preventDefault();
-    clickEditAttendee();
-});
-
 var editNameID = $('#editName'),
     editMailID = $('#editEmail'),
     editGroupID = $('#editGroup'),
@@ -519,7 +526,7 @@ function clickEditAttendee(){
     if(checkValidData(editNameID, editMailID, editGroupID, editResidenceID, editFunctionID)){
         editDialog.dialog("close");
 
-        editAttendee(localAttendeeList[editedAttendeeIndex].ID,
+        editAttendee(editedAttendeeIndex,
             editNameID.val(),
             editMailID.val(),
             editGroupID.val(),

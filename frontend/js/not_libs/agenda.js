@@ -23,24 +23,25 @@ $( document ).ready(function() {
 
     CommunicationManager.send(packet, successAgendaReq, failAgendaReq);
 
-    function successAgendaReq(packet) {
-        if(packet.result === "Valid") {      
-            checkAdminStatus();
-            renderAgenda(packet.agenda, agendaContainer);
-        }
-    }
+});
 
-    function failAgendaReq() {
-        console.log("This method is called if something went wrong during the general communication.");
+function successAgendaReq(packet) {
+    if(packet.result === "Valid") {
+        checkAdminStatus();
+        renderAgenda(packet.agenda, agendaContainer);
     }
+}
 
-    });
+function failAgendaReq() {
+    console.log("This method is called if something went wrong during the general communication.");
+}
+
 
 
 
 /**
     This function displays an agenda
-    @param data : the agenda object (the parsed json string)
+    @param data - the agenda object (the parsed json string)
     @param 
 */
 function renderAgenda(data, parent) {
@@ -60,11 +61,12 @@ function renderAgenda(data, parent) {
     }
     
     /**
-    This function recurses in order to render nested agendas
-    @param agenda : the (sub)agenda object
-    @param parent : the DOM object to which this agenda should be appended
-    @param preOrder : the pre-order string of the agenda in the larger context
-    */
+     * This function calls itself recursively in order to render nested topics
+     *
+     * @param agenda - the (sub)agenda object
+     * @param parent - the DOM object to which this agenda should be appended
+     * @param preOrder - the pre-order string of the agenda in the larger context
+     */
     function createInner(agenda, parent, preOrder) {
         var li = generateAgendaRow(agenda.name, preOrder, fontSize).appendTo(parent);
 
@@ -83,18 +85,18 @@ function renderAgenda(data, parent) {
                 var child = agenda.subTopics.topics[i];
                 createInner(child, innerList,  preOrder+"."+(i+1));
             }
+        }
 
-            if(decreased){
-                fontSize += fontSizeDifference;
-            }
+        if(decreased){
+            fontSize += fontSizeDifference;
         }
 
         /**
-        This function renders an individual agenda row. Note that this method also specifies the event handlers
-        @param name : the name of the TOP
-        @param preorder : the id of the TOP
-        @param fontSize : the fontsize of the TOP. Allows nicer UIs
-        */
+         * This function renders an individual agenda row. Note that this method also specifies the event handlers
+         * @param name - the name of the TOP
+         * @param preorder - the id of the TOP
+         * @param fontSize - the fontsize of the TOP. Allows nicer UIs
+         */
         function generateAgendaRow(name, preorder, fontSize){
             return $(
                 '<li class = "agendaRow" style="font-size: '+fontSize+'px;">'+name+(window.isAdmin?
@@ -113,9 +115,9 @@ function renderAgenda(data, parent) {
     }
 
     /**
-    This function is used in the case the agenda is empty. 
-    It displays a nice message for attendees and provides a button which allows admins to upload a new agenda
-    */
+     * This function is used in the case the agenda is empty.
+     * It displays a nice message for attendees and provides a button which allows admins to upload a new agenda
+     */
     function createDefault(target){
        if(window.isAdmin) {$("<div class=\"row \">"+
 
@@ -140,15 +142,15 @@ function renderAgenda(data, parent) {
 
 
 /**
-This function allows admins to add new topics to the agenda
-@param preorder : the preorder addres at which the ademin wished to add a agenda point
-@param isSubtopic: used to differentiate whether or not the amin wished to create a topic by using the 
-'add topic' or the 'add subtopic' button. While this makes no difference for the request send it does lead to a 
-better UX.
-*/
+ * This function allows admins to add new topics to the agenda
+ * @param preorder - the preorder address at which the admin wished to add a agenda point
+ * @param isSubtopic - used to differentiate whether or not the admin wished to create a topic by using the
+ * 'add topic' or the 'add subtopic' button. While this makes no difference for the request send it does lead to a
+ * better UX.
+ */
 function append(preorder, isSubtopic){
     var split = (""+preorder).split(".");
-    var elem = split.pop()
+    var elem = split.pop();
     var newOrder = (parseInt(elem) +1);
     if(split.length !== 0){
         newOrder = split.join(".")+ "." + newOrder
@@ -161,7 +163,7 @@ function append(preorder, isSubtopic){
         res = prompt("Enter name of new topic");
     }
 
-    if(res){
+    if(res != null){
         const packet = new AddTopicRequestPacket(newOrder, res);
         CommunicationManager.send(packet, success, fail);
     }
@@ -182,9 +184,9 @@ function append(preorder, isSubtopic){
 }
 
 /**
-This function allows admins to remove (sub)topics
-@param preorder : the id of the topic the admins wish to remove
-*/
+ * This function allows admins to remove (sub)topics
+ * @param preorder - the id of the topic the admins wish to remove
+ */
 function remove(preorder){
 
     const packet = new RemoveTopicRequestPacket(preorder);
@@ -251,7 +253,6 @@ function edit(preorder){
     The result of the test is stored inside the 'isAdmin' field of the top level window object for later use (this minimizes the number of requests needed)
     The function also hiddes admin fields if necessary or redirects the user to the login page is the token is invalid
 */
-
 function checkAdminStatus(){
     const packet = new IsAdminRequestPacket();
 

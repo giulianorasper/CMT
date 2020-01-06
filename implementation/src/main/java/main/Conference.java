@@ -763,6 +763,16 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Get a list of unique groups existing i.e. there is
+     * an attendee with the corresponding group in the database
+     * @return groups
+     */
+    public List<String> getExistingGroups() {
+        //TODO implement
+        return null;
+    }
+
 
     /****************** The Voting Management Interface *********/
 

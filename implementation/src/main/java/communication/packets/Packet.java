@@ -16,8 +16,8 @@ public interface Packet {
     public PacketType getPacketType();
 
     /**
-     * Sends this packet through an open {@link WebSocket} connection.
-     * @param socket the socket to send data through
+     * Sends this packet through an open {@link Connection}.
+     * @param connection the connection to send data through
      */
-    public void send(Connection socket);
+    public void send(Connection connection);
 }

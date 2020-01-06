@@ -11,6 +11,10 @@ import voting.*;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This packet can be used by an admin to edit an existing voting. This packet is refused if the voting already started or ended.
+ * Responds with a {@link communication.packets.BasePacket}.
+ */
 public class EditVotingRequestPacket extends AuthenticatedRequestPacket {
 
     private int id;
@@ -18,6 +22,12 @@ public class EditVotingRequestPacket extends AuthenticatedRequestPacket {
     private List<String> options;
     private int duration;
 
+    /**
+     *
+     * @param question the new question
+     * @param options the new options
+     * @param duration the new duration in seconds
+     */
     public EditVotingRequestPacket(String question, List<String> options, int duration) {
         super(PacketType.EDIT_VOTING_REQUEST);
         this.question = question;

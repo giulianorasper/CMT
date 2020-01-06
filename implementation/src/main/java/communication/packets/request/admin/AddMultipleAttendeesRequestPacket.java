@@ -10,10 +10,16 @@ import user.Attendee;
 
 import java.util.List;
 
+/**
+ * This packet can be used by an admin to add multiple attendee's to the conference at once. Responds with a {@link communication.packets.BasePacket}.
+ */
 public class AddMultipleAttendeesRequestPacket extends AuthenticatedRequestPacket {
 
     private List<SimpleAttendee> attendees;
 
+    /**
+     * @param attendees A list of {@link SimpleAttendee}'s, a raw data object for attendee data
+     */
     public AddMultipleAttendeesRequestPacket(List<SimpleAttendee> attendees) {
         super(PacketType.ADD_MULTIPLE_ATTENDEES_REQUEST);
         this.attendees = attendees;

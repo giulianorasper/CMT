@@ -13,7 +13,7 @@ import org.java_websocket.WebSocket;
 import java.util.List;
 
 /**
- * This packet handles an add topic request from an admin and responds with a general {@link BasePacket}.
+ * This packet can be used by an admin to add a topic to the agenda. Responds with a {@link BasePacket}.
  */
 public class AddTopicRequestPacket extends AuthenticatedRequestPacket {
 

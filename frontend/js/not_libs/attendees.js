@@ -36,22 +36,6 @@ var localAttendeeList;
 // ID the attendeeList will be pasted into
 const attendeeContainer = $('#attendeeList');
 
-// Variables needed for the creation of a new attendee
-var dialog, form,
-    newNameID = $('#createName'),
-    newMailID = $('#createEmail'),
-    newGroupID = $('#createGroup'),
-    newResidenceID = $('#createResidence'),
-    newFunctionID = $('#createFnctn'),
-    requiredFields = $( [] ).add(newNameID).add(newMailID).add(newGroupID).add(newResidenceID).add(newFunctionID),
-    tipField = $(".validateTips");
-
-//Mail regex from https://www.w3resource.com/javascript/form/email-validation.php
-const mailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-//Name Regex just excluding letters that are not allowed for usernames
-const nameRegex = /[^\$%\^\*£=~@_]/;
-
 
 //----------------------------------- SENDING REQUEST AND SORTING METHODS ----------------------------------------------
 
@@ -140,6 +124,20 @@ function generateAttendeeList(attendeeList){
     //Generates new list content
     for (var currIndex = 0; currIndex < attendeeList.length; currIndex++){
         generateAttendee(currIndex, attendeeList[currIndex]).appendTo(attendeeContainer);
+
+        //giving the edit button of the just created attendee functionality
+        $('#editAttendee' + currIndex).on("click", function () {
+            editedAttendeeIndex = this.attr("data-attendee-id");
+            const currAttendee = attendeeList[editedAttendeeIndex];
+
+            editNameID.val(currAttendee.name);
+            editMailID.val(currAttendee.email);
+            editGroupID.val(currAttendee.group);
+            editResidenceID.val(currAttendee.residence);
+            editFunctionID.val(currAttendee.function);
+
+            editDialog.dialog("open");
+        });
     }
 
 }
@@ -166,7 +164,7 @@ function generateAttendee(listIndex, attendee){
         '<h4 style="color:grey;">Email: '+attendee.email+'</h4>'+
         '<h4 style="color:grey;">Residence: '+attendee.residence+'</h4>'+
         '<span style="display:inline-block; width: 30px;">' +
-        '</span><span class="glyphicon glyphicon-pencil" id="editAttendee ' + listIndex + '"></span>'+
+        '</span><span class="glyphicon glyphicon-pencil" id="editAttendee' + listIndex + '" data-attendee-id="' + listIndex + '"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
         '</span><span class="glyphicon glyphicon-log-in" onclick="getNewAttendeePasswordGlobal(' + listIndex +')"></span>'+
         '<span style="display:inline-block; width: 30px;">' +
@@ -373,7 +371,55 @@ function changeSort(){
 }
 
 
-//--------------------------------- CREATE/EDIT DIALOG WINDOW FUNCTIONALITY --------------------------------------------
+//------------------------------------ CREATE DIALOG WINDOW FUNCTIONALITY ----------------------------------------------
+
+// Variable specifying the dialog window
+var createDialog;
+
+// Variable specifying the submit form
+var createForm;
+
+createDialog = $('#creationDialog').dialog({
+    autoOpen: false,
+    height: 540,
+    width: 420,
+    modal: true,
+    buttons: {
+        "Confirm": clickCreateAttendee,
+        Cancel: function () {
+            createDialog.dialog("close");
+        }
+    },
+    close: function () {
+        createForm[ 0 ].reset();
+        createFields.removeClass("ui-state-error");
+    }
+});
+
+createForm = createDialog.find("form").on("submit", function(event){
+    event.preventDefault();
+    clickCreateAttendee();
+});
+
+$('#create-attendee').button.on("click", function () {
+    createDialog.dialog("open");
+});
+
+
+// Variables needed for the creation of a new attendee
+var newNameID = $('#createName'),
+    newMailID = $('#createEmail'),
+    newGroupID = $('#createGroup'),
+    newResidenceID = $('#createResidence'),
+    newFunctionID = $('#createFnctn'),
+    createFields = $( [] ).add(newNameID).add(newMailID).add(newGroupID).add(newResidenceID).add(newFunctionID),
+    tipField = $(".validateTips");
+
+//Mail regex from https://www.w3resource.com/javascript/form/email-validation.php
+const mailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+//Name Regex just excluding letters that are not allowed for usernames
+const nameRegex = /[^\$%\^\*£=~@_]/;
 
 function updateTips(newText){
     tipField.text(newText).addClass("ui-state-highlight");
@@ -400,72 +446,85 @@ function checkRegex(checkedObject, regex, message){
     return true;
 }
 
-function createUser(){
+function checkValidData(nameID, mailID, groupID, residenceID, functionID, fields){
     var validUser = true;
-    requiredFields.removeClass("ui-state-error");
+    fields.removeClass("ui-state-error");
 
-    validUser = validUser && checkLength(newNameID, "name", 5, 64);
-    validUser = validUser && checkLength(newMailID, "email", 6, 64);
-    validUser = validUser && checkLength(newGroupID, "group", 1, 64);
-    validUser = validUser && checkLength(newResidenceID, "residence", 1, 256);
-    validUser = validUser && checkLength(newFunctionID, "function", 1, 64);
+    validUser = validUser && checkLength(nameID, "name", 5, 64);
+    validUser = validUser && checkLength(mailID, "email", 6, 64);
+    validUser = validUser && checkLength(groupID, "group", 1, 64);
+    validUser = validUser && checkLength(residenceID, "residence", 1, 256);
+    validUser = validUser && checkLength(functionID, "function", 1, 64);
 
-    validUser = validUser && checkRegex(newNameID, nameRegex, "Name mustn't contain $%^*£=~@_");
-    validUser = validUser && checkRegex(newMailID, mailRegex, "Invalid mail. Example for a valid mail: user@domain.com");
+    validUser = validUser && checkRegex(nameID, nameRegex, "Name mustn't contain $%^*£=~@_");
+    validUser = validUser && checkRegex(mailID, mailRegex, "Invalid mail. Example for a valid mail: user@domain.com");
 
-    if(validUser){
-        console.log("worked");
+    return validUser;
+}
+
+/**
+ * Gets called when clicking
+ */
+function clickCreateAttendee(){
+    if(checkValidData(newNameID, newMailID, newGroupID, newResidenceID, newFunctionID)){
+        createDialog.dialog("close");
+
+        createAttendee(newNameID.val(),
+            newMailID.val(),
+            newGroupID.val(),
+            newResidenceID.val(),
+            newFunctionID.val());
     }
 }
 
 
-/* function clickCreate(event){
-    //TODO make this prettier than just using five prompts
+//------------------------------------- EDIT DIALOG WINDOW FUNCTIONALITY -----------------------------------------------
 
-    //Reloading gets prevented
+var editDialog, editForm;
+var editedAttendeeIndex;
+
+editDialog = $('#editDialog').dialog({
+    autoOpen: false,
+    height: 540,
+    width: 420,
+    modal: true,
+    buttons: {
+        "Confirm": clickEditAttendee,
+        Cancel: function () {
+            editDialog.dialog("close");
+        }
+    },
+    close: function () {
+        editForm[ 0 ].reset();
+        editFields.removeClass("ui-state-error");
+    }
+});
+
+editForm = editDialog.find("form").on("submit", function(event){
     event.preventDefault();
+    clickEditAttendee();
+});
 
-    const name = prompt("Enter Name of the Attendee:");
-    if(name === null){ return; }
+var editNameID = $('#editName'),
+    editMailID = $('#editEmail'),
+    editGroupID = $('#editGroup'),
+    editResidenceID = $('#editResidence'),
+    editFunctionID = $('#editFnctn'),
+    editFields = $( [] ).add(editNameID).add(editMailID).add(editGroupID).add(editResidenceID).add(editFunctionID);
 
-    const email = prompt("Enter Email of the Attendee:");
-    if(email === null){ return; }
+/**
+ *
+ */
+function clickEditAttendee(){
+    if(checkValidData(editNameID, editMailID, editGroupID, editResidenceID, editFunctionID)){
+        editDialog.dialog("close");
 
-    const group = prompt("Enter Group of the Attendee:");
-    if(group === null){ return; }
-
-    const residence = prompt("Enter Residence of the Attendee:");
-    if(residence === null){ return; }
-
-    const fnctn = prompt("Enter Function of the Attendee:");
-    if(fnctn === null){ return; }
-
-    //console.log("Data: " + name + " " + email + " " + group + " " + residence + " " + fnctn);
-
-    createAttendee(name, email, group, residence, fnctn);
+        editAttendee(localAttendeeList[editedAttendeeIndex].ID,
+            editNameID.val(),
+            editMailID.val(),
+            editGroupID.val(),
+            editResidenceID.val(),
+            editFunctionID.val());
+    }
 }
-
-function clickEdit(event, attendeeID){
-    //TODO make this prettier than just using five prompts
-
-    //Reloading gets prevented
-    event.preventDefault();
-
-    const name = prompt("Enter new Name of the Attendee:");
-    if(name === null){ return; }
-
-    const email = prompt("Enter new Email of the Attendee:");
-    if(email === null){ return; }
-
-    const group = prompt("Enter new Group of the Attendee:");
-    if(group === null){ return; }
-
-    const residence = prompt("Enter new Residence of the Attendee:");
-    if(residence === null){ return; }
-
-    const fnctn = prompt("Enter new Function of the Attendee:");
-    if(fnctn === null){ return; }
-
-    editAttendee(attendeeID, name, email, group, residence, fnctn);Did 
-} */
 

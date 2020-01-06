@@ -142,6 +142,9 @@ public class CommunicationHandler {
                 case GET_ATTENDEE_PASSWORD_REQUEST:
                     pack = gson.fromJson(message, GetAttendeePasswordRequestPacket.class);
                     break;
+                case GET_EXISTING_GROUPS_REQUEST:
+                    pack = gson.fromJson(message, GetExistingGroupsRequestPacket.class);
+                    break;
                 case GET_VOTINGS_REQUEST:
                     pack = gson.fromJson(message, GetVotingsRequestPacket.class);
                     break;

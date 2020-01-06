@@ -18,7 +18,7 @@ public abstract class RequestPacket extends BasePacket {
      * A method which is called on any incoming packet.
      * Each subclass calls this method to handle it's associated request properly.
      * @param conference An {@link Conference} which enables handling the request by calling provided backend methods.
-     * @param webSocket An {@link Connection} to send an {@link ResponsePacket} to if required.
+     * @param connection An {@link Connection} to send an {@link ResponsePacket} to if required.
      */
-    public abstract void handle(Conference conference, Connection webSocket);
+    public abstract void handle(Conference conference, Connection connection);
 }

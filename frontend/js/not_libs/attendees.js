@@ -30,6 +30,7 @@ $(document).ready( function() {
 
 //By default, always sort by attendee Name
 var sortingRelation = 'attendeeName';
+const attendeeContainer = $('#attendeeList');
 
 
 //----------------------------------- SENDING REQUEST AND SORTING METHODS ----------------------------------------------
@@ -99,12 +100,16 @@ function refresh(){
     updateAttendeeList();
 }
 
-
+/**
+ * Inserts the list of attendees into the ID given by the global variable {@link attendeeContainer }, in a tabular format.
+ * Calls {@link generateAttendee } for each attendee inside the given list to get the HTML code for the table entry of that
+ * particular attendee.
+ *
+ * @param attendeeList - Current list of attendees that shall be pasted inside the table
+ */
 function generateAttendeeList(attendeeList){
 
     //console.log(attendeeList);
-
-    const attendeeContainer = $('#attendeeList');
 
     //Replaces old list content with empty HTML
     $('#attendeeList').empty();
@@ -116,7 +121,13 @@ function generateAttendeeList(attendeeList){
 
 }
 
-
+/**
+ * Gets called by {@link generateAttendeeList } to deliver the data of the given attendee in a certain HTML format.
+ * Each call creates one table entry.
+ *
+ * @param attendee that shall be printed
+ * @return {jQuery|HTMLElement} - HTML code for the table entry of that attendee
+ */
 function generateAttendee(attendee){
     return  $('<tr data-toggle="collapse" data-target="#user_accordion'+ attendee.ID +'" class="clickable">'+
         '<td>'+attendee.name+'</td>'+

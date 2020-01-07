@@ -17,14 +17,21 @@ import utils.Pair;
  */
 public class LoginRequestPacket extends RequestPacket {
 
+
+
+    private String username;
+    private String password;
+
+    /**
+     *
+     * @param username the username to login with
+     * @param password the password to use for login
+     */
     public LoginRequestPacket(String username, String password) {
         super(PacketType.LOGIN_REQUEST);
         this.username = username;
         this.password = password;
     }
-
-    private String username;
-    private String password;
 
     @Override
     public void handle(Conference conference, Connection webSocket) {

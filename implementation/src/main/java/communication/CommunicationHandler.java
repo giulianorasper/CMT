@@ -38,6 +38,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * A handler called from a {@link CommunicationManager} to handle incoming messages.
+ */
 public class CommunicationHandler {
 
     private Gson gson = new Gson();
@@ -46,8 +49,18 @@ public class CommunicationHandler {
     private int timeoutAfter;
     private boolean debugging;
     private int maxUserConnections;
+    /**
+     * A service which disconnects connections which exceeded the timeout.
+     */
     private  ScheduledExecutorService connectionLimitationService;
 
+    /**
+     *
+     * @param conference the conference the handler operates on
+     * @param timeoutAfter the timout until unauthorized connections should be closed
+     * @param maxUserConnections the maximum amount of connections per user
+     * @param debugging if this is a debugging instance
+     */
     public CommunicationHandler(Conference conference, int timeoutAfter, int maxUserConnections, boolean debugging) {
         this.conference = conference;
         this.timeoutAfter = timeoutAfter;
@@ -71,6 +84,11 @@ public class CommunicationHandler {
         }, 1,1, TimeUnit.SECONDS);
     }
 
+    /**
+     * Handles incoming messages of the type (JSON-)String
+     * @param conn the connections from which the message was received
+     * @param message the (JSON-)String
+     */
     public void onMessage(Connection conn, String message) {
         try {
 
@@ -169,14 +187,8 @@ public class CommunicationHandler {
                 case RENAME_TOPIC_REQUEST:
                     pack = gson.fromJson(message, RenameTopicRequestPacket.class);
                     break;
-                case REORDER_TOPIC_REQUEST:
-                    pack = gson.fromJson(message, ReorderTopicRequestPacket.class);
-                    break;
                 case SET_ATTENDEE_PRESENT_STATUS_REQUEST:
                     pack = gson.fromJson(message, SetAttendeePresentStatusRequestPacket.class);
-                    break;
-                case SET_REQUEST_APPROVAL_STATUS:
-                    pack = gson.fromJson(message, SetRequestApprovalStatusRequestPacket.class);
                     break;
                 case SET_REQUEST_STATUS_REQUEST:
                     pack = gson.fromJson(message, SetRequestStatusRequestPacket.class);
@@ -242,6 +254,11 @@ public class CommunicationHandler {
         }
     }
 
+    /**
+     * Handles incoming messages of binary type
+     * @param conn the connections from which the message was received
+     * @param file containing the binary data
+     */
     public void onMessage(Connection conn, File file) {
         UpdateFileRequestPacket packet = UpdateFileRequestPacket.getRequestFromConnectionIfExists(conn);
         if(packet != null) {
@@ -252,6 +269,12 @@ public class CommunicationHandler {
         }
     }
 
+    /**
+     * A method indicating weather a connection may transfer binary data. This can be used to interrupt a connection
+     * before binary data is even received and therefore avoid traffic.
+     * @param conn the connection from which the binary data is received
+     * @return if the connection is allowed to send binary data
+     */
     public boolean mayTransferBinary(Connection conn) {
         return UpdateFileRequestPacket.existingRequest(conn);
     }
@@ -259,6 +282,10 @@ public class CommunicationHandler {
     private ReentrantLock timeoutLock = new ReentrantLock();
     private HashMap<Connection, Long> timeout = new HashMap<>();
 
+    /**
+     * A method registering a connection being established causing the side effect of adding a timeout timestamp.
+     * @param conn the connection
+     */
     public void onRegistered(Connection conn) {
         try {
             timeoutLock.lock();
@@ -268,6 +295,10 @@ public class CommunicationHandler {
         }
     }
 
+    /**
+     * A method unregistering a connection being disconnected causing the timeout timestamp to be removed.
+     * @param conn
+     */
     public void onUnregistered(Connection conn) {
         try {
             timeoutLock.lock();
@@ -277,6 +308,9 @@ public class CommunicationHandler {
         }
     }
 
+    /**
+     * A method called to handle a proper shutdown of communication handling.
+     */
     public void stop() {
         connectionLimitationService.shutdown();
     }

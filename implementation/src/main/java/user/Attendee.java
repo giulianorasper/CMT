@@ -72,7 +72,7 @@ public class Attendee extends User {
     }
 
     /**
-     * Logout user -> user isn't present in the conference.
+     * Logout user - user isn't present in the conference.
      */
     public void logout(){
         this.present = false;

@@ -3,12 +3,17 @@ package communication.packets.request;
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.Packet;
+import communication.packets.RequestPacket;
 import communication.packets.response.GetConferenceDataResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
-public class GetConferenceDataRequestPacket extends AuthenticatedRequestPacket {
+/**
+ * This packet can be used by anyone (no valid token required) to retrieve general information on the conference.
+ * Responds with a {@link GetConferenceDataResponsePacket}.
+ */
+public class GetConferenceDataRequestPacket extends RequestPacket {
 
     public GetConferenceDataRequestPacket() {
         super(PacketType.CONFERENCE_DATA_REQUEST);

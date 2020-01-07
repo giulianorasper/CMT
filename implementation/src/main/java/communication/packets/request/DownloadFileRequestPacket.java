@@ -13,10 +13,18 @@ import utils.Pair;
 import java.io.File;
 import java.util.List;
 
+/**
+ * This packet can be used by an attendee to request a file (document) download.
+ * Responds with a {@link DownloadFileResponsePacket}.
+ */
 public class DownloadFileRequestPacket extends AuthenticatedRequestPacket {
 
     private String name;
 
+    /**
+     *
+     * @param name the name of the file to download
+     */
     public DownloadFileRequestPacket(String name) {
         super(PacketType.DOWNLOAD_FILE_REQUEST);
         this.name = name;

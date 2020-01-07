@@ -10,7 +10,9 @@ import request.ChangeRequest;
 import request.Request;
 import request.SpeechRequest;
 
-
+/**
+ * This packet can be used by an admin to
+ */
 public class SetRequestStatusRequestPacket extends AuthenticatedRequestPacket {
 
     private int id;

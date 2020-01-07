@@ -13,6 +13,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * This packet can be used by an admin to update a file (document) i.e. a creation, replacement of a file.
+ * There is no actual file data contained in this packet since on success, this packet initiates a protocol change
+ * to communicate using bytes instead of packets. After that, the file bytes may be sent.
+ * Responds with a {@link communication.packets.BasePacket} with the {@link PacketType#UPDATE_FILE_RESPONSE} after the protocol change
+ * and with a {@link ValidResponsePacket} after the actual file upload completed.
+ */
 public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
 
     private static ReentrantLock lock = new ReentrantLock();

@@ -10,6 +10,10 @@ public class IsAdminResponsePacket extends ResponsePacket {
     @Expose
     private boolean admin;
 
+    /**
+     *
+     * @param admin true iff the requester is an admin
+     */
     public IsAdminResponsePacket(boolean admin) {
         super(PacketType.IS_ADMIN_RESPONSE, RequestResult.Valid);
         this.admin = admin;

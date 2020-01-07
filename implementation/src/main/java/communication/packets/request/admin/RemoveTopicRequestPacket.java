@@ -11,7 +11,7 @@ import main.Conference;
 import org.java_websocket.WebSocket;
 
 /**
- * This packet handles a remove topic request from an admin and responds with a general {@link BasePacket}.
+ * This packet can be used by an admin to remove a topic from the agenda. Responds with a general {@link BasePacket}.
  */
 public class RemoveTopicRequestPacket extends AuthenticatedRequestPacket {
 

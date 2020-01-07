@@ -6,6 +6,11 @@ import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
 
+/**
+ * This packet can be used by an admin to logout every attendee i.e. it invalidates all passwords and tokens of
+ * attendees which are not admins. Responds with a {@link communication.packets.BasePacket}.
+ */
+//TODO dont logout admins
 public class LogoutAllAttendeesRequestPacket extends AuthenticatedRequestPacket {
 
     public LogoutAllAttendeesRequestPacket() {

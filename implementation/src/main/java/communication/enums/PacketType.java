@@ -8,7 +8,7 @@ import communication.packets.ResponsePacket;
 /**
  * This enum contains all types of packets as String representation.
  * This String is used on the server-side to identify a {@link Packet} before instantiating the corresponding class.
- * However, for increased code flexibility the types includes those of {@link ResponsePacket}'s despite this information is currently not needed on the client-side.
+ * However, for increased code flexibility the types includes those of {@link ResponsePacket}'.
  */
 public enum PacketType {
     LOGIN_REQUEST, LOGIN_RESPONSE, PERSONAL_DATA_REQUEST, PERSONAL_DATA_RESPONSE, GET_AGENDA_REQUEST, GET_AGENDA_RESPONSE, ADD_VOTE_REQUEST, ADD_VOTE_RESPONSE,

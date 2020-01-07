@@ -67,6 +67,7 @@ public class CommunicationManagerFactory {
         String pathname = "pem";
         File cert = new File(pathname + File.separator + "cert.pem");
         File key = new File(pathname + File.separator + "privkey.pem");
+        if(!cert.getParentFile().exists()) cert.getParentFile().mkdir();
         CommunicationHandler handler = new CommunicationHandler(conference, timeoutAfter, maxUserConnections, debugging);
         CommunicationManager manager = new NettyCommunicationManagerFactory(handler, port, cert, key).create();
         if(!manager.isSecure()) {
@@ -75,6 +76,9 @@ public class CommunicationManagerFactory {
                 System.out.println("No certificate found. Sever will be started in not encrypted debugging mode!");
             } else {
                 System.out.println("Could not retrieve certificate. The server can not be started for security reasons.");
+                System.out.println("To fix this issue provide valid cert and privkey files at following locations:");
+                System.out.println("- " + cert.getPath());
+                System.out.println("- " + key.getPath());
                 System.exit(0);
             }
         }

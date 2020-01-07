@@ -8,6 +8,10 @@ import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
+/**
+ * This packet can be used by an user to request if their account is an admin.
+ * Responds with an {@link IsAdminResponsePacket}.
+ */
 public class IsAdminRequestPacket extends AuthenticatedRequestPacket {
 
     public IsAdminRequestPacket() {

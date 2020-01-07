@@ -15,6 +15,10 @@ public class GetAllRequestsResponsePacket extends ResponsePacket {
     @Expose
     List<Request> requests;
 
+    /**
+     *
+     * @param requests a list of all requests i.e. request of speech and request of change
+     */
     public GetAllRequestsResponsePacket(List<Request> requests) {
         super(PacketType.GET_ALL_REQUESTS_RESPONSE, RequestResult.Valid);
         ArrayList<Request> result = new ArrayList<>();

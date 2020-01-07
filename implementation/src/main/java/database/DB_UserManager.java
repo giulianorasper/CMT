@@ -68,6 +68,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                     if (!table.getString("password").equals(password)) {
                         return new Pair<>(LoginResponse.WrongPassword, null);
                     } else {
+                        setUserPresentValue(userName, true);
                         return new Pair<>(LoginResponse.Valid, table.getString("token"));
                     }
                 }
@@ -79,6 +80,29 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         } finally {
             this.closeConnection();
         }
+    }
+
+    /**
+     * If a user login is valid the present value of the user is set to true.
+     * @param userName userName of the user
+     * @param present new present value of the user
+     * @return true, iff the new present value is stored correctly in DB
+     */
+    public boolean setUserPresentValue(String userName, Boolean present) {
+        this.openConnection();
+        String sqlstatement = "UPDATE users SET present = ?  WHERE username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setBoolean(1, present);
+            stmt.setString(2, userName);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("An exception occurred while updating Present value of  a user.");
+            System.err.println(e.getMessage());
+            return false;
+        } finally {
+            this.closeConnection();
+        }
+        return true;
     }
 
     /**
@@ -180,11 +204,12 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public boolean logoutUser(int userID) {
         this.openConnection();
-        String sqlstatement = "UPDATE users SET password = ? , token = ?  WHERE userID = ?";
+        String sqlstatement = "UPDATE users SET password = ?, token = ?, present = ?  WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setNull(1, java.sql.Types.VARCHAR);
             stmt.setNull(2, java.sql.Types.VARCHAR);
-            stmt.setInt(3, userID);
+            stmt.setBoolean(3, false);
+            stmt.setInt(4, userID);
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An exception occurred while logging out/invalidating a user.");

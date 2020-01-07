@@ -175,9 +175,6 @@ public class CommunicationHandler {
                 case SET_ATTENDEE_PRESENT_STATUS_REQUEST:
                     pack = gson.fromJson(message, SetAttendeePresentStatusRequestPacket.class);
                     break;
-                case SET_REQUEST_APPROVAL_STATUS:
-                    pack = gson.fromJson(message, SetRequestApprovalStatusRequestPacket.class);
-                    break;
                 case SET_REQUEST_STATUS_REQUEST:
                     pack = gson.fromJson(message, SetRequestStatusRequestPacket.class);
                     break;

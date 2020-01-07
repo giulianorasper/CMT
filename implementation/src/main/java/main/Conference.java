@@ -189,7 +189,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private void initUsers(){
         db_userManagement = new DB_UserManager(databasePath);
         db_userManagement.getAllAdmins().forEach(a -> admins.put(a.getID(), a));
-        db_userManagement.getAllUsers();
+        db_userManagement.getAllAttendees();
     }
 
     /**
@@ -302,7 +302,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             AtomicBoolean alreadyExists = new AtomicBoolean(false);
-            db_userManagement.getAllUsers().forEach(ad -> {
+            db_userManagement.getAllAttendees().forEach(ad -> {
                 if(ad.getID() == a.getID()){
                     alreadyExists.set(true);
                 }
@@ -323,7 +323,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             AtomicBoolean alreadyExists = new AtomicBoolean(false);
-            db_userManagement.getAllUsers().forEach(ad -> {
+            db_userManagement.getAllAttendees().forEach(ad -> {
                 if(ad.getID() == a.getID()){
                     alreadyExists.set(true);
                 }
@@ -462,7 +462,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public List<Attendee> getAllAttendees() {
         try{
             attendeeLock.lock();
-            return db_userManagement.getAllUsers();
+            return db_userManagement.getAllAttendees();
         }
         finally {
             attendeeLock.unlock();
@@ -640,7 +640,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             attendeeLock.lock();
             boolean success = true;
-            for (Attendee a : db_userManagement.getAllUsers()) {
+            for (Attendee a : db_userManagement.getAllAttendees()) {
                 a.logout();
                 success = success && db_userManagement.logoutUser(a.getID());
             }
@@ -666,7 +666,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             adminLock.lock();
             attendeeLock.lock();
             Pair<LoginResponse, String> response = db_userManagement.checkLogin(userName, password);
-            db_userManagement.getAllUsers().forEach(a -> System.out.println(a.getUserName()));
+            db_userManagement.getAllAttendees().forEach(a -> System.out.println(a.getUserName()));
             System.out.println(response.first() + ", " + response.second() + ", " + userName + ", " + password);
             if(response.first() != LoginResponse.Valid){
                 return new Pair<>(response.first(), null);

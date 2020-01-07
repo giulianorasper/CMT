@@ -164,7 +164,7 @@ public class UserManagementTests extends DatabaseTests {
         //Test creating and Adding more Admins and Attendees
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAttendee(stephan, "1111", "9999");
-        List<Attendee> attendees = dbGen.getAllUsers();
+        List<Attendee> attendees = dbGen.getAllAttendees();
         assertEquals(attendees.get(0).getID(),max.getID());
         assertEquals(attendees.get(1).getID(), stephan.getID());
 

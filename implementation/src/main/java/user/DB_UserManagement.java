@@ -122,7 +122,7 @@ public interface DB_UserManagement {
      *
      * @return a list of all {@link Attendee}s in the database.
      */
-    List<Attendee> getAllUsers();
+    List<Attendee> getAllAttendees();
 
     /**
      * Returns the {@link Attendee} with the given userID.

@@ -434,27 +434,29 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * @return a list of all {@link Attendee}s in the database.
      */
     @Override
-    public List<Attendee> getAllUsers() {
+    public List<Attendee> getAllAttendees() {
         this.openConnection();
         List<Attendee> users = new LinkedList<>();
-        String sqlstatement = "SELECT * FROM users";
-        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet table  = stmt.executeQuery()) {
-            while (table.next()) {
-                Attendee a = new Attendee(table.getString("fullname"),
-                                          table.getString("email"),
-                                          table.getString("username"),
-                                          table.getString("groups"),
-                                          table.getString("residence"),
-                                          table.getString("function"),
-                                          table.getInt("userID"));
-                if (table.getBoolean("present")) {
-                    a.attendedConference();
+        String sqlstatement = "SELECT * FROM users WHERE isAdmin = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setBoolean(1, false);
+            try (ResultSet table  = stmt.executeQuery()) {
+                while (table.next()) {
+                    Attendee attendee = new Attendee(table.getString("fullname"),
+                            table.getString("email"),
+                            table.getString("username"),
+                            table.getString("groups"),
+                            table.getString("residence"),
+                            table.getString("function"),
+                            table.getInt("userID"));
+                    if (table.getBoolean("present")) {
+                        attendee.attendedConference();
+                    }
+                    users.add(attendee);
                 }
-                users.add(a);
             }
         } catch (SQLException ex) {
-            System.err.println("An exception occurred while reading all attendees.");
+            System.err.println("An exception occurred while reading all admins.");
             System.err.println(ex.getMessage());
             return null;
         } finally {

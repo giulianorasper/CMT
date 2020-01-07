@@ -15,6 +15,10 @@ public class RemoveAttendeeRequestPacket extends AuthenticatedRequestPacket {
 
     private int id;
 
+    /**
+     *
+     * @param id the id of the attendee to be removed
+     */
     public RemoveAttendeeRequestPacket(int id) {
         super(PacketType.REMOVE_ATTENDEE_REQUEST);
         this.id = id;

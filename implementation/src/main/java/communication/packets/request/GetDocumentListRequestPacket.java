@@ -8,6 +8,10 @@ import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
+/**
+ * This packet can be used by an attendee to retrieve a list of available files (documents).
+ * Responds with a {@link GetDocumentListResponsePacket}.
+ */
 public class GetDocumentListRequestPacket extends AuthenticatedRequestPacket {
 
     public GetDocumentListRequestPacket() {

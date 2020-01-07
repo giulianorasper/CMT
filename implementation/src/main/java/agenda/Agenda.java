@@ -96,6 +96,7 @@ public class Agenda implements AgendaObservable{
      * @param pos Position
      * @return true iff reorder is successful
      */
+    @Deprecated
     boolean reOrderTopic(Topic t, int pos) {
         return t.moveToNewAgenda(this, pos);
     }

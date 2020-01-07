@@ -12,7 +12,8 @@ import org.java_websocket.WebSocket;
 import voting.Voting;
 
 /**
- * This packet handles an attendee requesting to submit their vote in an ongoing voting and on success responds with a general {@link communication.packets.ResponsePacket}.
+ * This packet can be used by an attendee to submit their vote for an ongoing voting.
+ * Responds with a {@link communication.packets.ResponsePacket}.
  */
 public class AddVoteRequestPacket extends AuthenticatedRequestPacket {
 

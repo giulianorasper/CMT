@@ -11,7 +11,9 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 
-
+/**
+ * @see CommunicationManager
+ */
 public final class NettyCommunicationManager implements CommunicationManager {
 
     EventLoopGroup bossGroup = new NioEventLoopGroup(1);

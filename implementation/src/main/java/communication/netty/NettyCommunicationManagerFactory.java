@@ -8,6 +8,9 @@ import io.netty.handler.ssl.SslContextBuilder;
 import javax.net.ssl.SSLException;
 import java.io.File;
 
+/**
+ * A factory for creating a {@link NettyCommunicationManager}.
+ */
 public class NettyCommunicationManagerFactory {
 
     CommunicationHandler handler;
@@ -15,6 +18,13 @@ public class NettyCommunicationManagerFactory {
     File cert;
     File key;
 
+    /**
+     *
+     * @param handler the handler managing incoming requests
+     * @param port the port to be used for communication
+     * @param cert a cert file used for secure communication
+     * @param key a private key file used for secure communication
+     */
     public NettyCommunicationManagerFactory(CommunicationHandler handler, int port, File cert, File key) {
         this.handler = handler;
         this.port = port;
@@ -22,6 +32,10 @@ public class NettyCommunicationManagerFactory {
         this.key = key;
     }
 
+    /**
+     *
+     * @return a secure {@link CommunicationManager} if valid cert and key files were provided, otherwise an insecure {@link CommunicationManager}
+     */
     public CommunicationManager create() {
         SslContext sslContext = null;
         try {

@@ -13,6 +13,9 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 
 import java.io.File;
 
+/**
+ * A websocket server which clients can use to communicate with the backend.
+ */
 public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel> {
 
     private static final String WEBSOCKET_PATH = "/websocket";
@@ -21,6 +24,11 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
     private final SslContext sslContext;
     private CommunicationHandler handler;
 
+    /**
+     *
+     * @param sslContext the sslContext to be used for secure communication
+     * @param handler the handler processing incoming messages
+     */
     public WebSocketServerInitializer(SslContext sslContext, CommunicationHandler handler) {
         this.sslContext = sslContext;
         this.handler = handler;

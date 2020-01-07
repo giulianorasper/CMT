@@ -7,7 +7,10 @@ import communication.packets.response.admin.GetAllAttendeePasswordsResponsePacke
 import communication.wrapper.Connection;
 import main.Conference;
 
-
+/**
+ * This packet can be used by an admin to retrieve all attendees (users) passwords, including admins.
+ * Responds with an {@link GetAttendeePasswordRequestPacket}.
+ */
 public class GetAllAttendeePasswordsRequestPacket extends AuthenticatedRequestPacket {
 
     public GetAllAttendeePasswordsRequestPacket() {

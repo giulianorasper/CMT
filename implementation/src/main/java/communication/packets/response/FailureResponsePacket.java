@@ -10,6 +10,10 @@ public class FailureResponsePacket extends ResponsePacket {
     @Expose
     private String details;
 
+    /**
+     *
+     * @param details the details regarding the failure, null if there are none
+     */
     public FailureResponsePacket(String details) {
         super(PacketType.FAILURE, RequestResult.Failure);
         this.details = details;

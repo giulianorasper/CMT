@@ -20,8 +20,8 @@ public class Document implements Requestable {
     /**
      * Create  a new Document Object with Name and Path of the Document. In this constructor the Document is created the first time.
      * So the revisionNumber is automatically 1.
-     * @param path
-     * @param name
+     * @param path the path of the document
+     * @param name the name of the document
      */
     public Document(String path, String name) {
         file = new File(path);
@@ -31,9 +31,9 @@ public class Document implements Requestable {
     /**
      * Create a Document Object with Name, Path, Revisionnumber. This constructor is used for changed Document with specific
      * RevisionNumber.
-     * @param path
-     * @param name
-     * @param revisionNumber
+     * @param path the path of the document
+     * @param name the name of the document
+     * @param revisionNumber the revisionNumber of the document
      */
     public Document(String path, String name, int revisionNumber) {
         this(path, name);
@@ -42,7 +42,7 @@ public class Document implements Requestable {
 
     /**
      * Get Document Name.
-     * @return
+     * @return the name of the document
      */
     @Override
     public String getName() {
@@ -51,7 +51,7 @@ public class Document implements Requestable {
 
     /**
      * Get RevisionNumber of the Document.
-     * @return
+     * @return the revisionNumber of the document
      */
     public Integer getRevisionNumber() {
         try {
@@ -66,7 +66,7 @@ public class Document implements Requestable {
 
     /**
      * Get Path of the Document.
-     * @return
+     * @return the path of the document
      */
     public String getPath() {return this.file.getAbsolutePath();}
 

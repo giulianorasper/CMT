@@ -10,7 +10,8 @@ import communication.packets.response.GetActiveVotingResponsePacket;
 import voting.Voting;
 
 /**
- * This packet handles an attendee requesting the currently active voting and responds with an {@link GetActiveVotingResponsePacket}.
+ * This packet can be used by an attendee to retrieve the currently active voting.
+ * Responds with a {@link GetActiveVotingResponsePacket}.
  */
 public class GetActiveVotingRequestPacket extends AuthenticatedRequestPacket {
 

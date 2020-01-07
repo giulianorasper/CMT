@@ -17,6 +17,11 @@ public class SetAttendeePresentStatusRequestPacket extends AuthenticatedRequestP
     int id;
     boolean present;
 
+    /**
+     *
+     * @param id the id of the attendee for which the present status should be updated
+     * @param present if the attendee is present
+     */
     public SetAttendeePresentStatusRequestPacket(int id, boolean present) {
         super(PacketType.SET_ATTENDEE_PRESENT_STATUS_REQUEST);
         this.id = id;

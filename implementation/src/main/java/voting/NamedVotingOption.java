@@ -59,7 +59,7 @@ public class NamedVotingOption extends VotingOption {
 
     /**
      * Get UserIDs of User that vote for the NamedVotingOption.
-     * return List<UserIDs>
+     * @return a list of the user ids of the voters
      */
     @Override
     public List<Integer> getVoters() {

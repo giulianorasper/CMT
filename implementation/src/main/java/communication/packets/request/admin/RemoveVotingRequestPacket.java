@@ -17,6 +17,10 @@ public class RemoveVotingRequestPacket extends AuthenticatedRequestPacket {
 
     private int id;
 
+    /**
+     *
+     * @param id the id of the voting to be removed
+     */
     public RemoveVotingRequestPacket(int id) {
         super(PacketType.REMOVE_VOTING_REQUEST);
         this.id = id;

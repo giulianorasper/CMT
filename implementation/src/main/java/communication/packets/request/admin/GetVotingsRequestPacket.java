@@ -16,6 +16,10 @@ public class GetVotingsRequestPacket extends AuthenticatedRequestPacket {
 
     private int id;
 
+    /**
+     *
+     * @param id the id of the voting to be retrieved
+     */
     public GetVotingsRequestPacket(int id) {
         super(PacketType.GET_VOTINGS_REQUEST);
         this.id = id;

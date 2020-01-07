@@ -14,6 +14,7 @@ import org.java_websocket.WebSocket;
  * This packet can be used by an admin to reorder a topic of the agenda i.e. giving it a new position.
  * Responds with a {@link BasePacket}.
  */
+@Deprecated
 public class ReorderTopicRequestPacket extends AuthenticatedRequestPacket {
 
     private String oldPosition;

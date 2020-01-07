@@ -10,7 +10,8 @@ import communication.packets.response.PersonalDataResponsePacket;
 import user.Attendee;
 
 /**
- * This packet handles a personal data request from an attendee and responds with an {@link PersonalDataResponsePacket}.
+ * This packet can be used by an attendee to request their own personal data.
+ * Responds with a {@link PersonalDataResponsePacket}.
  */
 public class PersonalDataRequestPacket extends AuthenticatedRequestPacket {
 

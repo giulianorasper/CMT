@@ -58,7 +58,7 @@ public class Admin extends Attendee {
     }
 
     /**
-     * Logout admin -> admin isn't logedIn in the conference.
+     * Logout admin - admin isn't logedIn in the conference.
      */
     public void logout() {
         this.logedIn = false;

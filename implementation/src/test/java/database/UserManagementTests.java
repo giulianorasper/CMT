@@ -240,4 +240,29 @@ public class UserManagementTests extends DatabaseTests {
         assertTrue(groups.contains(stephan.getGroup()));
         assertTrue(groups.contains(alex.getGroup()));
     }
-}
+
+    @Test
+    public void getRightPresentValue() {
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee herbert = new Attendee("herbert Mustermann", "herbert@email.muster", "herbert.Mustermann", "RCDS", "Differten2", "Straßenkehrer2", 2);
+        Admin alex = new Admin("alex Mustermann", "alex@email.muster", "alex.Mustermann", "Groupe23", "Differten43", "Tester", 3);
+        Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
+        DB_UserManagement dbGen = this.getGeneralUserDB();
+
+        dbGen.addAttendee(max, "1234", "42");
+        dbGen.addAttendee(herbert, "123", "4245");
+        dbGen.addAdmin(alex, "1653", "42qwe");
+        dbGen.addAdmin(stephan, "1111", "9999");
+
+        dbGen.checkLogin(max.getUserName(), "1234");
+        dbGen.checkLogin(herbert.getUserName(), "1234");
+        dbGen.checkLogin(alex.getUserName(), "1653");
+        dbGen.checkLogin(stephan.getUserName(), "1234");
+
+        assertTrue(dbGen.getAttendeeData(max.getID()).isPresent());
+        assertFalse(dbGen.getAllAttendees().get(1).isPresent());
+        assertTrue(dbGen.getAdminData(alex.getID()).isPresent());
+        assertFalse(dbGen.getAllAdmins().get(0).isPresent());
+    }
+
+    }

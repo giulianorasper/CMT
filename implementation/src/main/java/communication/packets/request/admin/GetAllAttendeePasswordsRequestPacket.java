@@ -7,6 +7,7 @@ import communication.packets.response.admin.GetAllAttendeePasswordsResponsePacke
 import communication.wrapper.Connection;
 import main.Conference;
 
+
 public class GetAllAttendeePasswordsRequestPacket extends AuthenticatedRequestPacket {
 
     public GetAllAttendeePasswordsRequestPacket() {

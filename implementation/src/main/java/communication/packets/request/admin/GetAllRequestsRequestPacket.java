@@ -10,6 +10,10 @@ import request.Request;
 
 import java.util.List;
 
+/**
+ * This packet can be used by an admin to retrieve all requests i.e. requests of speech and request of change at once.
+ * Responds with an {@link GetAllRequestsResponsePacket}.
+ */
 public class GetAllRequestsRequestPacket extends AuthenticatedRequestPacket {
 
     public GetAllRequestsRequestPacket() {

@@ -9,6 +9,10 @@ import org.java_websocket.WebSocket;
 import voting.Voting;
 import voting.VotingStatus;
 
+/**
+ * This packet can be used by an admin to remove a voting which has not yet been started or ended.
+ * Responds with a {@link communication.packets.BasePacket}.
+ */
 public class RemoveVotingRequestPacket extends AuthenticatedRequestPacket {
 
     private int id;

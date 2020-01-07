@@ -9,6 +9,10 @@ import org.java_websocket.WebSocket;
 import request.ChangeRequest;
 import request.Request;
 
+/**
+ * This packet can be used by an admin to set the approval status of a request.
+ * Responds with a {@link communication.packets.BasePacket}.
+ */
 public class SetRequestApprovalStatusRequestPacket extends AuthenticatedRequestPacket {
 
     private int id;

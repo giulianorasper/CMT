@@ -11,7 +11,8 @@ import main.Conference;
 import org.java_websocket.WebSocket;
 
 /**
- * This packet handles a reorder topic request from an admin and responds with a general {@link BasePacket}.
+ * This packet can be used by an admin to reorder a topic of the agenda i.e. giving it a new position.
+ * Responds with a {@link BasePacket}.
  */
 public class ReorderTopicRequestPacket extends AuthenticatedRequestPacket {
 

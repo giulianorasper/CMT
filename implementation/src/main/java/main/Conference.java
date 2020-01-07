@@ -638,6 +638,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
      */
     @Override
     public boolean logoutAllUsers() {
+        //TODO dont logoutAdmins
         try{
             attendeeLock.lock();
             boolean success = true;

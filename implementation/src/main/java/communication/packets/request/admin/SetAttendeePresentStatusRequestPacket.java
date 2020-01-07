@@ -8,6 +8,10 @@ import main.Conference;
 import org.java_websocket.WebSocket;
 import user.Attendee;
 
+/**
+ * This packet can be used by an admin to set the present status of an attendee.
+ * Responds with a {@link communication.packets.BasePacket}.
+ */
 public class SetAttendeePresentStatusRequestPacket extends AuthenticatedRequestPacket {
 
     int id;

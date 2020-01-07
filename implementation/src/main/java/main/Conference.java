@@ -631,12 +631,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
-     * Logout All User from Conference. Invalidate all Token and Password in Database.
+     * Logout All Attendees from Conference. Invalidate all Token and Password in Database.
      * @return true iff logout was successful
      */
     @Override
-    public boolean logoutAllUsers() {
-        //TODO dont logoutAdmins
+    public boolean logoutAllAttendees() {
         try{
             attendeeLock.lock();
             boolean success = true;

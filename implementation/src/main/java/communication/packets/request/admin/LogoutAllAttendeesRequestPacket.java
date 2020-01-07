@@ -20,7 +20,7 @@ public class LogoutAllAttendeesRequestPacket extends AuthenticatedRequestPacket 
     @Override
     public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
-            conference.logoutAllUsers();
+            conference.logoutAllAttendees();
             new ValidResponsePacket().send(webSocket);
         }
     }

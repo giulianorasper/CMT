@@ -441,13 +441,17 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
              ResultSet table  = stmt.executeQuery()) {
             while (table.next()) {
-                users.add(new Attendee(table.getString("fullname"),
-                        table.getString("email"),
-                        table.getString("username"),
-                        table.getString("groups"),
-                        table.getString("residence"),
-                        table.getString("function"),
-                        table.getInt("userID")));
+                Attendee a = new Attendee(table.getString("fullname"),
+                                          table.getString("email"),
+                                          table.getString("username"),
+                                          table.getString("groups"),
+                                          table.getString("residence"),
+                                          table.getString("function"),
+                                          table.getInt("userID"));
+                if (table.getBoolean("present")) {
+                    a.attendedConference();
+                }
+                users.add(a);
             }
         } catch (SQLException ex) {
             System.err.println("An exception occurred while reading all attendees.");
@@ -480,6 +484,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                     att.getString("residence"),
                     att.getString("function"),
                     att.getInt("userID"));
+            if (att.getBoolean("present")) {
+                attendee.attendedConference();
+            }
         } catch (SQLException ex) {
             System.err.println("An exception occurred while trying to return an attendee.");
             System.err.println(ex.getMessage());
@@ -576,13 +583,17 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setBoolean(1, true);
             try (ResultSet table  = stmt.executeQuery()) {
                 while (table.next()) {
-                    admins.add(new Admin(table.getString("fullname"),
+                    Admin admin = new Admin(table.getString("fullname"),
                             table.getString("email"),
                             table.getString("username"),
                             table.getString("groups"),
                             table.getString("residence"),
                             table.getString("function"),
-                            table.getInt("userID")));
+                            table.getInt("userID"));
+                    if (table.getBoolean("present")) {
+                        admin.attendedConference();
+                    }
+                    admins.add(admin);
                 }
             }
         } catch (SQLException ex) {
@@ -617,6 +628,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                         adm.getString("residence"),
                         adm.getString("function"),
                         adm.getInt("userID"));
+                if (adm.getBoolean("present")) {
+                    admin.attendedConference();
+                }
             }
         } catch (SQLException ex) {
             System.err.println("An exception occurred while trying to return an admin.");

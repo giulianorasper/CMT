@@ -2,9 +2,6 @@ package user;
 
 public class Admin extends Attendee {
 
-    private boolean logedIn;
-
-
     /**
      * Construct an Admin object with the following attributes, especially with explicit ID:
      * @param name unique pre and lastname of the Admin
@@ -32,36 +29,4 @@ public class Admin extends Attendee {
     public Admin(String name, String email, String userName, String group, String residence, String function){
         this(name, email, userName, group, residence, function, nextFreeId());
     }
-
-    /**
-     * Check if a Admin is logged in in the conference.
-     * @return true iff Admin is logged in
-     */
-    public boolean isLogedIn() {
-        try {
-            lock.getReadAccess();
-            return logedIn;
-        }
-        catch (InterruptedException e){
-            return false;
-        }
-        finally {
-            lock.finishRead();
-        }
-    }
-
-    /**
-     * Change that admin is loggedIn in the Conderence.
-     */
-    public void login() {
-        this.logedIn = true;
-    }
-
-    /**
-     * Logout admin -> admin isn't logedIn in the conference.
-     */
-    public void logout() {
-        this.logedIn = false;
-    }
-
 }

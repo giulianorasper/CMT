@@ -179,15 +179,37 @@
     <form>
         <fieldset>
             <label for="createName">Name</label>
-            <input type="text" name="name" id="createName" value="Enter full name" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="name" id="createName" placeholder="Enter full name" class="text ui-widget-content ui-corner-all">
             <label for="createEmail">Email</label>
-            <input type="text" name="email" id="createEmail" value="Enter email address" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="email" id="createEmail" placeholder="Enter email address" class="text ui-widget-content ui-corner-all">
             <label for="createGroup">Group</label>
-            <input type="text" name="group" id="createGroup" value="Enter group" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="group" id="createGroup" placeholder="Enter group" class="text ui-widget-content ui-corner-all">
             <label for="createResidence">Residence</label>
-            <input type="text" name="residence" id="createResidence" value="Enter residence" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="residence" id="createResidence" placeholder="Enter residence" class="text ui-widget-content ui-corner-all">
             <label for="createFnctn">Function</label>
-            <input type="text" name="fnctn" id="createFnctn" value="Enter Function" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="fnctn" id="createFnctn" placeholder="Enter Function" class="text ui-widget-content ui-corner-all">
+
+            <!-- Allow form submission with keyboard without duplicating the dialog button -->
+            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
+    </form>
+</div>
+
+<div id="editDialog" title="Edit user">
+    <p class="validateTips">All form fields are required.</p>
+
+    <form>
+        <fieldset>
+            <label for="editName">Name</label>
+            <input type="text" name="name" id="editName" placeholder="Enter full name" class="text ui-widget-content ui-corner-all">
+            <label for="editEmail">Email</label>
+            <input type="text" name="email" id="editEmail" placeholder="Enter email address" class="text ui-widget-content ui-corner-all">
+            <label for="editGroup">Group</label>
+            <input type="text" name="group" id="editGroup" placeholder="Enter group" class="text ui-widget-content ui-corner-all">
+            <label for="editResidence">Residence</label>
+            <input type="text" name="residence" id="editResidence" placeholder="Enter residence" class="text ui-widget-content ui-corner-all">
+            <label for="editFnctn">Function</label>
+            <input type="text" name="fnctn" id="editFnctn" placeholder="Enter Function" class="text ui-widget-content ui-corner-all">
 
             <!-- Allow form submission with keyboard without duplicating the dialog button -->
             <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
@@ -230,7 +252,7 @@
 <script src="js/main.js"></script>
 
 <script type="module" src="js/not_libs/attendees.js"></script>
-            <script type="module" src="js/not_libs/general.js"></script>
+<script type="module" src="js/not_libs/general.js"></script>
 <!--<script type="module" src="js/not_libs/attendeeSorting.js"></script>-->
 
 </body>

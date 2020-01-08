@@ -769,8 +769,16 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
      * @return groups
      */
     public List<String> getExistingGroups() {
-        //TODO implement
-        return null;
+        try{
+            adminLock.lock();
+            attendeeLock.lock();
+            List<String> groups = db_userManagement.getAllGroupsFromUser();
+            return groups;
+        }
+        finally {
+            attendeeLock.unlock();
+            adminLock.unlock();
+        }
     }
 
 

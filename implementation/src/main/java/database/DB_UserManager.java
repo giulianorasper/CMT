@@ -68,6 +68,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                     if (!table.getString("password").equals(password)) {
                         return new Pair<>(LoginResponse.WrongPassword, null);
                     } else {
+
                         //update Presentvalue of the valid user
                         sqlstatement = "UPDATE users SET present = ?  WHERE username = ?";
                         try (PreparedStatement stmt2 = connection.prepareStatement(sqlstatement)) {
@@ -79,6 +80,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                             System.err.println(e.getMessage());
                             return null;
                         }
+
                         return new Pair<>(LoginResponse.Valid, table.getString("token"));
                     }
                 }
@@ -87,6 +89,30 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println("An exception occurred during the check of the login data.");
             System.err.println(ex.getMessage());
             return null;
+        } finally {
+            this.closeConnection();
+        }
+    }
+
+    /**
+     * Edit present value of a user.
+     * @param userName userName of the user
+     * @param present new present value
+     * @return true, iff the db stored the new present value correctly
+     */
+    @Override
+    public Boolean setPresentValueofUser(String userName, Boolean present) {
+        this.openConnection();
+        String sqlstatement = "UPDATE users SET present = ?  WHERE username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setBoolean(1, present);
+            stmt.setString(2, userName);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.err.println("An exception occurred while updating Present value of  a user.");
+            System.err.println(e.getMessage());
+            return false;
         } finally {
             this.closeConnection();
         }

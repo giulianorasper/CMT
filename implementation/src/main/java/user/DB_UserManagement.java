@@ -26,6 +26,14 @@ public interface DB_UserManagement {
     TokenResponse checkToken (String token);
 
     /**
+     * Edit present value of a user.
+     * @param userName userName of the user
+     * @param present new present value
+     * @return true, iff the db stored the new present value correctly
+     */
+    Boolean setPresentValueofUser(String userName, Boolean present);
+
+    /**
      * Converts a token to a user ID.
      *
      * @param token The token of the user.

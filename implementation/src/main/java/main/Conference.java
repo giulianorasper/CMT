@@ -781,6 +781,23 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Edit present value of a user.
+     * @param username username of the user
+     * @param present new present value of the user
+     * @return
+     */
+    public Boolean setPresentValue(String username, Boolean present) {
+        try {
+            adminLock.lock();
+            attendeeLock.lock();
+            return db_userManagement.setPresentValueofUser(username, present);
+        }
+        finally {
+            attendeeLock.unlock();
+            adminLock.unlock();
+        }
+    }
 
     /****************** The Voting Management Interface *********/
 

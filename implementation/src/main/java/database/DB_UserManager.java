@@ -189,12 +189,12 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * @return True, iff the operation was successful.
      */
     @Override
-    public boolean logoutUser(int userID) {
+    public boolean logoutUser(int userID, String pw, String token) {
         this.openConnection();
         String sqlstatement = "UPDATE users SET password = ?, token = ?, present = ?  WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
-            stmt.setNull(1, java.sql.Types.VARCHAR);
-            stmt.setNull(2, java.sql.Types.VARCHAR);
+            stmt.setString(1, pw);
+            stmt.setString(2, token);
             stmt.setBoolean(3, false);
             stmt.setInt(4, userID);
             stmt.executeUpdate();

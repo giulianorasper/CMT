@@ -402,7 +402,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             else{
                 admins.get(ID).logout();
             }
-            if(!(db_userManagement.logoutUser(ID))){
+            if(!(db_userManagement.logoutUser(ID, gen.generatePassword(), gen.generateToken()))){
                 throw new IllegalArgumentException("Admin can not be logged out for unknown reasons");
             }
         }
@@ -511,7 +511,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void logoutUser(int userID) {
         try{
             attendeeLock.lock();
-            if(!db_userManagement.logoutUser(userID)){
+            if(!db_userManagement.logoutUser(userID, gen.generatePassword(), gen.generateToken())){
                 throw new IllegalArgumentException("Attendee can not be logged out for unknown reasons");
             }
         }
@@ -641,7 +641,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             boolean success = true;
             for (Attendee a : db_userManagement.getAllAttendees()) {
                 a.logout();
-                success = success && db_userManagement.logoutUser(a.getID());
+                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), gen.generateToken());
             }
             return success;
         }

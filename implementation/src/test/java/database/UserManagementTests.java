@@ -82,9 +82,9 @@ public class UserManagementTests extends DatabaseTests {
         dbGen.addAdmin(stephan, "1111", "9999");
         // Check token to ID & Logout Attendee and Admin
         int id = dbGen.tokenToID("42");
-        assertTrue(dbGen.logoutUser(id));
+        assertTrue(dbGen.logoutUser(id, "klkh", "kjhlk"));
         int id1 = dbGen.tokenToID("9999");
-        assertTrue(dbGen.logoutUser(id1));
+        assertTrue(dbGen.logoutUser(id1, "134676", "kjhll"));
     }
 
     @Test
@@ -215,7 +215,7 @@ public class UserManagementTests extends DatabaseTests {
         assertEquals(TokenResponse.TokenDoesNotExist, dbGen.checkToken("token"));
         assertEquals(LoginResponse.UserDoesNotExist, dbGen.checkLogin("Stephan", "rue1831978").first());
         //assertEquals(TokenResponse., dbGen.checkToken("token"));
-        dbGen.logoutUser(1);
+        dbGen.logoutUser(1, "0987678", "jh2h4k3");
         assertEquals(LoginResponse.AccountBlocked, dbGen.checkLogin("AlmightyStephan", "1111").first());
         assertEquals(TokenResponse.TokenDoesNotExist, dbGen.checkToken("9999"));
     }

@@ -48,9 +48,11 @@ public interface DB_UserManagement {
      * user cannot log in again.
      *
      * @param userID The ID of the user to be deleted.
+     * @param pw new password for the user.
+     * @param token new token for the user.
      * @return True, iff the operation was successful.
      */
-    boolean logoutUser(int userID);
+    boolean logoutUser(int userID, String pw, String token);
 
     /**
      * Returns a list of all passwords to be handed out to the users, combined with their ID.

@@ -650,6 +650,26 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /**
+     * Logout All Attendees which are not Admins from Conference. Invalidate all Token and Password of these.
+     * @return true iff logout was successful
+     */
+    public boolean logoutNonAdmins() {
+        try{
+            attendeeLock.lock();
+            boolean success = true;
+            for (Attendee a : db_userManagement.getAllAttendees()) {
+                if(isAdmin(a.getID())) continue;
+                a.logout();
+                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), gen.generateToken());
+            }
+            return success;
+        }
+        finally {
+            attendeeLock.unlock();
+        }
+    }
+
 
     /**
      * A function that the communication system can use to check if a login is valid

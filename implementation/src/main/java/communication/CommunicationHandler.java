@@ -28,10 +28,7 @@ import java.io.Reader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -45,7 +42,6 @@ public class CommunicationHandler {
 
     private Gson gson = new Gson();
     private Conference conference;
-    //TODO implement timeout
     private int timeoutAfter;
     private boolean debugging;
     private int maxUserConnections;
@@ -53,6 +49,9 @@ public class CommunicationHandler {
      * A service which disconnects connections which exceeded the timeout.
      */
     private  ScheduledExecutorService connectionLimitationService;
+    private ReentrantLock tokenConnectionMappingLock = new ReentrantLock();
+    private HashMap<String, List<Connection>> tokenConnectionsMap = new HashMap<>();
+    private HashMap<Connection, String>  connectionTokenMap = new HashMap<>();
 
     /**
      *
@@ -67,7 +66,6 @@ public class CommunicationHandler {
         this.debugging = debugging;
         this.maxUserConnections = maxUserConnections;
 
-        //TODO review
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
             try {
@@ -102,8 +100,19 @@ public class CommunicationHandler {
             if(token != null) {
                 TokenResponse tokenResponse = conference.checkToken(token);
                 if(tokenResponse == TokenResponse.ValidAttendee || tokenResponse == TokenResponse.ValidAdmin) {
-                    //TODO implement maxUserConnection limitation
                     //removes the timeout since the connection is now authenticated
+                    try {
+                        tokenConnectionMappingLock.lock();
+                        if(!tokenConnectionsMap.containsKey(token)) tokenConnectionsMap.put(token, new LinkedList<>());
+                        tokenConnectionsMap.get(token).add(conn);
+                        connectionTokenMap.put(conn, token);
+                        if(tokenConnectionsMap.get(token).size() > maxUserConnections) {
+                            conn.close();
+                            return;
+                        }
+                    } finally {
+                        tokenConnectionMappingLock.unlock();
+                    }
                     try {
                         timeoutLock.lock();
                         timeout.remove(conn);
@@ -297,7 +306,7 @@ public class CommunicationHandler {
 
     /**
      * A method unregistering a connection being disconnected causing the timeout timestamp to be removed.
-     * @param conn
+     * @param conn the connection
      */
     public void onUnregistered(Connection conn) {
         try {
@@ -305,6 +314,17 @@ public class CommunicationHandler {
             timeout.remove(conn);
         } finally {
             timeoutLock.unlock();
+        }
+        try {
+            tokenConnectionMappingLock.lock();
+            if(connectionTokenMap.containsKey(conn)) {
+                String token = connectionTokenMap.get(conn);
+                connectionTokenMap.remove(conn);
+                tokenConnectionsMap.get(token).remove(conn);
+                if(tokenConnectionsMap.get(token).isEmpty()) tokenConnectionsMap.remove(token);
+            }
+        } finally {
+            tokenConnectionMappingLock.unlock();
         }
     }
 

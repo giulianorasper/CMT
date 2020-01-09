@@ -50,6 +50,16 @@ public class CommunicationManagerFactory {
     }
 
     /**
+     *
+     * @param maxUserConnections the number of connections per user account which are allowed at the same time
+     * @return this
+     */
+    public CommunicationManagerFactory setMaxUserConnections(int maxUserConnections) {
+        this.maxUserConnections = maxUserConnections;
+        return this;
+    }
+
+    /**
      * Enables debugging functionaries such as fancy printing for JSON and more detailed logs
      *
      * @return this
@@ -63,11 +73,14 @@ public class CommunicationManagerFactory {
      * @return A communication manager produced using the given information
      */
     public CommunicationManager create() {
-        //TODO notify where to add cert if not present / create dir
         String pathname = "pem";
         File cert = new File(pathname + File.separator + "cert.pem");
         File key = new File(pathname + File.separator + "privkey.pem");
-        if(!cert.getParentFile().exists()) cert.getParentFile().mkdir();
+        if(!cert.getParentFile().exists()) {
+            if(!cert.getParentFile().mkdir()) {
+                System.out.println("Failed to create certificate folder.");
+            }
+        }
         CommunicationHandler handler = new CommunicationHandler(conference, timeoutAfter, maxUserConnections, debugging);
         CommunicationManager manager = new NettyCommunicationManagerFactory(handler, port, cert, key).create();
         if(!manager.isSecure()) {

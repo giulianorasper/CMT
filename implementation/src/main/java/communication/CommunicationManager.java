@@ -1,6 +1,5 @@
 package communication;
 
-//TODO Add thrown exceptions e.g. NotInitialized
 
 import main.Conference;
 

@@ -32,8 +32,7 @@ public class BasePacket implements Packet {
      * @return JSON String of this packet
      */
     public String toJson() {
-        //TODO move Gson object to a static context
-        Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(this);
     }
 

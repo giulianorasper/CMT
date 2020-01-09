@@ -10,7 +10,6 @@ import main.Conference;
  * This packet can be used by an admin to logout every attendee i.e. it invalidates all passwords and tokens of
  * attendees which are not admins. Responds with a {@link communication.packets.BasePacket}.
  */
-//TODO dont logout admins
 public class LogoutAllAttendeesRequestPacket extends AuthenticatedRequestPacket {
 
     public LogoutAllAttendeesRequestPacket() {
@@ -20,7 +19,7 @@ public class LogoutAllAttendeesRequestPacket extends AuthenticatedRequestPacket 
     @Override
     public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
-            conference.logoutAllAttendees();
+            conference.logoutNonAdmins();
             new ValidResponsePacket().send(webSocket);
         }
     }

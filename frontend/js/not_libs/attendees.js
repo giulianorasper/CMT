@@ -11,8 +11,11 @@ import GenerateNewAttendeeTokenRequestPacket
     from "../../communication/packets/admin/GenerateNewAttendeeTokenRequestPacket.js";
 import GetAttendeePasswordRequestPacket from "../../communication/packets/admin/GetAttendeePasswordRequestPacket.js";
 
-import "../jquery-ui/jquery-ui.js";
-import "../jquery-ui/jquery-ui.css";
+//Importing JQuery and JQuery UI
+import $ from "../../node_modules/jquery";
+import "../../node_modules/jquery-ui";
+
+
 
 $(document).ready( function() {
     //Move functions to global scope so onclick parameters can call them

@@ -64,10 +64,12 @@ public class Main {
         voting.startVote();
         conf.addVoting(voting);
         conf.update(voting);
-        conf.addAdmin(new Admin("Johannes Dieters", "johannesdieters@web.de", "admin", "RCDS", "66111 Saarbrücken, Mainzerstaße 45", "Admin", 0), "admin");
-        conf.addAdmin(new Admin("Franz Mayer", "franzl@gmx.de", "FrMa", "RCDS", "66111 Saarbrücken, Donaustaße 45", "Admin", 1), "franz");
-        conf.addAttendee(new Attendee("Peter Schmidt",  "peterschidt@t-online.de", "user", "Unicorn", "66271 Kleinblittersdorf, am Tälchen 12", "User", 2), "user");
-        conf.addAttendee(new Attendee("Sabine Hein", "sahe@stud.uni-saarland.de", "SaHe", "Flower", "66181 Ensheim, Hauptstraße 12", "User", 3), "user2");
+        if(conf.getAllAdmins().isEmpty()) {
+            conf.addAdmin(new Admin("Johannes Dieters", "johannesdieters@web.de", "admin", "RCDS", "66111 Saarbrücken, Mainzerstaße 45", "Admin", 0), "admin");
+            conf.addAdmin(new Admin("Franz Mayer", "franzl@gmx.de", "FrMa", "RCDS", "66111 Saarbrücken, Donaustaße 45", "Admin", 1), "franz");
+            conf.addAttendee(new Attendee("Peter Schmidt",  "peterschidt@t-online.de", "user", "Unicorn", "66271 Kleinblittersdorf, am Tälchen 12", "User", 2), "user");
+            conf.addAttendee(new Attendee("Sabine Hein", "sahe@stud.uni-saarland.de", "SaHe", "Flower", "66181 Ensheim, Hauptstraße 12", "User", 3), "user2");
+        }
         CommunicationManager w = new CommunicationManagerFactory(conf).enableDebugging().create();
         w.start();
         System.out.println("Press 'q' to close the server");

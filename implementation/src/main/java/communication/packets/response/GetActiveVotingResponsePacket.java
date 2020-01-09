@@ -25,7 +25,7 @@ public class GetActiveVotingResponsePacket extends ResponsePacket {
      * id: int - the unique id of the voting
      * named: boolean - if the voting is a named voting
      * question: String - the voting question
-     * options: List<VotingOption> - a list of the available voting options
+     * options: {@link java.util.List} of {@link voting.VotingOption} - a list of the available voting options
      *
      * The {@link voting.VotingOption} has following exposed properties:
      * name: String - the name of the voting option

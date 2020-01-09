@@ -26,6 +26,14 @@ public interface DB_UserManagement {
     TokenResponse checkToken (String token);
 
     /**
+     * Edit present value of a user.
+     * @param userName userName of the user
+     * @param present new present value
+     * @return true, iff the db stored the new present value correctly
+     */
+    Boolean setPresentValueofUser(String userName, Boolean present);
+
+    /**
      * Converts a token to a user ID.
      *
      * @param token The token of the user.
@@ -48,9 +56,11 @@ public interface DB_UserManagement {
      * user cannot log in again.
      *
      * @param userID The ID of the user to be deleted.
+     * @param pw new password for the user.
+     * @param token new token for the user.
      * @return True, iff the operation was successful.
      */
-    boolean logoutUser(int userID);
+    boolean logoutUser(int userID, String pw, String token);
 
     /**
      * Returns a list of all passwords to be handed out to the users, combined with their ID.
@@ -122,7 +132,7 @@ public interface DB_UserManagement {
      *
      * @return a list of all {@link Attendee}s in the database.
      */
-    List<Attendee> getAllUsers();
+    List<Attendee> getAllAttendees();
 
     /**
      * Returns the {@link Attendee} with the given userID.

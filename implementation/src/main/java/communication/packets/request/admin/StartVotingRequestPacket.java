@@ -11,10 +11,18 @@ import org.java_websocket.WebSocket;
 import voting.Voting;
 import voting.VotingStatus;
 
+/**
+ * This packet can be used by an admin to start a voting which not already started or ended.
+ * Respond with a {@link communication.packets.BasePacket}.
+ */
 public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
 
     private int id;
 
+    /**
+     *
+     * @param id the id of the voting to be started
+     */
     public StartVotingRequestPacket(int id) {
         super(PacketType.START_VOTING_REQUEST);
         this.id = id;

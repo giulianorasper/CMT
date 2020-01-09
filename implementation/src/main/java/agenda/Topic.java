@@ -18,8 +18,8 @@ public class Topic implements Requestable {
 
     /**
      * Create a new Topic Object with the Name and the Parent of the Topic.
-     * @param name
-     * @param parent
+     * @param name the name of the topic
+     * @param parent the parent agenda of the topic
      */
     public Topic(String name, Agenda parent){
         this.parent = parent;
@@ -85,9 +85,9 @@ public class Topic implements Requestable {
     }
 
     /**
-     * Get the Topic at the Position preorder.
+     * Get the Topic at the position preorder.
      * @param preorder Position in the  subTopics
-     * @return
+     * @return the topic matching the preorder string
      */
     protected Topic getTopicFromPreorderList(List<Integer> preorder) {
         if (preorder.isEmpty()) {
@@ -101,7 +101,11 @@ public class Topic implements Requestable {
 
     /**
      * Moves the topic to the given agenda, deleting it from the old parent agenda
+     * @param agenda the agenda to move
+     * @param pos the position to move the agenda to
+     * @return /
      */
+    @Deprecated
     public boolean moveToNewAgenda(Agenda agenda, int pos) {
         try {
             lock.getWriteAccess();
@@ -118,9 +122,10 @@ public class Topic implements Requestable {
 
     /**
      * Reorder the Topic inside the Agenda
-     * @param pos
+     * @param pos the new position of the topic
      * @return true iff it was successful
      */
+    @Deprecated
     public boolean reorder(int pos) {
         try {
             lock.getWriteAccess();
@@ -153,7 +158,7 @@ public class Topic implements Requestable {
 
     /**
      * ToString Method to compare.
-     * @return
+     * @return //TODO docs
      */
     public String toString(){
         try{

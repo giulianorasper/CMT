@@ -15,11 +15,18 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
-
+/**
+ * Handles incoming messages by attaching frames of split messages and redirecting them to a {@link CommunicationHandler}.
+ */
 public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
 
     private CommunicationHandler handler;
 
+    /**
+     *
+     * @param handler the communication handler used for processing messages
+     * @param tempPath the path of the tmp folder to store binary files in
+     */
     public WebSocketFrameHandler(CommunicationHandler handler, String tempPath) {
         this.handler = handler;
         this.tempPath = tempPath;

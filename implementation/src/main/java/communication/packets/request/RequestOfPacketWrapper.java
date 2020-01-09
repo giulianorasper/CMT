@@ -11,6 +11,10 @@ import request.Requestable;
 import request.SpeechRequest;
 import user.User;
 
+/**
+ * This class is a wrapper which handles request of change as well as requests of speech and
+ * is not an actual packet.
+ */
 public class RequestOfPacketWrapper extends AuthenticatedRequestPacket {
 
     private boolean refersToTopic;

@@ -68,6 +68,19 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                     if (!table.getString("password").equals(password)) {
                         return new Pair<>(LoginResponse.WrongPassword, null);
                     } else {
+
+                        //update Presentvalue of the valid user
+                        sqlstatement = "UPDATE users SET present = ?  WHERE username = ?";
+                        try (PreparedStatement stmt2 = connection.prepareStatement(sqlstatement)) {
+                            stmt2.setBoolean(1, true);
+                            stmt2.setString(2, userName);
+                            stmt2.executeUpdate();
+                        } catch (SQLException e) {
+                            System.err.println("An exception occurred while updating Present value of  a user.");
+                            System.err.println(e.getMessage());
+                            return null;
+                        }
+
                         return new Pair<>(LoginResponse.Valid, table.getString("token"));
                     }
                 }
@@ -76,6 +89,30 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println("An exception occurred during the check of the login data.");
             System.err.println(ex.getMessage());
             return null;
+        } finally {
+            this.closeConnection();
+        }
+    }
+
+    /**
+     * Edit present value of a user.
+     * @param userName userName of the user
+     * @param present new present value
+     * @return true, iff the db stored the new present value correctly
+     */
+    @Override
+    public Boolean setPresentValueofUser(String userName, Boolean present) {
+        this.openConnection();
+        String sqlstatement = "UPDATE users SET present = ?  WHERE username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setBoolean(1, present);
+            stmt.setString(2, userName);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.err.println("An exception occurred while updating Present value of  a user.");
+            System.err.println(e.getMessage());
+            return false;
         } finally {
             this.closeConnection();
         }
@@ -178,13 +215,14 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * @return True, iff the operation was successful.
      */
     @Override
-    public boolean logoutUser(int userID) {
+    public boolean logoutUser(int userID, String pw, String token) {
         this.openConnection();
-        String sqlstatement = "UPDATE users SET password = ? , token = ?  WHERE userID = ?";
+        String sqlstatement = "UPDATE users SET password = ?, token = ?, present = ?  WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
-            stmt.setNull(1, java.sql.Types.VARCHAR);
-            stmt.setNull(2, java.sql.Types.VARCHAR);
-            stmt.setInt(3, userID);
+            stmt.setString(1, pw);
+            stmt.setString(2, token);
+            stmt.setBoolean(3, false);
+            stmt.setInt(4, userID);
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An exception occurred while logging out/invalidating a user.");
@@ -409,23 +447,29 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * @return a list of all {@link Attendee}s in the database.
      */
     @Override
-    public List<Attendee> getAllUsers() {
+    public List<Attendee> getAllAttendees() {
         this.openConnection();
         List<Attendee> users = new LinkedList<>();
-        String sqlstatement = "SELECT * FROM users";
-        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet table  = stmt.executeQuery()) {
-            while (table.next()) {
-                users.add(new Attendee(table.getString("fullname"),
-                        table.getString("email"),
-                        table.getString("username"),
-                        table.getString("groups"),
-                        table.getString("residence"),
-                        table.getString("function"),
-                        table.getInt("userID")));
+        String sqlstatement = "SELECT * FROM users WHERE isAdmin = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setBoolean(1, false);
+            try (ResultSet table  = stmt.executeQuery()) {
+                while (table.next()) {
+                    Attendee attendee = new Attendee(table.getString("fullname"),
+                            table.getString("email"),
+                            table.getString("username"),
+                            table.getString("groups"),
+                            table.getString("residence"),
+                            table.getString("function"),
+                            table.getInt("userID"));
+                    if (table.getBoolean("present")) {
+                        attendee.attendedConference();
+                    }
+                    users.add(attendee);
+                }
             }
         } catch (SQLException ex) {
-            System.err.println("An exception occurred while reading all attendees.");
+            System.err.println("An exception occurred while reading all admins.");
             System.err.println(ex.getMessage());
             return null;
         } finally {
@@ -455,6 +499,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                     att.getString("residence"),
                     att.getString("function"),
                     att.getInt("userID"));
+            if (att.getBoolean("present")) {
+                attendee.attendedConference();
+            }
         } catch (SQLException ex) {
             System.err.println("An exception occurred while trying to return an attendee.");
             System.err.println(ex.getMessage());
@@ -551,13 +598,17 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             stmt.setBoolean(1, true);
             try (ResultSet table  = stmt.executeQuery()) {
                 while (table.next()) {
-                    admins.add(new Admin(table.getString("fullname"),
+                    Admin admin = new Admin(table.getString("fullname"),
                             table.getString("email"),
                             table.getString("username"),
                             table.getString("groups"),
                             table.getString("residence"),
                             table.getString("function"),
-                            table.getInt("userID")));
+                            table.getInt("userID"));
+                    if (table.getBoolean("present")) {
+                        admin.attendedConference();
+                    }
+                    admins.add(admin);
                 }
             }
         } catch (SQLException ex) {
@@ -592,6 +643,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                         adm.getString("residence"),
                         adm.getString("function"),
                         adm.getInt("userID"));
+                if (adm.getBoolean("present")) {
+                    admin.attendedConference();
+                }
             }
         } catch (SQLException ex) {
             System.err.println("An exception occurred while trying to return an admin.");

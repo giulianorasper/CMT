@@ -8,7 +8,6 @@ import database.*;
 import document.DB_DocumentManagement;
 import document.Document;
 import document.DocumentManagement;
-import io.netty.buffer.ByteBuf;
 import request.DB_RequestManagement;
 import request.Request;
 import request.RequestManagement;
@@ -21,13 +20,12 @@ import voting.VotingManagement;
 import voting.VotingObserver;
 import voting.VotingStatus;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
@@ -99,19 +97,19 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     /**
      * Construct a new or persistent Conference with all the Data below and prepare all DataManagement.
-     * @param name
-     * @param organizer
-     * @param startsAt
-     * @param endsAt
-     * @param admins
-     * @param votings
-     * @param documents
-     * @param documentsPath
-     * @param requests
-     * @param activeVoting
-     * @param databasePath
-     * @param deguggingInstance
-     * @param cleanStart
+     * @param name the name of the conference
+     * @param organizer the organizer of the conference
+     * @param startsAt the unix epoch of the time the conference starts at
+     * @param endsAt the unix epoch of the time the conference ends at
+     * @param admins the admins of the conference
+     * @param votings the votings of the conference
+     * @param documents the documents of the conference
+     * @param documentsPath the storage path for documents
+     * @param requests the requests of the conference
+     * @param activeVoting the activeVoting ot the conference or null if non-existent
+     * @param databasePath the path to the sqlite database
+     * @param deguggingInstance if this is a debugging instance
+     * @param cleanStart if existing data on the conference should be erased
      */
     public Conference(String name, String organizer, long startsAt, long endsAt, HashMap<Integer,
             Admin> admins, HashMap<Integer,Voting> votings, HashMap<String,Document> documents, String  documentsPath,
@@ -191,7 +189,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private void initUsers(){
         db_userManagement = new DB_UserManager(databasePath);
         db_userManagement.getAllAdmins().forEach(a -> admins.put(a.getID(), a));
-        db_userManagement.getAllUsers();
+        db_userManagement.getAllAttendees();
     }
 
     /**
@@ -304,7 +302,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             AtomicBoolean alreadyExists = new AtomicBoolean(false);
-            db_userManagement.getAllUsers().forEach(ad -> {
+            db_userManagement.getAllAttendees().forEach(ad -> {
                 if(ad.getID() == a.getID()){
                     alreadyExists.set(true);
                 }
@@ -325,7 +323,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             AtomicBoolean alreadyExists = new AtomicBoolean(false);
-            db_userManagement.getAllUsers().forEach(ad -> {
+            db_userManagement.getAllAttendees().forEach(ad -> {
                 if(ad.getID() == a.getID()){
                     alreadyExists.set(true);
                 }
@@ -404,7 +402,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             else{
                 admins.get(ID).logout();
             }
-            if(!(db_userManagement.logoutUser(ID))){
+            if(!(db_userManagement.logoutUser(ID, gen.generatePassword(), gen.generateToken()))){
                 throw new IllegalArgumentException("Admin can not be logged out for unknown reasons");
             }
         }
@@ -464,7 +462,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public List<Attendee> getAllAttendees() {
         try{
             attendeeLock.lock();
-            return db_userManagement.getAllUsers();
+            return db_userManagement.getAllAttendees();
         }
         finally {
             attendeeLock.unlock();
@@ -513,7 +511,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void logoutUser(int userID) {
         try{
             attendeeLock.lock();
-            if(!db_userManagement.logoutUser(userID)){
+            if(!db_userManagement.logoutUser(userID, gen.generatePassword(), gen.generateToken())){
                 throw new IllegalArgumentException("Attendee can not be logged out for unknown reasons");
             }
         }
@@ -599,7 +597,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     /**
      * Read Password from User with UserId userId and return it.
      * @param userID UserId
-     * @return Pair with User & Password
+     * @return Pair with User and Password
      */
     @Override
     public Pair<User, String> getUserPassword(int userID) {
@@ -619,7 +617,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     /**
      * Read Password from  all User and return them.
-     * @return List of Pair with User & Password
+     * @return List of Pair with User and Password
      */
     @Override
     public List<Pair<User, String>> getAllUsersPasswords() {
@@ -633,17 +631,17 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
-     * Logout All User from Conference. Invalidate all Token and Password in Database.
+     * Logout All Attendees from Conference. Invalidate all Token and Password in Database.
      * @return true iff logout was successful
      */
     @Override
-    public boolean logoutAllUsers() {
+    public boolean logoutAllAttendees() {
         try{
             attendeeLock.lock();
             boolean success = true;
-            for (Attendee a : db_userManagement.getAllUsers()) {
+            for (Attendee a : db_userManagement.getAllAttendees()) {
                 a.logout();
-                success = success && db_userManagement.logoutUser(a.getID());
+                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), gen.generateToken());
             }
             return success;
         }
@@ -667,7 +665,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             adminLock.lock();
             attendeeLock.lock();
             Pair<LoginResponse, String> response = db_userManagement.checkLogin(userName, password);
-            db_userManagement.getAllUsers().forEach(a -> System.out.println(a.getUserName()));
+            db_userManagement.getAllAttendees().forEach(a -> System.out.println(a.getUserName()));
             System.out.println(response.first() + ", " + response.second() + ", " + userName + ", " + password);
             if(response.first() != LoginResponse.Valid){
                 return new Pair<>(response.first(), null);
@@ -771,10 +769,35 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
      * @return groups
      */
     public List<String> getExistingGroups() {
-        //TODO implement
-        return null;
+        try{
+            adminLock.lock();
+            attendeeLock.lock();
+            List<String> groups = db_userManagement.getAllGroupsFromUser();
+            return groups;
+        }
+        finally {
+            attendeeLock.unlock();
+            adminLock.unlock();
+        }
     }
 
+    /**
+     * Edit present value of a user.
+     * @param username username of the user
+     * @param present new present value of the user
+     * @return
+     */
+    public Boolean setPresentValue(String username, Boolean present) {
+        try {
+            adminLock.lock();
+            attendeeLock.lock();
+            return db_userManagement.setPresentValueofUser(username, present);
+        }
+        finally {
+            attendeeLock.unlock();
+            adminLock.unlock();
+        }
+    }
 
     /****************** The Voting Management Interface *********/
 
@@ -859,7 +882,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     /**
      * Updated a specific Voting
      * @param v The updates {@link Voting}.
-     * @return
+     * @return if the voting was updated successfully
      */
     @Override
     public boolean update(Voting v) {
@@ -913,10 +936,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     /**
      * Update an existing Document and store the updated Document in the Database.
-     * @param name
-     * @param fileType
-     * @param file
-     * @param isCreation
+     * @param name the name of the document to update
+     * @param fileType the fileType of the document
+     * @param file the file of the document
+     * @param isCreation if this is the creation of a document or a new version of an old one
      */
     @Override
     public void updateDocument(String name, String fileType, File file, boolean isCreation) {

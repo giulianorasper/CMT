@@ -30,10 +30,10 @@ public abstract class Request implements RequestObservable {
 
     /**
      * Construct a Request Object with the following Parameters, especially with fixed id:
-     * @param id
-     * @param topic
-     * @param requester
-     * @param timestamp
+     * @param id the id of the request
+     * @param topic the topic or document the request refers to
+     * @param requester the requester
+     * @param timestamp the unix epoch of the time the request was submitted
      */
     protected Request(int id, Requestable topic, User requester, long timestamp){
         try {
@@ -57,9 +57,6 @@ public abstract class Request implements RequestObservable {
 
     /**
      * Construct a Request Object with the following Parameters, especially without Id (next free Id is used):
-     * @param topic
-     * @param requester
-     * @param timestamp
      */
     protected Request(Requestable topic, User requester, long timestamp){
         this(getNextID(), topic, requester, timestamp);

@@ -11,7 +11,7 @@ import main.Conference;
 import org.java_websocket.WebSocket;
 
 /**
- * This packet handles a rename topic request from an admin and responds with a general {@link BasePacket}.
+ * This packet can be used by an admin to rename a topic of the agenda. Responds with a {@link BasePacket}.
  */
 public class RenameTopicRequestPacket extends AuthenticatedRequestPacket {
 

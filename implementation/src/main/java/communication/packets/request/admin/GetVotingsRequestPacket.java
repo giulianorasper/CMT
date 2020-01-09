@@ -8,10 +8,18 @@ import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 
+/**
+ * This packet can be used by an admin to retrieve all votings.
+ * Responds with a {@link GetVotingsResponsePacket}.
+ */
 public class GetVotingsRequestPacket extends AuthenticatedRequestPacket {
 
     private int id;
 
+    /**
+     *
+     * @param id the id of the voting to be retrieved
+     */
     public GetVotingsRequestPacket(int id) {
         super(PacketType.GET_VOTINGS_REQUEST);
         this.id = id;

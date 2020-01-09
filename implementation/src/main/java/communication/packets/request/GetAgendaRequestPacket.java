@@ -8,7 +8,8 @@ import main.Conference;
 import org.java_websocket.WebSocket;
 
 /**
- * This packet handles either an attendee or an admin requesting the current agenda and responds with a {@link GetAgendaResponsePacket}.
+ * This packet can be used by an attendee to retrieve the agenda.
+ * Responds with a {@link GetAgendaResponsePacket}.
  */
 public class GetAgendaRequestPacket extends AuthenticatedRequestPacket {
 

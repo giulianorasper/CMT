@@ -139,6 +139,9 @@ public class CommunicationHandler {
                 case ADD_VOTING_REQUEST_PACKET:
                     pack = gson.fromJson(message, AddVotingRequestPacket.class);
                     break;
+                case DELETE_AGENDA_REQUEST:
+                    pack = gson.fromJson(message, DeleteAgendaRequestPacket.class);
+                    break;
                 case DELETE_FILE_REQUEST:
                     pack = gson.fromJson(message, DeleteFileRequestPacket.class);
                     break;

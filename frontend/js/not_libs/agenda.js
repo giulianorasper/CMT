@@ -4,6 +4,7 @@ import AddTopicRequestPacket from "../../communication/packets/admin/AddTopicReq
 import RemoveTopicRequestPacket from "../../communication/packets/admin/RemoveTopicRequestPacket.js";
 import RenameTopicRequestPacket from "../../communication/packets/admin/RenameTopicRequestPacket.js";
 import AddFullAgendaRequestPacket from "../../communication/packets/admin/AddFullAgendaRequestPacket.js";
+import DeleteAgendaRequestPacket from "../../communication/packets/admin/DeleteAgendaRequestPacket.js";
 import IsAdminRequestPacket from "../../communication/packets/IsAdminRequestPacket.js";
 
 var agendaContainer = $('#agendaContainer');
@@ -17,11 +18,12 @@ $( document ).ready(function() {
     window.subtopicToAgenda = newSubtopic// export the function to the global scope
     window.removeFromAgenda = remove// export the function to the global scope
     window.editAgenda = edit// export the function to the global scope
-    window.uploadAgenda = uploadAgenda
+    window.uploadAgenda = uploadAgenda;
+    window.deleteAgenda = deleteAgenda;
 
     checkAdminStatus();
 
-    document.getElementById('agenda').addEventListener('change', handleAgendaUpload, false);
+    document.getElementById('upAgenda').addEventListener('change', handleAgendaUpload, false);
 
     const packet = new GetAgendaRequestPacket();
 
@@ -147,7 +149,7 @@ function renderAgenda(data, parent) {
 
 function uploadAgenda() {
     if (window.isAdmin) {
-        document.getElementById('agenda').click();
+        document.getElementById('upAgenda').click();
     }
 }
 
@@ -189,6 +191,24 @@ function handleAgendaUpload(event) {
     }
 }
 
+function deleteAgenda() {
+    if (window.isAdmin) {
+        const packet = new DeleteAgendaRequestPacket();
+        CommunicationManager.send(packet, success, fail)
+    }
+
+    function success(packet) {
+        if (packet.result === "Valid") {
+            window.location.reload()
+        } else {
+            console.log(packet)
+        }
+    }
+
+    function fail() {
+        console.log("This method is called if something went wrong during the general communication.");
+    }
+}
 
 /**
  * This function allows admins to add new topics to the agenda

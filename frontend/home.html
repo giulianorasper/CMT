@@ -90,12 +90,15 @@
                     <div class="single_prising">
                         <div class="prising_header">
                             <div class="row">
-                                <div class="col-md-3"></div>
-                                <div class="col-md-6"><h3>Agenda Items</h3></div>
-                                <div class="col-md-3 adminField">
-                                    <input type="button" value="Upload Agenda" onclick="uploadAgenda()"/>
-                                    <input type="file" class="form-control-file" id="agenda" style="display:none"/>
-                                </div></div>
+                                <h3>Agenda Items
+                                    <span class = "adminField">(
+                                        <span  class = "glyphicon glyphicon-file" onclick="uploadAgenda()"></span>
+                                        <input type="file" class="form-control-file" id="upAgenda" style="display:none"/>
+                                        /
+                                        <span class = "glyphicon glyphicon-trash" onclick="deleteAgenda()"></span>
+                                        )
+                                    </span>
+                                </h3>
                         </div>
 
                     </div>

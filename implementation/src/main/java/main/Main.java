@@ -89,7 +89,7 @@ public class Main {
     private static void printUsage(){
         System.out.println("Usage : 'test' <testID>");
         System.out.println("Valid test ids : 'normal', 'normal-persistent'");
-        System.exit(1);
+        System.exit(0);
     }
 
 }

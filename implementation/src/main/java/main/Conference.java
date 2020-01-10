@@ -486,19 +486,25 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
-     * Remove Attendee with AttendeeId userId from Databse, so the Attendee cant login anymore and the Attende Data are deleted.
+     * Remove Attendee with AttendeeId userId from Database, so the Attendee cant login anymore and the Attendee Data are deleted.
+     * Furthermore all requests with the AttendeeID will be removed.
      * @param userID AttendeeId
      */
     @Override
     public void removeAttendee( int userID) {
         try{
             attendeeLock.lock();
+            requestLock.lock();
             if(!db_userManagement.removeUser(userID)){
-                throw new IllegalArgumentException("Admin can not be removed for unknown reasons");
+                throw new IllegalArgumentException("Attendee can not be removed for unknown reasons");
+            }
+            if(!db_requestManagement.removeRequest(userID)){
+                throw new IllegalArgumentException("Attendees requests can not be removed for unknown reasons");
             }
 
         }
         finally {
+            requestLock.unlock();
             attendeeLock.unlock();
         }
     }

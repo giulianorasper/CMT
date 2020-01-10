@@ -1,5 +1,7 @@
 package request;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 @SuppressWarnings("checkstyle:typename")
@@ -34,4 +36,12 @@ public interface DB_RequestManagement extends RequestObserver{
      * @return True, iff the updates was successful.
      */
      boolean update(Request r);
+
+    /**
+     * This methods deletes all request entry from a specific user in the database.
+     *
+     * @param userID The ID of the user.
+     * @return True, iff the requests was successfully removed.
+     */
+    boolean removeRequest(int userID);
 }

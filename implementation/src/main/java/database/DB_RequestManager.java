@@ -163,6 +163,8 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         return request;
     }
 
+
+
     /**
      *
      * @return a list of all reconstructed {@link Request}s from the database.
@@ -257,6 +259,30 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An error occurred while updating a request.");
+            System.err.println(e.getMessage());
+            return false;
+        } finally {
+            this.closeConnection();
+        }
+        return true;
+    }
+
+
+    /**
+     * This methods deletes all request entry from a specific user in the database.
+     *
+     * @param userID The ID of the user.
+     * @return True, iff the requests was successfully removed.
+     */
+    @Override
+    public boolean removeRequest(int userID) {
+        this.openConnection();
+        String sqlstatement = "DELETE FROM requests WHERE userID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setInt(1, userID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("An exception occurred while removing all requests from user from the database.");
             System.err.println(e.getMessage());
             return false;
         } finally {

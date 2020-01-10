@@ -3,6 +3,7 @@ package database;
 import user.*;
 import utils.Pair;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,14 +34,14 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 + "     isAdmin BOOL NOT NULL,\n"
                 + "     present BOOL NOT NULL\n"
                 + ") WITHOUT ROWID;";
-        openConnection();
+        Connection connection = openConnection();
         try {
             connection.createStatement().execute(userTable);
         } catch (SQLException e) {
             System.err.println("Database initialization failed!");
             System.err.println(e.getMessage());
         }
-        closeConnection();
+        closeConnection(connection);
     }
 
     /**********************************GeneralUserFunctionality********************************************/
@@ -54,7 +55,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public Pair<LoginResponse, String> checkLogin(String userName, String password) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "SELECT * FROM users WHERE username = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, userName);
@@ -90,7 +91,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
     }
 
@@ -102,7 +103,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public Boolean setPresentValueofUser(String userName, Boolean present) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "UPDATE users SET present = ?  WHERE username = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setBoolean(1, present);
@@ -114,7 +115,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(e.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
     }
 
@@ -127,7 +128,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public TokenResponse checkToken(String token) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "SELECT * FROM users WHERE token = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, token);
@@ -147,7 +148,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
     }
 
@@ -161,7 +162,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public int tokenToID(String token) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "SELECT * FROM users WHERE token  = ?";
         int ID = -1;
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -176,7 +177,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println("An exception occurred while converting IDs to tokens.");
             System.err.println(ex.getMessage());
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return ID;
     }
@@ -192,7 +193,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         if (!this.userIDAlreadyUsed(userID)) {
             return false;
         }
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "DELETE FROM users WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, userID);
@@ -202,7 +203,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(e.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -216,7 +217,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public boolean logoutUser(int userID, String pw, String token) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "UPDATE users SET password = ?, token = ?, present = ?  WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, pw);
@@ -229,7 +230,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(e.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -241,7 +242,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public List<Pair<User, String>> getAllPasswords() {
-        this.openConnection();
+        Connection connection = this.openConnection();
         List<Pair<User, String>> pass = new LinkedList<>();
         String sqlstatement = "SELECT * FROM users";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
@@ -261,7 +262,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return pass;
     }
@@ -275,7 +276,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public boolean storeNewToken(int userID, String token) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "UPDATE users SET token = ? WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, token);
@@ -286,7 +287,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(e.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -300,7 +301,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public boolean storeNewPassword(int userID, String password) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "UPDATE users SET password = ?  WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, password);
@@ -311,7 +312,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(e.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -324,7 +325,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public boolean userNameAlreadyUsed(String userName) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "SELECT * FROM users WHERE username = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, userName);
@@ -337,7 +338,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(ex.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
     }
 
@@ -361,7 +362,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public List<Integer> getIDs() {
-        this.openConnection();
+        Connection connection = this.openConnection();
         List<Integer> IDs = new LinkedList<>();
         String sqlstatement = "SELECT userID FROM users";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
@@ -374,7 +375,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return IDs;
     }
@@ -385,7 +386,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public List<String> getAllGroupsFromUser() {
-        this.openConnection();
+        Connection connection = this.openConnection();
         List<String> groups = new LinkedList<>();
         String sqlstatement = "SELECT Distinct groups FROM users";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
@@ -398,7 +399,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return groups;
     }
@@ -416,7 +417,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public boolean addAttendee(Attendee a, String password, String token) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "INSERT INTO users(userID, fullname, username, password, "
                 + "token, email, groups, function, residence, isAdmin, present)"
                 + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
@@ -438,7 +439,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(ex.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -448,7 +449,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public List<Attendee> getAllAttendees() {
-        this.openConnection();
+        Connection connection = this.openConnection();
         List<Attendee> users = new LinkedList<>();
         String sqlstatement = "SELECT * FROM users WHERE isAdmin = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -473,7 +474,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return users;
     }
@@ -486,7 +487,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public Attendee getAttendeeData(int userID) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "SELECT * FROM users  WHERE userID = ?";
         Attendee attendee = null;
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -506,7 +507,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println("An exception occurred while trying to return an attendee.");
             System.err.println(ex.getMessage());
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return attendee;
     }
@@ -519,7 +520,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public boolean editAttendee(Attendee a) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "UPDATE users SET fullname = ?, "
                 + " email = ?, "
                 + " username = ? , "
@@ -541,7 +542,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(e.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -559,7 +560,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public boolean addAdmin(Admin a, String password, String token) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "INSERT INTO users(userID, fullname, username, password ,"
                 + "token, email, groups, function, residence, isAdmin, present)"
                 + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
@@ -581,7 +582,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(ex.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -591,7 +592,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public List<Admin> getAllAdmins() {
-        this.openConnection();
+        Connection connection = this.openConnection();
         List<Admin> admins = new LinkedList<>();
         String sqlstatement = "SELECT * FROM users WHERE isAdmin = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -616,7 +617,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return admins;
     }
@@ -629,7 +630,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public Admin getAdminData(int userID) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "SELECT * FROM users WHERE userID = ? AND isAdmin = ?";
         Admin admin = null;
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -651,7 +652,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println("An exception occurred while trying to return an admin.");
             System.err.println(ex.getMessage());
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return admin;
     }
@@ -664,7 +665,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public boolean editAdmin(Admin a) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "UPDATE users SET fullname = ? , "
                 + "email = ? ,"
                 + "groups = ? , "
@@ -685,7 +686,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             System.err.println(e.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }

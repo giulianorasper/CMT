@@ -5,6 +5,7 @@ import agenda.AgendaObservable;
 import agenda.DB_AgendaManagement;
 import utils.Pair;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,14 +31,14 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
                 + "     topicPosition TEXT NOT NULL,\n"
                 + "     topicName TEXT NOT NULL\n"
                 + ");";
-        openConnection();
+        Connection connection = openConnection();
         try {
             connection.createStatement().execute(agendaTable);
         } catch (SQLException e) {
             System.err.println("Database initialization failed!");
             System.err.println(e.getMessage());
         }
-        closeConnection();
+        closeConnection(connection);
     }
 
     /**
@@ -47,7 +48,7 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
      */
     @Override
     public boolean update(Agenda a) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "DELETE FROM agenda";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.execute();
@@ -56,14 +57,14 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
             System.err.println(ex.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
-        this.openConnection();
+        Connection connection2 = this.openConnection();
         List<String> preOrder = a.preOrder();
         sqlstatement = "INSERT INTO agenda(topicPosition, topicName) VALUES(?,?)";
         try {
             for (String s : preOrder) {
-                try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+                try (PreparedStatement stmt = connection2.prepareStatement(sqlstatement)) {
                     String name = a.getTopicFromPreorderString(s).getName();
                     stmt.setString(1, s);
                     stmt.setString(2, name);
@@ -75,7 +76,7 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
             System.err.println(ex.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection2);
         }
         return true;
     }
@@ -86,7 +87,7 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
      */
     @Override
     public Agenda getAgenda() {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "SELECT * FROM agenda";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
             ResultSet agenda = stmt.executeQuery()) {
@@ -104,7 +105,7 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
     }
 }

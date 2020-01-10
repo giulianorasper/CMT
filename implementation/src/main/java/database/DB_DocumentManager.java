@@ -3,6 +3,7 @@ package database;
 import document.DB_DocumentManagement;
 import document.Document;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,14 +27,14 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
                 + "     documentName TEXT NOT NULL UNIQUE,\n"
                 + "     revision INTEGER NOT NULL\n"
                 + ");";
-        openConnection();
+        Connection connection = openConnection();
         try {
             connection.createStatement().execute(documentTable);
         } catch (SQLException e) {
             System.err.println("Database initialization failed!");
             System.err.println(e.getMessage());
         }
-        closeConnection();
+        closeConnection(connection);
     }
 
 
@@ -63,7 +64,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
      */
     @Override
     public boolean addDocument(Document document) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "INSERT INTO documents(path, documentName, revision) VALUES(?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, document.getFile().getAbsolutePath());
@@ -75,7 +76,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
             System.err.println(ex.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -91,7 +92,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         if (!this.isNameAlreadyUsed(name)) {
             return false;
         }
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "DELETE FROM documents WHERE documentName = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, name);
@@ -101,7 +102,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
             System.err.println(e.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -118,7 +119,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         if (!this.isNameAlreadyUsed(oldName)) {
             return false;
         }
-        this.openConnection();
+        Connection connection = this.openConnection();
         String revisionNumber = "SELECT revision FROM documents WHERE documentName = ?";
         String sqlstatement = "UPDATE documents SET revision = ? , "
                 + "documentName = ?"
@@ -137,7 +138,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
             System.err.println(e.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -150,7 +151,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
      */
     @Override
     public Document getDocument(String name) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "SELECT * FROM documents WHERE documentName = ?";
         Document document = null;
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -164,7 +165,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
             System.err.println("An error occurred while reconstructing a document.");
             System.err.println(ex.getMessage());
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return document;
     }
@@ -175,7 +176,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
      */
     @Override
     public List<Document> getAllDocuments() {
-        this.openConnection();
+        Connection connection = this.openConnection();
         List<Document> documents = new LinkedList<>();
         String sqlstatement = "SELECT * FROM documents";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
@@ -191,7 +192,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return documents;
     }

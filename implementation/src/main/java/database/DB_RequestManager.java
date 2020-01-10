@@ -46,7 +46,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 + "     content TEXT,\n"
                 + "     approved BOOL\n"
                 + ") WITHOUT ROWID;";
-        openConnection();
+        Connection connection = openConnection();
         try {
             connection.createStatement().execute(userTable);
             connection.createStatement().execute(requestTable);
@@ -54,7 +54,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
             System.err.println("Database initialization failed!");
             System.err.println(e.getMessage());
         }
-        closeConnection();
+        closeConnection(connection);
     }
 
     /**
@@ -65,7 +65,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
      */
     @Override
     public boolean addRequest(Request req) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "INSERT INTO requests(requestID, userID, requestType, requestableName, timestamps," +
                 "content, approved) VALUES(?,?,?,?,?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -91,7 +91,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
             System.err.println(ex.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -104,7 +104,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
      */
     @Override
     public Request getRequest(int ID) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         Request request = null;
         String sqlstatement = "SELECT * FROM requests WHERE requestID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -158,7 +158,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return request;
     }
@@ -171,7 +171,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
      */
     @Override
     public List<Request> getAllRequests() {
-        this.openConnection();
+        Connection connection = this.openConnection();
         List<Request> requests = new LinkedList<>();
         String sqlstatement = "SELECT * FROM requests";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
@@ -225,7 +225,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return requests;
     }
@@ -238,7 +238,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
      */
     @Override
     public boolean update(Request r) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "UPDATE requests SET approved = ?, requestableName = ?, timestamps = ?, userID = ?, content = ?"
                 + " WHERE requestID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -262,7 +262,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
             System.err.println(e.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -276,7 +276,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
      */
     @Override
     public boolean removeRequest(int userID) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String sqlstatement = "DELETE FROM requests WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, userID);
@@ -286,7 +286,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
             System.err.println(e.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }

@@ -55,7 +55,8 @@ $(document).ready( function() {
         clickCreateAttendee();
     });
 
-    $('#create-attendee').on("click", function () {
+    $('#create-attendee').on("click", function (e) {
+        e.preventDefault();
         createDialog.dialog("open");
     });
 

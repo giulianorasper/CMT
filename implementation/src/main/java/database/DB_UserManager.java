@@ -451,9 +451,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     public List<Attendee> getAllAttendees() {
         Connection connection = this.openConnection();
         List<Attendee> users = new LinkedList<>();
-        String sqlstatement = "SELECT * FROM users WHERE isAdmin = ?";
+        String sqlstatement = "SELECT * FROM users";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
-            stmt.setBoolean(1, false);
             try (ResultSet table  = stmt.executeQuery()) {
                 while (table.next()) {
                     Attendee attendee = new Attendee(table.getString("fullname"),

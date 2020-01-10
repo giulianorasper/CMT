@@ -168,16 +168,18 @@ public class UserTests {
      */
     @Test
     public void logAttendeesInAndOut(){
-        int threadCount = 20;
+        int threadCount = 50;
         AtomicInteger doneCount = new AtomicInteger(0);
         AtomicBoolean go = new AtomicBoolean(false);
 
         int[] attendeeIds = new int[threadCount];
+        String[] attendeeNames = new String[threadCount];
 
         for(int  i = 0; i < threadCount; i++){
             Attendee a = new Attendee("Mike", "Mike@Gebirge"+i+".tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
             conf.addAttendee(a);
             attendeeIds[i] = a.getID();
+            attendeeNames[i] = a.getUserName();
             conf.generateAllMissingUserPasswords();
         }
 
@@ -190,11 +192,10 @@ public class UserTests {
                     while (!go.compareAndSet(true, true)){/*wait*/}
 
 
-
                         String password = conf.getUserPassword(attendeeIds[aux.get()]).second();
                         Pair<LoginResponse, Pair<String, Long>> response;
-                        if (aux.get() % 2 == 0){
-                            response = conf.login("Mike" + aux.get(), password);
+                        if (aux.get() % 2 == 1){
+                            response = conf.login(attendeeNames[aux.get()], password);
                             if(response.first() != LoginResponse.Valid){
                                 fail("Failed to perform a valid login");
                             }
@@ -218,12 +219,15 @@ public class UserTests {
 
                     while (true){
                         if(doneCount.get() == threadCount){
+                            System.out.println(doneCount.get());
                             break;
                         }
                     }
                 }
             }).start();
         }
+
+
         go.compareAndSet(false, true);
         int res = doneCount.get();
         while (res != threadCount){

@@ -12,8 +12,8 @@ import GenerateNewAttendeeTokenRequestPacket
 import GetAttendeePasswordRequestPacket from "../../communication/packets/admin/GetAttendeePasswordRequestPacket.js";
 
 //Importing JQuery and JQuery UI
-import $ from "../../node_modules/jquery";
-import "../../node_modules/jquery-ui";
+//import $ from "../../node_modules/jquery";
+//import "../../node_modules/jquery-ui-bundle";
 
 
 
@@ -55,7 +55,8 @@ $(document).ready( function() {
         clickCreateAttendee();
     });
 
-    $('#create-attendee').button.on("click", function () {
+    $('#create-attendee').on("click", function (e) {
+        e.preventDefault();
         createDialog.dialog("open");
     });
 

@@ -641,11 +641,15 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
      * @return true iff logout was successful
      */
     @Override
-    public boolean logoutAllAttendees() {
+    public boolean logoutAllUsers() {
         try{
             attendeeLock.lock();
             boolean success = true;
             for (Attendee a : db_userManagement.getAllAttendees()) {
+                a.logout();
+                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), gen.generateToken());
+            }
+            for (Attendee a : db_userManagement.getAllAdmins()) {
                 a.logout();
                 success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), gen.generateToken());
             }

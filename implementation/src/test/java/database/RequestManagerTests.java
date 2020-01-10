@@ -107,4 +107,32 @@ public class RequestManagerTests  extends DatabaseTests  {
 
     }
 
+    @Test
+    public void DeleteRequestTest() {
+        DB_RequestManagement reqDb = this.getRequestDB();
+        DB_UserManagement dbGen = this.getGeneralUserDB();
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        dbGen.addAttendee(max, "1234", "42");
+
+        reqDb.addRequest(new ChangeRequest(1,max, new Requestable() {
+            @Override
+            public String getName() {
+                return "Topic1";
+            }
+        }, 1 , "Question1"));
+
+        reqDb.addRequest(new SpeechRequest(2,max, new Requestable() {
+            @Override
+            public String getName() {
+                return "Agenda1";
+            }
+        }, 1));
+
+        assertTrue(reqDb.removeRequest(max.getID()));
+        List<Request> requests = new LinkedList<>();
+        assertEquals(reqDb.getAllRequests(), requests);
+
+
+    }
+
 }

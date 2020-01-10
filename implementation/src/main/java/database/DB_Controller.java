@@ -14,7 +14,6 @@ import static java.lang.System.exit;
 @SuppressWarnings("checkstyle:typename")
 public abstract class DB_Controller {
 
-    protected Connection connection;
     protected String url;
 
     public DB_Controller(String url) {
@@ -42,19 +41,18 @@ public abstract class DB_Controller {
      */
     protected abstract void init();
 
-    public void openConnection() {
+    public Connection openConnection() {
+        Connection connection = null;
         try {
-            if (connection == null) {
-            }
             connection = DriverManager.getConnection(this.url);
-
         } catch (SQLException ex) {
             System.err.println("An exception occured in the database connection.");
             System.err.println(ex.getMessage());
         }
+        return connection;
     }
 
-    public void closeConnection() {
+    public void closeConnection(Connection connection) {
         try {
             if (connection != null) {
                 connection.close();

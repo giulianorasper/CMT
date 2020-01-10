@@ -3,6 +3,7 @@ import GetAgendaRequestPacket from "../../communication/packets/GetAgendaRequest
 import AddTopicRequestPacket from "../../communication/packets/admin/AddTopicRequestPacket.js";
 import RemoveTopicRequestPacket from "../../communication/packets/admin/RemoveTopicRequestPacket.js";
 import RenameTopicRequestPacket from "../../communication/packets/admin/RenameTopicRequestPacket.js";
+import AddFullAgendaRequestPacket from "../../communication/packets/admin/AddFullAgendaRequestPacket.js";
 import IsAdminRequestPacket from "../../communication/packets/IsAdminRequestPacket.js";
 
 var agendaContainer = $('#agendaContainer');
@@ -16,8 +17,11 @@ $( document ).ready(function() {
     window.subtopicToAgenda = newSubtopic// export the function to the global scope
     window.removeFromAgenda = remove// export the function to the global scope
     window.editAgenda = edit// export the function to the global scope
+    window.uploadAgenda = uploadAgenda
 
     checkAdminStatus();
+
+    document.getElementById('agenda').addEventListener('change', handleAgendaUpload, false);
 
     const packet = new GetAgendaRequestPacket();
 
@@ -118,26 +122,71 @@ function renderAgenda(data, parent) {
      * This function is used in the case the agenda is empty.
      * It displays a nice message for attendees and provides a button which allows admins to upload a new agenda
      */
-    function createDefault(target){
-       if(window.isAdmin) {$("<div class=\"row \">"+
+    function createDefault(target) {
+        if (window.isAdmin) {
+            $("<div class=\"row \">" +
 
-                            "<div class=\"form-group mt-3 col-lg-12\" style=\"float: left;\">"+
-                            "    <button class=\"button button-contactForm boxed-btn \" onclick=\"appendToAgenda(\'0\')\">Add Topic</button>"+
-                            "</div>"+
-                        "</div>").appendTo(target);}
-        else{
-            $("<div class=\"row \">"+
+                "<div class=\"form-group mt-3 col-lg-12\" style=\"float: left;\">" +
+                "    <button class=\"button button-contactForm boxed-btn \" onclick=\"appendToAgenda(\'0\')\">Add Topic</button>" +
+                "</div>" +
+                "</div>").appendTo(target);
+        } else {
+            $("<div class=\"row \">" +
 
-                            "<div class=\"form-group mt-3 col-lg-12\" style=\"float: left;\">"+
-                            "    Currently the agenda is empty"+
-                            "</div>"+
-                        "</div>").appendTo(target);
+                "<div class=\"form-group mt-3 col-lg-12\" style=\"float: left;\">" +
+                "    Currently the agenda is empty" +
+                "</div>" +
+                "</div>").appendTo(target);
         }
-    
+
 
     }
 
     
+}
+
+function uploadAgenda() {
+    if (window.isAdmin) {
+        document.getElementById('agenda').click();
+    }
+}
+
+function handleAgendaUpload(event) {
+
+    let files = event.target.files;
+    if (files[0].name.split(".").pop().localeCompare("txt") === 0) {
+        var file = files[0];
+        if (file) {
+            var reader = new FileReader();
+            var text = "";
+            reader.onload = function (evt) {
+                text = evt.target.result;
+                const packet = new AddFullAgendaRequestPacket(text);
+                console.log(packet);
+                CommunicationManager.send(packet, success, fail);
+            };
+            reader.onerror = function(event) {
+                console.error("File could not be read");
+            };
+            reader.readAsText(file, "UTF-8");
+        } else {
+            console.error("Something went terribly wrong.");
+        }
+    } else {
+        alert("Wrong File Extension. Only .txt files allowed.")
+    }
+
+    function success(packet) {
+        if (packet.result === "Valid") {
+            window.location.reload()
+        } else {
+            console.log(packet)
+        }
+    }
+
+    function fail() {
+        console.log("This method is called if something went wrong during the general communication.");
+    }
 }
 
 

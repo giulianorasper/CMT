@@ -2,10 +2,7 @@ package database;
 
 import voting.*;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,14 +27,14 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                 + "     tableName TEXT NOT NULL UNIQUE \n"
                 + ") WITHOUT ROWID;";
 
-        openConnection();
+        Connection connection = openConnection();
         try {
             connection.createStatement().execute(votingsTable);
         } catch (SQLException e) {
             System.err.println("Database initialization failed!");
             System.err.println(e.getMessage());
         }
-        closeConnection();
+        closeConnection(connection);
     }
 
     /**
@@ -48,7 +45,7 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
      */
     @Override
     public boolean addVoting(Voting v) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         String duplicate = "SELECT * FROM votings WHERE votingID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(duplicate)) {
             stmt.setInt(1, v.getID());
@@ -58,7 +55,7 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                 }
             }
         } catch (SQLException e) {
-            this.closeConnection();
+            this.closeConnection(connection);
             System.err.println("An error occurred while trying to check a voting duplicate.");
         }
         String sqlstatement = "INSERT INTO votings (votingID, isNamed, numberOfOptions, question, tableName) "
@@ -123,7 +120,7 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
             System.err.println(ex.getMessage());
             return false;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return true;
     }
@@ -136,7 +133,7 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
      */
     @Override
     public Voting getVoting(int ID) {
-        this.openConnection();
+        Connection connection = this.openConnection();
         Voting voting = null;
         String sqlstatement = "SELECT isNamed, numberOfOptions, question, tableName FROM votings"
                 + " WHERE votingID = ?";
@@ -189,7 +186,7 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return voting;
     }
@@ -200,7 +197,7 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
      */
     @Override
     public List<Voting> getVotings() {
-        this.openConnection();
+        Connection connection = this.openConnection();
         List<Voting> votings = new LinkedList<>();
         String sqlstatement = "SELECT * FROM votings";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
@@ -213,7 +210,7 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
             System.err.println(ex.getMessage());
             return null;
         } finally {
-            this.closeConnection();
+            this.closeConnection(connection);
         }
         return votings;
     }

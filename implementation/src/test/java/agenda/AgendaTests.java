@@ -1,3 +1,5 @@
+package agenda;
+
 import agenda.Agenda;
 import agenda.Topic;
 

@@ -200,9 +200,10 @@ function deleteOption(btn) {
 
 function create(){
 	var res = prompt("Please provide the voting question");
-	if(!res){return;}
+	var res1 = prompt("Time in Minutes");
+	if(!(res1)){return;}
 
-	const packet = new AddVotingRequestPacket(res, [], confirm("named vote?"), 1000*60*5);
+	const packet = new AddVotingRequestPacket(res, [], confirm("named vote?"), res1 * 60);
 	CommunicationManager.send(packet, success, fail);
 
 	 function fail() {
@@ -271,7 +272,7 @@ function start(voteId){
  */
 
 function renderCreatedVote(vote){
-	var durationAux = (vote.duration/1000).toFixed(0);
+	var durationAux = (vote.duration).toFixed(0);
 	var secondsAux = (durationAux % 60).toFixed(0);
 	var seconds = (secondsAux < 10 ? "0"+secondsAux:secondsAux);
 	var durationMinutes = (durationAux/60).toFixed(0)+":"+seconds;

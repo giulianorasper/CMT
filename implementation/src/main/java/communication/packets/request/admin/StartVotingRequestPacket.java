@@ -32,18 +32,13 @@ public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
     public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
             Packet response;
-            Voting activeVoting = conference.getActiveVoting();
             Voting votingToStart = conference.getVoting(id);
             if(votingToStart == null) {
                 response = new FailureResponsePacket("The voting with the id " + id + " does not exist.");
             } else if (votingToStart.getStatus() != VotingStatus.Created){
                 response = new FailureResponsePacket("Voting could not be started since it's status is " + votingToStart.getStatus());
-            } else if(activeVoting != null) {
-                response = new FailureResponsePacket("Voting could not be started since there is already an ongoing voting.");
-            }
-            else {
-                votingToStart.startVote();
-                conference.update(votingToStart);
+            } else {
+                conference.perfomeactiveVote(votingToStart);
                 response = new ValidResponsePacket();
             }
             response.send(webSocket);

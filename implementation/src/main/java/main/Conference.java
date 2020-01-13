@@ -22,10 +22,7 @@ import voting.VotingStatus;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
@@ -749,7 +746,6 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             adminLock.lock();
             attendeeLock.lock();
             if(adminTokens.containsKey(token)){
-                System.out.println("Hit 1");
                 return TokenResponse.ValidAdmin;
             }
             else {
@@ -831,6 +827,42 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     /****************** The Voting Management Interface *********/
 
+    /**called if a vote start
+     *
+     */
+    public Boolean perfomeactiveVote(Voting vote) {
+        try {
+            votingLock.lock();
+            if (this.getActiveVoting() != null) {
+                return false;
+            }
+            vote.startVote();
+            update(vote);
+            int duration = vote.getDuration();
+
+            Timer ActiveTimer = new Timer();
+            //System.out.println("start");
+            ActiveTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    vote.endVote();
+                    //db_votingManagement.addVoting(vote);
+                    update(vote);
+                    //System.out.println("fertig");
+                }
+
+
+            }, 1000 * duration);
+
+
+            return true;
+        }
+        finally {
+            votingLock.unlock();
+        }
+    }
+
+
     /**
      * Get the Actual Active Voting
      * @return Voting
@@ -878,11 +910,12 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
-     * Add finished Voting to the Database
+     * Add created Voting
      * @param voting Voting
      */
     @Override
     public void addVoting( Voting voting) {
+
         try{
             votingLock.lock();
             votings.put(voting.getID(), voting);

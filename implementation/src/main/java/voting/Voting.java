@@ -65,6 +65,25 @@ public class Voting implements VotingObservable {
         this.options.forEach(o -> o.setParent(this));
     }
 
+    public boolean updateVoteArguments(List<VotingOption> options, String question, boolean namedVote, int duration) {
+        try {
+            lock.getReadAccess();
+            if (status != VotingStatus.Created) {
+                return false;
+            }
+            this.options = options;
+            this.question = question;
+            this.namedVote = namedVote;
+            this.duration = duration;
+            return true;
+        } catch (InterruptedException e) {
+            return false;
+        } finally {
+            lock.finishRead();
+        }
+
+    }
+
     /**
      * Check if the current voting is a NamedVoting
      * @return true iff the voting is a NamedVoting
@@ -173,6 +192,20 @@ public class Voting implements VotingObservable {
             this.duration = seconds;
         } catch (InterruptedException e) {
 
+        } finally {
+            lock.finishWrite();
+        }
+    }
+
+    /**
+     * Get Duration how long user can vote.
+     */
+    public Integer getDuration() {
+        try {
+            lock.getWriteAccess();
+            return this.duration;
+        } catch (InterruptedException e) {
+            return -1;
         } finally {
             lock.finishWrite();
         }

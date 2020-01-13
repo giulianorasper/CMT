@@ -45,6 +45,8 @@ public class NamedVotingOption extends VotingOption {
      */
     @Override
     public int getCurrentResult() {
+        return voters.size();
+        /*
         try {
             lock.getReadAccess();
             return voters.size();
@@ -54,7 +56,7 @@ public class NamedVotingOption extends VotingOption {
         }
         finally {
             lock.finishRead();
-        }
+        }*/
     }
 
     /**
@@ -63,6 +65,8 @@ public class NamedVotingOption extends VotingOption {
      */
     @Override
     public List<Integer> getVoters() {
+        return new ArrayList<>(voters);
+        /*
         try {
             lock.getReadAccess();
             return new ArrayList<>(voters);
@@ -70,7 +74,7 @@ public class NamedVotingOption extends VotingOption {
             return null;
         } finally {
             lock.finishRead();
-        }
+        }*/
     }
 
     /**

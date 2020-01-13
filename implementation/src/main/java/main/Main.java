@@ -47,23 +47,6 @@ public class Main {
     /** Starts a conference with a single admin (username and password 'test') **/
     private static void startNormalConference(boolean clean){
         conf = new Conference(clean);
-        LinkedList<VotingOption> votingOptions = new LinkedList<>();
-        NamedVotingOption o1 = new NamedVotingOption(0, "Dieter");
-        NamedVotingOption o2 = new NamedVotingOption(1, "Peter");
-        NamedVotingOption o3 = new NamedVotingOption(2, "Sarah");
-        NamedVotingOption o4 = new NamedVotingOption(3, "Lorax");
-        votingOptions.add(o1);
-        votingOptions.add(o2);
-        votingOptions.add(o3);
-        votingOptions.add(o4);
-        Voting voting = new Voting(votingOptions, "Who am I?", true);
-        o1.setParent(voting);
-        o2.setParent(voting);
-        o3.setParent(voting);
-        o4.setParent(voting);
-        voting.startVote();
-        conf.addVoting(voting);
-        conf.update(voting);
         if(conf.getAllAdmins().isEmpty()) {
             conf.addAdmin(new Admin("Johannes Dieters", "johannesdieters@web.de", "admin", "RCDS", "66111 Saarbrücken, Mainzerstaße 45", "Admin", 0), "admin");
             conf.addAdmin(new Admin("Franz Mayer", "franzl@gmx.de", "FrMa", "RCDS", "66111 Saarbrücken, Donaustaße 45", "Admin", 1), "franz");

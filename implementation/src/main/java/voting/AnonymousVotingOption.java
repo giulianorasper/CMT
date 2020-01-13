@@ -40,7 +40,8 @@ public class AnonymousVotingOption extends VotingOption {
 
     @Override
     public int getCurrentResult(){
-        try {
+        return votes;
+        /*try {
             lock.getReadAccess();
             return votes;
         }
@@ -49,7 +50,7 @@ public class AnonymousVotingOption extends VotingOption {
         }
             finally {
             lock.finishRead();
-        }
+        }*/
     }
 
     /**

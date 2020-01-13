@@ -144,6 +144,7 @@ function cookiesSessionHandling(packet){
 function displayActiveVote(packet){
 
 	if(packet.exists){
+		console.log(packet);
 		
 
 		cookiesSessionHandling(packet);
@@ -220,12 +221,6 @@ function displayActiveVote(packet){
 				const selectedOptionId = $('input[name="radio"]:checked').attr('id');
 				
 
-				if(timeOut){
-					$("#failure").html("<h4 style='float: right; margin-top:30px;'>Vote has been expired!</h4>");		
-				}
-				
-				else {
-					
 					function success(packet){
 						if(packet.result === "Valid"){
 							
@@ -246,8 +241,6 @@ function displayActiveVote(packet){
 					const sendVote = new AddVoteRequestPacket(voteID, selectedOptionId);
 
 					CommunicationManager.send(sendVote, success, fail);	
-					
-				}
 	
         });
 		

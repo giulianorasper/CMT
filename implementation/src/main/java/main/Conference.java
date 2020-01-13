@@ -749,7 +749,6 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             adminLock.lock();
             attendeeLock.lock();
             if(adminTokens.containsKey(token)){
-                System.out.println("Hit 1");
                 return TokenResponse.ValidAdmin;
             }
             else {

@@ -1025,10 +1025,8 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             }
             try {
                 if(f.exists() ||  f.createNewFile()){
-                    OutputStream os = new FileOutputStream(f, true);
                     f.delete();
                     Files.move(file.toPath(), f.toPath());
-                    os.close();
                 }
 
             }

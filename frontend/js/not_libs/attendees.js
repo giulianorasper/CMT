@@ -23,9 +23,11 @@ $(document).ready( function() {
     window.editAttendeeGlobal = editAttendee;
     window.getNewAttendeePasswordGlobal = getNewAttendeePassword;
     window.logoutAttendeeGlobal = logoutAttendee;
+    window.uploadUserList = uploadUserList;
 
     //Add listeners to buttons/dropdown menus that don't need to be generated dynamically
     document.getElementById("sortingOptions").addEventListener("change", changeSort, false);
+    document.getElementById("upUserList").addEventListener("change", handleListUpload, false);
 
 
     /* //Global functions for click events
@@ -246,6 +248,43 @@ function addIconListeners(attendee) {
 
 //-------------------------------- FUNCTIONS TO BE CALLED BY GLYPHICONS ------------------------------------------------
 
+/**
+ *
+ */
+function uploadUserList() {
+    document.getElementById('upUserList').click();
+}
+/*
+ *
+ */
+function handleListUpload(event) {
+    let files = event.target.files;
+    if (files[0].name.split(".").pop().localeCompare("csv") === 0) {
+        var file = files[0];
+        if (file) {
+            var reader = new FileReader();
+            var text = "";
+            reader.onload = function (evt) {
+                text = evt.target.result;
+                parseUsers(text);
+            };
+            reader.onerror = function(event) {
+                console.error("File could not be read");
+            };
+            reader.readAsText(file, "UTF-8");
+        } else {
+            console.error("Something went terribly wrong.");
+        }
+    } else {
+        alert("Wrong File Extension. Only .csv files allowed.")
+    }
+
+    function parseUsers(text) {
+        text.split(/\r?\n/).forEach(entry => createAttendee.apply(null, entry.split(":")));
+        refresh();
+    }
+
+}
 
 /**
  * Can be called by "onclick" param of glyphicon for each attendee, sends request to the server to delete the attendee

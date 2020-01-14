@@ -38,8 +38,17 @@ public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
             } else if (votingToStart.getStatus() != VotingStatus.Created){
                 response = new FailureResponsePacket("Voting could not be started since it's status is " + votingToStart.getStatus());
             } else {
-                conference.perfomeactiveVote(votingToStart);
-                response = new ValidResponsePacket();
+                if (votingToStart.getOptions().size() >= 2) {
+                    if (conference.perfomeactiveVote(votingToStart)) {
+                        response = new ValidResponsePacket();
+                    } else {
+                        response = new FailureResponsePacket( "Can´t start a voting because some problem occure in Backend");
+                    }
+
+                } else {
+                    response = new FailureResponsePacket( "Can´t start a voting with less than 2 options");
+                }
+
             }
             response.send(webSocket);
         }

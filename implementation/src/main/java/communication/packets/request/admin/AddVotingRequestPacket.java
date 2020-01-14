@@ -54,8 +54,7 @@ public class AddVotingRequestPacket extends AuthenticatedRequestPacket {
                 optionsObjectList.add(votingOptionObject);
                 id++;
             }
-            Voting voting = new Voting(optionsObjectList, question, namedVote);
-            voting.setDuration(duration);
+            Voting voting = new Voting(optionsObjectList, question, namedVote, duration);
             conference.addVoting(voting);
             new ValidResponsePacket().send(webSocket);
         }

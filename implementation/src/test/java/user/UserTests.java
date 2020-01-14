@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import utils.Pair;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -299,15 +300,43 @@ public class UserTests {
     @Test
     public void invalidLogin5(){
         Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
-        conf.removeAdmin(a.ID);
+        conf.addAdmin(a);
         String password = conf.getUserPassword(a.getID()).second();
-        conf.removeAttendee(a.getID());
+        conf.removeAdmin(a.getID());
         Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
         if(response.first() == LoginResponse.Valid){
             fail("Managed to log in a user which should not be loged in");
         }
 
     }
+
+    @Test
+    public void invalidLogin6(){
+        Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAdmin(a);
+        String password = conf.getUserPassword(a.getID()).second();
+        conf.logoutAdmin(a.getID());
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
+        if(response.first() == LoginResponse.Valid){
+            fail("Managed to log in a user which should not be loged in");
+        }
+
+    }
+
+
+    @Test
+    public void invalidLogin7(){
+        Attendee a = new Attendee("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAttendee(a);
+        String password = conf.getUserPassword(a.getID()).second();
+        conf.generateNewUserPassword(a.getID());
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
+        if(response.first() == LoginResponse.Valid){
+            fail("Managed to log in a user which should not be loged in");
+        }
+
+    }
+
 
     @Test
     public void validLogin(){
@@ -381,8 +410,17 @@ public class UserTests {
     @Test
     public void testTokens(){
         Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
-        Attendee b = new Attendee("Mike", "Mike@Gebirge2.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
-        Attendee c = new Attendee("Mike", "Mike@Gebirge3.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        Attendee b = new Attendee("Mike", "Mike@Gebirge2.tods", conf.getFreeUserName("Mike"), "JUSO", "MPI", "SysAdmin");
+        Attendee c = new Attendee("Mike", "Mike@Gebirge3.tods", conf.getFreeUserName("Mike"), "AI", "MPI", "SysAdmin");
+
+        ArrayList<String> groups = new ArrayList<>();
+        groups.add("RCDS");
+        groups.add("JUSO");
+        groups.add("AI");
+
+        if(!groups.containsAll(conf.getExistingGroups()) || !conf.getExistingGroups().containsAll(groups)){
+            fail("Groups do not match");
+        }
 
         conf.addAdmin(a);
         conf.addAttendee(b);
@@ -412,6 +450,28 @@ public class UserTests {
         if(conf.checkToken(responseC.second().first()) != TokenResponse.TokenDoesNotExist){
             fail("Expected an invalid token");
         }
+
+    }
+
+    @Test
+    public void tokenReset(){
+        Attendee a = new Attendee("Mike", "Mike@Gebirge2.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+
+        conf.addAttendee(a);
+        String passwordA = conf.getUserPassword(a.getID()).second();
+
+        Pair<LoginResponse, Pair<String, Long>> responseA = conf.login(a.userName, passwordA);
+
+        if(conf.checkToken(responseA.second().first()) != TokenResponse.ValidAttendee){
+            fail("Token should be valid at this point");
+        }
+
+        conf.generateNewUserToken(a.getID());
+
+        if(conf.checkToken(responseA.second().first()) != TokenResponse.TokenDoesNotExist){
+            fail("Token should be invalid at this point");
+        }
+
 
     }
 

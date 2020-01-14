@@ -40,12 +40,21 @@ public class Voting implements VotingObservable {
      * @param options  A list of VotingOptions with their results.
      * @param question The question of the voting.
      */
-    public Voting(List<VotingOption> options, String question, boolean namedVote) {
+    public Voting(List<VotingOption> options, String question, boolean namedVote, int duration) {
+        options.forEach(o -> {
+            if(namedVote && !(o instanceof NamedVotingOption)){
+                throw new IllegalArgumentException("Invalid option type in list");
+            }
+            if(!namedVote && !(o instanceof AnonymousVotingOption)){
+                throw new IllegalArgumentException("Invalid option type in list");
+            }
+        });
         this.options = options;
         this.question = question;
         this.namedVote = namedVote;
         ID = getNextId();
         status = VotingStatus.Created;
+        this.duration = duration;
         options.forEach(o -> o.setParent(this));
     }
 
@@ -57,6 +66,14 @@ public class Voting implements VotingObservable {
      * @param ID       The ID of the voting that was already stored in the Database.
      */
     public Voting(List<VotingOption> options, String question, int ID, boolean namedVote) {
+        options.forEach(o -> {
+            if(namedVote && !(o instanceof NamedVotingOption)){
+                throw new IllegalArgumentException("Invalid option type in list");
+            }
+            if(!namedVote && !(o instanceof AnonymousVotingOption)){
+                throw new IllegalArgumentException("Invalid option type in list");
+            }
+        });
         this.options = options;
         this.question = question;
         this.ID = ID;

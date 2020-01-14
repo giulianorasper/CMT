@@ -7,7 +7,6 @@ import communication.packets.response.FailureResponsePacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import voting.Voting;
 import voting.VotingStatus;
 
@@ -38,7 +37,7 @@ public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
             } else if (votingToStart.getStatus() != VotingStatus.Created){
                 response = new FailureResponsePacket("Voting could not be started since it's status is " + votingToStart.getStatus());
             } else {
-                conference.perfomeactiveVote(votingToStart);
+                conference.startVoting(votingToStart);
                 response = new ValidResponsePacket();
             }
             response.send(webSocket);

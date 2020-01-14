@@ -25,9 +25,6 @@ public class AnonymousVotingOption extends VotingOption {
         this.votes = votes;
     }
 
-    public AnonymousVotingOption(int votes) {
-
-    }
 
     /**
      * increase Number of user that vote for the NamedVotingOption.

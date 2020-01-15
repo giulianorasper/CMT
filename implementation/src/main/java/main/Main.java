@@ -10,7 +10,11 @@ import voting.Voting;
 import voting.VotingOption;
 
 import javax.naming.Name;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 
 public class Main {
@@ -30,15 +34,32 @@ public class Main {
             printUsage();
         }
         else{
-            if(!args[0].toLowerCase().equals("test")){
+            if(!args[0].toLowerCase().equals("test") && !args[0].toLowerCase().equals("start")){
                 printUsage();
             }
-            else{
+            else if(args[0].toLowerCase().equals("test")){
                 switch (args[1]){
                     case "normal": startNormalConference(true);
                         break;
                     case "normal-persistent": startNormalConference(false);
                         break;
+                }
+            }
+            else {
+                try{
+                    File f = new File(args[1]);
+                    FileInputStream fis = new FileInputStream(f);
+                    byte[] data = new byte[(int) f.length()];
+                    fis.read(data);
+                    fis.close();
+                    String str = new String(data, StandardCharsets.UTF_8);
+                    conf = ConfigParser.parseConfigFile(str);
+                    CommunicationManager w = new CommunicationManagerFactory(conf).enableDebugging().create();
+                    w.start();
+                }
+                catch (IOException e){
+                    e.printStackTrace();
+                    System.exit(1);
                 }
             }
         }
@@ -70,7 +91,7 @@ public class Main {
     }
 
     private static void printUsage(){
-        System.out.println("Usage : 'test' <testID>");
+        System.out.println("Usage : 'test' <testID> | 'start' <path-to-config-file>");
         System.out.println("Valid test ids : 'normal', 'normal-persistent'");
         System.exit(0);
     }

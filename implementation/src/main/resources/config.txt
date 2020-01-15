@@ -10,7 +10,7 @@ name : 'SE Presentation\#3' # mandatory field. Presents a possible escape sequen
 organizer : 'Group 17' # mandatory field
 startTime : '1579081095' # A unix timestamp. If not it is omitted, it wil default to the time at which this file is read
 endTime : '1579996799' # A unix timestamp. This field is mandatory
-databasePath : './db' # Optional field. Defaults to './db'
+databasePath : './testdb/testdb.db' # Optional field. Defaults to './db/conference.db'
 documentsPath : './docs' # Optional field. Defaults to './docs'
 admin : 'name:email:group:residence:function' # A generic admin. This is the only key that can be duplicated
 admin : 'georg best:best@best.best:the best:the best house:being the best' # An other generic admin

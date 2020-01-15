@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConfigParser {
 
-    static String [] validKeys = {"admin", "startTime", "endTime", "name", "organizer", "databasePath", "documentsPath"};
+    static String [] validKeys = {"admin", "starttime", "endtime", "name", "organizer", "databasepath", "documentspath"};
 
     public static Conference parseConfigFile(String s){
 
@@ -28,7 +28,7 @@ public class ConfigParser {
             lineNumber++;
         }
 
-        for(String mandKey : new String[]{"name", "organizer", "endTime"}){
+        for(String mandKey : new String[]{"name", "organizer", "endtime"}){
             if(!map.containsKey(mandKey)){
                 throw new IllegalArgumentException("Missing key " +mandKey);
             }
@@ -41,15 +41,15 @@ public class ConfigParser {
         Conference conf =   new Conference
                 (  map.get("name"),
                 map.get("organizer"),
-                Long.parseLong(map.getOrDefault("startTime", ""+System.currentTimeMillis())),
-                        Long.parseLong(map.get("endTime")),
+                Long.parseLong(map.getOrDefault("starttime", ""+System.currentTimeMillis())),
+                        Long.parseLong(map.get("endtime")),
                 new HashMap<Integer, Admin>(),
                 new HashMap<Integer, Voting>(),
                 new HashMap<String, Document>(),
-                        map.getOrDefault("databasePath", "./db"),
+                        map.getOrDefault("documentspath", "./docs"),
                 new HashMap<Integer, Request>(),
                 null,
-                map.getOrDefault("documentsPath", "./docs"),
+                        map.getOrDefault("databasepath", "./db/conference.db"),
                 false,
                 false
         );
@@ -74,7 +74,7 @@ public class ConfigParser {
         }
 
         int aux = i.get();
-        String key = parseKey(s, i, lineNumber, aux);
+        String key = parseKey(s, i, lineNumber, (i.get()-aux));
         boolean contains = false;
         for (String validKey : validKeys) {
             if (validKey.equals(key)) {
@@ -90,10 +90,11 @@ public class ConfigParser {
         if(s.charAt(i.get()) != '\''){
             throw new IllegalArgumentException("Value does not start with ''' at "+lineNumber+":"+(i.get() -indexAtLineStart) );
         }
+        i.incrementAndGet();
         if(key.equals("admin")){
             admins.add(parseAdmin(s, i));
             skipWhitespace(s,i);
-            if(s.charAt(i.get()) == '#'){
+            if(i.get() < s.length() && s.charAt(i.get()) == '#'){
                 parseComment(s, i);
             }
 
@@ -101,7 +102,7 @@ public class ConfigParser {
         else{
             String value = parseNonAdminValue(s, i, '\'');
             skipWhitespace(s,i);
-            if(s.charAt(i.get()) == '#'){
+            if(i.get() < s.length() && s.charAt(i.get()) == '#'){
                 parseComment(s,i);
             }
 
@@ -111,7 +112,7 @@ public class ConfigParser {
     }
 
     private static List<String> parseAdmin(String s, AtomicInteger i){
-        List<String> res= new ArrayList();
+        List<String> res= new ArrayList<String>();
         res.add(parseNonAdminValue(s, i, ':'));
         res.add(parseNonAdminValue(s, i, ':'));
         res.add(parseNonAdminValue(s, i, ':'));
@@ -145,6 +146,7 @@ public class ConfigParser {
                 i.incrementAndGet();
             }
             else if(s.charAt(i.get()) == endAt){
+                i.getAndIncrement();
                 return sb.toString().toLowerCase();
             }
             else if(s.charAt(i.get()) == '#'){
@@ -158,13 +160,14 @@ public class ConfigParser {
     }
 
     private static void parseComment(String s, AtomicInteger i){
-        while (s.charAt(i.get()) != '\n'){
+        while (i.get() < s.length() && s.charAt(i.get()) != '\n'){
             i.incrementAndGet();
         }
+        i.incrementAndGet();
     }
 
     private static void skipWhitespace(String s, AtomicInteger i){
-        while (Character.isWhitespace(s.charAt(i.get()))){
+        while (i.get() < s.length() && Character.isWhitespace(s.charAt(i.get()))){
             i.incrementAndGet();
         }
     }

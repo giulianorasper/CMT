@@ -58,12 +58,18 @@ function displayPreviousVotes(packet){
         }
         
         for(var j in packet.votings[i].options){
-            var voteOptions =  '<pre>' + packet.votings[i].options[j].optionID + '      '
+            var voteOptions =  '<pre>' + (packet.votings[i].options[j].optionID + 1) + '      '
                                 + packet.votings[i].options[j].name + '    Public Votes: '
                                 + packet.votings[i].options[j].publicVotes + '       ' 
-                                + Math.round((packet.votings[i].options[j].voters.length/totalAttendees)*100) + ' %'
+                                + Math.round((packet.votings[i].options[j].voters.length/totalAttendees)*100) + '%'
+                                + '      Attendees Name: ' + packet.votings[i].options[j].voters
                                 // + '<br>'
                                 + '</pre>';
+            // if(packet.votings[i].namedVote){
+            //     for(var name in packet.votings[i].options[k].voters) {
+            //         var namesOfAttendee = namesofAttendee + packet.votings[i].options[k].voters[name]  
+            //     }
+            // }
 
             $('#'+packet.votings[i].ID+'prev').append(voteOptions);
         }

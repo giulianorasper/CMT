@@ -65,7 +65,14 @@ function save(voteId){
 	const packet = new EditVotingRequestPacket(voteId, vote.question, options ,vote.named, vote.duration);
 
 	function success(packet){
-		console.log(packet);
+
+		
+		if(packet.result === "Valid"){
+			
+			$("#dialogMessage").dialog("open");
+			return false;
+
+		}
 	}
 
 	 function fail() {
@@ -75,6 +82,25 @@ function save(voteId){
     CommunicationManager.send(packet, success, fail);
 }
 
+
+
+$("#dialogMessage").dialog({
+	autoOpen: false,
+	resizable: false,
+	// autoOpen:false,
+	height: 210,
+	width: 360,
+	modal: true,
+	title: "Success",
+		buttons: {
+		"Do Something": function() {
+		},
+	Cancel: function() {
+
+	$(this).dialog("close");
+	}
+}
+});
 
 /**
  * remove function will be called when the admin click on delete button. This will delete a vote question.

@@ -198,7 +198,43 @@ function deleteOption(btn) {
  * if everything is done successfully renderVotings function will be called in order to get all votes question that are currently available in the database. 
  */
 
+// createDialog = $('#creationDialog').dialog({
+// 	autoOpen: false,
+// 	height: 540,
+// 	width: 420,
+// 	modal: true,
+// 	buttons: {
+// 		"Confirm": create,
+// 		Cancel: function () {
+// 			createDialog.dialog("close");
+// 		}
+// 	},
+// 	close: function () {
+// 		createForm[ 0 ].reset();
+// 		createFields.removeClass("ui-state-error");
+// 	}
+// });
+
+// createForm = createDialog.find("form").on("submit", function(event){
+// 	event.preventDefault();
+// 	create();
+// });
+
+
+
+// $('#createVote').on("click", function (e) {
+// 	e.preventDefault();
+// 	createDialog.dialog("open");
+// });
+
+
+
+
 function create(){
+
+	// e.preventDefault();
+	// createDialog.dialog("open");
+
 	var res = prompt("Please provide the voting question");
 	var res1 = prompt("Time in Minutes");
 	if(!(res1)){return;}

@@ -1,17 +1,23 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "description": "",
+  "description": "test application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watchAll"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "testingApp"
+  ],
+  "author": "me",
   "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.9.0"
+  },
   "dependencies": {
-    "jquery": "^3.4.1",
-    "jquery-ui": "^1.12.1",
-    "jquery-ui-bundle": "^1.12.1-migrate"
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-jest": "^24.9.0",
+    "esm": "^3.2.25"
   }
 }

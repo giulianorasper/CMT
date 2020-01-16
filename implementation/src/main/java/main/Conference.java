@@ -31,6 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 public class Conference implements UserManagement, VotingManagement, RequestManagement, DocumentManagement, AgendaManagement, VotingObserver {
@@ -1179,13 +1181,81 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     /****************** The Functionality related to QR code generation *********/
 
+    public byte[] getQrCode(int attendeeId){
+        try{
+            adminLock.lock();
+            attendeeLock.lock();
+            Attendee a = getAttendeeData(attendeeId);
+            File f = new File(tmpDir.getAbsolutePath() +"/"+ a.getUserName() + "/qr-code.png");
+            try{
+                byte[] fileBytes = new byte[(int)f.length()];
+                FileInputStream fis = new FileInputStream(f);
+                fis.read(fileBytes);
+                fis.close();
+                return fileBytes;
+
+            }
+            catch (IOException e){
+                throw new IllegalArgumentException("Could not read file");
+            }
+
+        }
+        finally {
+            adminLock.unlock();
+            attendeeLock.unlock();
+        }
+    }
+
+    public byte[] getAllQrCodes(){
+        try {
+            adminLock.lock();
+            attendeeLock.lock();
+
+            String sourceFile = tmpDir.getAbsolutePath()+"/qr/";
+
+            File f= new File(tmpDir.getAbsolutePath()+"/qrs.zip");
+            if(f.exists()){
+                f.delete();
+            }
+
+            FileOutputStream fos = new FileOutputStream(f);
+            ZipOutputStream zipOut = new ZipOutputStream(fos);
+            File fileToZip = new File(sourceFile);
+
+            zipFile(fileToZip, fileToZip.getName(), zipOut, true);
+            zipOut.close();
+
+            byte[] fileBytes = new byte[(int)f.length()];
+            FileInputStream fis = new FileInputStream(f);
+            fis.read(fileBytes);
+            fis.close();
+            return fileBytes;
+
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException();
+        } finally {
+            adminLock.unlock();
+            attendeeLock.unlock();
+        }
+
+    }
+
     public void generateQRCode(int attendeeId){
         try {
             adminLock.lock();
             attendeeLock.lock();
             Attendee a = db_userManagement.getAttendeeData(attendeeId);
 
-            File userDir = new File(tmpDir.getAbsolutePath() +"/"+ a.getUserName());
+            File qrDir = new File(tmpDir.getAbsolutePath() +"/qr/");
+            if(!qrDir.exists() || !qrDir.isDirectory()){
+                generateCleanDirectory(qrDir);
+            }
+
+            File userDir = new File(tmpDir.getAbsolutePath() +"/qr/"+ a.getUserName());
             generateCleanDirectory(userDir);
 
             try {
@@ -1228,7 +1298,6 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     }
 
-
     void generateCleanDirectory(File userDir){
         if(userDir.exists() && !userDir.isDirectory()){
             userDir.delete();
@@ -1252,5 +1321,43 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    private void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut, boolean root) throws IOException {
+        if (fileToZip.isHidden()) {
+            return;
+        }
+        if(root){
+            File[] children = fileToZip.listFiles();
+            for (File childFile : children) {
+                zipFile(childFile, fileName + "/" + childFile.getName(), zipOut, false);
+            }
+            return;
+        }
+        if (fileToZip.isDirectory()) {
+            if (fileName.endsWith("/")) {
+                zipOut.putNextEntry(new ZipEntry(fileName));
+                zipOut.closeEntry();
+            } else {
+                zipOut.putNextEntry(new ZipEntry(fileName + "/"));
+                zipOut.closeEntry();
+            }
+            File[] children = fileToZip.listFiles();
+            for (File childFile : children) {
+                zipFile(childFile, fileName + "/" + childFile.getName(), zipOut, false);
+            }
+            return;
+        }
 
+        FileInputStream fis = new FileInputStream(fileToZip);
+        ZipEntry zipEntry = new ZipEntry(fileName);
+        zipOut.putNextEntry(zipEntry);
+        byte[] bytes = new byte[1024];
+        int length;
+        while ((length = fis.read(bytes)) >= 0) {
+            zipOut.write(bytes, 0, length);
+        }
+        fis.close();
+
+    }
 }
+
+

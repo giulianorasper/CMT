@@ -727,8 +727,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     @Override
     public Pair<LoginResponse, Pair<String, Long>> login(String userName, String password) {
         try{
+            System.out.println("Hi");
             adminLock.lock();
             attendeeLock.lock();
+            System.out.println("Hi again");
             Pair<LoginResponse, String> response = db_userManagement.checkLogin(userName, password);
             if(response.first() != LoginResponse.Valid){
                 return new Pair<>(response.first(), null);
@@ -1204,8 +1206,8 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             }
         }
         finally {
-            adminLock.lock();
-            attendeeLock.lock();
+            adminLock.unlock();
+            attendeeLock.unlock();
         }
 
 

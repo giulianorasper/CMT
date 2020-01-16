@@ -77,6 +77,7 @@ public class Main {
 
         conf.generateAllQRCodes();
         conf.generateAllQRCodes();
+
         CommunicationManager w = new CommunicationManagerFactory(conf).enableDebugging().create();
         w.start();
         System.out.println("Press 'q' to close the server");

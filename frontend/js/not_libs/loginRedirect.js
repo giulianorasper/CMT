@@ -23,6 +23,8 @@ $( document ).ready(function() {
 			
 	    	 window.location = "./home.html"
 	    }
+        else{checkUrlLogin();}
+
 	}
 
 	function fail() {
@@ -31,6 +33,16 @@ $( document ).ready(function() {
 
 
 });
+
+
+function checkUrlLogin(){
+    var url = new URL(window.location);
+    var name = url.searchParams.get("name");
+    var pwd = url.searchParams.get("pwd");
+    if(name && pwd){
+        login(name, pwd);
+    }
+}
 
 /**
  * this Anonymous function will be called when click on submit vote button. Purpose of this function is to send use name and password for authentication.
@@ -48,8 +60,14 @@ $( document ).ready(function() {
 
                 var name = document.getElementById("name").value;
                 var password = document.getElementById("password").value;
+                login(name, password);
 
-                function success(packet) {
+                
+            });
+
+
+function login(name, password){
+    function success(packet) {
                     console.log("This method is called if a response from the server is received.");
                     // Take a look at the java docs for details on the structure of the packets.
                     if(packet.result === "Valid") {
@@ -71,7 +89,4 @@ $( document ).ready(function() {
 
                 // Send the request to the server
                 CommunicationManager.send(login, success, fail);
-            });
-
-
-
+}

@@ -16,7 +16,6 @@ $( document ).ready(function() {
 
 	    	if(!packet.admin){
 	    		$(".adminField").each(function(i, field){
-	    			console.log(field)
                     $(field).css("display", "none");
                 })
 	    	}
@@ -41,39 +40,25 @@ $( document ).ready(function() {
 function checkVoteExistance() {
 	
 	function success(packet){
-
 		if(packet.result === "Valid"){
-			
-			console.log(packet)
-			
-			// voteExists = true;
+			console.log(packet);
+
 	 		if(packet.exists){
-				
-				
-				// var voteExpiryDate = new Date(packet.voting.openUntil);
 				var voteExpiryDate = new Date(packet.voting.openUntil);
 				
 				document.cookie = "voteID=" + packet.voting.ID + ";path=./vote.html;expires=" + voteExpiryDate.toGMTString();
-				
+
 				if(document.cookie && document.cookie.indexOf('voteID='+packet.voting.ID+'') != -1){
-			
 					var redirectToVote = sessionStorage.getItem("redirect");
-					console.log(redirectToVote);
 					
 					if (redirectToVote === null){
 						clearInterval(stopInterval);
 						window.location.href = './vote.html';
 					}
 				}
-					
-				else {
-					sessionStorage.removeItem("redirect");
-					
-				}
-				// }
-			} 
-			// redirectToVoting(voteExists)
-
+			} else {
+				sessionStorage.removeItem("redirect");
+			}
 		}
     }
 
@@ -86,7 +71,7 @@ function checkVoteExistance() {
     CommunicationManager.send(getActiveVote, success, fail); 
 		
 		
-	} 
+}
 	
 // setInterval function will check in every second that new vote has started or not.
 var stopInterval = setInterval(checkVoteExistance, 1000);

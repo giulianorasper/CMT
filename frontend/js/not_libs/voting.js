@@ -227,6 +227,30 @@ function deleteOption(btn) {
 // 	createDialog.dialog("open");
 // });
 
+$("#dialog").dialog({
+	autoOpen: false,
+	resizable: false,
+	// autoOpen:false,
+	height: 380,
+	width: 500,
+	modal: true,
+	title: "Creat Vote Panel",
+		buttons: {
+		"Do Something": function() {
+		},
+	Cancel: function() {
+
+	$(this).dialog("close");
+	}
+}
+});
+
+
+$('#createVote').on("click", function () {
+	
+	$("#dialog").dialog("open");
+	return false;
+});
 
 
 
@@ -234,12 +258,36 @@ function create(){
 
 	// e.preventDefault();
 	// createDialog.dialog("open");
+	
 
-	var res = prompt("Please provide the voting question");
-	var res1 = prompt("Time in Minutes");
-	if(!(res1)){return;}
+	var voteQuestion = $('#VoteText').val();
+	var TimeDuration = $('#duration').val();
+	var voteType = $('input[name="yes-no"]:checked').val();
 
-	const packet = new AddVotingRequestPacket(res, [], confirm("named vote?"), res1 * 60);
+	if( (voteQuestion == '' && TimeDuration == '') || voteQuestion == '' || TimeDuration == ''){
+		return;}
+	
+	if (voteType === '1'){ 
+		var voteTypeBoolean = true;
+	}	else {
+		var voteTypeBoolean = false;
+	}
+
+	// console.log(voteTypeBoolean);
+	// $('#VoteText').val("");
+	// $('#duration').val("");
+
+	// $("#dialog").dialog("close");
+
+	// console.log(voteQuestion);
+	// console.log(TimeDuration);
+	// console.log(voteType);
+
+	// var res = prompt("Please provide the voting question");
+	// var res1 = prompt("Time in Minutes");
+	// if(!(res1)){return;}
+
+	const packet = new AddVotingRequestPacket(voteQuestion, [], voteTypeBoolean, TimeDuration * 60);
 	CommunicationManager.send(packet, success, fail);
 
 	 function fail() {

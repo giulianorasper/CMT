@@ -8,6 +8,7 @@ import database.*;
 import document.DB_DocumentManagement;
 import document.Document;
 import document.DocumentManagement;
+import io.nayuki.qrcodegen.QrCode;
 import request.DB_RequestManagement;
 import request.Request;
 import request.RequestManagement;
@@ -20,7 +21,10 @@ import voting.VotingManagement;
 import voting.VotingObserver;
 import voting.VotingStatus;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,6 +51,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     private String  documentsPath ;
     private String databasePath;
+    private String url;
 
     private Agenda agenda;
     private HashMap<Integer,Voting> votings;
@@ -71,6 +76,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private Lock documentsLock = new ReentrantLock();
 
 
+    private File tmpDir;
+
+
 
     //Creates a clean conference (for debugging)
     public Conference(boolean cleanStart){
@@ -85,6 +93,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                 new HashMap<Integer, Request>(),
                 null,
                 "./testdb/testdb.db",
+                "https://math-edu.eu/conference/home.html",
                 true,
                 cleanStart
         );
@@ -111,7 +120,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public Conference(String name, String organizer, long startsAt, long endsAt, HashMap<Integer,
             Admin> admins, HashMap<Integer,Voting> votings, HashMap<String,Document> documents, String  documentsPath,
                        HashMap<Integer,Request> requests, Voting activeVoting,
-                      String databasePath,
+                      String databasePath, String url,
                       boolean deguggingInstance, boolean cleanStart) {
         this.name = name;
         this.organizer = organizer;
@@ -126,10 +135,16 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
         this.debugingInstance  = deguggingInstance;
         this.admins = admins;
+        this.url = url;
 
         this.adminTokens = new HashMap<>();
 
         File database = new File(databasePath);
+
+        if(database.getAbsolutePath().startsWith(new File(documentsPath).getAbsolutePath())){
+            System.err.println("Please do not store the database inside the documents folder");
+            System.exit(1);
+        }
 
 
         if(database.exists() && cleanStart) {
@@ -141,6 +156,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         initDocuments();
         initRequests();
         initVotes();
+
 
 
         if(database.exists() && cleanStart) {
@@ -157,6 +173,13 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
 
 
+        tmpDir = new File("./tmp");
+        int i = 0;
+        while (tmpDir.exists()){
+            tmpDir = new File("./tmp"+i);
+            i++;
+        }
+        tmpDir.mkdir();
 
     }
 
@@ -1152,6 +1175,80 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /****************** The Functionality related to QR code generation *********/
+
+    public void generateQRCode(int attendeeId){
+        try {
+            adminLock.lock();
+            attendeeLock.lock();
+            Attendee a = db_userManagement.getAttendeeData(attendeeId);
+
+            File userDir = new File(tmpDir.getAbsolutePath() +"/"+ a.getUserName());
+            generateCleanDirectory(userDir);
+
+            try {
+
+
+                File aux = new File(userDir.getAbsolutePath()+"/data.txt");
+                aux.createNewFile();
+                FileWriter fw = new FileWriter(aux);
+                fw.write(a.toString());
+                fw.append("\npassword:"+getUserPassword(a.getID()).second());
+                fw.close();
+
+                QrCode qr = QrCode.encodeText(url + "?name=" + a.getUserName() + "&pwd=" + getUserPassword(attendeeId).second(), QrCode.Ecc.MEDIUM);
+                BufferedImage img = qr.toImage(4, 10);
+                ImageIO.write(img, "png", new File(userDir.getAbsolutePath() + "/qr-code.png"));
+            } catch (IOException e) {
+                throw new IllegalArgumentException();
+            }
+        }
+        finally {
+            adminLock.lock();
+            attendeeLock.lock();
+        }
+
+
+    }
+
+    public void generateAllQRCodes(){
+        try {
+            adminLock.lock();
+            attendeeLock.lock();
+            for (Attendee a : getAllAttendees()) {
+                generateQRCode(a.getID());
+            }
+        }
+        finally {
+            adminLock.unlock();
+            attendeeLock.unlock();
+        }
+
+    }
+
+
+    void generateCleanDirectory(File userDir){
+        if(userDir.exists() && !userDir.isDirectory()){
+            userDir.delete();
+        }
+        if(!userDir.exists()){
+            userDir.mkdir();
+        }
+        else {
+            if(userDir.isDirectory()) {
+                purgeDirectory(userDir);
+            }
+        }
+    }
+
+    void purgeDirectory(File dir) {
+
+        for (File file: dir.listFiles()) {
+            if (file.isDirectory())
+                purgeDirectory(file);
+            file.delete();
+        }
+    }
 
 
 }

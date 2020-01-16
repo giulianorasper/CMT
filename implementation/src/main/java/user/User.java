@@ -256,4 +256,26 @@ public abstract class User {
             lock.finishWrite();
         }
     }
+
+    @Override
+    public String toString(){
+        try{
+            lock.getReadAccess();
+            StringBuilder sb = new StringBuilder();
+            sb.append("Name : ").append(name).append("\n").
+                    append("Email : ").append(email).append("\n").
+                    append("Residence : ").append(residence).append("\n").
+                    append("Group : ").append(group).append("\n").
+                    append("Function : ").append(function).append("\n").
+                    append("Username : ").append(userName).append("\n");
+            return sb.toString();
+        }
+        catch (InterruptedException e){
+            //do nothing
+        }
+        finally {
+            lock.finishRead();
+        }
+        return null;
+    }
 }

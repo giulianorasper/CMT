@@ -73,6 +73,7 @@ public class Main {
             conf.addAdmin(new Admin("Franz Mayer", "franzl@gmx.de", "FrMa", "RCDS", "66111 Saarbrücken, Donaustaße 45", "Admin", 1), "franz");
             conf.addAttendee(new Attendee("Peter Schmidt",  "peterschidt@t-online.de", "user", "Unicorn", "66271 Kleinblittersdorf, am Tälchen 12", "User", 2), "user");
             conf.addAttendee(new Attendee("Sabine Hein", "sahe@stud.uni-saarland.de", "SaHe", "Flower", "66181 Ensheim, Hauptstraße 12", "User", 3), "user2");
+            conf.addAttendee(new Attendee("Gio", "gio@math.edu", "Gio", "Developers", "???", "User", 4), "SuperSecretPassword");
         }
 
         conf.generateAllQRCodes();

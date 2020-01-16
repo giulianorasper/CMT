@@ -1,6 +1,7 @@
 import CommunicationManager from "../../communication/CommunicationManager.js";
 import GetActiveVotingRequestPacket from "../../communication/packets/GetActiveVotingRequestPacket.js";
 import AddVoteRequestPacket from "../../communication/packets/AddVoteRequestPacket.js";
+import { getPreviousVote } from "./displayPreviousVote.js";
 
 var optionList;
 var voteID;
@@ -204,6 +205,7 @@ function displayActiveVote(packet){
 	}
 	
 }
+
 
 /**
  * this Anonymous function will be called when click on submit vote button. Purpose of this function is to send attendee selected data to server.

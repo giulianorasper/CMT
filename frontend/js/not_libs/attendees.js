@@ -44,17 +44,30 @@ $(document).ready( function() {
         height: 540,
         width: 420,
         modal: true,
-        buttons: {
-            "Confirm": clickCreateAttendee,
-            Cancel: function () {
-                createDialog.dialog("close");
+        buttons: [
+            {
+                text: "Confirm",
+                click: clickCreateAttendee
+            },
+            {
+                text: "Cancel",
+                click: function (){
+                    createDialog.dialog("close");
+                }
             }
-        },
+        ],
         close: function () {
             createForm[ 0 ].reset();
             createFields.removeClass("ui-state-error");
         }
     });
+
+    // outside event
+    //
+    //.bind("clickoutside", function () {
+    //             createDialog.dialog("close");
+    //         }
+    //     );
 
     createForm = createDialog.find("form").on("submit", function(event){
         event.preventDefault();
@@ -66,6 +79,8 @@ $(document).ready( function() {
         createDialog.dialog("open");
     });
 
+
+    //Editing dialog mostly similar to creation dialog
     editDialog = $('#editDialog').dialog({
         autoOpen: false,
         height: 540,
@@ -83,12 +98,14 @@ $(document).ready( function() {
         }
     });
 
+
     editForm = editDialog.find("form").on("submit", function(event){
         event.preventDefault();
         clickEditAttendee();
     });
 
 
+    //Load the page
     refresh();
 });
 
@@ -114,9 +131,6 @@ function updateAttendeeList(){
     function success(packet){
         if(packet.result === "Valid"){
             console.log(packet);
-
-            //update local attendee list and sort/print it afterwards
-            localAttendeeList = packet.attendees;
             sortAttendeeList(packet.attendees);
         }
         else{
@@ -144,6 +158,9 @@ function sortAttendeeList(attendeeList){
     //Calls getSortedList from attendeeSorting.js
     const sortedList = getSortedList(attendeeList, sortingRelation);
     console.log(sortedList);
+
+    //Update local list right before rendering
+    localAttendeeList = sortedList;
     generateAttendeeList(sortedList);
 }
 

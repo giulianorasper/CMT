@@ -38,17 +38,24 @@ $(document).ready( function() {
         height: 540,
         width: 420,
         modal: true,
-        buttons: {
-            "Confirm": clickCreateAttendee,
-            Cancel: function () {
-                createDialog.dialog("close");
+        buttons: [
+            {
+                text: "Confirm",
+                click: clickCreateAttendee
+            },
+            {
+                text: "Cancel",
+                click: function (){
+                    createDialog.dialog("close");
+                }
             }
-        },
+        ],
         close: function () {
             createForm[ 0 ].reset();
             createFields.removeClass("ui-state-error");
         }
-    });
+    }).bind("clickoutside",
+    );
 
     createForm = createDialog.find("form").on("submit", function(event){
         event.preventDefault();
@@ -60,6 +67,8 @@ $(document).ready( function() {
         createDialog.dialog("open");
     });
 
+
+    //Editing dialog mostly similar to creation dialog
     editDialog = $('#editDialog').dialog({
         autoOpen: false,
         height: 540,
@@ -77,12 +86,14 @@ $(document).ready( function() {
         }
     });
 
+
     editForm = editDialog.find("form").on("submit", function(event){
         event.preventDefault();
         clickEditAttendee();
     });
 
 
+    //Load the page
     refresh();
 });
 

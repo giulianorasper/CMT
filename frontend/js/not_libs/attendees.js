@@ -56,8 +56,14 @@ $(document).ready( function() {
             createForm[ 0 ].reset();
             createFields.removeClass("ui-state-error");
         }
-    }).bind("clickoutside",
-    );
+    });
+
+    // outside event
+    //
+    //.bind("clickoutside", function () {
+    //             createDialog.dialog("close");
+    //         }
+    //     );
 
     createForm = createDialog.find("form").on("submit", function(event){
         event.preventDefault();
@@ -121,9 +127,6 @@ function updateAttendeeList(){
     function success(packet){
         if(packet.result === "Valid"){
             console.log(packet);
-
-            //update local attendee list and sort/print it afterwards
-            localAttendeeList = packet.attendees;
             sortAttendeeList(packet.attendees);
         }
         else{
@@ -151,6 +154,9 @@ function sortAttendeeList(attendeeList){
     //Calls getSortedList from attendeeSorting.js
     const sortedList = getSortedList(attendeeList, sortingRelation);
     console.log(sortedList);
+
+    //Update local list right before rendering
+    localAttendeeList = sortedList;
     generateAttendeeList(sortedList);
 }
 

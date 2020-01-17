@@ -42,7 +42,7 @@ $(document).ready( function() {
  * @param Need to specify duration of the vote,
  */
 
-function save(voteId){
+function save(voteId, flag = false){
 	var vote;
 
 	for(var _vote of votings){
@@ -62,12 +62,18 @@ function save(voteId){
 		options.push(option)
 	}
 
+
+
 	const packet = new EditVotingRequestPacket(voteId, vote.question, options ,vote.named, vote.duration);
 
 	function success(packet){
 
 		
 		if(packet.result === "Valid"){
+
+			if(flag){
+				return;
+			}
 			
 			$("#dialogMessage").dialog("open");
 			return false;
@@ -89,17 +95,17 @@ $("#dialogMessage").dialog({
 	resizable: false,
 	// autoOpen:false,
 	height: 210,
-	width: 360,
+	width: 376,
 	modal: true,
 	title: "Success",
-		buttons: {
-		"Do Something": function() {
-		},
-	Cancel: function() {
+// 		buttons: {
+// 		"Do Something": function() {
+// 		},
+// 	Cancel: function() {
 
-	$(this).dialog("close");
-	}
-}
+// 	$(this).dialog("close");
+// 	}
+// }
 });
 
 /**
@@ -181,7 +187,7 @@ function addOption(voteId){
 			'<input type="text" class="form-control" placeholder="Please provide the voting option" aria-label="Please provide the voting option" aria-describedby="button-addon2">'+
 			'<div class="input-group-append">'+
 			// '<button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>'+
-			'<button type="button" class="btn btn-outline-info" onclick="deleteVotingOption(this);">cancel</button>'+
+			'<button type="button" class="btn btn-outline-info" onclick="deleteVotingOption(this);">Remove</button>'+
 			'</div>'+
 			'</div>').appendTo(optionsField);
 			
@@ -224,35 +230,6 @@ function deleteOption(btn) {
  * if everything is done successfully renderVotings function will be called in order to get all votes question that are currently available in the database. 
  */
 
-// createDialog = $('#creationDialog').dialog({
-// 	autoOpen: false,
-// 	height: 540,
-// 	width: 420,
-// 	modal: true,
-// 	buttons: {
-// 		"Confirm": create,
-// 		Cancel: function () {
-// 			createDialog.dialog("close");
-// 		}
-// 	},
-// 	close: function () {
-// 		createForm[ 0 ].reset();
-// 		createFields.removeClass("ui-state-error");
-// 	}
-// });
-
-// createForm = createDialog.find("form").on("submit", function(event){
-// 	event.preventDefault();
-// 	create();
-// });
-
-
-
-// $('#createVote').on("click", function (e) {
-// 	e.preventDefault();
-// 	createDialog.dialog("open");
-// });
-
 $("#dialog").dialog({
 	autoOpen: false,
 	resizable: false,
@@ -260,15 +237,7 @@ $("#dialog").dialog({
 	height: 380,
 	width: 500,
 	modal: true,
-	title: "Creat Vote Panel",
-		buttons: {
-		"Do Something": function() {
-		},
-	Cancel: function() {
-
-	$(this).dialog("close");
-	}
-}
+	title: "Creat Vote Panel"
 });
 
 
@@ -277,7 +246,6 @@ $('#createVote').on("click", function () {
 	$("#dialog").dialog("open");
 	return false;
 });
-
 
 
 function create(){
@@ -299,20 +267,6 @@ function create(){
 		var voteTypeBoolean = false;
 	}
 
-	// console.log(voteTypeBoolean);
-	// $('#VoteText').val("");
-	// $('#duration').val("");
-
-	// $("#dialog").dialog("close");
-
-	// console.log(voteQuestion);
-	// console.log(TimeDuration);
-	// console.log(voteType);
-
-	// var res = prompt("Please provide the voting question");
-	// var res1 = prompt("Time in Minutes");
-	// if(!(res1)){return;}
-
 	const packet = new AddVotingRequestPacket(voteQuestion, [], voteTypeBoolean, TimeDuration * 60);
 	CommunicationManager.send(packet, success, fail);
 
@@ -328,6 +282,17 @@ function create(){
 	}
 }
 
+$("#dialogMessageForOption").dialog({
+	autoOpen: false,
+	resizable: false,
+	// autoOpen:false,
+	height: 210,
+	width: 418,
+	modal: true,
+	title: "Message",
+
+});
+
 /**
  * start function will be called if admin wants to start a vote.
  * The following paramter will be send along to specify which vote will start.
@@ -341,6 +306,8 @@ function start(voteId){
 
 	// console.log(values);
 	// ActiveVotePacketCall();
+	var flag = true;
+	save(voteId, flag);
 
     function success(packet){
 		console.log(packet);
@@ -354,7 +321,9 @@ function start(voteId){
 
         }
 		else {
-			alert(packet.details);
+			// alert(packet.details);
+			$("#dialogMessageForOption").dialog("open");
+			return false;
 			
 		}
     }
@@ -386,6 +355,7 @@ function renderCreatedVote(vote){
 	var secondsAux = (durationAux % 60).toFixed(0);
 	var seconds = (secondsAux < 10 ? "0"+secondsAux:secondsAux);
 	var durationMinutes = (durationAux/60).toFixed(0)+":"+seconds;
+	var flag = false;
 
 	$( "<tr style ='word-break:break-all;' data-toggle=\"collapse\" data-target=\"#user_accordion"+vote.ID+"\" class=\"clickable\">"+
                                         "<td>"+vote.question+"</td>"+
@@ -400,14 +370,9 @@ function renderCreatedVote(vote){
 											  '<button type="button" class="btn btn-outline-primary" style="margin-left: 10px; width: 200px; margin-bottom: 10px;" onclick="startVote('+vote.ID+')">Start Vote</button>' +
 											// '<div class="btn-group" role="group" aria-label="Basic example">' +
 											'<button type="button" class="btn btn-outline-success" style="margin-left: 10px; width: 200px; margin-bottom: 10px;" onclick="addVotingOption('+vote.ID+')">Add</button>' +
-											'<button type="button" class="btn btn-outline-success" style="margin-left: 10px; width: 200px; margin-bottom: 10px;" onclick="saveVoting('+vote.ID+')">Save Changes</button>' +
+											'<button type="button" class="btn btn-outline-success" style="margin-left: 10px; width: 200px; margin-bottom: 10px;" onclick="saveVoting('+vote.ID+','+flag+')">Save Changes</button>' +
 											// '</div>' +
 											'<button type="button" class="btn btn-outline-danger" style="margin-left: 10px; width: 200px; margin-bottom: 10px;" onclick="deleteVote('+vote.ID+')">Delete</button>' +
-                                            // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"startVote('"+vote.ID+"')\">Start Vote</button>"+
-                                            // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"addVotingOption('"+vote.ID+"')\">Add Option</button>"+
-                                            // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"deleteVotingOption('"+vote.ID+"')\">Delete Option</button>"+
-                                            // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"saveVoting('"+vote.ID+"')\">Save Changes</button>"+
-                                            // "<button style=\"margin-right: 20px\" class=\"button button-contactForm boxed-btn\" onclick=\"deleteVote('"+vote.ID+"')\">Delete</button>"+
                                             "</div>"+
                                         "</div>"+
                                     "</td>"+
@@ -425,7 +390,7 @@ function renderCreatedVote(vote){
 		'<input type="text" class="form-control" placeholder="Please provide the voting option" aria-label="Please provide the voting option" aria-describedby="button-addon2" value="'+option.name+'">'+
 		'<div class="input-group-append">'+
 		// '<button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>'+
-		'<button type="button" class="btn btn-outline-info" onclick="deleteVotingOption(this);">cancel</button>'+
+		'<button type="button" class="btn btn-outline-info" onclick="deleteVotingOption(this);">Remove</button>'+
 		'</div>'+
 		'</div>').appendTo(optionsField);	
 		

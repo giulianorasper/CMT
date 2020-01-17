@@ -17,8 +17,7 @@ import io.netty.handler.ssl.SslContext;
 public final class NettyCommunicationManager implements CommunicationManager {
 
     EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-    //TODO
-    EventLoopGroup workerGroup = new NioEventLoopGroup();
+    EventLoopGroup workerGroup = new NioEventLoopGroup(Math.max(32, Runtime.getRuntime().availableProcessors()));
     Channel channel;
     int port;
     private CommunicationHandler handler;

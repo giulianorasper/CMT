@@ -41,7 +41,6 @@ function checkVoteExistance() {
 	
 	function success(packet){
 		if(packet.result === "Valid"){
-			console.log(packet);
 
 	 		if(packet.exists){
 				var voteExpiryDate = new Date(packet.voting.openUntil);

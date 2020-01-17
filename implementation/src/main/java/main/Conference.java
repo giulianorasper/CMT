@@ -175,10 +175,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
 
 
-        tmpDir = new File("./tmp");
+        tmpDir = new File(System.getProperty("user.dir") + "/tmp");
         int i = 0;
         while (tmpDir.exists()){
-            tmpDir = new File("./tmp"+i);
+            tmpDir = new File(System.getProperty("user.dir") + "/tmp"+i);
             i++;
         }
         tmpDir.mkdir();
@@ -1185,8 +1185,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             attendeeLock.lock();
+            generateQRCode(attendeeId);
             Attendee a = getAttendeeData(attendeeId);
-            File f = new File(tmpDir.getAbsolutePath() +"/"+ a.getUserName() + "/qr-code.png");
+            File f = new File(tmpDir.getAbsolutePath() +"/qr/"+ a.getUserName() + "/qr-code.png");
+            System.out.println(f.exists());
+            System.out.println(f.getPath());
             try{
                 byte[] fileBytes = new byte[(int)f.length()];
                 FileInputStream fis = new FileInputStream(f);

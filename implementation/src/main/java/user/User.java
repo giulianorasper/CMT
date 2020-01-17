@@ -267,7 +267,7 @@ public abstract class User {
                     append("Residence : ").append(residence).append("\n").
                     append("Group : ").append(group).append("\n").
                     append("Function : ").append(function).append("\n").
-                    append("Username : ").append(userName).append("\n");
+                    append("Username : ").append(userName);
             return sb.toString();
         }
         catch (InterruptedException e){

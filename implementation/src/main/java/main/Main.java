@@ -47,6 +47,7 @@ public class Main {
             }
             else {
                 try{
+                    System.out.println("test!!!!!!");
                     File f = new File(args[1]);
                     FileInputStream fis = new FileInputStream(f);
                     byte[] data = new byte[(int) f.length()];

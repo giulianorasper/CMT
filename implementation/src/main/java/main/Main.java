@@ -47,7 +47,6 @@ public class Main {
             }
             else {
                 try{
-                    System.out.println("test!!!!!!");
                     File f = new File(args[1]);
                     FileInputStream fis = new FileInputStream(f);
                     byte[] data = new byte[(int) f.length()];
@@ -58,7 +57,6 @@ public class Main {
                     CommunicationManager w = new CommunicationManagerFactory(conf).enableDebugging().create();
                     w.start();
                     char c = (char)System.in.read();
-                    System.out.println(c);
                     while (c != 'q'){
                         c = (char)System.in.read();
                     }
@@ -92,7 +90,6 @@ public class Main {
         System.out.println("Press 'q' to close the server");
         try{
             char c = (char)System.in.read();
-            System.out.println(c);
             while (c != 'q'){
                 c = (char)System.in.read();
             }

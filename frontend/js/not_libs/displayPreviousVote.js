@@ -64,13 +64,13 @@ function displayPreviousVotes(packet){
 
         //+ 'Vote Option ' + (packet.votings[i].options[j].optionID + 1) + ': '
         for(var j in packet.votings[i].options){
-            voteOptions =  '<li>'
+            voteOptions =  '<pre>' + 'Vote Option ' + (packet.votings[i].options[j].optionID + 1) + ': '
                                 + packet.votings[i].options[j].name + '\nNumber of voters: '
                                 + packet.votings[i].options[j].publicVotes + '\n'
                                 + Math.round((packet.votings[i].options[j].publicVotes/totalAttendees)*100) + '% of the total voters'
                                 + '\nName of Voters: ' + packet.votings[i].options[j].voters
                                 // + '<br>'
-                                + '</li>';
+                                + '</pre>';
             // if(packet.votings[i].namedVote){
             //     for(var name in packet.votings[i].options[k].voters) {
             //         var namesOfAttendee = namesofAttendee + packet.votings[i].options[k].voters[name]  

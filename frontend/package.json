@@ -18,6 +18,10 @@
     "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
     "babel-jest": "^24.9.0",
-    "esm": "^3.2.25"
+    "esm": "^3.2.25",
+    "jquery": "^3.4.1",
+    "jquery-outside-events": "^1.0.0",
+    "jquery-ui": "^1.12.1",
+    "jquery-ui-bundle": "^1.12.1-migrate"
   }
 }

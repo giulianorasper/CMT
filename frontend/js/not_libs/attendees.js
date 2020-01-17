@@ -10,6 +10,8 @@ import { getSortedList } from "./attendeeSorting.js";
 import GenerateNewAttendeeTokenRequestPacket
     from "../../communication/packets/admin/GenerateNewAttendeeTokenRequestPacket.js";
 import GetAttendeePasswordRequestPacket from "../../communication/packets/admin/GetAttendeePasswordRequestPacket.js";
+import DownloadQRRequestPacket from "../../communication/packets/admin/DownloadQRRequestPacket.js";
+import DownloadAllQRRequestPacket from "../../communication/packets/admin/DownloadAllQRRequestPacket.js";
 
 //Importing JQuery and JQuery UI
 //import $ from "../../node_modules/jquery";
@@ -24,6 +26,8 @@ $(document).ready( function() {
     window.getNewAttendeePasswordGlobal = getNewAttendeePassword;
     window.logoutAttendeeGlobal = logoutAttendee;
     window.uploadUserList = uploadUserList;
+    window.downloadAllQrCodes = downloadAllQrCodes;
+    window.downloadQR = downloadQR;
 
     //Add listeners to buttons/dropdown menus that don't need to be generated dynamically
     document.getElementById("sortingOptions").addEventListener("change", changeSort, false);
@@ -40,17 +44,30 @@ $(document).ready( function() {
         height: 540,
         width: 420,
         modal: true,
-        buttons: {
-            "Confirm": clickCreateAttendee,
-            Cancel: function () {
-                createDialog.dialog("close");
+        buttons: [
+            {
+                text: "Confirm",
+                click: clickCreateAttendee
+            },
+            {
+                text: "Cancel",
+                click: function (){
+                    createDialog.dialog("close");
+                }
             }
-        },
+        ],
         close: function () {
             createForm[ 0 ].reset();
             createFields.removeClass("ui-state-error");
         }
     });
+
+    // outside event
+    //
+    //.bind("clickoutside", function () {
+    //             createDialog.dialog("close");
+    //         }
+    //     );
 
     createForm = createDialog.find("form").on("submit", function(event){
         event.preventDefault();
@@ -62,6 +79,8 @@ $(document).ready( function() {
         createDialog.dialog("open");
     });
 
+
+    //Editing dialog mostly similar to creation dialog
     editDialog = $('#editDialog').dialog({
         autoOpen: false,
         height: 540,
@@ -79,12 +98,14 @@ $(document).ready( function() {
         }
     });
 
+
     editForm = editDialog.find("form").on("submit", function(event){
         event.preventDefault();
         clickEditAttendee();
     });
 
 
+    //Load the page
     refresh();
 });
 
@@ -110,9 +131,6 @@ function updateAttendeeList(){
     function success(packet){
         if(packet.result === "Valid"){
             console.log(packet);
-
-            //update local attendee list and sort/print it afterwards
-            localAttendeeList = packet.attendees;
             sortAttendeeList(packet.attendees);
         }
         else{
@@ -140,6 +158,9 @@ function sortAttendeeList(attendeeList){
     //Calls getSortedList from attendeeSorting.js
     const sortedList = getSortedList(attendeeList, sortingRelation);
     console.log(sortedList);
+
+    //Update local list right before rendering
+    localAttendeeList = sortedList;
     generateAttendeeList(sortedList);
 }
 
@@ -255,6 +276,45 @@ function addIconListeners(attendee) {
 */
 function downloadQR(attendeeIndex){
     const attendeeID = localAttendeeList[attendeeIndex].ID;
+    const packet = new DownloadQRRequestPacket(attendeeIndex);
+    requestAndHandleFileDownload(packet);
+}
+
+function downloadAllQrCodes(){
+    const packet = new DownloadAllQRRequestPacket();
+    requestAndHandleFileDownload(packet);
+}
+
+/**
+ * //TODO move to communication lib
+ * This method sends a packet capable of requesting a file download and downloads the file received on success.
+ * @param packet the packet to be sent
+ * @param _success success hook which should be executed after the file download completed
+ * @param _fail failure hook which should be executed if the file download failed
+ */
+function requestAndHandleFileDownload(packet, _success = (packet) => {}, _fail = () => {}){
+    function success(packet) {
+        if(packet.result === "Valid") {
+            var bytes = new Uint8Array(packet.fileBytes);
+
+            var blob=new Blob([bytes]);
+
+            var link=document.createElement('a');
+            link.href=window.URL.createObjectURL(blob);
+            link.download=packet.fileName;
+            link.click();
+            _success(packet);
+        } else {
+            _fail();
+        }
+    }
+
+    function fail() {
+        _fail();
+    }
+
+    // Send the request to the server
+    CommunicationManager.send(packet, success, fail);
 }
 
 /**

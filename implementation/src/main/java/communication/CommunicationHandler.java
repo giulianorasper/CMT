@@ -145,6 +145,12 @@ public class CommunicationHandler {
                 case DELETE_FILE_REQUEST:
                     pack = gson.fromJson(message, DeleteFileRequestPacket.class);
                     break;
+                case DOWNLOAD_ALL_QR_REQUEST:
+                    pack = gson.fromJson(message, DownloadAllQRRequestPacket.class);
+                    break;
+                case DOWNLOAD_QR_REQUEST:
+                    pack = gson.fromJson(message, DownloadQRRequestPacket.class);
+                    break;
                 case EDIT_USER_REQUEST:
                     pack = gson.fromJson(message, EditUserRequestPacket.class);
                     break;

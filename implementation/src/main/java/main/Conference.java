@@ -175,14 +175,8 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
 
 
-        tmpDir = new File(System.getProperty("user.dir") + "/tmp");
-        int i = 0;
-        while (tmpDir.exists()){
-            tmpDir = new File(System.getProperty("user.dir") + "/tmp"+i);
-            i++;
-        }
-        tmpDir.mkdir();
-
+        tmpDir = new File(System.getProperty("user.dir") + "/tmp/conference");
+        if(!tmpDir.exists()) tmpDir.mkdirs();
     }
 
     /**

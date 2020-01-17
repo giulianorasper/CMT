@@ -19,7 +19,7 @@ import java.io.File;
 public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel> {
 
     private static final String WEBSOCKET_PATH = "/websocket";
-    private static final String tempPath = System.getProperty("user.dir") + "/tmp/";
+    private static final String tempPath = System.getProperty("user.dir") + "/tmp/communication/";
 
     private final SslContext sslContext;
     private CommunicationHandler handler;

@@ -10,11 +10,12 @@ import java.io.File;
  */
 public class CommunicationManagerFactory {
 
-    Conference conference;
-    int port;
-    int timeoutAfter;
-    int maxUserConnections;
-    boolean debugging;
+    private Conference conference;
+    private int port;
+    private int timeoutAfter;
+    private int maxUserConnections;
+    private boolean debugging;
+    private boolean ignoreSecurityAlerts;
 
     /**
      * Initialized the {@link CommunicationManagerFactory} using a not guaranteed to
@@ -70,6 +71,17 @@ public class CommunicationManagerFactory {
     }
 
     /**
+     * Disable security alerts in case there are no valid certificates.
+     *
+     * @return this
+     */
+    public CommunicationManagerFactory ignoreSecurityAlerts() {
+        this.ignoreSecurityAlerts = true;
+        return this;
+    }
+
+
+    /**
      * @return A communication manager produced using the given information
      */
     public CommunicationManager create() {
@@ -84,7 +96,7 @@ public class CommunicationManagerFactory {
         CommunicationHandler handler = new CommunicationHandler(conference, timeoutAfter, maxUserConnections, debugging);
         CommunicationManager manager = new NettyCommunicationManagerFactory(handler, port, cert, key).create();
         if(!manager.isSecure()) {
-            if(debugging) {
+            if(debugging || ignoreSecurityAlerts) {
                 System.out.println("[]----------[SECURITY ALERT]----------[]");
                 System.out.println("No certificate found. Sever will be started in not encrypted debugging mode!");
             } else {

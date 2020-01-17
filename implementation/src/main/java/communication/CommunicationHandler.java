@@ -66,8 +66,8 @@ public class CommunicationHandler {
         this.debugging = debugging;
         this.maxUserConnections = maxUserConnections;
 
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(() -> {
+        connectionLimitationService = Executors.newSingleThreadScheduledExecutor();
+        connectionLimitationService.scheduleAtFixedRate(() -> {
             try {
                 timeoutLock.lock();
                 new HashSet<>(timeout.keySet()).forEach((key) -> {

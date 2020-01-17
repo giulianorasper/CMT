@@ -28,12 +28,14 @@ public class DocumentsTest {
         }
 
         try {
+            if(!f.getParentFile().exists()) f.getParentFile().mkdir();
             f.createNewFile();
             BufferedWriter writer = new BufferedWriter(new FileWriter(pathString));
             writer.write("Test data\n");
 
             writer.close();
         } catch (IOException e) {
+            e.printStackTrace();
             fail("Could not initialize test environment");
         }
 

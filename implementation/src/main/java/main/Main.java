@@ -57,6 +57,12 @@ public class Main {
                     conf = ConfigParser.parseConfigFile(str);
                     CommunicationManager w = new CommunicationManagerFactory(conf).enableDebugging().create();
                     w.start();
+                    char c = (char)System.in.read();
+                    System.out.println(c);
+                    while (c != 'q'){
+                        c = (char)System.in.read();
+                    }
+                    w.stop();
                 }
                 catch (IOException e){
                     e.printStackTrace();
@@ -90,6 +96,7 @@ public class Main {
             while (c != 'q'){
                 c = (char)System.in.read();
             }
+            w.stop();
         }
         catch (IOException e){
             e.printStackTrace();

@@ -2422,6 +2422,19 @@ h3 {
   padding: 0 0 40px 76px;
 }
 
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+
+.btn-default.btn-on.active{background-color: #5BB75B;color: white;}
+.btn-default.btn-off.active{background-color: #DA4F49;color: white;}
+
 /* line 48, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
 .faq_area #accordion .card {
   position: relative;

@@ -702,10 +702,10 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 
 .gj-dialog-md-title {
     margin: 0;
-    font-weight: 400;
+    font-weight: bold;
     display: inline;
     line-height: 28px;
-    font-size: 20px;
+    font-size: 28px;
 }
 
 .gj-dialog-md-close {

@@ -78,6 +78,7 @@ public class Main {
 
         conf.generateAllQRCodes();
         conf.generateAllQRCodes();
+        conf.getAllQrCodes();
 
         CommunicationManager w = new CommunicationManagerFactory(conf).enableDebugging().create();
         w.start();

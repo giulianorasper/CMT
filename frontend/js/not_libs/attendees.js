@@ -232,6 +232,8 @@ function generateAttendee(listIndex, attendee){
         '</span><span class="glyphicon glyphicon-log-out" onclick="logoutAttendeeGlobal(' + listIndex +')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
         '</span><span class="glyphicon glyphicon-trash" onclick="deleteAttendeeGlobal(' + listIndex +')"></span>' +
+         '<span style="display:inline-block; width: 30px;">'+
+        '</span><span class="glyphicon glyphicon-qrcode" onclick="downloadQR(' + listIndex +')"></span>' +
         '</div>'+
         '</td>'+
         '</tr>');
@@ -247,6 +249,13 @@ function addIconListeners(attendee) {
 
 
 //-------------------------------- FUNCTIONS TO BE CALLED BY GLYPHICONS ------------------------------------------------
+
+/**
+*
+*/
+function downloadQR(attendeeIndex){
+    const attendeeID = localAttendeeList[attendeeIndex].ID;
+}
 
 /**
  *

@@ -48,22 +48,20 @@ $(document).ready( function() {
             {
                 text: "Cancel",
                 click: function (){
-                    createDialog.dialog("close");
+                    $('#creationDialog').dialog("close");
                 }
             }
         ],
-        close: function () {
+        close: function (e) {
+            e.preventDefault();
+            console.log(e);
             createForm[ 0 ].reset();
             createFields.removeClass("ui-state-error");
         }
-    });
-
-    // outside event
-    //
-    //.bind("clickoutside", function () {
-    //             createDialog.dialog("close");
-    //         }
-    //     );
+    }).bind("clickoutside", function () {
+                 createDialog.dialog("close");
+        }
+     );
 
     createForm = createDialog.find("form").on("submit", function(event){
         event.preventDefault();

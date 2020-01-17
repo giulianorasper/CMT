@@ -96,8 +96,7 @@ function countdown(seconds) {
 
     if( seconds > 0 ) {
       setTimeout(tick, 1000);
-    }
-	else {
+    } else {
 		
 		timeOut = true;
 
@@ -193,20 +192,16 @@ function displayActiveVote(packet){
 		} else {
 		// DO SOMETHING ELSE
 
-			$("#submit-message").empty();
-			$("#submit-message").addClass("row").addClass("contact-title");
-			$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote has been expired!</h2>");
+			$("#submit-message2").empty();
+			$("#submit-message2").addClass("row").addClass("contact-title");
+			$("#submit-message2").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote has been expired!</h2>");
 
 		}
+	} else {
 		
-
-               		
-	}
-	else {
-		
-		$("#submit-message").empty();
-		$("#submit-message").addClass("row").addClass("contact-title");
-		$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Currently no active vote!</h2>");
+		$("#submit-message2").empty();
+		$("#submit-message2").addClass("row").addClass("contact-title");
+		$("#submit-message2").append("<h2 class='contact-title' style='margin-left: 40px;'>Currently no active vote!</h2>");
 	}
 	
 }
@@ -231,9 +226,9 @@ function displayActiveVote(packet){
 					function success(packet){
 						if(packet.result === "Valid"){
 							
-							$("#submit-message").empty();
-							$("#submit-message").addClass("row").addClass("contact-title");
-							$("#submit-message").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
+							$("#submit-message2").empty();
+							$("#submit-message2").addClass("row").addClass("contact-title");
+							$("#submit-message2").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
 						}
 
 						else{

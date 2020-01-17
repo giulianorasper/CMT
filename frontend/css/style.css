@@ -741,7 +741,7 @@ h3 {
   width: 100%;
   top: 0;
   z-index: 9;
-  padding-top: 28px;
+  padding-top: 10px;
 }
 
 @media (max-width: 767px) {
@@ -1422,7 +1422,7 @@ h3 {
 
 /* line 82, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
 .package_prsing_area .single_prising .prising_header {
-  background: #0181F5;
+  background: #706257;
   padding: 26px 0;
   text-align: center;
 }
@@ -2042,13 +2042,21 @@ h3 {
 
 /* line 1, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
 .support_bg {
-  background-image: url(../img/support/support_bg.png);
+  background-image: url(../img/support/2.jpg);
 }
 
 /* line 4, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
 .dedicated_support {
-  padding-top: 200px;
-  padding-bottom: 200px;
+  min-height: 100%;
+
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+
+  /* Set up positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
@@ -3522,7 +3530,7 @@ hr {
 
 /* line 110, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
 .popup_box {
-  background: #fff;
+  background: transparent;
   display: inline-block;
   width: 558px;
   padding: 60px 40px;
@@ -3548,7 +3556,7 @@ hr {
 
 /* line 129, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
 .popup_box .logo {
-  margin-bottom: 50px;
+  margin-bottom: 25px;
 }
 
 @media (max-width: 767px) {
@@ -3670,12 +3678,13 @@ hr {
 
 /* line 224, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
 #test-form, #test-form2 {
+  background-color:transparent;
   display: inline-block;
   margin: auto;
   text-align: center;
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 55%;
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);

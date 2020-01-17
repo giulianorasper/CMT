@@ -3,6 +3,7 @@ package main;
 import document.Document;
 import request.Request;
 import user.Admin;
+import user.Attendee;
 import voting.Voting;
 
 import java.util.ArrayList;
@@ -55,10 +56,22 @@ public class ConfigParser {
                 false
         );
 
+        List<Admin> allAdmins = conf.getAllAdmins();
+        allAdmins.forEach(a -> { conf.removeAdmin(a.getID());});
 
         admins.forEach(a ->{
-            conf.addAdmin(new Admin(a.get(0), a.get(1), conf.getFreeUserName(a.get(0)), a.get(2), a.get(3), a.get(4)));
+            Admin admin = new Admin(a.get(0), a.get(1), conf.getFreeUserName(a.get(0)), a.get(2), a.get(3), a.get(4));
+            conf.addAdmin(admin);
+            System.out.println(admin.toString());
+            System.out.println("password: " + conf.getUserPassword(admin.getID()).second() + "\n");
         });
+
+        conf.generateAllQRCodes();
+
+        for(Attendee a: conf.getAllAttendees()){
+            System.out.println(a);
+            System.out.println(a.getID()+"\n\n");
+        }
 
 
         return conf;

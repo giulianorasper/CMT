@@ -42,7 +42,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 + "     userID INTEGER NOT NULL,\n"
                 + "     requestType INTEGER NOT NULL,\n"//0 for Change, 1 for Speech//TODO: Make this enum
                 + "     requestableName TEXT NOT NULL,\n"
-                + "     timestamps BIGINT NOT NULL,\n" //TODO: Change size to bigint
+                + "     timestamps BIGINT NOT NULL,\n"
                 + "     content TEXT,\n"
                 + "     approved BOOL\n"
                 + ") WITHOUT ROWID;";

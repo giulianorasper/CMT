@@ -139,11 +139,9 @@ function remove(name){
 
 function download(name){
     function success(packet) {
-        console.log("This method is called if a response from the server is received.");
         if(packet.result === "Valid") {
             var bytes = new Uint8Array(packet.fileBytes);
 
-            //var blob=new Blob([bytes], {type: "application/pdf"});
             var blob=new Blob([bytes]);
 
             var link=document.createElement('a');
@@ -154,7 +152,7 @@ function download(name){
     }
 
     function fail() {
-        console.log("This method is called if something went wrong during the general communication.");
+        //TODO handle
     }
 
     const packet = new GetFileRequestPacket(name);

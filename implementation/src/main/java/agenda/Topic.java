@@ -158,7 +158,7 @@ public class Topic implements Requestable {
 
     /**
      * ToString Method to compare.
-     * @return //TODO docs
+     * @return name + subTopics
      */
     public String toString(){
         try{

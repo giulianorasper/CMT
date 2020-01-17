@@ -175,14 +175,8 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
 
 
-        tmpDir = new File("./tmp");
-        int i = 0;
-        while (tmpDir.exists()){
-            tmpDir = new File("./tmp"+i);
-            i++;
-        }
-        tmpDir.mkdir();
-
+        tmpDir = new File(System.getProperty("user.dir") + "/tmp/conference");
+        if(!tmpDir.exists()) tmpDir.mkdirs();
     }
 
     /**
@@ -588,7 +582,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void generateNewUserPassword(int userID) {
         try{
             attendeeLock.lock();
-            if(!db_userManagement.storeNewPassword(userID, gen.generatePassword())){
+            String password = gen.generatePassword();
+            System.out.println("Generated password:" + password + "for user "+ userID);
+            if(!db_userManagement.storeNewPassword(userID, password)){
                 throw new IllegalArgumentException();
             }
         }
@@ -734,6 +730,15 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             attendeeLock.lock();
             System.out.println("Hi again");
             Pair<LoginResponse, String> response = db_userManagement.checkLogin(userName, password);
+            System.out.println("\""+password+"\"");
+            db_userManagement.getAllAttendees().forEach(a ->{
+               if(a.getUserName().equals(userName)){
+
+                   System.out.println(a);
+                   System.out.println(a.getID());
+                   System.out.println(getUserPassword(a.getID()).second());
+               }
+            });
             if(response.first() != LoginResponse.Valid){
                 return new Pair<>(response.first(), null);
             }
@@ -1185,8 +1190,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try{
             adminLock.lock();
             attendeeLock.lock();
+            generateQRCode(attendeeId);
             Attendee a = getAttendeeData(attendeeId);
-            File f = new File(tmpDir.getAbsolutePath() +"/"+ a.getUserName() + "/qr-code.png");
+            File f = new File(tmpDir.getAbsolutePath() +"/qr/"+ a.getUserName() + "/qr-code.png");
+            System.out.println(f.exists());
+            System.out.println(f.getPath());
             try{
                 byte[] fileBytes = new byte[(int)f.length()];
                 FileInputStream fis = new FileInputStream(f);

@@ -20,7 +20,6 @@ export default class CommunicationManager {
         }
         const endpoint = "websocket";
         address = address + ip + ":" + port + "/" + endpoint;
-        console.log(address);
         socket = new WebSocket(address);
         return socket;
     }
@@ -31,7 +30,7 @@ export default class CommunicationManager {
      * @param successHook a function which is executed after successful communication with a JSON object as parameter
      * @param errorHook a function which is executed after failed communication
      */
-    static send(packet, successHook = new function(packet){}, errorHook = new function(){}) {
+    static send(packet, successHook = (packet) => {}, errorHook = () => {}) {
         var socket = CommunicationManager.openConnection();
         function onmessage(event) {
             let responsePacket = JSON.parse(event.data);

@@ -42,10 +42,12 @@ function displayPreviousVotes(packet){
                     '</button>'+
                     '</h5>'+
                     '</div>'+
-                    '<div id="collapse'+packet.votings[i].ID+'" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">'+
+                    '<div id="collapse'+packet.votings[i].ID+'" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">' +
+                    '<ul>' +
                     '<div class="card-body" id="'+packet.votings[i].ID+'prev">'+
 
                     '</div>'+
+                    '</ul>' +
                     '</div>'+
                     '</div>';
 
@@ -54,17 +56,21 @@ function displayPreviousVotes(packet){
         var totalAttendees = 0;
 
         for( var k in packet.votings[i].options){
-            totalAttendees =  totalAttendees + packet.votings[i].options[k].voters.length;
+            totalAttendees =  totalAttendees + packet.votings[i].options[k].publicVotes;
         }
-        
+
+        var voteOptions = '<pre>' +'Total Numbers of Voters:   ' + totalAttendees  + '</pre>';;
+        $('#'+packet.votings[i].ID+'prev').append(voteOptions);
+
+        //+ 'Vote Option ' + (packet.votings[i].options[j].optionID + 1) + ': '
         for(var j in packet.votings[i].options){
-            var voteOptions =  '<pre>' + (packet.votings[i].options[j].optionID + 1) + '      '
-                                + packet.votings[i].options[j].name + '    Public Votes: '
-                                + packet.votings[i].options[j].publicVotes + '       ' 
-                                + Math.round((packet.votings[i].options[j].voters.length/totalAttendees)*100) + '%'
-                                + '      Attendees Name: ' + packet.votings[i].options[j].voters
+            voteOptions =  '<li>'
+                                + packet.votings[i].options[j].name + '\nNumber of voters: '
+                                + packet.votings[i].options[j].publicVotes + '\n'
+                                + Math.round((packet.votings[i].options[j].publicVotes/totalAttendees)*100) + '% of the total voters'
+                                + '\nName of Voters: ' + packet.votings[i].options[j].voters
                                 // + '<br>'
-                                + '</pre>';
+                                + '</li>';
             // if(packet.votings[i].namedVote){
             //     for(var name in packet.votings[i].options[k].voters) {
             //         var namesOfAttendee = namesofAttendee + packet.votings[i].options[k].voters[name]  

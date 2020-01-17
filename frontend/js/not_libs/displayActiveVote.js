@@ -78,17 +78,22 @@ function countdown(seconds) {
 
   function tick() {
     seconds--; 
-    sessionStorage.setItem("seconds", seconds)
+    sessionStorage.setItem("seconds", seconds);
     var counter = document.getElementById("timer");
-	
-	// In case hour is required.
-	// var hours = Math.floor(seconds / (60 * 60));
-	
-    var current_minutes = parseInt(seconds/60);
-    var current_seconds = seconds % 60;
-    counter.innerHTML = "Time Left: " + "00hr: " + current_minutes + "min: " + (current_seconds < 10 ? "0" : "") + current_seconds + "sec";
-	// $('#voteQuestion').html('<div class="col-lg-12 " style="padding-top:50px; float:right; font-size: 25px; margin-right:30px; text-align: right;"></div>'+ 
-								// current_minutes + ":" + (current_seconds < 10 ? "0" : "") + current_seconds);
+    var hd_counter = document.getElementById("hdtimer");
+
+	var t_hours = Math.floor(seconds / (60 * 60));
+    var t_minutes = parseInt(seconds/60);
+    var t_seconds = seconds % 60;
+    if (counter) {
+		counter.innerHTML = "Time Left: " + t_hours + "hr: " + t_minutes + "min: " + (t_seconds < 10 ? "0" : "") + t_seconds + "sec";
+	}
+    hd_counter.innerHTML = '<span><a href ="vote.html" style="color:#FFFFFF">'
+		+ (t_hours < 10 ? "0" : "") + t_hours + ":"
+		+ (t_minutes < 10 ? "0" : "") + t_minutes + ":"
+		+ (t_seconds < 10 ? "0" : "") + t_seconds
+		+ '</a></span>';
+
     if( seconds > 0 ) {
       setTimeout(tick, 1000);
     }

@@ -8,6 +8,7 @@ import database.*;
 import document.DB_DocumentManagement;
 import document.Document;
 import document.DocumentManagement;
+import io.nayuki.qrcodegen.QrCode;
 import request.DB_RequestManagement;
 import request.Request;
 import request.RequestManagement;
@@ -20,16 +21,18 @@ import voting.VotingManagement;
 import voting.VotingObserver;
 import voting.VotingStatus;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 public class Conference implements UserManagement, VotingManagement, RequestManagement, DocumentManagement, AgendaManagement, VotingObserver {
@@ -50,6 +53,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     private String  documentsPath ;
     private String databasePath;
+    private String url;
 
     private Agenda agenda;
     private HashMap<Integer,Voting> votings;
@@ -74,6 +78,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private Lock documentsLock = new ReentrantLock();
 
 
+    private File tmpDir;
+
+
 
     //Creates a clean conference (for debugging)
     public Conference(boolean cleanStart){
@@ -88,6 +95,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                 new HashMap<Integer, Request>(),
                 null,
                 "./testdb/testdb.db",
+                "https://math-edu.eu/conference",
                 true,
                 cleanStart
         );
@@ -114,7 +122,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public Conference(String name, String organizer, long startsAt, long endsAt, HashMap<Integer,
             Admin> admins, HashMap<Integer,Voting> votings, HashMap<String,Document> documents, String  documentsPath,
                        HashMap<Integer,Request> requests, Voting activeVoting,
-                      String databasePath,
+                      String databasePath, String url,
                       boolean deguggingInstance, boolean cleanStart) {
         this.name = name;
         this.organizer = organizer;
@@ -129,12 +137,31 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
         this.debugingInstance  = deguggingInstance;
         this.admins = admins;
+        this.url = url;
 
         this.adminTokens = new HashMap<>();
 
         File database = new File(databasePath);
-        if(database.exists() && cleanStart){
+
+        if(database.getAbsolutePath().startsWith(new File(documentsPath).getAbsolutePath())){
+            System.err.println("Please do not store the database inside the documents folder");
+            System.exit(1);
+        }
+
+
+        if(database.exists() && cleanStart) {
             database.delete();
+        }
+
+        initUsers();
+        initAgenda();
+        initDocuments();
+        initRequests();
+        initVotes();
+
+
+
+        if(database.exists() && cleanStart) {
             File[] directoryListing =  new File(documentsPath).listFiles();
             for(int i = 0 ; directoryListing != null && i < directoryListing.length; i++){
                 Document d = db_documentManagement.getDocument(directoryListing[i].getName());
@@ -147,13 +174,15 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             }
         }
 
-        db_votingManagement = new DB_VotingManager(databasePath);
 
-        initUsers();
-        initAgenda();
-        initDocuments();
-        initRequests();
-        initVotes();
+        tmpDir = new File("./tmp");
+        int i = 0;
+        while (tmpDir.exists()){
+            tmpDir = new File("./tmp"+i);
+            i++;
+        }
+        tmpDir.mkdir();
+
     }
 
     /**
@@ -213,7 +242,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
      * Initialize Votes for Conference
      */
     private void initVotes(){
-        //todo
+        db_votingManagement = new DB_VotingManager(databasePath);
     }
 
 
@@ -274,6 +303,14 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     /****************** The User Management Interface *********/
 
+    private String generateToken(){
+        String token = gen.generateToken();
+        while (db_userManagement.checkToken(token) != TokenResponse.TokenDoesNotExist){
+            token = gen.generateToken();
+        }
+        return token;
+    }
+
     /**
      * Add an Admin with new generated Password and Token to the Database
      * @param a Admin Data
@@ -284,7 +321,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             adminLock.lock();
             attendeeLock.lock();
             volatileUserNames.remove(a.getUserName());
-            if(!db_userManagement.addAdmin(a, gen.generatePassword(), gen.generateToken())){
+            if(!db_userManagement.addAdmin(a, gen.generatePassword(), generateToken())){
                 throw new IllegalArgumentException("Database addition failed");
             }
             admins.put(a.getID(), a);
@@ -307,7 +344,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                     alreadyExists.set(true);
                 }
             });
-            if(!alreadyExists.get() && !db_userManagement.addAdmin(a, pwd, gen.generateToken())){
+            if(!alreadyExists.get() && !db_userManagement.addAdmin(a, pwd, generateToken())){
                 throw new IllegalArgumentException("Database addition failed");
             }
             admins.put(a.getID(), a);
@@ -328,7 +365,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                     alreadyExists.set(true);
                 }
             });
-            if(!alreadyExists.get() && !db_userManagement.addAttendee(a, pwd, gen.generateToken())){
+            if(!alreadyExists.get() && !db_userManagement.addAttendee(a, pwd, generateToken())){
                 throw new IllegalArgumentException("Database addition failed");
             }
         }
@@ -402,7 +439,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             else{
                 admins.get(ID).logout();
             }
-            if(!(db_userManagement.logoutUser(ID, gen.generatePassword(), gen.generateToken()))){
+            if(!(db_userManagement.logoutUser(ID, gen.generatePassword(), generateToken()))){
                 throw new IllegalArgumentException("Admin can not be logged out for unknown reasons");
             }
         }
@@ -443,7 +480,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             adminLock.lock();
             attendeeLock.lock();
             volatileUserNames.remove(a.getUserName());
-            if(!db_userManagement.addAttendee(a, gen.generatePassword(), gen.generateToken())){
+            if(!db_userManagement.addAttendee(a, gen.generatePassword(), generateToken())){
                 throw new IllegalArgumentException("Attendee can not be edited for unknown reasons");
             }
 
@@ -517,7 +554,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void logoutUser(int userID) {
         try{
             attendeeLock.lock();
-            if(!db_userManagement.logoutUser(userID, gen.generatePassword(), gen.generateToken())){
+            if(!db_userManagement.logoutUser(userID, gen.generatePassword(), generateToken())){
                 throw new IllegalArgumentException("Attendee can not be logged out for unknown reasons");
             }
         }
@@ -568,7 +605,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void generateNewUserToken(int userID) {
         try{
             attendeeLock.lock();
-            if(!db_userManagement.storeNewToken(userID, gen.generateToken())){
+            if(!db_userManagement.storeNewToken(userID, generateToken())){
                 throw new IllegalArgumentException();
             }
         }
@@ -647,11 +684,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             boolean success = true;
             for (Attendee a : db_userManagement.getAllAttendees()) {
                 a.logout();
-                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), gen.generateToken());
+                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken());
             }
             for (Attendee a : db_userManagement.getAllAdmins()) {
                 a.logout();
-                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), gen.generateToken());
+                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken());
             }
             return success;
         }
@@ -671,7 +708,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             for (Attendee a : db_userManagement.getAllAttendees()) {
                 if(isAdmin(a.getID())) continue;
                 a.logout();
-                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), gen.generateToken());
+                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken());
             }
             return success;
         }
@@ -692,11 +729,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     @Override
     public Pair<LoginResponse, Pair<String, Long>> login(String userName, String password) {
         try{
+            System.out.println("Hi");
             adminLock.lock();
             attendeeLock.lock();
+            System.out.println("Hi again");
             Pair<LoginResponse, String> response = db_userManagement.checkLogin(userName, password);
-            db_userManagement.getAllAttendees().forEach(a -> System.out.println(a.getUserName()));
-            System.out.println(response.first() + ", " + response.second() + ", " + userName + ", " + password);
             if(response.first() != LoginResponse.Valid){
                 return new Pair<>(response.first(), null);
             }
@@ -749,12 +786,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             adminLock.lock();
             attendeeLock.lock();
             if(adminTokens.containsKey(token)){
-                System.out.println("Hit 1");
                 return TokenResponse.ValidAdmin;
             }
             else {
                 TokenResponse res = db_userManagement.checkToken(token);
-                System.out.println(res);
                 if (res == TokenResponse.ValidAdmin) {
                     adminTokens.put(token, true);
                 }
@@ -831,6 +866,42 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     /****************** The Voting Management Interface *********/
 
+    /**called if a vote start
+     *
+     */
+    public Boolean startVoting(Voting vote) {
+        try {
+            votingLock.lock();
+            if (this.getActiveVoting() != null) {
+                return false;
+            }
+            vote.startVote();
+            update(vote);
+            int duration = vote.getDuration();
+
+            Timer ActiveTimer = new Timer();
+            //System.out.println("start");
+            ActiveTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    vote.endVote();
+                    //db_votingManagement.addVoting(vote);
+                    update(vote);
+                    //System.out.println("fertig");
+                }
+
+
+            }, 1000 * duration);
+
+
+            return true;
+        }
+        finally {
+            votingLock.unlock();
+        }
+    }
+
+
     /**
      * Get the Actual Active Voting
      * @return Voting
@@ -878,11 +949,12 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
-     * Add finished Voting to the Database
+     * Add created Voting
      * @param voting Voting
      */
     @Override
     public void addVoting( Voting voting) {
+
         try{
             votingLock.lock();
             votings.put(voting.getID(), voting);
@@ -954,7 +1026,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             newAgenda.register(o.getKey());
         } //Two loops to avoid ConcurrentModification
         for (Map.Entry<AgendaObserver, Boolean> o : observers.entrySet()) {
-            newAgenda.unregister(o.getKey());
+            this.agenda.unregister(o.getKey());
         }
         this.agenda = newAgenda;
 
@@ -976,7 +1048,6 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try {
             documentsLock.lock();
             String fullName = name;
-            System.out.println(fullName);
             File f;
             if(!documents.containsKey(fullName)) {
                 f = new File(documentsPath + "/" + fullName);
@@ -992,10 +1063,8 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             }
             try {
                 if(f.exists() ||  f.createNewFile()){
-                    OutputStream os = new FileOutputStream(f, true);
                     f.delete();
                     Files.move(file.toPath(), f.toPath());
-                    os.close();
                 }
 
             }
@@ -1110,6 +1179,185 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         }
     }
 
+    /****************** The Functionality related to QR code generation *********/
+
+    public byte[] getQrCode(int attendeeId){
+        try{
+            adminLock.lock();
+            attendeeLock.lock();
+            Attendee a = getAttendeeData(attendeeId);
+            File f = new File(tmpDir.getAbsolutePath() +"/"+ a.getUserName() + "/qr-code.png");
+            try{
+                byte[] fileBytes = new byte[(int)f.length()];
+                FileInputStream fis = new FileInputStream(f);
+                fis.read(fileBytes);
+                fis.close();
+                return fileBytes;
+
+            }
+            catch (IOException e){
+                throw new IllegalArgumentException("Could not read file");
+            }
+
+        }
+        finally {
+            adminLock.unlock();
+            attendeeLock.unlock();
+        }
+    }
+
+    public byte[] getAllQrCodes(){
+        try {
+            adminLock.lock();
+            attendeeLock.lock();
+
+            String sourceFile = tmpDir.getAbsolutePath()+"/qr/";
+
+            File f= new File(tmpDir.getAbsolutePath()+"/qrs.zip");
+            if(f.exists()){
+                f.delete();
+            }
+
+            FileOutputStream fos = new FileOutputStream(f);
+            ZipOutputStream zipOut = new ZipOutputStream(fos);
+            File fileToZip = new File(sourceFile);
+
+            zipFile(fileToZip, fileToZip.getName(), zipOut, true);
+            zipOut.close();
+
+            byte[] fileBytes = new byte[(int)f.length()];
+            FileInputStream fis = new FileInputStream(f);
+            fis.read(fileBytes);
+            fis.close();
+            return fileBytes;
 
 
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException();
+        } finally {
+            adminLock.unlock();
+            attendeeLock.unlock();
+        }
+
+    }
+
+    public void generateQRCode(int attendeeId){
+        try {
+            adminLock.lock();
+            attendeeLock.lock();
+            Attendee a = db_userManagement.getAttendeeData(attendeeId);
+
+            File qrDir = new File(tmpDir.getAbsolutePath() +"/qr/");
+            if(!qrDir.exists() || !qrDir.isDirectory()){
+                generateCleanDirectory(qrDir);
+            }
+
+            File userDir = new File(tmpDir.getAbsolutePath() +"/qr/"+ a.getUserName());
+            generateCleanDirectory(userDir);
+
+            try {
+
+
+                File aux = new File(userDir.getAbsolutePath()+"/data.txt");
+                aux.createNewFile();
+                FileWriter fw = new FileWriter(aux);
+                fw.write(a.toString());
+                fw.append("\npassword:"+getUserPassword(a.getID()).second());
+                fw.close();
+
+                QrCode qr = QrCode.encodeText(url + "?name=" + a.getUserName() + "&pwd=" + getUserPassword(attendeeId).second(), QrCode.Ecc.MEDIUM);
+                BufferedImage img = qr.toImage(4, 10);
+                ImageIO.write(img, "png", new File(userDir.getAbsolutePath() + "/qr-code.png"));
+            } catch (IOException e) {
+                throw new IllegalArgumentException();
+            }
+        }
+        finally {
+            adminLock.unlock();
+            attendeeLock.unlock();
+        }
+
+
+    }
+
+    public void generateAllQRCodes(){
+        try {
+            adminLock.lock();
+            attendeeLock.lock();
+            for (Attendee a : getAllAttendees()) {
+                generateQRCode(a.getID());
+            }
+        }
+        finally {
+            adminLock.unlock();
+            attendeeLock.unlock();
+        }
+
+    }
+
+    void generateCleanDirectory(File userDir){
+        if(userDir.exists() && !userDir.isDirectory()){
+            userDir.delete();
+        }
+        if(!userDir.exists()){
+            userDir.mkdir();
+        }
+        else {
+            if(userDir.isDirectory()) {
+                purgeDirectory(userDir);
+            }
+        }
+    }
+
+    void purgeDirectory(File dir) {
+
+        for (File file: dir.listFiles()) {
+            if (file.isDirectory())
+                purgeDirectory(file);
+            file.delete();
+        }
+    }
+
+    private void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut, boolean root) throws IOException {
+        if (fileToZip.isHidden()) {
+            return;
+        }
+        if(root){
+            File[] children = fileToZip.listFiles();
+            for (File childFile : children) {
+                zipFile(childFile, fileName + "/" + childFile.getName(), zipOut, false);
+            }
+            return;
+        }
+        if (fileToZip.isDirectory()) {
+            if (fileName.endsWith("/")) {
+                zipOut.putNextEntry(new ZipEntry(fileName));
+                zipOut.closeEntry();
+            } else {
+                zipOut.putNextEntry(new ZipEntry(fileName + "/"));
+                zipOut.closeEntry();
+            }
+            File[] children = fileToZip.listFiles();
+            for (File childFile : children) {
+                zipFile(childFile, fileName + "/" + childFile.getName(), zipOut, false);
+            }
+            return;
+        }
+
+        FileInputStream fis = new FileInputStream(fileToZip);
+        ZipEntry zipEntry = new ZipEntry(fileName);
+        zipOut.putNextEntry(zipEntry);
+        byte[] bytes = new byte[1024];
+        int length;
+        while ((length = fis.read(bytes)) >= 0) {
+            zipOut.write(bytes, 0, length);
+        }
+        fis.close();
+
+    }
 }
+
+

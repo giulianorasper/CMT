@@ -7,7 +7,6 @@ import communication.packets.response.FailureResponsePacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import voting.Voting;
 import voting.VotingStatus;
 
@@ -32,19 +31,22 @@ public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
     public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, true)) {
             Packet response;
-            Voting activeVoting = conference.getActiveVoting();
             Voting votingToStart = conference.getVoting(id);
             if(votingToStart == null) {
                 response = new FailureResponsePacket("The voting with the id " + id + " does not exist.");
             } else if (votingToStart.getStatus() != VotingStatus.Created){
                 response = new FailureResponsePacket("Voting could not be started since it's status is " + votingToStart.getStatus());
-            } else if(activeVoting != null) {
-                response = new FailureResponsePacket("Voting could not be started since there is already an ongoing voting.");
-            }
-            else {
-                votingToStart.startVote();
-                conference.update(votingToStart);
-                response = new ValidResponsePacket();
+            } else {
+                if (votingToStart.getOptions().size() >= 2) {
+                    if (conference.startVoting(votingToStart)) {
+                        response = new ValidResponsePacket();
+                    } else {
+                        response = new FailureResponsePacket( "Can´t start a voting because some problem occure in Backend");
+                    }
+
+                } else {
+                    response = new FailureResponsePacket( "Can´t start a voting with less than 2 options");
+                }
             }
             response.send(webSocket);
         }

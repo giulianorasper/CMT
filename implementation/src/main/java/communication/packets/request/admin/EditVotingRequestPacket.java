@@ -2,6 +2,7 @@ package communication.packets.request.admin;
 
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.response.FailureResponsePacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
@@ -47,11 +48,30 @@ public class EditVotingRequestPacket extends AuthenticatedRequestPacket {
                     options.add(o.getName());
                 });
             }
+
             boolean namedVote = voting.isNamedVote();
-            AddVotingRequestPacket add = new AddVotingRequestPacket(question, options, namedVote, duration);
-            add.setToken(getToken());
-            add.handle(conference, webSocket);
-            conference.removeVoting(voting);
+            VotingOption votingOptionObject;
+            List<VotingOption> optionsObjectList = new LinkedList<>();
+            int id = 0;
+            for(String option : options) {
+                if(namedVote) {
+                    votingOptionObject = new NamedVotingOption(id, option);
+                } else {
+                    votingOptionObject = new AnonymousVotingOption(id, option);
+                }
+                optionsObjectList.add(votingOptionObject);
+                id++;
+            }
+
+            Boolean result = voting.updateVoteArguments(optionsObjectList, question, namedVote, duration);
+            //AddVotingRequestPacket add = new AddVotingRequestPacket(question, options, namedVote, duration);
+            if (result) {
+                new ValidResponsePacket().send(webSocket);
+            } else {
+                new FailureResponsePacket().send(webSocket);
+            }
+
+
         }
     }
 }

@@ -25,9 +25,6 @@ public class AnonymousVotingOption extends VotingOption {
         this.votes = votes;
     }
 
-    public AnonymousVotingOption(int votes) {
-
-    }
 
     /**
      * increase Number of user that vote for the NamedVotingOption.
@@ -40,7 +37,8 @@ public class AnonymousVotingOption extends VotingOption {
 
     @Override
     public int getCurrentResult(){
-        try {
+        return votes;
+        /*try {
             lock.getReadAccess();
             return votes;
         }
@@ -49,7 +47,7 @@ public class AnonymousVotingOption extends VotingOption {
         }
             finally {
             lock.finishRead();
-        }
+        }*/
     }
 
     /**

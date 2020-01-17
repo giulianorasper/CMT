@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import utils.Pair;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -147,8 +148,8 @@ public class UserTests {
                         }
                     }
 
-                    assertEquals("Attendee has different name despite successful edit " + a,  "Mike" + aux.get(),a.name);
-                    assertEquals("Attendee has different residence despite successful edit " + a, "MPI" + aux.get(), a.residence);
+                    assertEquals("Attendee has different name despite successful edit " + a,  "Mike" + aux.get(), conf.getAttendeeData(a.getID()).name);
+                    assertEquals("Attendee has different residence despite successful edit " + a, "MPI" + aux.get(), conf.getAttendeeData(a.getID()).residence);
 
 
 
@@ -168,16 +169,18 @@ public class UserTests {
      */
     @Test
     public void logAttendeesInAndOut(){
-        int threadCount = 20;
+        int threadCount = 50;
         AtomicInteger doneCount = new AtomicInteger(0);
         AtomicBoolean go = new AtomicBoolean(false);
 
         int[] attendeeIds = new int[threadCount];
+        String[] attendeeNames = new String[threadCount];
 
         for(int  i = 0; i < threadCount; i++){
             Attendee a = new Attendee("Mike", "Mike@Gebirge"+i+".tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
             conf.addAttendee(a);
             attendeeIds[i] = a.getID();
+            attendeeNames[i] = a.getUserName();
             conf.generateAllMissingUserPasswords();
         }
 
@@ -190,11 +193,10 @@ public class UserTests {
                     while (!go.compareAndSet(true, true)){/*wait*/}
 
 
-
                         String password = conf.getUserPassword(attendeeIds[aux.get()]).second();
                         Pair<LoginResponse, Pair<String, Long>> response;
-                        if (aux.get() % 2 == 0){
-                            response = conf.login("Mike" + aux.get(), password);
+                        if (aux.get() % 2 == 1){
+                            response = conf.login(attendeeNames[aux.get()], password);
                             if(response.first() != LoginResponse.Valid){
                                 fail("Failed to perform a valid login");
                             }
@@ -218,12 +220,15 @@ public class UserTests {
 
                     while (true){
                         if(doneCount.get() == threadCount){
+                            System.out.println(doneCount.get());
                             break;
                         }
                     }
                 }
             }).start();
         }
+
+
         go.compareAndSet(false, true);
         int res = doneCount.get();
         while (res != threadCount){
@@ -237,6 +242,236 @@ public class UserTests {
         conf.logoutNonAdmins();
         loginCount = (int) conf.getAllAttendees().stream().filter(Attendee::isPresent).count();
         assertEquals("Expected aa attendees to be logged out", 0 , loginCount);
+
+    }
+
+    @Test
+    public void invalidLogin(){
+        Attendee a = new Attendee("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAttendee(a);
+        String password = conf.getUserPassword(a.getID()).second();
+        conf.logoutUser(a.getID());
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
+        if(response.first() == LoginResponse.Valid){
+            fail("Managed to log in a user which should not be loged in");
+        }
+
+    }
+
+    @Test
+    public void invalidLogin2(){
+        Attendee a = new Attendee("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAttendee(a);
+        String password = conf.getUserPassword(a.getID()).second();
+        conf.logoutAllUsers();
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
+        if(response.first() == LoginResponse.Valid){
+            fail("Managed to log in a user which should not be loged in");
+        }
+
+    }
+
+    @Test
+    public void invalidLogin3(){
+        Attendee a = new Attendee("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAttendee(a);
+        String password = conf.getUserPassword(a.getID()).second();
+        conf.logoutNonAdmins();
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
+        if(response.first() == LoginResponse.Valid){
+            fail("Managed to log in a user which should not be loged in");
+        }
+
+    }
+
+    @Test
+    public void invalidLogin4(){
+        Attendee a = new Attendee("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAttendee(a);
+        String password = conf.getUserPassword(a.getID()).second();
+        conf.removeAttendee(a.getID());
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
+        if(response.first() == LoginResponse.Valid){
+            fail("Managed to log in a user which should not be loged in");
+        }
+
+    }
+
+    @Test
+    public void invalidLogin5(){
+        Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAdmin(a);
+        String password = conf.getUserPassword(a.getID()).second();
+        conf.removeAdmin(a.getID());
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
+        if(response.first() == LoginResponse.Valid){
+            fail("Managed to log in a user which should not be loged in");
+        }
+
+    }
+
+    @Test
+    public void invalidLogin6(){
+        Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAdmin(a);
+        String password = conf.getUserPassword(a.getID()).second();
+        conf.logoutAdmin(a.getID());
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
+        if(response.first() == LoginResponse.Valid){
+            fail("Managed to log in a user which should not be loged in");
+        }
+
+    }
+
+
+    @Test
+    public void invalidLogin7(){
+        Attendee a = new Attendee("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAttendee(a);
+        String password = conf.getUserPassword(a.getID()).second();
+        conf.generateNewUserPassword(a.getID());
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
+        if(response.first() == LoginResponse.Valid){
+            fail("Managed to log in a user which should not be loged in");
+        }
+
+    }
+
+
+    @Test
+    public void validLogin(){
+        Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAdmin(a);
+        String password = conf.getUserPassword(a.getID()).second();
+        conf.logoutNonAdmins();
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
+        if(response.first() != LoginResponse.Valid){
+            fail("Admins should not get logged out");
+        }
+
+    }
+
+    @Test
+    public void loginTwice(){
+        Attendee a = new Attendee("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAttendee(a);
+        String password = conf.getUserPassword(a.getID()).second();
+
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
+        if(response.first() != LoginResponse.Valid){
+            fail("First login should succeed");
+        }
+
+        response = conf.login(a.userName, password);
+        if(response.first() == LoginResponse.Valid){
+            fail("Second login should not have succeed");
+        }
+
+    }
+
+
+    @Test
+    public void loginTwice2(){
+        Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAdmin(a);
+        String password = conf.getUserPassword(a.getID()).second();
+
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
+        if(response.first() != LoginResponse.Valid){
+            fail("First login should succeed");
+        }
+
+        response = conf.login(a.userName, password);
+        if(response.first() == LoginResponse.Valid){
+            fail("Second login should not have succeed");
+        }
+
+    }
+
+
+    @Test
+    public void loginTwice3(){
+        Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        conf.addAdmin(a);
+        String password = conf.getUserPassword(a.getID()).second();
+
+        Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password+"a");
+        if(response.first() == LoginResponse.Valid){
+            fail("Managed to login with an invalid password");
+        }
+
+        response = conf.login(a.userName, password);
+        if(response.first() != LoginResponse.Valid){
+            fail("Second login should have succeed");
+        }
+
+    }
+
+    @Test
+    public void testTokens(){
+        Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        Attendee b = new Attendee("Mike", "Mike@Gebirge2.tods", conf.getFreeUserName("Mike"), "JUSO", "MPI", "SysAdmin");
+        Attendee c = new Attendee("Mike", "Mike@Gebirge3.tods", conf.getFreeUserName("Mike"), "AI", "MPI", "SysAdmin");
+
+        ArrayList<String> groups = new ArrayList<>();
+        groups.add("RCDS");
+        groups.add("JUSO");
+        groups.add("AI");
+
+        if(!groups.containsAll(conf.getExistingGroups()) || !conf.getExistingGroups().containsAll(groups)){
+            fail("Groups do not match");
+        }
+
+        conf.addAdmin(a);
+        conf.addAttendee(b);
+        conf.addAttendee(c);
+        String passwordA = conf.getUserPassword(a.getID()).second();
+
+        Pair<LoginResponse, Pair<String, Long>> responseA = conf.login(a.userName, passwordA);
+
+        String passwordB = conf.getUserPassword(b.getID()).second();
+
+        Pair<LoginResponse, Pair<String, Long>> responseB = conf.login(b.userName, passwordB);
+
+        String passwordC = conf.getUserPassword(c.getID()).second();
+
+        Pair<LoginResponse, Pair<String, Long>> responseC = conf.login(c.userName, passwordC);
+
+        conf.removeAttendee(c.getID());
+
+        if(conf.checkToken(responseA.second().first()) != TokenResponse.ValidAdmin){
+            fail("Expected an admin token");
+        }
+
+        if(conf.checkToken(responseB.second().first()) != TokenResponse.ValidAttendee){
+            fail("Expected an attendee token");
+        }
+
+        if(conf.checkToken(responseC.second().first()) != TokenResponse.TokenDoesNotExist){
+            fail("Expected an invalid token");
+        }
+
+    }
+
+    @Test
+    public void tokenReset(){
+        Attendee a = new Attendee("Mike", "Mike@Gebirge2.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+
+        conf.addAttendee(a);
+        String passwordA = conf.getUserPassword(a.getID()).second();
+
+        Pair<LoginResponse, Pair<String, Long>> responseA = conf.login(a.userName, passwordA);
+
+        if(conf.checkToken(responseA.second().first()) != TokenResponse.ValidAttendee){
+            fail("Token should be valid at this point");
+        }
+
+        conf.generateNewUserToken(a.getID());
+
+        if(conf.checkToken(responseA.second().first()) != TokenResponse.TokenDoesNotExist){
+            fail("Token should be invalid at this point");
+        }
+
 
     }
 

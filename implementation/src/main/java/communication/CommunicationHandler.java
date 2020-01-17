@@ -227,6 +227,9 @@ public class CommunicationHandler {
                 case GET_DOCUMENT_LIST_REQUEST:
                     pack = gson.fromJson(message, GetDocumentListRequestPacket.class);
                     break;
+                case GET_PREVIOUS_VOTINGS_REQUEST:
+                    pack = gson.fromJson(message, GetPreviousVotingsRequestPacket.class);
+                    break;
                 case CONFERENCE_DATA_REQUEST:
                     pack = gson.fromJson(message, GetConferenceDataRequestPacket.class);
                     break;

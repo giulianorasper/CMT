@@ -26,8 +26,7 @@ public class AddVotingRequestPacket extends AuthenticatedRequestPacket {
     private int duration;
 
     /**
-     *
-     * @param question the question which should be decided by the voting
+     *  @param question the question which should be decided by the voting
      * @param options the possible voting options as a list of strings
      * @param namedVote if the vote is named i.e. if it is public who voted for which option
      * @param duration the duration of the voting after it started in seconds
@@ -55,8 +54,7 @@ public class AddVotingRequestPacket extends AuthenticatedRequestPacket {
                 optionsObjectList.add(votingOptionObject);
                 id++;
             }
-            Voting voting = new Voting(optionsObjectList, question, namedVote);
-            voting.setDuration(duration);
+            Voting voting = new Voting(optionsObjectList, question, namedVote, duration);
             conference.addVoting(voting);
             new ValidResponsePacket().send(webSocket);
         }

@@ -1,0 +1,134 @@
+package documents;
+
+import document.Document;
+import main.Conference;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+public class DocumentsTest {
+    Conference conf;
+    File f;
+    @Before
+    public void createConference(){
+        conf = new Conference(true);
+        String pathString = "src/test/resources/test.txt";
+        f = new File(pathString);
+        System.out.println(f.getAbsoluteFile());
+        if(f.exists()){
+            f.delete();
+        }
+
+        try {
+            f.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(pathString));
+            writer.write("Test data\n");
+
+            writer.close();
+        } catch (IOException e) {
+            fail("Could not initialize test environment");
+        }
+
+    }
+
+    @Test
+    public void singleDocumentUpload(){
+       conf.updateDocument("test", "txt", f, true);
+       Document doc = conf.getDocument("test");
+       if(doc.getRevisionNumber() != 1){
+           fail("New documents should have revision number 1");
+       }
+      assertArrayEquals("Document content does not fit",conf.getDocumentContent("test"), "Test data\n".getBytes());
+    }
+
+    @Test
+    public void doubleDocumentUpload(){
+        conf.updateDocument("test", "txt", f, true);
+        try{
+            conf.updateDocument("test", "txt", f, true);
+            fail("Double document creation is illegal");
+        }
+        catch (IllegalArgumentException e){
+            Document doc = conf.getDocument("test");
+            if(doc.getRevisionNumber() != 1){
+                fail("New documents should have revision number 1");
+            }
+            assertArrayEquals("Document content does not fit",conf.getDocumentContent("test"), "Test data\n".getBytes());
+        }
+    }
+
+    @Test
+    public void updateInexistent(){
+        try{
+            conf.updateDocument("test", "txt", f, false);
+            fail("This document does not exist");
+        }
+        catch (IllegalArgumentException e){
+
+        }
+    }
+
+    @Test
+    public void documentMultiUpdate(){
+        conf.updateDocument("test", "txt", f, true);
+        int updateCount = 100;
+        try {
+            for(int i = 0; i < updateCount; i++){
+                    FileWriter fw = new FileWriter(f);
+                    fw.write("Adding "+i);
+                    fw.close();
+                    conf.updateDocument("test", "txt", f, false);
+            }
+        }
+        catch (IOException e){
+            fail("This test seems to be broken. Sorry");
+        }
+
+        Document doc = conf.getDocument("test");
+        if(doc.getRevisionNumber() != 101){
+            fail("Document should have revision number 101");
+        }
+        assertArrayEquals("Document content does not fit",conf.getDocumentContent("test"), "Adding 99".getBytes());
+
+
+    }
+
+    @Test
+    public void deletedDocumentRecreate(){
+        conf.updateDocument("test", "txt", f, true);
+        conf.deleteDocument("test");
+        conf.updateDocument("test", "txt", f, true);
+
+        Document doc = conf.getDocument("test");
+        if(doc.getRevisionNumber() != 1){
+            fail("New documents should have revision number 1");
+        }
+        assertArrayEquals("Document content does not fit",conf.getDocumentContent("test"), "Test data\n".getBytes());
+    }
+
+    @Test
+    public void deletedDocumentEdit(){
+        conf.updateDocument("test", "txt", f, true);
+        conf.deleteDocument("test");
+        try {
+            conf.updateDocument("test", "txt", f, false);
+            fail("Managed to edit a document which does not exist");
+        }
+        catch (IllegalArgumentException e){
+            if(conf.getAllDocuments().size() != 0){
+                fail("Document did not get properly deleted");
+            }
+        }
+
+    }
+
+
+}

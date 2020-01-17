@@ -30,8 +30,10 @@ public abstract class VotingOption {
      * @return VoteOptionID
      */
     public int getOptionID() {
-        try {
+        return this.optionID;
+        /*try {
             lock.getReadAccess();
+            System.out.println(this.optionID);
             return this.optionID;
         }
         catch (InterruptedException e){
@@ -39,7 +41,7 @@ public abstract class VotingOption {
         }
         finally {
             lock.finishRead();
-        }
+        }*/
     }
 
     /**
@@ -64,7 +66,9 @@ public abstract class VotingOption {
      * @return VoteOptionName
      */
     public String getName() {
-        try {
+        return this.name;
+    }
+        /*try {
             lock.getReadAccess();
             return this.name;
         } catch (InterruptedException e) {

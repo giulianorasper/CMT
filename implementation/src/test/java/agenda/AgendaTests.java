@@ -3,6 +3,7 @@ package agenda;
 import agenda.Agenda;
 import agenda.Topic;
 
+import main.Conference;
 import org.junit.Before;
 import org.junit.Test;
 import utils.Pair;
@@ -185,6 +186,34 @@ public class AgendaTests {
     @Test(expected = IllegalArgumentException.class)
     public void testGetTopicFromPreorderStringInvalidArgs5() {
         agenda.getTopicFromPreorderString("Never gonna let you down. Never gonna run around and desert you");
+    }
+
+    @Test
+    public void observerMigration(){
+        Agenda a = new Agenda();
+        final int[] updateCount = {0};
+        AgendaObserver o = new AgendaObserver() {
+            @Override
+            public boolean update(Agenda a) {
+                updateCount[0]++;
+                return true;
+            }
+        };
+        Conference conf = new Conference(true);
+
+        conf.getAgenda().register(o);
+        conf.getAgenda().addTopic(new Topic("Test", conf.getAgenda()), 0);
+        conf.updateAgenda(a);
+        conf.getAgenda().addTopic(new Topic("Test", conf.getAgenda()), 0);
+        conf.getAgenda().addTopic(new Topic("Test", conf.getAgenda()), 1);
+        conf.getAgenda().addTopic(new Topic("Test", conf.getAgenda()), 2);
+
+        if(updateCount[0] != 5){
+            fail("The observer did not get registered to the new agenda");
+        }
+
+
+
     }
 
 }

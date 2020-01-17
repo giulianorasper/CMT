@@ -65,7 +65,14 @@ function save(voteId){
 	const packet = new EditVotingRequestPacket(voteId, vote.question, options ,vote.named, vote.duration);
 
 	function success(packet){
-		console.log(packet);
+
+		
+		if(packet.result === "Valid"){
+			
+			$("#dialogMessage").dialog("open");
+			return false;
+
+		}
 	}
 
 	 function fail() {
@@ -75,6 +82,25 @@ function save(voteId){
     CommunicationManager.send(packet, success, fail);
 }
 
+
+
+$("#dialogMessage").dialog({
+	autoOpen: false,
+	resizable: false,
+	// autoOpen:false,
+	height: 210,
+	width: 360,
+	modal: true,
+	title: "Success",
+		buttons: {
+		"Do Something": function() {
+		},
+	Cancel: function() {
+
+	$(this).dialog("close");
+	}
+}
+});
 
 /**
  * remove function will be called when the admin click on delete button. This will delete a vote question.
@@ -198,11 +224,96 @@ function deleteOption(btn) {
  * if everything is done successfully renderVotings function will be called in order to get all votes question that are currently available in the database. 
  */
 
-function create(){
-	var res = prompt("Please provide the voting question");
-	if(!res){return;}
+// createDialog = $('#creationDialog').dialog({
+// 	autoOpen: false,
+// 	height: 540,
+// 	width: 420,
+// 	modal: true,
+// 	buttons: {
+// 		"Confirm": create,
+// 		Cancel: function () {
+// 			createDialog.dialog("close");
+// 		}
+// 	},
+// 	close: function () {
+// 		createForm[ 0 ].reset();
+// 		createFields.removeClass("ui-state-error");
+// 	}
+// });
 
-	const packet = new AddVotingRequestPacket(res, [], confirm("named vote?"), 1000*60*5);
+// createForm = createDialog.find("form").on("submit", function(event){
+// 	event.preventDefault();
+// 	create();
+// });
+
+
+
+// $('#createVote').on("click", function (e) {
+// 	e.preventDefault();
+// 	createDialog.dialog("open");
+// });
+
+$("#dialog").dialog({
+	autoOpen: false,
+	resizable: false,
+	// autoOpen:false,
+	height: 380,
+	width: 500,
+	modal: true,
+	title: "Creat Vote Panel",
+		buttons: {
+		"Do Something": function() {
+		},
+	Cancel: function() {
+
+	$(this).dialog("close");
+	}
+}
+});
+
+
+$('#createVote').on("click", function () {
+	
+	$("#dialog").dialog("open");
+	return false;
+});
+
+
+
+function create(){
+
+	// e.preventDefault();
+	// createDialog.dialog("open");
+	
+
+	var voteQuestion = $('#VoteText').val();
+	var TimeDuration = $('#duration').val();
+	var voteType = $('input[name="yes-no"]:checked').val();
+
+	if( (voteQuestion == '' && TimeDuration == '') || voteQuestion == '' || TimeDuration == ''){
+		return;}
+	
+	if (voteType === '1'){ 
+		var voteTypeBoolean = true;
+	}	else {
+		var voteTypeBoolean = false;
+	}
+
+	// console.log(voteTypeBoolean);
+	// $('#VoteText').val("");
+	// $('#duration').val("");
+
+	// $("#dialog").dialog("close");
+
+	// console.log(voteQuestion);
+	// console.log(TimeDuration);
+	// console.log(voteType);
+
+	// var res = prompt("Please provide the voting question");
+	// var res1 = prompt("Time in Minutes");
+	// if(!(res1)){return;}
+
+	const packet = new AddVotingRequestPacket(voteQuestion, [], voteTypeBoolean, TimeDuration * 60);
 	CommunicationManager.send(packet, success, fail);
 
 	 function fail() {
@@ -271,7 +382,7 @@ function start(voteId){
  */
 
 function renderCreatedVote(vote){
-	var durationAux = (vote.duration/1000).toFixed(0);
+	var durationAux = (vote.duration).toFixed(0);
 	var secondsAux = (durationAux % 60).toFixed(0);
 	var seconds = (secondsAux < 10 ? "0"+secondsAux:secondsAux);
 	var durationMinutes = (durationAux/60).toFixed(0)+":"+seconds;

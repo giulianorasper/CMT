@@ -22,7 +22,7 @@ public class DownloadFileResponsePacket extends ResponsePacket {
      * @param fileName the name of the file (document)
      */
     public DownloadFileResponsePacket(byte[] fileBytes, String fileName) {
-        super(PacketType.DOWNLOAD_FILE_REQUEST, RequestResult.Valid);
+        super(PacketType.DOWNLOAD_FILE_RESPONSE, RequestResult.Valid);
         this.fileBytes = fileBytes;
         this.fileName = fileName;
     }

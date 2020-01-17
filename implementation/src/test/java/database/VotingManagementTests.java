@@ -34,9 +34,9 @@ public class VotingManagementTests extends DatabaseTests {
         nl.add(nv1); nl.add(nv2); nl.add(nv3);
         al.add(av1); al.add(av2); al.add(av3);
 
-        Voting named = new Voting(nl, "Should we have a named voting?", true);
+        Voting named = new Voting(nl, "Should we have a named voting?", true, 30);
 
-        Voting anon = new Voting(al, "Should we keep it anonymous?", false);
+        Voting anon = new Voting(al, "Should we keep it anonymous?", false, 30);
 
         nv1.setParent(named); nv2.setParent(named); nv3.setParent(named);
         av1.setParent(anon);av2.setParent(anon);av2.setParent(anon);
@@ -111,7 +111,7 @@ public class VotingManagementTests extends DatabaseTests {
 
     @Test
     public void addOpenVoting() {
-        Voting vot = new Voting(new LinkedList<>(), "Should we allow open votings in the database?", true);
+        Voting vot = new Voting(new LinkedList<>(), "Should we allow open votings in the database?", true, 30);
 
         assertEquals("Voting has incorrect status after creation.", VotingStatus.Created, vot.getStatus());
         votM.update(vot);

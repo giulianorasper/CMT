@@ -129,6 +129,7 @@ public class RequestManagerTests  extends DatabaseTests  {
         }, 1));
 
         assertTrue(reqDb.removeRequest(max.getID()));
+        assertTrue(reqDb.removeRequest(8));
         List<Request> requests = new LinkedList<>();
         assertEquals(reqDb.getAllRequests(), requests);
 

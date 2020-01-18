@@ -19,10 +19,8 @@ public interface CommunicationManager {
 
     /**
      * After calling this function the CommunicationManager stops processing new requests.
-     * @throws IOException .
-     * @throws InterruptedException .
      */
-    void stop() throws IOException, InterruptedException;
+    void stop();
 
     boolean isSecure();
 

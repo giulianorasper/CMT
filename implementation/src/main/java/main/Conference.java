@@ -1000,7 +1000,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             }
             if(v.getStatus() == VotingStatus.Running){
                 if(activeVoting != null){
-                    throw new IllegalArgumentException("trying to start a vote without closing the previous vote");
+                    return false;
                 }
                 else{
                     activeVoting = v;
@@ -1052,6 +1052,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void updateDocument(String name, String fileType, File file, boolean isCreation) {
         try {
             documentsLock.lock();
+            if(file.length() > 1024*1024 *500){
+                throw new IllegalArgumentException("The file is to large");
+            }
             String fullName = name;
             File f;
             if(!documents.containsKey(fullName)) {

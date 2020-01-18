@@ -186,7 +186,10 @@ public class Voting implements VotingObservable {
     public boolean addVote(int optionID, int userID) {
         try {
             lock.getWriteAccess();
-            if (voters.contains(userID) || status != VotingStatus.Running || options.size() <= optionID || optionID < 0) {
+            if(status != VotingStatus.Running){
+                return false;
+            }
+            if (voters.contains(userID)  || options.size() <= optionID || optionID < 0) {
                 return false;
             }
             voters.add(userID);

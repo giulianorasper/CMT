@@ -1206,7 +1206,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try {
             adminLock.lock();
             attendeeLock.lock();
-
+            generateAllQRCodes();
             String sourceFile = tmpDir.getAbsolutePath()+"/qr/";
 
             File f= new File(tmpDir.getAbsolutePath()+"/qrs.zip");

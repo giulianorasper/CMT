@@ -4,5 +4,5 @@ public enum LoginResponse {
     Valid,
     WrongPassword,
     UserDoesNotExist,
-    AccountBlocked,
+    AccountAlreadyInUse,
 }

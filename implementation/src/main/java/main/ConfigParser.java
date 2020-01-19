@@ -57,7 +57,7 @@ public class ConfigParser {
         );
 
         List<Admin> allAdmins = conf.getAllAdmins();
-        allAdmins.forEach(a -> { conf.removeAdmin(a.getID());});
+        conf.deleteAllAdmins();
 
         admins.forEach(a ->{
             Admin admin = new Admin(a.get(0), a.get(1), conf.getFreeUserName(a.get(0)), a.get(2), a.get(3), a.get(4));

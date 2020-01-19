@@ -11,5 +11,5 @@ h2{
 }
 
 .adminField{
-	display: none
+	display: none !important;
 }

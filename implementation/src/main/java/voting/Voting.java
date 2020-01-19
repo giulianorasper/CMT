@@ -92,6 +92,7 @@ public class Voting implements VotingObservable {
             this.question = question;
             this.namedVote = namedVote;
             this.duration = duration;
+            this.options.forEach(o -> o.setParent(this));
             return true;
         } catch (InterruptedException e) {
             return false;

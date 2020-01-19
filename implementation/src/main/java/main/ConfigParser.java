@@ -68,12 +68,6 @@ public class ConfigParser {
 
         conf.generateAllQRCodes();
 
-        for(Attendee a: conf.getAllAttendees()){
-            System.out.println(a);
-            System.out.println(a.getID()+"\n\n");
-        }
-
-
         return conf;
 
     }

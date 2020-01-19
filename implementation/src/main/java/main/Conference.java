@@ -369,6 +369,24 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
+     * Delete all Admins from the Database.
+     */
+    @Override
+    public void deleteAllAdmins() {
+        try {
+            adminLock.lock();
+            admins = new HashMap<Integer, Admin>();
+            if (!db_userManagement.removeAllAdmins()) {
+                throw new IllegalArgumentException("Can´t delete all Admins in the Database");
+            }
+        }
+        finally {
+            adminLock.unlock();
+        }
+    }
+
+
+    /**
      * Read all Admins from Database and return them.
      * @return List of Admins
      */

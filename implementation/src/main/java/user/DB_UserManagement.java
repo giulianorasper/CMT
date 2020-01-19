@@ -167,6 +167,12 @@ public interface DB_UserManagement {
     List<Admin> getAllAdmins();
 
     /**
+     * This methods deletes all admins in the database.
+     * @return True, iff the user was successfully removed.
+     */
+    boolean removeAllAdmins();
+
+    /**
      * Returns the {@link Admin} with the given userID.
      *
      * @param userID The ID of the admin.

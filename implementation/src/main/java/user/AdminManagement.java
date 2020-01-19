@@ -19,4 +19,6 @@ public interface AdminManagement {
 
     void editAdmin(int ID, Admin a);
 
+    void deleteAllAdmins();
+
 }

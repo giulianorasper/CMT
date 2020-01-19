@@ -23,16 +23,11 @@ import DownloadAllQRRequestPacket from "../../communication/packets/admin/Downlo
 $(function(){
     //Initializing dialog options
     createDialog = $('#creationDialog').dialog({
+        title: "Create Attendee",
         autoOpen: false,
-        height: 690,
+        height: 600,
         width: 420,
         modal: true,
-        buttons: {
-            Confirm: clickCreateAttendee,
-            Cancel: function () {
-                createDialog.dialog("close");
-            }
-        },
         close: function (e) {
             e.preventDefault();
             console.log(e);
@@ -58,12 +53,6 @@ $(function(){
         height: 540,
         width: 420,
         modal: true,
-        buttons: {
-            "Confirm": clickEditAttendee,
-            Cancel: function () {
-                editDialog.dialog("close");
-            }
-        },
         close: function () {
             editForm[ 0 ].reset();
             editFields.removeClass("ui-state-error");
@@ -86,6 +75,11 @@ $(document).ready( function() {
     window.uploadUserList = uploadUserList;
     window.downloadAllQrCodes = downloadAllQrCodes;
     window.downloadQR = downloadQR;
+
+    window.clickCreateAttendee = clickCreateAttendee;
+    window.clickEditAttendee = clickEditAttendee;
+    window.closeCreateAttendee = closeCreateAttendee;
+    window.closeEditAttendee = closeEditAttendee;
 
     //Add listeners to buttons/dropdown menus that don't need to be generated dynamically
     document.getElementById("sortingOptions").addEventListener("change", changeSort, false);
@@ -557,7 +551,7 @@ const nameRegex = /[^\$%\^\*£=~@_]/;
 function updateTips(newText){
     tipField.text(newText).addClass("ui-state-highlight");
     setTimeout(function () {
-        tipField.removeClass("ui-state-highlight", 1000)
+        tipField.removeClass("ui-state-highlight");
     }, 500);
 }
 
@@ -579,9 +573,8 @@ function checkRegex(checkedObject, regex, message){
     return true;
 }
 
-function checkValidData(nameID, mailID, groupID, residenceID, functionID, fields){
+function checkValidData(nameID, mailID, groupID, residenceID, functionID){
     var validUser = true;
-    fields.removeClass("ui-state-error");
 
     validUser = validUser && checkLength(nameID, "name", 5, 64);
     validUser = validUser && checkLength(mailID, "email", 6, 64);
@@ -639,3 +632,10 @@ function clickEditAttendee(){
     }
 }
 
+function closeCreateAttendee(){
+    createDialog.dialog("close");
+}
+
+function closeEditAttendee(){
+    editDialog.dialog("close");
+}

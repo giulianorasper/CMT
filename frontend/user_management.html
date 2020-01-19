@@ -201,8 +201,11 @@
             <label for="createFnctn">Function</label>
             <input type="text" name="fnctn" id="createFnctn" placeholder="Enter Function" class="text ui-widget-content ui-corner-all">
 
-            <!-- Allow form submission with keyboard without duplicating the dialog button -->
-            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+            <!-- Submit buttons of dialog fields -->
+            <div>
+                <button type="button" class="btn btn-outline-info" data-role="close" title="Close" style="width: 100px;" onclick="closeCreateAttendee()">Cancel</button>
+                <button type="submit" class="btn btn-outline-primary" data-role="close" title="Submit" style="width: 100px;" onclick="clickCreateAttendee()">Confirm</button>
+            </div>
         </fieldset>
     </form>
 </div>

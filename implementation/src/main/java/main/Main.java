@@ -54,7 +54,7 @@ public class Main {
                     fis.close();
                     String str = new String(data, StandardCharsets.UTF_8);
                     conf = ConfigParser.parseConfigFile(str);
-                    CommunicationManager w = new CommunicationManagerFactory(conf).enableDebugging().create();
+                    CommunicationManager w = new CommunicationManagerFactory(conf).create();
                     w.start();
                     char c = (char)System.in.read();
                     while (c != 'q'){

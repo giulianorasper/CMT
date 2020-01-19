@@ -1,3 +1,7 @@
+h2{
+	text-align: center;
+}
+
 .agendaList :first-child{
 	padding-top: 5px;
 }

@@ -28,7 +28,7 @@ $(function(){
         width: 420,
         modal: true,
         buttons: {
-            Confirm: clickEditAttendee,
+            Confirm: clickCreateAttendee,
             Cancel: function () {
                 createDialog.dialog("close");
             }
@@ -240,7 +240,7 @@ function generateAttendee(listIndex, attendee){
         '<span style="display:inline-block; width: 30px;">' +
         '</span><span class="glyphicon glyphicon-pencil" id="editAttendee' + listIndex + '" data-attendee-id="' + listIndex + '"></span>'+
         '<span style="display:inline-block; width: 30px;">'+
-        '</span><span class="glyphicon glyphicon-log-in" onclick="getNewAttendeePasswordGlobal(' + listIndex +')"></span>'+
+        '</span><span class="glyphicon glyphicon-lock" onclick="getNewAttendeePasswordGlobal(' + listIndex +')"></span>'+
         '<span style="display:inline-block; width: 30px;">' +
         '</span><span class="glyphicon glyphicon-log-out" onclick="logoutAttendeeGlobal(' + listIndex +')"></span>'+
         '<span style="display:inline-block; width: 30px;">'+

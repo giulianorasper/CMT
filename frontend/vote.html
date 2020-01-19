@@ -28,9 +28,10 @@
     <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/slicknav.css">
     <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/main.css">
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
 
-    
+
 
 </head>
 
@@ -104,17 +105,17 @@
                         </div>
 						<div id="voteQuestion">
 
-							
+
 							<!-- <div class="col-lg-12" style="margin-left:30px; font-size: 25px; padding-bottom: 10px; word-break: break-word; margin-right: 30px;" id="'+packet.voting.ID+'s"> -->
 								<!-- <span style="word-break: break-word; margin-right: 30px;" class='d-flex p-2' id='voteQuestion'>this is questions my name is jonsone fffafd</span> -->
 							<!-- </div> -->
-						
+
 						<!-- <div class="countdown"></div> -->
                         <!-- <div id="options" class="col-lg-12"> -->
 							<!-- <div class="row"> -->
 								<!-- <div class="col-lg-2"></div> -->
-								
-								
+
+
 								<!-- <div class="row"> -->
 									<!-- <div class="col-lg-12"> -->
 										<!-- <div class="custom-control custom-radio" style="margin-left:42px;"> -->
@@ -123,9 +124,9 @@
 										<!-- </div> -->
 									<!-- </div> -->
 								<!-- </div> -->
-								
+
                         </div>
-						
+
                             <div class="row">
                                 <div class="custom-control col-lg-8" style="margin-left: 30px;" id="failure">
 
@@ -177,7 +178,7 @@
                                     <th>Question</th>
                                     <th>Type</th>
                                     <th>Duration</th>
-                                
+
                                     </thead>
 
                                     <tbody id = "createdVotesList">
@@ -197,7 +198,7 @@
                                             <div class = "row"><div><input style="font-size:20px; margin-top: 5px;" class="form-control" type="text" value="yes"></div>
                                             </div>
                                             <div style ="min-width:20px;">
-                                                
+
                                             </div>
                                             <div class="row" style="padding-top: 20px">
                                             <button style="margin-right: 20px" class="button button-contactForm boxed-btn" onclick="alert('not implemented')">Start Vote</button>
@@ -208,12 +209,12 @@
                                         </div>
                                     </td>
                                     </tr> -->
-                                       
+
                                     </tbody>
 						</table>
 						</div>
                                 <button style="margin-right: 20px; margin-left: 20px; margin-top: 20px;border: 1px solid #00D363; color:#00D363!important; float: right;" class="button boxed-btn" id="createVote">New Voting</button>
-								
+
 					</div>
                 </div>
             </div>
@@ -225,15 +226,15 @@
     <div id='dialog' style='display: none;'>
         <div class="form-group">
         <span for="name12" style="font-weight: bold;font-size: 16px;">Vote Question</span>
-        
+
         <input class="form-control valid" name="name" id="VoteText" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'please enter here'" placeholder="please enter here" required>
-        
+
         </div>
         <div class="form-group">
         <span for="name12" style="font-weight: bold;font-size: 16px;">Duration in minutes:</span>
-        
+
         <input class="form-control valid" name="duration" id="duration" type="number" onfocus="this.placeholder = ''" onblur="this.placeholder = 'please enter here'" placeholder="please enter here" required>
-        
+
         </div>
         <div class="form-group">
             <span style="font-weight: bold;font-size: 18px; margin-right: 10px; ">Named Vote:</span>
@@ -247,10 +248,10 @@
         <hr style="padding-bottom: 20px;";>
         <div>
             <button type="button" class="btn btn-outline-info " style="width: 100px;" data-role="close" title="Close" class="gj-dialog-md-close">Cancel</button>
-            
+
             <button type="button" class="btn btn-outline-primary" style="width: 100px;" data-role="close" title="Close" class="gj-dialog-md-close" onclick="createNewVoting();">Confirm</button>
-            
-        
+
+
         </div>
       </div>
 
@@ -264,7 +265,7 @@
         <h4 style="text-align: center; margin-top: 10px; color: black;">Vote can't be started with less than 2 options!</h4>
         <hr style="padding-bottom: 10px;";>
         <button type="button" class="btn btn-outline-primary" style="width: 100px; float:right;" data-role="close" title="Close" class="gj-dialog-md-close">OK</button>
-    
+
     </div>
 
 
@@ -296,13 +297,13 @@
     <script src="js/mail-script.js"></script>
 
     <script src="js/main.js"></script>
-	
-	
+
+
     <script type="module" defer src="js/not_libs/voting.js"></script>
 	<script type="module" src="js/not_libs/displayActiveVote.js"></script>
     <script type="module" src="js/not_libs/displayPreviousVote.js"></script>
     <script type="module" src="js/not_libs/general.js"></script>
-				
+
     <!--<script src="data2.json"></script>-->
 
 

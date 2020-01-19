@@ -17,55 +17,29 @@ import DownloadAllQRRequestPacket from "../../communication/packets/admin/Downlo
 //import $ from "../../node_modules/jquery";
 //import "../../node_modules/jquery-ui-bundle";
 
-
-
-$(document).ready( function() {
-    //Move functions to global scope so onclick parameters can call them
-    window.deleteAttendeeGlobal = deleteAttendee;
-    window.editAttendeeGlobal = editAttendee;
-    window.getNewAttendeePasswordGlobal = getNewAttendeePassword;
-    window.logoutAttendeeGlobal = logoutAttendee;
-    window.uploadUserList = uploadUserList;
-    window.downloadAllQrCodes = downloadAllQrCodes;
-    window.downloadQR = downloadQR;
-
-    //Add listeners to buttons/dropdown menus that don't need to be generated dynamically
-    document.getElementById("sortingOptions").addEventListener("change", changeSort, false);
-    document.getElementById("upUserList").addEventListener("change", handleListUpload, false);
-
-
-    /* //Global functions for click events
-    window.clickCreateAttendeeGlobal = clickCreateAttendee;
-    window.clickEditAttendeeGlobal = clickEditAttendee; */
-
+/**
+ * Initializing
+ */
+$(function(){
     //Initializing dialog options
     createDialog = $('#creationDialog').dialog({
         autoOpen: false,
-        height: 540,
+        height: 690,
         width: 420,
         modal: true,
-        buttons: [
-            {
-                text: "Confirm",
-                click: clickCreateAttendee
-            },
-            {
-                text: "Cancel",
-                click: function (){
-                    $('#creationDialog').dialog("close");
-                }
+        buttons: {
+            Confirm: clickEditAttendee,
+            Cancel: function () {
+                createDialog.dialog("close");
             }
-        ],
+        },
         close: function (e) {
             e.preventDefault();
             console.log(e);
             createForm[ 0 ].reset();
             createFields.removeClass("ui-state-error");
         }
-    }).bind("clickoutside", function () {
-                 createDialog.dialog("close");
-        }
-     );
+    });
 
     createForm = createDialog.find("form").on("submit", function(event){
         event.preventDefault();
@@ -101,6 +75,26 @@ $(document).ready( function() {
         event.preventDefault();
         clickEditAttendee();
     });
+});
+
+$(document).ready( function() {
+    //Move functions to global scope so onclick parameters can call them
+    window.deleteAttendeeGlobal = deleteAttendee;
+    window.editAttendeeGlobal = editAttendee;
+    window.getNewAttendeePasswordGlobal = getNewAttendeePassword;
+    window.logoutAttendeeGlobal = logoutAttendee;
+    window.uploadUserList = uploadUserList;
+    window.downloadAllQrCodes = downloadAllQrCodes;
+    window.downloadQR = downloadQR;
+
+    //Add listeners to buttons/dropdown menus that don't need to be generated dynamically
+    document.getElementById("sortingOptions").addEventListener("change", changeSort, false);
+    document.getElementById("upUserList").addEventListener("change", handleListUpload, false);
+
+
+    /* //Global functions for click events
+    window.clickCreateAttendeeGlobal = clickCreateAttendee;
+    window.clickEditAttendeeGlobal = clickEditAttendee; */
 
 
     //Load the page

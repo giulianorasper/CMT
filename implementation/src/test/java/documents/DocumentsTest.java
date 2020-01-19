@@ -79,6 +79,20 @@ public class DocumentsTest {
     }
 
     @Test
+    public void updateInexistent2(){
+        try{
+            conf.updateDocument("test", "txt", f, true);
+            conf.deleteDocument("test");
+            conf.updateDocument("test", "txt", f, false);
+
+            fail("This document does not exist");
+        }
+        catch (IllegalArgumentException e){
+
+        }
+    }
+
+    @Test
     public void documentMultiUpdate(){
         conf.updateDocument("test", "txt", f, true);
         int updateCount = 100;
@@ -117,20 +131,41 @@ public class DocumentsTest {
     }
 
     @Test
-    public void deletedDocumentEdit(){
-        conf.updateDocument("test", "txt", f, true);
-        conf.deleteDocument("test");
-        try {
-            conf.updateDocument("test", "txt", f, false);
-            fail("Managed to edit a document which does not exist");
-        }
-        catch (IllegalArgumentException e){
-            if(conf.getAllDocuments().size() != 0){
-                fail("Document did not get properly deleted");
-            }
+    public void uploadLarge(){
+        String pathString = "src/test/resources/large.txt";
+        f = new File(pathString);
+        System.out.println(f.getAbsoluteFile());
+        if(f.exists()){
+            f.delete();
         }
 
+        try {
+            f.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(pathString));
+            String s = "a".repeat(501);
+            writer.write("");
+            for(int i = 0; i < 1024*1024; i++){
+                writer.append(s);
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            fail("Could not initialize test environment");
+        }
+
+        try{
+            conf.updateDocument("test", "txt", f, true);
+            fail("Managed to upload document of size " + f.length());
+        }
+        catch (IllegalArgumentException e){
+
+        }
+
+
+
     }
+
+
 
 
 }

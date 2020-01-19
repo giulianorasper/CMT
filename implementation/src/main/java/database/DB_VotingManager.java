@@ -171,6 +171,7 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                                     new AnonymousVotingOption(vot.getInt("optionID"),
                                             vot.getString("optionName"),
                                             vot.getInt("result"));
+
                             options.add(v);
                         }
                     }
@@ -178,7 +179,9 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                             table.getString("question"), ID, table.getBoolean("isNamed"));
                     for (VotingOption vo : voting.getOptions()) {
                         vo.setParent(voting);
+
                     }
+                    voting.endVote();
                 }
             }
         } catch (SQLException ex) {

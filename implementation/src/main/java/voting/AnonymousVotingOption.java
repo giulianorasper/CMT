@@ -37,7 +37,7 @@ public class AnonymousVotingOption extends VotingOption {
 
     @Override
     public int getCurrentResult(){
-        return votes;
+        return publicVotes;
         /*try {
             lock.getReadAccess();
             return votes;

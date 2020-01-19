@@ -56,6 +56,8 @@ public class VotingManagementTests extends DatabaseTests {
         named.endVote();
         anon.endVote();
 
+
+
         votM.addVoting(named);
         votM.addVoting(anon);
 
@@ -88,11 +90,11 @@ public class VotingManagementTests extends DatabaseTests {
         assertEquals("Different result for VotingOptions than before",
                 resn.getOptions().get(2).getCurrentResult(), nv3.getCurrentResult());
         assertEquals("Different result for VotingOptions than before",
-                resa.getOptions().get(0).getCurrentResult(), av1.getCurrentResult());
+                resa.getOptions().get(0).getCurrentResult(), anon.getOptions().get(0).getCurrentResult());
         assertEquals("Different result for VotingOptions than before",
-                resa.getOptions().get(1).getCurrentResult(), av2.getCurrentResult());
+                resa.getOptions().get(1).getCurrentResult(), anon.getOptions().get(1).getCurrentResult());
         assertEquals("Different result for VotingOptions than before",
-                resa.getOptions().get(2).getCurrentResult(), av3.getCurrentResult());
+                resa.getOptions().get(2).getCurrentResult(), anon.getOptions().get(2).getCurrentResult());
 
         List<Integer> resN1 = resn.getOptions().get(0).getVoters();
         List<Integer> resN2 = resn.getOptions().get(1).getVoters();

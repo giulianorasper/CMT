@@ -33,9 +33,8 @@ public class DownloadFileRequestPacket extends AuthenticatedRequestPacket {
     @Override
     public void handle(Conference conference, Connection webSocket) {
         if(isPermitted(conference, webSocket, false)) {
-            byte[] document = conference.getDocumentContent(name);
-            Packet response = new DownloadFileResponsePacket(document, name);
-            response.send(webSocket);
+            File document = conference.getDocumentContentAsFile(name);
+            webSocket.sendFile(document, name);
         }
     }
 }

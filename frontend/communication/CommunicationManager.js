@@ -32,8 +32,25 @@ export default class CommunicationManager {
      */
     static send(packet, successHook = (packet) => {}, errorHook = () => {}) {
         var socket = CommunicationManager.openConnection();
+        var fileName = null;
         function onmessage(event) {
+            if(!(typeof event.data === "string")) {
+                if(fileName == null) {
+                    return;
+                }
+                var link=document.createElement('a');
+                link.href=window.URL.createObjectURL(event.data);
+                link.download=fileName;//packet.fileName;
+                link.click();
+                return;
+            }
             let responsePacket = JSON.parse(event.data);
+            if(responsePacket.packetType === "DOWNLOAD_FILE_RESPONSE") {
+                if(responsePacket.fileBytes == null) {
+                    fileName = responsePacket.fileName;
+                    return;
+                }
+            }
             successHook(responsePacket);
             socket.onclose = function() {};
             socket.close();

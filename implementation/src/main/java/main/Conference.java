@@ -1178,6 +1178,27 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     /**
+     * Read Content from Document with DocumentName name
+     * @param name DocumentName
+     * @return File
+     */
+    public File getDocumentContentAsFile( String name) {
+        try{
+            documentsLock.lock();
+            if(!documents.containsKey(name)){
+                throw new IllegalArgumentException("file does not exist");
+            }
+
+            File f = documents.get(name).getFile();
+
+            return f;
+        }
+        finally {
+            documentsLock.unlock();
+        }
+    }
+
+    /**
      * Read all Documents and return them.
      * @return List of Documents
      */

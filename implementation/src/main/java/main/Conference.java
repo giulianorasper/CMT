@@ -725,20 +725,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     @Override
     public Pair<LoginResponse, Pair<String, Long>> login(String userName, String password) {
         try{
-            System.out.println("Hi");
             adminLock.lock();
             attendeeLock.lock();
-            System.out.println("Hi again");
             Pair<LoginResponse, String> response = db_userManagement.checkLogin(userName, password);
-            System.out.println("\""+password+"\"");
-            db_userManagement.getAllAttendees().forEach(a ->{
-               if(a.getUserName().equals(userName)){
-
-                   System.out.println(a);
-                   System.out.println(a.getID());
-                   System.out.println(getUserPassword(a.getID()).second());
-               }
-            });
             if(response.first() != LoginResponse.Valid){
                 return new Pair<>(response.first(), null);
             }
@@ -885,14 +874,12 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             int duration = vote.getDuration();
 
             Timer ActiveTimer = new Timer();
-            //System.out.println("start");
             ActiveTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     vote.endVote();
                     //db_votingManagement.addVoting(vote);
                     update(vote);
-                    //System.out.println("fertig");
                 }
 
 
@@ -1000,7 +987,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             }
             if(v.getStatus() == VotingStatus.Running){
                 if(activeVoting != null){
-                    throw new IllegalArgumentException("trying to start a vote without closing the previous vote");
+                    return false;
                 }
                 else{
                     activeVoting = v;
@@ -1052,6 +1039,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     public void updateDocument(String name, String fileType, File file, boolean isCreation) {
         try {
             documentsLock.lock();
+            if(file.length() > 1024*1024 *500){
+                throw new IllegalArgumentException("The file is to large");
+            }
             String fullName = name;
             File f;
             if(!documents.containsKey(fullName)) {
@@ -1193,8 +1183,6 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             generateQRCode(attendeeId);
             Attendee a = getAttendeeData(attendeeId);
             File f = new File(tmpDir.getAbsolutePath() +"/qr/"+ a.getUserName() + "/qr-code.png");
-            System.out.println(f.exists());
-            System.out.println(f.getPath());
             try{
                 byte[] fileBytes = new byte[(int)f.length()];
                 FileInputStream fis = new FileInputStream(f);

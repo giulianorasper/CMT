@@ -268,7 +268,7 @@ function addIconListeners(attendee) {
 */
 function downloadQR(attendeeIndex){
     const attendeeID = localAttendeeList[attendeeIndex].ID;
-    const packet = new DownloadQRRequestPacket(attendeeIndex);
+    const packet = new DownloadQRRequestPacket(attendeeID);
     requestAndHandleFileDownload(packet);
 }
 

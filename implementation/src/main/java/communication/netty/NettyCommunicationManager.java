@@ -14,13 +14,13 @@ import io.netty.handler.ssl.SslContext;
 /**
  * @see CommunicationManager
  */
-public final class NettyCommunicationManager implements CommunicationManager {
+public class NettyCommunicationManager implements CommunicationManager {
 
-    EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-    //TODO
-    EventLoopGroup workerGroup = new NioEventLoopGroup();
-    Channel channel;
-    int port;
+    private boolean started = false;
+    private EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+    private EventLoopGroup workerGroup = new NioEventLoopGroup(Math.max(32, Runtime.getRuntime().availableProcessors()));
+    private Channel channel;
+    private int port;
     private CommunicationHandler handler;
     private boolean secure = true;
     private SslContext sslContext;
@@ -37,32 +37,37 @@ public final class NettyCommunicationManager implements CommunicationManager {
     }
 
     @Override
-    public void start() {
-        try {
-            ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    //.handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new WebSocketServerInitializer(sslContext, handler));
+    public synchronized void start() {
+        if(!started) {
+            try {
+                ServerBootstrap b = new ServerBootstrap();
+                b.group(bossGroup, workerGroup)
+                        .channel(NioServerSocketChannel.class)
+                        //.handler(new LoggingHandler(LogLevel.INFO))
+                        .childHandler(new WebSocketServerInitializer(sslContext, handler));
 
-            channel = b.bind(port).sync().channel();
-
-            channel.closeFuture().sync();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
+                channel = b.bind(port).sync().channel();
+                started = true;
+            } catch (Exception e) {
+                bossGroup.shutdownGracefully();
+                workerGroup.shutdownGracefully();
+            }
+        } else {
+            throw new IllegalStateException("Server already started.");
         }
     }
 
     @Override
-    public void stop() {
+    public synchronized void stop() {
+        if(!started) throw new IllegalStateException("Server is already shut down");
         handler.stop();
         channel.close();
+        bossGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
+        started = false;
     }
 
-    public boolean isSecure() {
+    public synchronized boolean isSecure() {
         return secure;
     }
 }

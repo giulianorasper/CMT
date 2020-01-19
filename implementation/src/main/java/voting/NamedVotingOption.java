@@ -10,6 +10,8 @@ public class NamedVotingOption extends VotingOption {
     @Expose
     public List<Integer> voters = new ArrayList<>();
 
+    private List<Integer> privateVoters = new ArrayList<>();
+
     /**
      * Standard constructor.
      */
@@ -35,7 +37,7 @@ public class NamedVotingOption extends VotingOption {
      */
     @Override
     protected void addVote(int userID) {
-        voters.add(userID);
+        privateVoters.add(userID);
     }
 
 
@@ -82,6 +84,16 @@ public class NamedVotingOption extends VotingOption {
      */
     @Override
     protected void publishVotes() {
-        setPublicVotes(voters.size());
+        try {
+            lock.getWriteAccess();
+            setPublicVotes(voters.size());
+            voters.addAll(privateVoters);
+        }
+        catch (InterruptedException e){
+
+        }
+        finally {
+            lock.finishWrite();
+        }
     }
 }

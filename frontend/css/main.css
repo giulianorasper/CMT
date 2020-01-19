@@ -5,3 +5,7 @@
 .agendList{
 	padding-left: 20px !important;
 }
+
+.adminField{
+	display: none
+}

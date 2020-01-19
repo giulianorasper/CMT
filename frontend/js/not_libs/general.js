@@ -14,13 +14,13 @@ $( document ).ready(function() {
     	console.log(packet);
 	    if(packet.result === "Valid") {
 
-	    	if(!packet.admin){
+	    	if(packet.admin){
 	    		$(".adminField").each(function(i, field){
-                    $(field).css("display", "none");
+                    $(field).removeClass("display", "initial");
                 })
 	    	}
-	    	window.isAdmin = packet.admin;          
-	        
+	    	window.isAdmin = packet.admin;
+
 	    }
 	    else if(packet.result =="InvalidToken"){
 	    	 window.location = "./index.html"
@@ -38,18 +38,18 @@ $( document ).ready(function() {
 // it will redirect only once if vote starts.
 
 function checkVoteExistance() {
-	
+
 	function success(packet){
 		if(packet.result === "Valid"){
 
 	 		if(packet.exists){
 				var voteExpiryDate = new Date(packet.voting.openUntil);
-				
+
 				document.cookie = "voteID=" + packet.voting.ID + ";path=./vote.html;expires=" + voteExpiryDate.toGMTString();
 
 				if(document.cookie && document.cookie.indexOf('voteID='+packet.voting.ID+'') != -1){
 					var redirectToVote = sessionStorage.getItem("redirect");
-					
+
 					if (redirectToVote === null){
 						clearInterval(stopInterval);
 						window.location.href = './vote.html';
@@ -67,10 +67,10 @@ function checkVoteExistance() {
 
     const getActiveVote = new GetActiveVotingRequestPacket();
 
-    CommunicationManager.send(getActiveVote, success, fail); 
-		
-		
+    CommunicationManager.send(getActiveVote, success, fail);
+
+
 }
-	
+
 // setInterval function will check in every second that new vote has started or not.
 var stopInterval = setInterval(checkVoteExistance, 1000);

@@ -45,10 +45,13 @@ public class Document implements Requestable {
      * @return the name of the document
      */
     @Override
-    public String getName() {
+    public String getRequestableName() {
         return this.name;
     }
 
+    public String getName() {
+        return this.name;
+    }
     /**
      * Get RevisionNumber of the Document.
      * @return the revisionNumber of the document

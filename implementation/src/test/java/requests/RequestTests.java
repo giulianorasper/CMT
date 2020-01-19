@@ -53,7 +53,7 @@ public class RequestTests {
             Agenda agenda = new Agenda();
             conf.updateAgenda(agenda);
             Assert.assertEquals("The request got removed", 1, conf.getAllRequests().size());
-            Assert.assertEquals("Wrong request name","Topic 1", conf.getAllRequests().get(0).getRequestable().getName());
+            Assert.assertEquals("Wrong request name","Topic 1", conf.getAllRequests().get(0).getRequestable().getRequestableName());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class RequestTests {
         Agenda agenda = new Agenda();
         conf.deleteDocument("test");
         Assert.assertEquals("The request got removed", 1, conf.getAllRequests().size());
-        Assert.assertEquals("Wrong request name","test", conf.getAllRequests().get(0).getRequestable().getName());
+        Assert.assertEquals("Wrong request name","test", conf.getAllRequests().get(0).getRequestable().getRequestableName());
     }
 
     @Test

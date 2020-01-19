@@ -10,7 +10,7 @@ import java.util.List;
 public class Topic implements Requestable {
 
     @Expose
-    private Agenda subTopics;
+    protected Agenda subTopics;
     @Expose
     private String name;
     private Agenda parent;
@@ -73,7 +73,7 @@ public class Topic implements Requestable {
     public String getName(){
         try {
             lock.getReadAccess();
-            return this.name;
+            return  this.name;
         }
         catch (InterruptedException e){
             //do nothing
@@ -83,6 +83,23 @@ public class Topic implements Requestable {
             lock.finishRead();
         }
     }
+
+    public String getRequestableName(){
+        try {
+            lock.getReadAccess();
+            String res =  parent.getPreorder().isEmpty()?"":(parent.getPreorder()+ ".")+(parent.topics.indexOf(this) + 1)+" "+this.name;
+            System.out.println(res);
+            return res;
+        }
+        catch (InterruptedException e){
+            //do nothing
+            return "";
+        }
+        finally {
+            lock.finishRead();
+        }
+    }
+
 
     /**
      * Get the Topic at the position preorder.
@@ -172,5 +189,6 @@ public class Topic implements Requestable {
             lock.finishRead();
         }
     }
+
 
 }

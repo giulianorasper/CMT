@@ -88,7 +88,7 @@ public class ChangeRequest extends Request {
 
     @Override
     public Request shallowClone() {
-        ChangeRequest res = new ChangeRequest(ID, getRequester(), new SimpleRequestable(requestable.getName()),
+        ChangeRequest res = new ChangeRequest(ID, getRequester(), new SimpleRequestable(requestable.getRequestableName()),
                 getTimeStamp(),
                 getMessage());
         if(!isOpen()){

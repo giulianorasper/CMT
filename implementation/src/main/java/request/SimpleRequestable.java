@@ -12,7 +12,7 @@ public class SimpleRequestable implements Requestable{ // used for frontend comm
     }
 
     @Override
-    public String getName() {
+    public String getRequestableName() {
         return name;
     }
 }

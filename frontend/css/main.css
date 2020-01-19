@@ -1,7 +1,15 @@
+h2{
+	text-align: center;
+}
+
 .agendaList :first-child{
 	padding-top: 5px;
 }
 
 .agendList{
 	padding-left: 20px !important;
+}
+
+.adminField{
+	display: none !important;
 }

@@ -56,7 +56,7 @@ public class SpeechRequest extends Request {
 
     @Override
     public Request shallowClone() {
-        SpeechRequest req = new SpeechRequest(ID, getRequester(), new SimpleRequestable(requestable.getName()),
+        SpeechRequest req = new SpeechRequest(ID, getRequester(), new SimpleRequestable(requestable.getRequestableName()),
             getTimeStamp());
         if(!isOpen()){
             req.close();

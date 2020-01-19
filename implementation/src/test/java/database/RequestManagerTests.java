@@ -22,14 +22,14 @@ public class RequestManagerTests  extends DatabaseTests  {
 
         assertTrue(reqDb.addRequest(new ChangeRequest(1,max, new Requestable() {
             @Override
-            public String getName() {
+            public String getRequestableName() {
                 return "Topic1";
             }
         }, 1 , "Question1")));
 
         assertTrue(reqDb.addRequest(new SpeechRequest(2,max, new Requestable() {
             @Override
-            public String getName() {
+            public String getRequestableName() {
                 return "Agenda1";
             }
         }, 1)));
@@ -45,7 +45,7 @@ public class RequestManagerTests  extends DatabaseTests  {
         dbGen.addAttendee(max, "1234", "42");
         Request changerequest =new ChangeRequest(1, max, new Requestable() {
             @Override
-            public String getName() {
+            public String getRequestableName() {
                 return "Topic1";
             }
         }, 1 , "Question1");
@@ -53,7 +53,7 @@ public class RequestManagerTests  extends DatabaseTests  {
 
         Request speachrequest = new SpeechRequest(2, max, new Requestable() {
             @Override
-            public String getName() {
+            public String getRequestableName() {
                 return "Agenda1";
             }
         }, 1);
@@ -77,7 +77,7 @@ public class RequestManagerTests  extends DatabaseTests  {
         dbGen.addAttendee(klaus, "1111", "9876");
         Request changerequest =new ChangeRequest(1, max, new Requestable() {
             @Override
-            public String getName() {
+            public String getRequestableName() {
                 return "Topic1";
             }
         }, 1 , "Question1");
@@ -85,7 +85,7 @@ public class RequestManagerTests  extends DatabaseTests  {
 
         Request speachrequest = new SpeechRequest(1, klaus, new Requestable() {
             @Override
-            public String getName() {
+            public String getRequestableName() {
                 return "Agenda1";
             }
         }, 0);
@@ -96,13 +96,13 @@ public class RequestManagerTests  extends DatabaseTests  {
 
         Request changerequest2 =new ChangeRequest(1, max, new Requestable() {
             @Override
-            public String getName() {
+            public String getRequestableName() {
                 return "Topic2";
             }
         }, 1 , "Question2");
 
         reqDb.update(changerequest2);
-        assertEquals(reqDb.getRequest(1).getRequestable().getName(), "Topic2");
+        assertEquals(reqDb.getRequest(1).getRequestable().getRequestableName(), "Topic2");
         assertEquals(((ChangeRequest) reqDb.getRequest(1)).getMessage(), "Question2");
 
     }
@@ -116,14 +116,14 @@ public class RequestManagerTests  extends DatabaseTests  {
 
         reqDb.addRequest(new ChangeRequest(1,max, new Requestable() {
             @Override
-            public String getName() {
+            public String getRequestableName() {
                 return "Topic1";
             }
         }, 1 , "Question1"));
 
         reqDb.addRequest(new SpeechRequest(2,max, new Requestable() {
             @Override
-            public String getName() {
+            public String getRequestableName() {
                 return "Agenda1";
             }
         }, 1));

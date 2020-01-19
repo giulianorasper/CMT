@@ -189,19 +189,25 @@ function displayActiveVote(packet){
 			
 			}
 
-		} else {
-		// DO SOMETHING ELSE
+			//Show submit button again!
+			$('#voteSubmission').show();
 
-			$("#submit-message2").empty();
-			$("#submit-message2").addClass("row").addClass("contact-title");
-			$("#submit-message2").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote has been expired!</h2>");
+		} else {
+
+			//No vote to submit anything to!
+			$('#voteSubmission').hide();
+			$("#voteQuestion").empty();
+			$("#voteQuestion").addClass("row").addClass("contact-title");
+			$("#voteQuestion").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote has been expired!</h2>");
 
 		}
 	} else {
-		
-		$("#submit-message2").empty();
-		$("#submit-message2").addClass("row").addClass("contact-title");
-		$("#submit-message2").append("<h2 class='contact-title' style='margin-left: 40px;'>Currently no active vote!</h2>");
+
+		//No vote to submit anything to!
+		$("#voteSubmission").hide();
+		$("#voteQuestion").empty();
+		$("#voteQuestion").addClass("row").addClass("contact-title");
+		$("#voteQuestion").append("<h2 class='contact-title' style='margin-left: 40px;'>Currently no active vote!</h2>");
 	}
 	
 }
@@ -225,10 +231,11 @@ function displayActiveVote(packet){
 
 					function success(packet){
 						if(packet.result === "Valid"){
-							
-							$("#submit-message2").empty();
-							$("#submit-message2").addClass("row").addClass("contact-title");
-							$("#submit-message2").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
+
+							$('#voteSubmission').hide();
+							$("#voteQuestion").empty();
+							$("#voteQuestion").addClass("row").addClass("contact-title");
+							$("#voteQuestion").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote Submitted!</h2>");
 						}
 
 						else{

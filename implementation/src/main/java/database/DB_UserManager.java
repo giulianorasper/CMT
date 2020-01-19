@@ -3,10 +3,7 @@ package database;
 import user.*;
 import utils.Pair;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,18 +60,19 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             if (!table.next()) {
                 return new Pair<>(LoginResponse.UserDoesNotExist, null);
             } else {
-                if (table.getString("password") == null && table.getString("token") == null) {
-                    return new Pair<>(LoginResponse.AccountBlocked, null);
+                if (table.getString("password") == null) {
+                    return new Pair<>(LoginResponse.AccountAlreadyInUse, null);
                 } else {
                     if (!table.getString("password").equals(password)) {
                         return new Pair<>(LoginResponse.WrongPassword, null);
                     } else {
 
                         //update Presentvalue of the valid user
-                        sqlstatement = "UPDATE users SET present = ?  WHERE username = ?";
+                        sqlstatement = "UPDATE users SET password = ?, present = ?  WHERE username = ?";
                         try (PreparedStatement stmt2 = connection.prepareStatement(sqlstatement)) {
-                            stmt2.setBoolean(1, true);
-                            stmt2.setString(2, userName);
+                            stmt2.setNull(1, Types.VARCHAR);
+                            stmt2.setBoolean(2, true);
+                            stmt2.setString(3, userName);
                             stmt2.executeUpdate();
                         } catch (SQLException e) {
                             System.err.println("An exception occurred while updating Present value of  a user.");
@@ -207,6 +205,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         }
         return true;
     }
+
 
     /**
      * This method logs out a user in the database. This method must not delete the entry but should indicate that the
@@ -579,6 +578,27 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         } catch (SQLException ex) {
             System.err.println("An exception occurred while adding a new admin.");
             System.err.println(ex.getMessage());
+            return false;
+        } finally {
+            this.closeConnection(connection);
+        }
+        return true;
+    }
+
+    /**
+     * This methods deletes all admins in the database.
+     * @return True, iff the user was successfully removed.
+     */
+    @Override
+    public boolean removeAllAdmins() {
+        Connection connection = this.openConnection();
+        String sqlstatement = "DELETE FROM users WHERE isAdmin = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setBoolean(1, true);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("An exception occurred while removing all admins from the database.");
+            System.err.println(e.getMessage());
             return false;
         } finally {
             this.closeConnection(connection);

@@ -1,27 +1,21 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "description": "test application",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll"
+    "test": "jest --coverage --watchAll"
   },
-  "keywords": [
-    "testingApp"
-  ],
-  "author": "me",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^24.9.0"
+    "jest": "^24.9.0",
+    "puppeteer": "^2.0.0"
   },
   "dependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/preset-env": "^7.7.7",
-    "babel-jest": "^24.9.0",
-    "esm": "^3.2.25",
-    "jquery": "^3.4.1",
-    "jquery-outside-events": "^1.0.0",
-    "jquery-ui": "^1.12.1",
-    "jquery-ui-bundle": "^1.12.1-migrate"
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "babel-jest": "^24.9.0"
   }
 }

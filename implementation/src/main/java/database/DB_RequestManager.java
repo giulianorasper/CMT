@@ -83,7 +83,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 System.err.println("Requestable Type not supported by database implementation.");
                 return false;
             }
-            stmt.setString(4, req.getRequestable().getName());
+            stmt.setString(4, req.getRequestable().getRequestableName());
             stmt.setLong(5, req.getTimeStamp());
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -120,7 +120,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
             String name = table.getString("requestableName");
             Requestable requestable = new Requestable() {
                 @Override
-                public String getName() {
+                public String getRequestableName() {
                     return name;
                 }
             };
@@ -186,7 +186,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 String name = table.getString("requestableName");
                 Requestable requestable = new Requestable() {
                     @Override
-                    public String getName() {
+                    public String getRequestableName() {
                         return name;
                     }
                 };
@@ -252,7 +252,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 System.err.println("Requestable Type not supported by Database implementation.");
                 return false;
             }
-            stmt.setString(2, r.getRequestable().getName());
+            stmt.setString(2, r.getRequestable().getRequestableName());
             stmt.setLong(3, r.getTimeStamp());
             stmt.setInt(4, r.getRequester().getID());
             stmt.setInt(6, r.ID);

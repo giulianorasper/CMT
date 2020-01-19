@@ -19,7 +19,7 @@ public class Agenda implements AgendaObservable{
 
     private Agenda parent;
     @Expose
-    private List<Topic> topics;
+    protected List<Topic> topics;
     protected WriterBiasedRWLock lock;
     private ConcurrentHashMap<AgendaObserver, Boolean> observers = new ConcurrentHashMap<>(); // a map backed hashset
 
@@ -362,5 +362,26 @@ public class Agenda implements AgendaObservable{
 
     public ConcurrentHashMap<AgendaObserver, Boolean> getObservers() {
         return this.observers;
+    }
+
+    protected String getPreorder(){
+        if(parent == null){
+            return "";
+        }
+        else{
+            int i =1;
+            for(Topic t: parent.topics){
+                if(t.subTopics == this){
+                    break;
+                }
+                i++;
+            }
+            if(parent.getPreorder().isEmpty()){
+                return ""+i;
+            }
+            else{
+                return parent.getPreorder() +"."+i;
+            }
+        }
     }
 }

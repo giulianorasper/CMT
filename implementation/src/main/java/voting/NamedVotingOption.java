@@ -90,7 +90,7 @@ public class NamedVotingOption extends VotingOption {
             voters.addAll(privateVoters);
         }
         catch (InterruptedException e){
-
+            System.out.println(e);
         }
         finally {
             lock.finishWrite();

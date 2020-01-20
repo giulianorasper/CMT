@@ -13,6 +13,7 @@ var createdVotesContainer = $("#createdVotesList");
 
 var votings;
 
+var booleanCheck = false;
 
 
 $(document).ready( function() {
@@ -53,7 +54,8 @@ function save(voteId, flag = false){
 	}
 
 	var options =[]
-	
+	var checkEmptyOption = false;
+
 	for(var elem of $("#votingOptions"+voteId).children()){
 		console.log($($(elem).children()[0]).val());
 		// var option = $($($(elem).children()[0]).children()[0]).val();
@@ -61,7 +63,24 @@ function save(voteId, flag = false){
 		// console.log(option);
 		options.push(option)
 	}
+	// console.log(options);
 
+	for (var i in options){
+		if(options[i] == ''){
+			checkEmptyOption = true;
+			break;
+		}
+	}
+
+	if(checkEmptyOption){ 
+		$('#failureMessage').html("Option fields should not be empty");
+		$("#dialogMessageForOption").dialog("open");
+		booleanCheck = true;
+		return false;
+	}
+	else {
+		booleanCheck = false;
+	}
 
 
 	const packet = new EditVotingRequestPacket(voteId, vote.question, options ,vote.named, vote.duration);
@@ -307,7 +326,12 @@ function start(voteId){
 	// console.log(values);
 	// ActiveVotePacketCall();
 	var flag = true;
+	console.log(booleanCheck);
 	save(voteId, flag);
+
+	if(booleanCheck){
+		return;
+	};
 
     function success(packet){
 		console.log(packet);

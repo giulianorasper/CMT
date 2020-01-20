@@ -8,6 +8,7 @@ import IsAdminRequestPacket from "../../communication/packets/IsAdminRequestPack
 
 
 var documentContainer = $('#documentsContainer');
+var editFileInput = $("#editFile")
 
 var documents
 
@@ -21,16 +22,26 @@ $( document ).ready(function() {
  documents = []
     checkAdminStatus();
 
+    document.getElementById('editFile').addEventListener('change', function (event) {
+        uploadFile(event.target.files, editFileInput.attr("data-name"));
+    }, false);
 
-
-	let files = null;
+	let fileToUpload = null;
 	document.getElementById('uploadFile').addEventListener('change', function (event) {
-	    files = event.target.files;
+	    fileToUpload = event.target.files;
 	    console.log(files);
     }, false);
 
     document.getElementById('submitUpload').onclick = () => {
-        if(files == null) {
+        uploadFile(fileToUpload);
+    }
+
+});
+
+function uploadFile(files, originalName = "") {
+    var isCreation = false;
+    if(originalName === "") isCreation = true; 
+    if(files == null) {
             console.log("implement feedback");
             //TODO feedback
             return;
@@ -53,7 +64,7 @@ $( document ).ready(function() {
                 console.log("This method is called if something went wrong during the general communication.");
             }
             console.log(e.target)
-            const packet = new UploadFileRequestPacket(files[0].name, files[0].name , e.target.result, true);
+            const packet = new UploadFileRequestPacket(files[0].name, originalName , e.target.result, isCreation);
             console.log(files[0].name)
 
             // Send the request to the server
@@ -64,9 +75,7 @@ $( document ).ready(function() {
 
         // Read the file
         reader.readAsArrayBuffer(files[0]);
-    }
-
-});
+}
 
 function checkAdminStatus(){
     const packet = new IsAdminRequestPacket();
@@ -111,6 +120,9 @@ function checkAdminStatus(){
 }
 
 function edit(id){
+    var name = documents[id]
+    editFileInput.attr("data-name", name);
+    editFileInput.click()
 
 }
 
@@ -183,7 +195,7 @@ function generateDocument(document){
                                             
                                             // "<div class=\"col-lg-auto\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 42px;\">"+
-                                                      "<span onclick = \"editDocument(\'"+documents.length+"\')\" class=\"glyphicon glyphicon-edit\"></span>"+
+                                                      "<span onclick = \"editDocument(\'"+documents.length+"\')\" class=\"glyphicon glyphicon-edit\">Test</span>"+
                                                     "</a>"+
                                             // "</div>"+
                                             // "<div class=\"col-lg-auto\">"+

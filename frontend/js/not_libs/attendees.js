@@ -12,25 +12,33 @@ import GenerateNewAttendeeTokenRequestPacket
 import GetAttendeePasswordRequestPacket from "../../communication/packets/admin/GetAttendeePasswordRequestPacket.js";
 import DownloadQRRequestPacket from "../../communication/packets/admin/DownloadQRRequestPacket.js";
 import DownloadAllQRRequestPacket from "../../communication/packets/admin/DownloadAllQRRequestPacket.js";
+import GetExistingGroupsRequestPacket from "../../communication/packets/admin/GetExistingGroupsRequestPacket.js";
 
 //Importing JQuery and JQuery UI
 //import $ from "../../node_modules/jquery";
 //import "../../node_modules/jquery-ui-bundle";
 
+
+
 /**
  * Initializing
  */
 $(function(){
+
+
     //Initializing dialog options
     createDialog = $('#creationDialog').dialog({
         title: "Create Attendee",
         autoOpen: false,
         modal: true,
-        resizable: false,
         draggable: false,
+        containment: window,
         close: function () {
             createForm[ 0 ].reset();
             createFields.removeClass("ui-state-error");
+        },
+        open: function () {
+            this.scrollTop("0");
         }
     });
 
@@ -41,19 +49,24 @@ $(function(){
 
     $('#create-attendee').on("click", function (e) {
         e.preventDefault();
+        getExistingGroups(false);
         createDialog.dialog("open");
     });
 
 
     //Editing dialog mostly similar to creation dialog
     editDialog = $('#editDialog').dialog({
+        title: "Edit Attendee",
         autoOpen: false,
         modal: true,
-        resizable: false,
         draggable: false,
+        containment: window,
         close: function () {
             editForm[ 0 ].reset();
             editFields.removeClass("ui-state-error");
+        },
+        open: function () {
+            this.scrollTop("0");
         }
     });
 
@@ -198,7 +211,11 @@ function generateAttendeeList(attendeeList){
 
             editNameID.val(currAttendee.name);
             editMailID.val(currAttendee.email);
+
             editGroupID.val(currAttendee.group);
+            //Pastes existing groups into data list of group input field
+            getExistingGroups(true);
+
             editResidenceID.val(currAttendee.residence);
             editFunctionID.val(currAttendee.function);
 
@@ -509,6 +526,38 @@ function getNewAttendeePassword(attendeeIndex){
 }
 
 
+/**
+ * Gets called whenever the list of existing groups needs to be pasted into the datalist of a Creating/Editing dialog.
+ *
+ * @param editing - Should the list be pasted into the editing window? (false defaults to the creation window)
+ */
+function getExistingGroups(editing){
+    const requestPacket = new GetExistingGroupsRequestPacket();
+
+    function successGetGroups(packet){
+        console.log("Got to the actual request");
+
+        if(packet.result === "Valid"){
+            if(editing){
+                updateEditGroupList(packet.groups);
+            } else{
+                updateCreateGroupList(packet.groups);
+            }
+        } else{
+            console.log("Doesn't work, dumbass");
+            console.log(packet.packetType);
+            alert(packet.details);
+        }
+    }
+
+    function failGetGroups(){
+        alert("Something went wrong while trying to access the server.");
+    }
+
+    CommunicationManager.send(requestPacket, successGetGroups, failGetGroups);
+}
+
+
 
 //----------------------------------------- HOOKS FOR ONCLICK EVENTS ---------------------------------------------------
 
@@ -538,7 +587,7 @@ var newNameID = $('#createName'),
     newResidenceID = $('#createResidence'),
     newFunctionID = $('#createFnctn'),
     createFields = $( [] ).add(newNameID).add(newMailID).add(newGroupID).add(newResidenceID).add(newFunctionID),
-    tipField = $(".validateTips");
+    createTipField = $('#creationTips');
 
 //Mail regex from https://www.w3resource.com/javascript/form/email-validation.php
 const mailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -546,45 +595,41 @@ const mailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 //Name Regex just excluding letters that are not allowed for usernames
 const nameRegex = /[^\$%\^\*£=~@_]/;
 
-function updateTips(newText){
-    tipField.text(newText).addClass("ui-state-highlight");
-    setTimeout(function () {
-        tipField.removeClass("ui-state-highlight");
-    }, 500);
+function updateTips(tipID, newText){
+    tipID.empty();
+    tipID.text(newText);
 }
 
-function checkLength(checkedObject, fieldName, min, max){
+function checkLength(checkedObject, fieldName, min, max, tipID){
     if(checkedObject.val().length > max || checkedObject.val().length < min){
-        checkedObject.addClass("ui-state-error");
-        updateTips("Length of " + fieldName + " must be between " + min + " and " + max + " characters.");
+        updateTips(tipID, "Length of " + fieldName + " must be between " + min + " and " + max + " characters.");
         return false;
     }
     return true;
 }
 
-function checkRegex(checkedObject, regex, message){
+function checkRegex(checkedObject, regex, message, tipID){
     if( !( regex.test(checkedObject.val()) ) ){
-        checkedObject.addClass("ui-state-error");
-        updateTips(message);
+        updateTips(tipID, message);
         return false;
     }
     return true;
 }
 
-function checkValidData(nameID, mailID, groupID, residenceID, functionID){
+function checkValidData(nameID, mailID, groupID, residenceID, functionID, tipID){
     var validUser = true;
 
-    validUser = validUser && checkLength(nameID, "name", 5, 64);
-    validUser = validUser && checkLength(mailID, "email", 6, 64);
-    validUser = validUser && checkLength(groupID, "group", 1, 64);
-    validUser = validUser && checkLength(residenceID, "residence", 1, 256);
-    validUser = validUser && checkLength(functionID, "function", 1, 64);
+    validUser = validUser && checkLength(nameID, "name", 1, 64, tipID);
+    validUser = validUser && checkLength(mailID, "email", 5, 64, tipID);
+    validUser = validUser && checkLength(groupID, "group", 1, 64, tipID);
+    validUser = validUser && checkLength(residenceID, "residence", 1, 256, tipID);
+    validUser = validUser && checkLength(functionID, "function", 1, 64, tipID);
 
-    validUser = validUser && checkRegex(nameID, nameRegex, "Name mustn't contain $%^*£=~@_");
-    validUser = validUser && checkRegex(mailID, mailRegex, "Invalid mail. Example for a valid mail: user@domain.com");
-    validUser = validUser && checkRegex(groupID, nameRegex, "Group mustn't contain $%^*£=~@_");
-    validUser = validUser && checkRegex(residenceID, nameRegex, "Residence mustn't contain $%^*£=~@_");
-    validUser = validUser && checkRegex(functionID, nameRegex, "Function mustn't contain $%^*£=~@_");
+    validUser = validUser && checkRegex(nameID, nameRegex, "Name mustn't contain $%^*£=~@_", tipID);
+    validUser = validUser && checkRegex(mailID, mailRegex, "Invalid mail. Example for a valid mail: user@domain.com", tipID);
+    validUser = validUser && checkRegex(groupID, nameRegex, "Group mustn't contain $%^*£=~@_", tipID);
+    validUser = validUser && checkRegex(residenceID, nameRegex, "Residence mustn't contain $%^*£=~@_", tipID);
+    validUser = validUser && checkRegex(functionID, nameRegex, "Function mustn't contain $%^*£=~@_", tipID);
 
     return validUser;
 }
@@ -593,7 +638,7 @@ function checkValidData(nameID, mailID, groupID, residenceID, functionID){
  * Gets called when clicking the confirm button of the creation dialog
  */
 function clickCreateAttendee(){
-    if(checkValidData(newNameID, newMailID, newGroupID, newResidenceID, newFunctionID)){
+    if(checkValidData(newNameID, newMailID, newGroupID, newResidenceID, newFunctionID, createTipField)){
         createDialog.dialog("close");
 
         createAttendee(newNameID.val(),
@@ -615,13 +660,14 @@ var editNameID = $('#editName'),
     editGroupID = $('#editGroup'),
     editResidenceID = $('#editResidence'),
     editFunctionID = $('#editFnctn'),
+    editTipField = $('#editingTips'),
     editFields = $( [] ).add(editNameID).add(editMailID).add(editGroupID).add(editResidenceID).add(editFunctionID);
 
 /**
  *
  */
 function clickEditAttendee(){
-    if(checkValidData(editNameID, editMailID, editGroupID, editResidenceID, editFunctionID)){
+    if(checkValidData(editNameID, editMailID, editGroupID, editResidenceID, editFunctionID, editTipField)){
         editDialog.dialog("close");
 
         editAttendee(editedAttendeeIndex,
@@ -639,4 +685,33 @@ function closeCreateAttendee(){
 
 function closeEditAttendee(){
     editDialog.dialog("close");
+}
+
+
+//------------------------------ EXISTING GROUP LIST FUNCTIONALITY -----------------------------------------------------
+
+
+function updateCreateGroupList(groups){
+    const groupListID = $('#existingCreateGroups');
+    printGroupList(groupListID, groups);
+}
+
+
+function updateEditGroupList(groups){
+    const groupListID = $('#existingEditGroups');
+    printGroupList(groupListID, groups);
+}
+
+/**
+ * Prints a given group list into a datalist with given ID using HTML code; Deletes old HTML code inside the datalist
+ *
+ * @param listID - ID of the datalist
+ * @param groups - List of the groups currently existing
+ */
+function printGroupList(listID, groups){
+    listID.empty();
+
+    for(var currGroup of groups){
+        listID.append('<option value="' + currGroup + '">');
+    }
 }

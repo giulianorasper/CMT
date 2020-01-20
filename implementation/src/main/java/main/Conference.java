@@ -1065,6 +1065,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             if(file.length() > 1024*1024 *500){
                 throw new IllegalArgumentException("The file is to large");
             }
+            if(!name.endsWith(fileType)){
+                throw new IllegalArgumentException("File extensions differ");
+            }
             String fullName = name;
             File f;
             if(!documents.containsKey(fullName)) {

@@ -30,7 +30,7 @@ $( document ).ready(function() {
 
 function successAgendaReq(packet) {
     if(packet.result === "Valid") {
-        checkAdminStatus();
+    //    checkAdminStatus();
         renderAgenda(packet.agenda, agendaContainer);
     }
 }

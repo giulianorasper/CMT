@@ -6,9 +6,13 @@ export default class Cookies {
     }
 
     static setCookie(name, value, seconds) {
-        var d = new Date;
-        d.setTime(d.getTime() + 1000*seconds);
-        document.cookie = name + "=" + value + ";path=/;expires=" + d.toGMTString();
+        var date = new Date;
+        date.setTime(date.getTime() + 1000*seconds);
+        Cookies.setCookieWithDate(name, value, date);
+    }
+
+    static setCookieWithDate(name, value, date) {
+        document.cookie = name + "=" + value + ";path=/;expires=" + date.toGMTString();
     }
 
     static deleteCookie(name) { setCookie(name, '', -1); }

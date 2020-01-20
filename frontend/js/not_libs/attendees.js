@@ -25,8 +25,9 @@ $(function(){
     createDialog = $('#creationDialog').dialog({
         title: "Create Attendee",
         autoOpen: false,
-        height: 600,
-        width: 420,
+        height: 'auto',
+        width: 'auto',
+        maxWidth: 600,
         modal: true,
         close: function (e) {
             e.preventDefault();
@@ -50,8 +51,9 @@ $(function(){
     //Editing dialog mostly similar to creation dialog
     editDialog = $('#editDialog').dialog({
         autoOpen: false,
-        height: 600,
-        width: 420,
+        height: 'auto',
+        width: 'auto',
+        maxWidth: 600,
         modal: true,
         close: function () {
             editForm[ 0 ].reset();

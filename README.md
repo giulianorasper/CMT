@@ -19,21 +19,21 @@
 ## Client:
 Timo P. Gros, timopgros@cs.uni-saarland.de
 
-## Building the project
+## Building the Project
 
-### Building the backend
+### Building the Backend
 Building the project requires gradle. For this please refer to: [https://gradle.org/install/](https://gradle.org/install/)
 Inside the 'implementation' folder type in the command `gradle :fatJar`
 This will produce a jar under `./build/libs/fullCMS-1.0.jar
 
-### Building the frontend
+### Building the Frontend
 The frontend can be found in the 'frontend' folder.  The 'config/config.js' file must be edited so that it contains the correct domain. This is the domain at which the ***jar*** is hosted, which may or may not be the same as the domain which hosts the frontend itself.
 Changing the port is only necessary if one changed it inside the backend.
 The property `useSSL` must be set to true (`false` is only permitted for debugging purposes)
 
 One can customize the frontend if they wish to do so. For example it is possible to chage the images inside the  'img' folder as long as the new images have the same name. Please note that the images might get scaled or cropped in the process of rendering the page. As such it is recomended to provide images that have the same dimiension as the original images.
 
-## Deploying the project
+## Deploying the Project
 
 Delpoy the frontend like any other webpage.
 
@@ -57,7 +57,7 @@ password : test
 Additionally this information and login QR codes are also stored inside the "tmp/conference/qrs" directory. The login codes can be scanned using any QR code scanner.
 `Note:` Admins aren't permitted to interfere with other admins, meaning that the config file is the only method to edit an admin. Also, admins can login multiple times using the same password while attendee passwords get invalidated after being used once.
 
-### Additional file support
+### Additional File Support
 
 The application supports two types of files that are meant to ease conference management:
 
@@ -79,6 +79,44 @@ The application supports two types of files that are meant to ease conference ma
 name:email:group:residence:function
 test:test:test:test:test
 ```
+
+
+## Usage
+
+### Agenda
+
+For ordinary `attendees`, the agenda can be accessed, but not edited or interacted with in any way.
+
+While the agenda is empty, `admins` can create its first topic using the "Add topic" button on the bottom left.
+Admins can furthermore edit the agenda, using the plus icon to `add` a topic on the same level, while the down arrow can be used to add a subtopic to that respective topic. The new topic will always get the smallest ID that hasn't been taken yet on the level it is appended to.
+The `edit` and `delete` icons edit or delete their respective topic. Note that deleting a topic will also delete its subtopics automatically.
+Also, the file icon in the header can be clicked to upload an agenda file as specified in the "Additional File Support" section. Clicking the delete icon in the header will result in deleting the whole agenda.
+
+
+### Documents
+
+tbc
+
+
+### Voting
+
+tbc
+
+
+### Requests
+
+tbc
+
+
+### Profile
+
+tbc
+
+
+### User Management
+
+tbc
+
 
 
 ## Contributers:

@@ -120,12 +120,12 @@ function updateAttendeeList(){
             sortAttendeeList(packet.attendees);
         }
         else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
     function fail() {
-        console.log("Something went wrong while trying to access the server.");
+        alert("Something went wrong while trying to access the server.");
     }
 
     const requestPacket = new GetAllAttendeesRequestPacket();
@@ -364,7 +364,7 @@ function deleteAttendee(attendeeIndex){
     }
 
     function failDeleteAttendee(){
-        console.log("Something went wrong while trying to access the server.");
+        alert("Something went wrong while trying to access the server.");
     }
 
     CommunicationManager.send(requestPacket, successDeleteAttendee, failDeleteAttendee);
@@ -393,12 +393,12 @@ function editAttendee(attendeeIndex, name, email, group, residence, fnctn){
             refresh();
         }
         else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
     function failEditAttendee(){
-        console.log("Something went wrong while trying to access the server.")
+        alert("Something went wrong while trying to access the server.")
     }
 
     CommunicationManager.send(editRequestPacket, successEditAttendee, failEditAttendee);
@@ -425,12 +425,12 @@ function createAttendee(name, email, group, residence, fnctn){
             //console.log("the d")
         }
         else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
     function failCreateAttendee(){
-        console.log("Something went wrong while trying to access the server.");
+        alert("Something went wrong while trying to access the server.");
     }
 
     CommunicationManager.send(createRequestPacket, successCreateAttendee, failCreateAttendee);
@@ -453,7 +453,7 @@ function logoutAttendee(attendeeIndex){
         if(packet.result === "Valid"){
             alert("Attendee has successfully been logged out!");
         } else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
@@ -462,12 +462,12 @@ function logoutAttendee(attendeeIndex){
             CommunicationManager.send(newTokenRequestPacket, successNewToken, failLogoutAttendee);
         }
         else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
     function failLogoutAttendee(){
-        console.log("Something went wrong while trying to access the server.");
+        alert("Something went wrong while trying to access the server.");
     }
 
     CommunicationManager.send(logoutRequestPacket, successLogoutAttendee, failLogoutAttendee);
@@ -491,7 +491,7 @@ function getNewAttendeePassword(attendeeIndex){
         if(packet.result === "Valid"){
             alert("New Attendee Password: " + packet.password);
         } else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
@@ -500,12 +500,12 @@ function getNewAttendeePassword(attendeeIndex){
             CommunicationManager.send(getPasswordRequestPacket, successGetPassword, failNewPassword);
         }
         else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
     function failNewPassword(){
-        console.log("Something went wrong while trying to access the server.");
+        alert("Something went wrong while trying to access the server.");
     }
 
     CommunicationManager.send(newPasswordRequestPacket, successNewPassword, failNewPassword);

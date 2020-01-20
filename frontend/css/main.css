@@ -27,3 +27,7 @@ h2{
 
 	overflow-y: auto;
 }
+
+.ui-dialog .ui-dialog-content{
+	flex: 1;
+}

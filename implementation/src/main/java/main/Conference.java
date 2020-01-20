@@ -237,6 +237,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
      */
     private void initVotes(){
         db_votingManagement = new DB_VotingManager(databasePath);
+        db_votingManagement.getVotings().forEach(v -> votings.put(v.getID(),v));
     }
 
 

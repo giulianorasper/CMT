@@ -102,7 +102,7 @@ public class VotingTests {
         conf.startVoting(annon);
         int voterCount =userCount /2;
         for(int i = 0; i < voterCount; i++){
-            annon.addVote(i % 2, i);
+            annon.addVote(i % 2, i, "Klaus");
         }
         Assert.assertEquals("Votes should be private at this point", 0, annon.getOptions().get(0).getCurrentResult());
         Assert.assertEquals("Votes should be private at this point", 0, annon.getOptions().get(1).getCurrentResult());
@@ -119,7 +119,7 @@ public class VotingTests {
 
         conf.startVoting(named);
         for(int i = 0; i < voterCount; i++){
-            named.addVote(i % 2, i);
+            named.addVote(i % 2, i, "Gerd");
         }
         Assert.assertEquals("Votes should be private at this point", 0, named.getOptions().get(0).getCurrentResult());
         Assert.assertEquals("Votes should be private at this point", 0, named.getOptions().get(1).getCurrentResult());
@@ -145,8 +145,8 @@ public class VotingTests {
         conf.addVoting(named);
 
         conf.startVoting(annon);
-        annon.addVote(0,0);
-        if(annon.addVote(1,0))
+        annon.addVote(0,0, "tutor");
+        if(annon.addVote(1,0, "othernames"))
             fail("Managed to submit multiple votes");
 
     }

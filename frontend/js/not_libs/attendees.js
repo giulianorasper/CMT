@@ -25,8 +25,6 @@ $(function(){
     createDialog = $('#creationDialog').dialog({
         title: "Create Attendee",
         autoOpen: false,
-        height: 620,
-        width: 420,
         modal: true,
         resizable: false,
         draggable: false,
@@ -50,8 +48,6 @@ $(function(){
     //Editing dialog mostly similar to creation dialog
     editDialog = $('#editDialog').dialog({
         autoOpen: false,
-        height: 620,
-        width: 420,
         modal: true,
         resizable: false,
         draggable: false,
@@ -387,8 +383,6 @@ function deleteAttendee(attendeeIndex){
 
 function editAttendee(attendeeIndex, name, email, group, residence, fnctn){
     const attendeeID = localAttendeeList[attendeeIndex].ID;
-
-    console.log("Trying to edit");
 
     const editRequestPacket = new EditUserRequestPacket(attendeeID, name, email, group, residence, fnctn);
 

@@ -21,14 +21,15 @@ $( document ).ready(function() {
 Fetches all requests from the server and displays them to the admin.
 Currently sorting the requests involves fetching them from the server again. This is sub-optial
 */
+var options
 function renderRequests(){
 
 	const packet = new GetAllRequestsRequestPacket();
     CommunicationManager.send(packet, success, fail);
 
-
-	var options =[]
-
+	if(options === undefined){
+		options = []
+	}
 
  	function success(packet) {
 	    if(packet.result === "Valid") {  
@@ -51,17 +52,19 @@ function renderRequests(){
 	    	}
 
 
+	    	var selected = options[id];
 
 	    	//filter by name
 	    	if(id){
-	    		packet.requests = packet.requests.filter(function(r){return r.requestable.name === id;})
+	   
+	    		packet.requests = packet.requests.filter(function(r){return r.requestable.name === selected;})
 	    	}
 	    	
 
 			//open requests firsts 
 	    	packet.requests.sort(function(a,b) {if(a.open && !b.open){return -1;} else if (!a.open && b.open) {return 1;} else{return 0}})   
-
-	        for(var req of packet.requests){
+	    	options = []
+	  	    for(var req of packet.requests){
 	        	 generateRequest(req).appendTo(requestContainer);
 	        }
 	        console.log(id)
@@ -69,7 +72,7 @@ function renderRequests(){
 	        	
 	        }
 	        else{
-	        	requestableSelect.val(id);
+	        	requestableSelect.val(selected);
 	        }
 
 	        
@@ -90,16 +93,25 @@ function renderRequests(){
 		var min = split[4].split(":")[1];
 		var sec = split[4].split(":")[2];
  
+
+		var requestableNameSpan = $("<span>")
+		requestableNameSpan.text(req.requestable.name)
+
 		if(!options.includes(req.requestable.name)){
 			options.push(req.requestable.name)
-	 		$("<option data-id=\""+req.requestable.name+"\">" +req.requestable.name+"</option>").appendTo(requestableSelect);
+	 		$("<option data-id=\""+(options.length-1)+"\">" +(requestableNameSpan.html())+"</option>").appendTo(requestableSelect);
 	 	}
 		
 
 		var isChangeRequest = !!req.message; // true iff the object has the field
 
+
+
+		var changeText = $("<span>")
+		changeText.text(req.message)
+
 		return $("<tr data-toggle=\"collapse\" data-target=\"#accordion"+req.ID+"\" class=\"clickable\">"+
-                                            "<td>"+req.requestable.name+"</td>"+
+                                            "<td>"+(requestableNameSpan.html())+"</td>"+
                                             "<td>"+(day + " " + month +" " + hour+":"+min+":"+sec)+"</td>"+
                                             "<td>"+(isChangeRequest?"Change":"Speech")+"</td>"+
                                             "<td>"+(isChangeRequest?(req.open?"open":(req.approved?"approved":"disapproved")):(req.open?"open":"closed"))+"</td>"+
@@ -116,7 +128,7 @@ function renderRequests(){
                                             "<td colspan=\"5\">"+
                                                 "<div id=\"accordion"+req.ID+"\" class=\"collapse\">"+
                                                     "<h4 style=\"color:grey;\">Attendee: "+req.requester.name+"</h4>"+
-                                                    (isChangeRequest?"<h4 style=\"color:grey;\">Request Text: "+req.message+"</h4>":"")+
+                                                    (isChangeRequest?"<h4 style=\"color:grey;\">Request Text: "+(changeText.html())+"</h4>":"")+
                                                 "</div>"+
                                             "</td>"+
                                         "</tr>"

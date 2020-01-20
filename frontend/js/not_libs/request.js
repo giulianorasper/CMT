@@ -116,8 +116,11 @@ function getDocuments(){
         if(packet.result === "Valid") {         
             for(var doc of packet.documents){
 
+                var nameSpan = $("<span>")
+                nameSpan.text(doc.name)
+
                 requestOptions.each(function(i, option){
-                    $("<option data-id=\""+(documents.length)+"\" data-isTop = false>" +doc.name+"</option>").appendTo(option);
+                    $("<option data-id=\""+(documents.length)+"\" data-isTop = false>" +(nameSpan.html)+"</option>").appendTo(option);
                     documents.push(doc.name)
                 })
             }

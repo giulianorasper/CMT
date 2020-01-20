@@ -46,7 +46,7 @@ public class EditUserRequestPacket extends AuthenticatedRequestPacket {
             if(name != null) attendee.setName(name);
             if(email != null) attendee.setEmail(email);
             if(group != null) attendee.setGroup(group);
-            if(residence != null) attendee.setGroup(residence);
+            if(residence != null) attendee.setResidence(residence);
             if(function != null) attendee.setFunction(function);
             conference.editAttendee(attendee);
             new ValidResponsePacket().send(webSocket);

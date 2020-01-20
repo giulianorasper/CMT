@@ -192,13 +192,20 @@
         <fieldset>
 
             <label for="createName">Name</label>
-            <input type="text" name="name" id="createName" placeholder="Enter full name" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="name" id="createName" placeholder="Enter full Name" class="text ui-widget-content ui-corner-all">
+
             <label for="createEmail">Email</label>
-            <input type="text" name="email" id="createEmail" placeholder="Enter email address" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="email" id="createEmail" placeholder="Enter Email Address" class="text ui-widget-content ui-corner-all">
+
             <label for="createGroup">Group</label>
-            <input type="text" name="group" id="createGroup" placeholder="Enter group" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="group" id="createGroup" list="existingCreateGroups" placeholder="Enter Group" class="text ui-widget-content ui-corner-all">
+            <datalist id="existingCreateGroups">
+
+            </datalist>
+
             <label for="createResidence">Residence</label>
-            <input type="text" name="residence" id="createResidence" placeholder="Enter residence" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="residence" id="createResidence" placeholder="Enter Residence" class="text ui-widget-content ui-corner-all">
+
             <label for="createFnctn">Function</label>
             <input type="text" name="fnctn" id="createFnctn" placeholder="Enter Function" class="text ui-widget-content ui-corner-all">
 
@@ -219,13 +226,20 @@
     <form>
         <fieldset>
             <label for="editName">Name</label>
-            <input type="text" name="name" id="editName" placeholder="Enter full name" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="name" id="editName" placeholder="Enter full Name" class="text ui-widget-content ui-corner-all">
+
             <label for="editEmail">Email</label>
-            <input type="text" name="email" id="editEmail" placeholder="Enter email address" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="email" id="editEmail" placeholder="Enter Email Address" class="text ui-widget-content ui-corner-all">
+
             <label for="editGroup">Group</label>
-            <input type="text" name="group" id="editGroup" placeholder="Enter group" class="text ui-widget-content ui-corner-all">
+            <datalist id="existingEditGroups">
+
+            </datalist>
+            <input type="text" name="group" id="editGroup" list="existingEditGroups" placeholder="Enter Group" class="text ui-widget-content ui-corner-all">
+
             <label for="editResidence">Residence</label>
-            <input type="text" name="residence" id="editResidence" placeholder="Enter residence" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="residence" id="editResidence" placeholder="Enter Residence" class="text ui-widget-content ui-corner-all">
+
             <label for="editFnctn">Function</label>
             <input type="text" name="fnctn" id="editFnctn" placeholder="Enter Function" class="text ui-widget-content ui-corner-all">
 

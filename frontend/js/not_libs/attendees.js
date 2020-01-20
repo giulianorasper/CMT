@@ -12,6 +12,7 @@ import GenerateNewAttendeeTokenRequestPacket
 import GetAttendeePasswordRequestPacket from "../../communication/packets/admin/GetAttendeePasswordRequestPacket.js";
 import DownloadQRRequestPacket from "../../communication/packets/admin/DownloadQRRequestPacket.js";
 import DownloadAllQRRequestPacket from "../../communication/packets/admin/DownloadAllQRRequestPacket.js";
+import GetExistingGroupsRequestPacket from "../../communication/packets/admin/GetExistingGroupsRequestPacket.js";
 
 //Importing JQuery and JQuery UI
 //import $ from "../../node_modules/jquery";
@@ -48,6 +49,7 @@ $(function(){
 
     $('#create-attendee').on("click", function (e) {
         e.preventDefault();
+        getExistingGroups(false);
         createDialog.dialog("open");
     });
 
@@ -209,7 +211,11 @@ function generateAttendeeList(attendeeList){
 
             editNameID.val(currAttendee.name);
             editMailID.val(currAttendee.email);
+
             editGroupID.val(currAttendee.group);
+            //Pastes existing groups into data list of group input field
+            getExistingGroups(true);
+
             editResidenceID.val(currAttendee.residence);
             editFunctionID.val(currAttendee.function);
 
@@ -520,6 +526,38 @@ function getNewAttendeePassword(attendeeIndex){
 }
 
 
+/**
+ * Gets called whenever the list of existing groups needs to be pasted into the datalist of a Creating/Editing dialog.
+ *
+ * @param editing - Should the list be pasted into the editing window? (false defaults to the creation window)
+ */
+function getExistingGroups(editing){
+    const requestPacket = new GetExistingGroupsRequestPacket();
+
+    function successGetGroups(packet){
+        console.log("Got to the actual request");
+
+        if(packet.result === "Valid"){
+            if(editing){
+                updateEditGroupList(packet.groups);
+            } else{
+                updateCreateGroupList(packet.groups);
+            }
+        } else{
+            console.log("Doesn't work, dumbass");
+            console.log(packet.packetType);
+            alert(packet.details);
+        }
+    }
+
+    function failGetGroups(){
+        alert("Something went wrong while trying to access the server.");
+    }
+
+    CommunicationManager.send(requestPacket, successGetGroups, failGetGroups);
+}
+
+
 
 //----------------------------------------- HOOKS FOR ONCLICK EVENTS ---------------------------------------------------
 
@@ -650,4 +688,33 @@ function closeCreateAttendee(){
 
 function closeEditAttendee(){
     editDialog.dialog("close");
+}
+
+
+//------------------------------ EXISTING GROUP LIST FUNCTIONALITY -----------------------------------------------------
+
+
+function updateCreateGroupList(groups){
+    const groupListID = $('#existingCreateGroups');
+    printGroupList(groupListID, groups);
+}
+
+
+function updateEditGroupList(groups){
+    const groupListID = $('#existingEditGroups');
+    printGroupList(groupListID, groups);
+}
+
+/**
+ * Prints a given group list into a datalist with given ID using HTML code; Deletes old HTML code inside the datalist
+ *
+ * @param listID - ID of the datalist
+ * @param groups - List of the groups currently existing
+ */
+function printGroupList(listID, groups){
+    listID.empty();
+
+    for(var currGroup of groups){
+        listID.append('<option value="' + currGroup + '">');
+    }
 }

@@ -66,19 +66,33 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                     if (!table.getString("password").equals(password)) {
                         return new Pair<>(LoginResponse.WrongPassword, null);
                     } else {
-
-                        //update Presentvalue of the valid user
-                        sqlstatement = "UPDATE users SET password = ?, present = ?  WHERE username = ?";
-                        try (PreparedStatement stmt2 = connection.prepareStatement(sqlstatement)) {
-                            stmt2.setNull(1, Types.VARCHAR);
-                            stmt2.setBoolean(2, true);
-                            stmt2.setString(3, userName);
-                            stmt2.executeUpdate();
-                        } catch (SQLException e) {
-                            System.err.println("An exception occurred while updating Present value of  a user.");
-                            System.err.println(e.getMessage());
-                            return null;
+                        if (table.getBoolean("isAdmin")) {
+                            //update values of the valid admin
+                            sqlstatement = "UPDATE users SET present = ?  WHERE username = ?";
+                            try (PreparedStatement stmt2 = connection.prepareStatement(sqlstatement)) {
+                                stmt2.setBoolean(1, true);
+                                stmt2.setString(2, userName);
+                                stmt2.executeUpdate();
+                            } catch (SQLException e) {
+                                System.err.println("An exception occurred while updating values of an attendee.");
+                                System.err.println(e.getMessage());
+                                return null;
+                            }
+                        } else {
+                            //update values of the valid attendee
+                            sqlstatement = "UPDATE users SET password = ?, present = ?  WHERE username = ?";
+                            try (PreparedStatement stmt2 = connection.prepareStatement(sqlstatement)) {
+                                stmt2.setNull(1, Types.VARCHAR);
+                                stmt2.setBoolean(2, true);
+                                stmt2.setString(3, userName);
+                                stmt2.executeUpdate();
+                            } catch (SQLException e) {
+                                System.err.println("An exception occurred while updating values of an attendee.");
+                                System.err.println(e.getMessage());
+                                return null;
+                            }
                         }
+
 
                         return new Pair<>(LoginResponse.Valid, table.getString("token"));
                     }

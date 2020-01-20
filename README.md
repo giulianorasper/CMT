@@ -85,11 +85,14 @@ test:test:test:test:test
 
 ### Agenda
 
-For ordinary `attendees`, the agenda can be accessed, but not edited or interacted with in any way.
+For ordinary **attendees**, the agenda can be accessed, but not edited or interacted with in any way.
 
-While the agenda is empty, `admins` can create its first topic using the "Add topic" button on the bottom left.
-Admins can furthermore edit the agenda, using the plus icon to `add` a topic on the same level, while the down arrow can be used to add a subtopic to that respective topic. The new topic will always get the smallest ID that hasn't been taken yet on the level it is appended to.
-The `edit` and `delete` icons edit or delete their respective topic. Note that deleting a topic will also delete its subtopics automatically.
+While the agenda is empty, **admins** can create its first topic using the "Add topic" button on the bottom left.
+
+Admins can furthermore edit the agenda, using the plus icon to **add a topic** on the same level, while the down arrow can be used to **add a subtopic** to that respective topic. The new topic will always get the smallest ID that hasn't been taken yet on the level it is appended to.
+
+The **edit** and **delete** icons edit or delete their respective topic. Note that deleting a topic will also delete its subtopics automatically.
+
 Also, the file icon in the header can be clicked to upload an agenda file as specified in the "Additional File Support" section. Clicking the delete icon in the header will result in deleting the whole agenda.
 
 

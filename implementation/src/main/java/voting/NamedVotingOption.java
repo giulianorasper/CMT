@@ -9,7 +9,10 @@ public class NamedVotingOption extends VotingOption {
 
     @Expose
     public List<Integer> voters = new ArrayList<>();
+    @Expose
+    public List<String> votersname = new ArrayList<>();
 
+    private List<String> privatevotersname = new ArrayList<>();
     private List<Integer> privateVoters = new ArrayList<>();
 
     /**
@@ -26,18 +29,21 @@ public class NamedVotingOption extends VotingOption {
      * @param name The name of this option.
      * @param voters The userIDs of the users who voted for this option.
      */
-    public NamedVotingOption(int ID, String name, List<Integer> voters) {
+    public NamedVotingOption(int ID, String name, List<Integer> voters, List<String> votersname) {
         this(ID, name);
         this.voters = voters;
+        this.votersname = votersname;
     }
 
     /**
-     * Add user with userID to the list of user that vote for the NamedVotingOption.
+     * Add user with userID and name to the list of user that vote for the NamedVotingOption.
      * @param userID
+     * @param name
      */
     @Override
-    protected void addVote(int userID) {
+    protected void addVote(int userID, String name) {
         privateVoters.add(userID);
+        privatevotersname.add(name);
     }
 
 
@@ -86,8 +92,9 @@ public class NamedVotingOption extends VotingOption {
     protected void publishVotes() {
         try {
             lock.getWriteAccess();
-            setPublicVotes(voters.size());
+            setPublicVotes(privateVoters.size());
             voters.addAll(privateVoters);
+            votersname.addAll(privatevotersname);
         }
         catch (InterruptedException e){
             System.out.println(e);

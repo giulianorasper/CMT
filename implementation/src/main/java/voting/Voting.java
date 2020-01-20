@@ -182,9 +182,10 @@ public class Voting implements VotingObservable {
      * Add to the VotingOption the userID from User that vote for the VotingOption
      * @param optionID VotingOption
      * @param userID from User
+     * @param name from user
      * @return true iff voting was accepted
      */
-    public boolean addVote(int optionID, int userID) {
+    public boolean addVote(int optionID, int userID, String name) {
         try {
             lock.getWriteAccess();
             if(status != VotingStatus.Running){
@@ -194,7 +195,7 @@ public class Voting implements VotingObservable {
                 return false;
             }
             voters.add(userID);
-            options.get(optionID).addVote(userID);
+            options.get(optionID).addVote(userID, name);
             return true;
         } catch (InterruptedException e) {
             return false;

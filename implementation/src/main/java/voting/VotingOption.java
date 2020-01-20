@@ -101,7 +101,7 @@ public abstract class VotingOption {
         this.publicVotes = votes;
     }
 
-    abstract protected void addVote(int userID);
+    abstract protected void addVote(int userID, String name);
 
     abstract public int getCurrentResult();
 

@@ -25,12 +25,12 @@ $(function(){
     createDialog = $('#creationDialog').dialog({
         title: "Create Attendee",
         autoOpen: false,
-        height: 600,
+        height: 620,
         width: 420,
         modal: true,
-        close: function (e) {
-            e.preventDefault();
-            console.log(e);
+        resizable: false,
+        draggable: false,
+        close: function () {
             createForm[ 0 ].reset();
             createFields.removeClass("ui-state-error");
         }
@@ -50,9 +50,11 @@ $(function(){
     //Editing dialog mostly similar to creation dialog
     editDialog = $('#editDialog').dialog({
         autoOpen: false,
-        height: 540,
+        height: 620,
         width: 420,
         modal: true,
+        resizable: false,
+        draggable: false,
         close: function () {
             editForm[ 0 ].reset();
             editFields.removeClass("ui-state-error");
@@ -195,7 +197,7 @@ function generateAttendeeList(attendeeList){
 
         //giving the edit button of the just created attendee functionality
         $('#editAttendee' + currIndex).on("click", function () {
-            editedAttendeeIndex = this.attr("data-attendee-id");
+            editedAttendeeIndex = this.getAttribute("data-attendee-id");
             const currAttendee = attendeeList[editedAttendeeIndex];
 
             editNameID.val(currAttendee.name);

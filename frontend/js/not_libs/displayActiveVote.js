@@ -102,6 +102,7 @@ function countdown(seconds) {
 
 		displayActiveVote(packetAssign);
 		// sessionStorage.setItem("timeOut", timeOut)
+		location.reload();
 	}
 	
 	

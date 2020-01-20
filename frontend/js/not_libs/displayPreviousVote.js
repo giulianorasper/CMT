@@ -68,7 +68,7 @@ function displayPreviousVotes(packet){
                                 + packet.votings[i].options[j].name + '\nNumber of voters: '
                                 + packet.votings[i].options[j].publicVotes + '\n'
                                 + Math.round((packet.votings[i].options[j].publicVotes/totalAttendees)*100) + '% of the total voters'
-                                + '\nName of Voters: ' + packet.votings[i].options[j].voters
+                                + '\nName of Voters: ' + packet.votings[i].options[j].votersname
                                 // + '<br>'
                                 + '</pre>';
             // if(packet.votings[i].namedVote){

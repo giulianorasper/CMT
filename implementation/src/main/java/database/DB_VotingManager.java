@@ -71,27 +71,30 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                 String votingTable = "CREATE TABLE IF NOT EXISTS voting" + Integer.toString(v.getID()) + " ("
                         + "     optionID INTEGER, "
                         + "     optionName TEXT, "
-                        + "     userID INTEGER UNIQUE );";
+                        + "     userID INTEGER UNIQUE,"
+                        + "     username TEXT);";
                 connection.createStatement().execute(votingTable);
                 for (VotingOption p : v.getOptions()) {
                     List<Integer> voters = p.getVoters();
-                    for (Integer i : voters) {
+                    for (int i = 0; i < voters.size(); i++) {
                         String insert = "INSERT INTO voting" + Integer.toString(v.getID()) +
-                                " (optionID, optionName, userID) VALUES (?,?,?)";
+                                " (optionID, optionName, userID, username) VALUES (?,?,?,?)";
                         try (PreparedStatement in = connection.prepareStatement(insert)) {
                             in.setInt(1, p.getOptionID());
                             in.setString(2, p.getName());
-                            in.setInt(3, i);
+                            in.setInt(3, voters.get(i));
+                            in.setString(4,((NamedVotingOption) p).votersname.get(i));
                             in.executeUpdate();
                         }
                     }
                     if (voters.isEmpty()) { // In case noone voted for this option.
                         String insert = "INSERT INTO voting" + Integer.toString(v.getID()) +
-                                " (optionID, optionName, userID) VALUES (?,?,?)";
+                                " (optionID, optionName, userID, username) VALUES (?,?,?,?)";
                         try (PreparedStatement in = connection.prepareStatement(insert)) {
                             in.setInt(1, p.getOptionID());
                             in.setString(2, p.getName());
                             in.setNull(3, Types.INTEGER);
+                            in.setNull(4, Types.VARCHAR);
                             in.executeUpdate();
                         }
                     }
@@ -146,23 +149,29 @@ public class DB_VotingManager extends DB_Controller implements DB_VotingManageme
                     List<VotingOption> options = new ArrayList<>();
                     if (table.getBoolean("isNamed")) {
                         List<List<Integer>> res = new ArrayList<>();
+                        List<List<String>> names = new ArrayList<>();
                         String[] map = new String[table.getInt("numberOfOptions")];
                         for (int i = 0; i < table.getInt("numberOfOptions"); i++) {
                             res.add(new LinkedList<>());
+                            names.add(new LinkedList<>());
                         }
                         while (vot.next()) {
                             if (map[vot.getInt("optionID")] == null
                                     && !vot.wasNull()) {
                                 map[vot.getInt("optionID")] = vot.getString("optionName");
                             }
-                            int userID = vot.getInt("userID");
+                            int userID = vot.getInt("userID");  
                             if (!vot.wasNull()) {
                                 res.get(vot.getInt("optionID")).add(vot.getInt("userID"));
+                            }
+                            String username = vot.getString("username");
+                            if (!vot.wasNull()) {
+                                names.get(vot.getInt("optionID")).add(vot.getString("username"));
                             }
                         }
                         for (List<Integer> p : res) {
                             VotingOption v = new NamedVotingOption(res.indexOf(p),
-                                    map[res.indexOf(p)], p);
+                                    map[res.indexOf(p)], p, names.get(res.indexOf(p)));
                             options.add(v);
                         }
                     } else {

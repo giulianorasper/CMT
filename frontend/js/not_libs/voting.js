@@ -286,7 +286,7 @@ $("#dialogMessageForOption").dialog({
 	autoOpen: false,
 	resizable: false,
 	// autoOpen:false,
-	height: 210,
+	height: 226,
 	width: 418,
 	modal: true,
 	title: "Message",
@@ -322,6 +322,10 @@ function start(voteId){
         }
 		else {
 			// alert(packet.details);
+			console.log(packet.details)
+			// $('#failureMessage').empty();
+			$('#failureMessage').html(packet.details);
+			
 			$("#dialogMessageForOption").dialog("open");
 			return false;
 			

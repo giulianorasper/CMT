@@ -586,12 +586,15 @@ function checkValidData(nameID, mailID, groupID, residenceID, functionID){
 
     validUser = validUser && checkRegex(nameID, nameRegex, "Name mustn't contain $%^*£=~@_");
     validUser = validUser && checkRegex(mailID, mailRegex, "Invalid mail. Example for a valid mail: user@domain.com");
+    validUser = validUser && checkRegex(groupID, nameRegex, "Group mustn't contain $%^*£=~@_");
+    validUser = validUser && checkRegex(residenceID, nameRegex, "Residence mustn't contain $%^*£=~@_");
+    validUser = validUser && checkRegex(functionID, nameRegex, "Function mustn't contain $%^*£=~@_");
 
     return validUser;
 }
 
 /**
- * Gets called when clicking
+ * Gets called when clicking the confirm button of the creation dialog
  */
 function clickCreateAttendee(){
     if(checkValidData(newNameID, newMailID, newGroupID, newResidenceID, newFunctionID)){

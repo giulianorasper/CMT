@@ -186,7 +186,7 @@
 <!-- Dialog that will be shown when trying to create a user -->
 
 <div id="creationDialog" title="Create new user" class="ui-dialog">
-    <p class="validateTips">All form fields are required.</p>
+    <div id="creationTips">All form fields are required.</div>
 
     <form>
         <fieldset>
@@ -211,17 +211,17 @@
 
             <!-- Submit buttons of dialog fields -->
             <div class="ui-dialog-content">
-                <button type="button" class="btn btn-outline-info" data-role="close" title="Close" style="width: 100px;" onclick="closeCreateAttendee()">Cancel</button>
+                <button type="button" class="btn btn-outline-info" title="Close" style="width: 100px;" onclick="closeCreateAttendee()">Cancel</button>
 
                 <!-- Gets its functionality in attendees.js -->
-                <button type="submit" class="btn btn-outline-primary" data-role="close" title="Submit" style="width: 100px;">Confirm</button>
+                <button type="submit" class="btn btn-outline-primary" title="Submit" style="width: 100px;">Confirm</button>
             </div>
         </fieldset>
     </form>
 </div>
 
 <div id="editDialog" title="Edit user" class="ui-dialog">
-    <p class="validateTips">All form fields are required.</p>
+    <div id="editingTips">All form fields are required.</div>
 
     <form>
         <fieldset>
@@ -245,10 +245,10 @@
 
             <!-- Submit buttons of dialog fields -->
             <div>
-                <button type="button" class="btn btn-outline-info" data-role="close" title="Close" style="width: 100px;" onclick="closeEditAttendee()">Cancel</button>
+                <button type="button" class="btn btn-outline-info" title="Close" style="width: 100px;" onclick="closeEditAttendee()">Cancel</button>
 
                 <!-- Gets its functionality in attendees.js -->
-                <button type="submit" class="btn btn-outline-primary" data-role="close" title="Submit" style="width: 100px;">Confirm</button>
+                <button type="submit" class="btn btn-outline-primary" title="Submit" style="width: 100px;">Confirm</button>
             </div>
         </fieldset>
     </form>

@@ -585,8 +585,8 @@ function checkRegex(checkedObject, regex, message){
 function checkValidData(nameID, mailID, groupID, residenceID, functionID){
     var validUser = true;
 
-    validUser = validUser && checkLength(nameID, "name", 5, 64);
-    validUser = validUser && checkLength(mailID, "email", 6, 64);
+    validUser = validUser && checkLength(nameID, "name", 1, 64);
+    validUser = validUser && checkLength(mailID, "email", 5, 64);
     validUser = validUser && checkLength(groupID, "group", 1, 64);
     validUser = validUser && checkLength(residenceID, "residence", 1, 256);
     validUser = validUser && checkLength(functionID, "function", 1, 64);

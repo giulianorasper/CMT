@@ -157,11 +157,15 @@ function download(name){
     CommunicationManager.send(packet, success, fail);
 }
 
+function escapeFilename(name){
+    return name.replace("'", "\\'")
+}
+
 
 
 function generateDocument(document){
 	return $("<div class=\"row\">"+
-                                            "<div class=\"col-sm-8 col-lg-8\" "+(!window.isAdmin? "onclick = \"downloadDocument(\'"+document.name+"\')\"":"")+">"+
+                                            "<div class=\"col-sm-8 col-lg-8\" "+(!window.isAdmin? "onclick = \"downloadDocument(\'"+escapeFilename(document.name)+"\')\"":"")+">"+
                                                 "<li >"+(!window.isAdmin?"<a href ='#'>":"")+document.name+(!window.isAdmin?"</a>":"")+"</li>"+
                                             "</div>"+
 

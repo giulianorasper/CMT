@@ -63,7 +63,7 @@ function displayPreviousVotes(packet){
             // console.log("testing");
         }
 
-        var voteOptions = 'Total Numbers of Voters:   ' + totalAttendees + '<br><br>';
+        var voteOptions = '<span style="font-weight:bold;">Total Numbers of Voters:</span> ' + totalAttendees + '<br><br>';
         $('#'+packet.votings[i].ID+'prev').append(voteOptions);
         
         //+ 'Vote Option ' + (packet.votings[i].options[j].optionID + 1) + ': '
@@ -74,7 +74,7 @@ function displayPreviousVotes(packet){
             voteOptions =  'Vote Option ' + (packet.votings[i].options[j].optionID + 1) + ': '
                                 + packet.votings[i].options[j].name + '<br>Number of voters: '
                                 + packet.votings[i].options[j].publicVotes + '<br>'
-                                + (isNaN(percentageValue)? 0 : percentageValue) + '% of the total voters'
+                                + '<span style="font-weight:bold;">' + (isNaN(percentageValue)? 0 : percentageValue) + '% </span>' + ' of the total voters'
                                 + '<br>Name of Voters: ' + (voterName == undefined || voterName.length == 0? 'Not Available': voterName)+ '<br><br>';
                                 // + '<br>'
                                 // + '</pre>';

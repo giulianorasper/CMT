@@ -50,7 +50,7 @@ $(function(){
     //Editing dialog mostly similar to creation dialog
     editDialog = $('#editDialog').dialog({
         autoOpen: false,
-        height: 540,
+        height: 600,
         width: 420,
         modal: true,
         close: function () {
@@ -195,7 +195,7 @@ function generateAttendeeList(attendeeList){
 
         //giving the edit button of the just created attendee functionality
         $('#editAttendee' + currIndex).on("click", function () {
-            editedAttendeeIndex = this.attr("data-attendee-id");
+            editedAttendeeIndex = this.getAttribute("data-attendee-id");
             const currAttendee = attendeeList[editedAttendeeIndex];
 
             editNameID.val(currAttendee.name);

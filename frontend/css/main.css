@@ -15,19 +15,14 @@ h2{
 }
 
 .ui-dialog{
-	top:0; left:0;
 	margin: auto;
-	position: fixed;
+	/*position: fixed !important;*/
 	max-width: 100%;
-	min-width: 30%;
 	max-height: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
 
 	overflow-y: auto;
-}
-
-.ui-dialog .ui-dialog-content{
-	flex: 1;
+	overflow-x: auto;
 }

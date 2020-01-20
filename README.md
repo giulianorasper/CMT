@@ -72,7 +72,7 @@ The application supports two types of files that are meant to ease conference ma
 
 ```
 
-- Attendeefiles: agenda files end with ".csv" and contain attendee data. They can be used to add large number of attendees. The format is the same as the admin format in the config files. The example provided looks as follows:
+- Attendee files: attendee files end with ".csv" and contain attendee data. They can be used to add large number of attendees. The format is the same as the admin format in the config files. The example provided looks as follows:
 
 ```
 name:email:group:residence:function

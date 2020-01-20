@@ -386,6 +386,8 @@ function deleteAttendee(attendeeIndex){
 function editAttendee(attendeeIndex, name, email, group, residence, fnctn){
     const attendeeID = localAttendeeList[attendeeIndex].ID;
 
+    console.log("Trying to edit");
+
     const editRequestPacket = new EditUserRequestPacket(attendeeID, name, email, group, residence, fnctn);
 
     function successEditAttendee(packet){
@@ -422,7 +424,6 @@ function createAttendee(name, email, group, residence, fnctn){
     function successCreateAttendee(packet) {
         if (packet.result === "Valid"){
             refresh();
-            //console.log("the d")
         }
         else{
             alert(packet.details);

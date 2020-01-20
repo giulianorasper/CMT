@@ -358,7 +358,8 @@ function deleteAttendee(attendeeIndex){
             refresh();
         }
         else{
-            console.log(packet.details);
+            //Print alert if deletion is not successful
+            alert(packet.details);
         }
     }
 

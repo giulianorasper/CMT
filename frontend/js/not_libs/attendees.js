@@ -17,20 +17,27 @@ import DownloadAllQRRequestPacket from "../../communication/packets/admin/Downlo
 //import $ from "../../node_modules/jquery";
 //import "../../node_modules/jquery-ui-bundle";
 
+
+
 /**
  * Initializing
  */
 $(function(){
+
+
     //Initializing dialog options
     createDialog = $('#creationDialog').dialog({
         title: "Create Attendee",
         autoOpen: false,
         modal: true,
-        resizable: false,
         draggable: false,
+        containment: window,
         close: function () {
             createForm[ 0 ].reset();
             createFields.removeClass("ui-state-error");
+        },
+        open: function () {
+            this.scrollTop("0");
         }
     });
 
@@ -47,13 +54,17 @@ $(function(){
 
     //Editing dialog mostly similar to creation dialog
     editDialog = $('#editDialog').dialog({
+        title: "Edit Attendee",
         autoOpen: false,
         modal: true,
-        resizable: false,
         draggable: false,
+        containment: window,
         close: function () {
             editForm[ 0 ].reset();
             editFields.removeClass("ui-state-error");
+        },
+        open: function () {
+            this.scrollTop("0");
         }
     });
 
@@ -574,8 +585,8 @@ function checkRegex(checkedObject, regex, message){
 function checkValidData(nameID, mailID, groupID, residenceID, functionID){
     var validUser = true;
 
-    validUser = validUser && checkLength(nameID, "name", 5, 64);
-    validUser = validUser && checkLength(mailID, "email", 6, 64);
+    validUser = validUser && checkLength(nameID, "name", 1, 64);
+    validUser = validUser && checkLength(mailID, "email", 5, 64);
     validUser = validUser && checkLength(groupID, "group", 1, 64);
     validUser = validUser && checkLength(residenceID, "residence", 1, 256);
     validUser = validUser && checkLength(functionID, "function", 1, 64);

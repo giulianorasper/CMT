@@ -551,7 +551,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             if(!db_requestManagement.removeRequest(userID)){
                 throw new IllegalArgumentException("Attendees requests can not be removed for unknown reasons");
             }
-
+            List<Integer> toRemove = new ArrayList<>();
+            requests.forEach((i,r) -> {if(r.getRequester().getID() == userID) {toRemove.add(i);}});
+            for(Integer i: toRemove){
+                requests.remove(i);
+            }
         }
         finally {
             requestLock.unlock();

@@ -16,7 +16,7 @@ $( document ).ready(function() {
 
 	    	if(packet.admin){
 	    		$(".adminField").each(function(i, field){
-                    $(field).removeClass("display", "initial");
+                    $(field).removeClass("adminField");
                 })
 	    	}
 	    	window.isAdmin = packet.admin;

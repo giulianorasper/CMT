@@ -25,13 +25,12 @@ $(function(){
     createDialog = $('#creationDialog').dialog({
         title: "Create Attendee",
         autoOpen: false,
-        height: 'auto',
-        width: 'auto',
-        maxWidth: 600,
+        height: 620,
+        width: 420,
         modal: true,
-        close: function (e) {
-            e.preventDefault();
-            console.log(e);
+        resizable: false,
+        draggable: false,
+        close: function () {
             createForm[ 0 ].reset();
             createFields.removeClass("ui-state-error");
         }
@@ -51,10 +50,11 @@ $(function(){
     //Editing dialog mostly similar to creation dialog
     editDialog = $('#editDialog').dialog({
         autoOpen: false,
-        height: 'auto',
-        width: 'auto',
-        maxWidth: 600,
+        height: 620,
+        width: 420,
         modal: true,
+        resizable: false,
+        draggable: false,
         close: function () {
             editForm[ 0 ].reset();
             editFields.removeClass("ui-state-error");

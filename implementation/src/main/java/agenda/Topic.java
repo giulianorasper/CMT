@@ -87,7 +87,7 @@ public class Topic implements Requestable {
     public String getRequestableName(){
         try {
             lock.getReadAccess();
-            String res =  parent.getPreorder().isEmpty()?"":(parent.getPreorder()+ ".")+(parent.topics.indexOf(this) + 1)+" "+this.name;
+            String res = (parent.getPreorder().isEmpty()?"":(parent.getPreorder()+ "."))+(parent.topics.indexOf(this) + 1)+" "+this.name;
             System.out.println(res);
             return res;
         }

@@ -19,27 +19,7 @@ $( document ).ready(function() {
 
     checkAdminStatus();
 
-    const packet = new GetDocumentListRequestPacket();
 
-    CommunicationManager.send(packet, success, fail);
-
-    function success(packet) {
-	    if(packet.result === "Valid") {
-            console.log(packet.documents.length);
-        if(packet.documents.length === 0){
-            $("<div class=\"col-lg-9\">"+"Currently no document is available"+"</div>").appendTo(documentContainer);
-            return;
-        }          
-	        for(var doc of packet.documents){
-	        	console.log(generateDocument(doc));
-	        	generateDocument(doc).appendTo(documentContainer);
-	        }
-	    }
-	}
-
-	function fail() {
-	    console.log("This method is called if something went wrong during the general communication.");
-	}
 
 	let files = null;
 	document.getElementById('uploadFile').addEventListener('change', function (event) {
@@ -95,13 +75,29 @@ function checkAdminStatus(){
         console.log(packet);
         if(packet.result === "Valid") {
 
-            if(!packet.admin){
-                $(".adminField").each(function(i, field){
-                    console.log(field)
-                    $(field).css("display", "none");
-                })
-            }
-            window.isAdmin = packet.admin;          
+        
+            window.isAdmin = packet.admin;     
+            const packet2 = new GetDocumentListRequestPacket();
+
+            CommunicationManager.send(packet2, success2, fail2);
+
+            function success2(packet) {
+                if(packet.result === "Valid") {
+                    console.log(packet.documents.length);
+                if(packet.documents.length === 0){
+                    $("<div class=\"col-lg-9\">"+"Currently no document is available"+"</div>").appendTo(documentContainer);
+                    return;
+                }          
+                    for(var doc of packet.documents){
+                        console.log(generateDocument(doc));
+                        generateDocument(doc).appendTo(documentContainer);
+                    }
+                }
+    }
+
+    function fail2() {
+        console.log("This method is called if something went wrong during the general communication.");
+    }     
             
         }
         else if(packet.result =="InvalidToken"){
@@ -161,11 +157,15 @@ function download(name){
     CommunicationManager.send(packet, success, fail);
 }
 
+function escapeFilename(name){
+    return name.replace("'", "\\'")
+}
+
 
 
 function generateDocument(document){
 	return $("<div class=\"row\">"+
-                                            "<div class=\"col-sm-8 col-lg-8\" "+(!window.isAdmin? "onclick = \"downloadDocument(\'"+document.name+"\')\"":"")+">"+
+                                            "<div class=\"col-sm-8 col-lg-8\" "+(!window.isAdmin? "onclick = \"downloadDocument(\'"+escapeFilename(document.name)+"\')\"":"")+">"+
                                                 "<li >"+(!window.isAdmin?"<a href ='#'>":"")+document.name+(!window.isAdmin?"</a>":"")+"</li>"+
                                             "</div>"+
 

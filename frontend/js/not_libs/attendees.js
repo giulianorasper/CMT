@@ -23,16 +23,11 @@ import DownloadAllQRRequestPacket from "../../communication/packets/admin/Downlo
 $(function(){
     //Initializing dialog options
     createDialog = $('#creationDialog').dialog({
+        title: "Create Attendee",
         autoOpen: false,
-        height: 690,
+        height: 600,
         width: 420,
         modal: true,
-        buttons: {
-            Confirm: clickCreateAttendee,
-            Cancel: function () {
-                createDialog.dialog("close");
-            }
-        },
         close: function (e) {
             e.preventDefault();
             console.log(e);
@@ -58,12 +53,6 @@ $(function(){
         height: 540,
         width: 420,
         modal: true,
-        buttons: {
-            "Confirm": clickEditAttendee,
-            Cancel: function () {
-                editDialog.dialog("close");
-            }
-        },
         close: function () {
             editForm[ 0 ].reset();
             editFields.removeClass("ui-state-error");
@@ -86,6 +75,11 @@ $(document).ready( function() {
     window.uploadUserList = uploadUserList;
     window.downloadAllQrCodes = downloadAllQrCodes;
     window.downloadQR = downloadQR;
+
+    window.clickCreateAttendee = clickCreateAttendee;
+    window.clickEditAttendee = clickEditAttendee;
+    window.closeCreateAttendee = closeCreateAttendee;
+    window.closeEditAttendee = closeEditAttendee;
 
     //Add listeners to buttons/dropdown menus that don't need to be generated dynamically
     document.getElementById("sortingOptions").addEventListener("change", changeSort, false);
@@ -126,12 +120,12 @@ function updateAttendeeList(){
             sortAttendeeList(packet.attendees);
         }
         else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
     function fail() {
-        console.log("Something went wrong while trying to access the server.");
+        alert("Something went wrong while trying to access the server.");
     }
 
     const requestPacket = new GetAllAttendeesRequestPacket();
@@ -364,12 +358,13 @@ function deleteAttendee(attendeeIndex){
             refresh();
         }
         else{
-            console.log(packet.details);
+            //Print alert if deletion is not successful
+            alert(packet.details);
         }
     }
 
     function failDeleteAttendee(){
-        console.log("Something went wrong while trying to access the server.");
+        alert("Something went wrong while trying to access the server.");
     }
 
     CommunicationManager.send(requestPacket, successDeleteAttendee, failDeleteAttendee);
@@ -391,6 +386,8 @@ function deleteAttendee(attendeeIndex){
 function editAttendee(attendeeIndex, name, email, group, residence, fnctn){
     const attendeeID = localAttendeeList[attendeeIndex].ID;
 
+    console.log("Trying to edit");
+
     const editRequestPacket = new EditUserRequestPacket(attendeeID, name, email, group, residence, fnctn);
 
     function successEditAttendee(packet){
@@ -398,12 +395,12 @@ function editAttendee(attendeeIndex, name, email, group, residence, fnctn){
             refresh();
         }
         else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
     function failEditAttendee(){
-        console.log("Something went wrong while trying to access the server.")
+        alert("Something went wrong while trying to access the server.")
     }
 
     CommunicationManager.send(editRequestPacket, successEditAttendee, failEditAttendee);
@@ -427,15 +424,14 @@ function createAttendee(name, email, group, residence, fnctn){
     function successCreateAttendee(packet) {
         if (packet.result === "Valid"){
             refresh();
-            //console.log("the d")
         }
         else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
     function failCreateAttendee(){
-        console.log("Something went wrong while trying to access the server.");
+        alert("Something went wrong while trying to access the server.");
     }
 
     CommunicationManager.send(createRequestPacket, successCreateAttendee, failCreateAttendee);
@@ -458,7 +454,7 @@ function logoutAttendee(attendeeIndex){
         if(packet.result === "Valid"){
             alert("Attendee has successfully been logged out!");
         } else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
@@ -467,12 +463,12 @@ function logoutAttendee(attendeeIndex){
             CommunicationManager.send(newTokenRequestPacket, successNewToken, failLogoutAttendee);
         }
         else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
     function failLogoutAttendee(){
-        console.log("Something went wrong while trying to access the server.");
+        alert("Something went wrong while trying to access the server.");
     }
 
     CommunicationManager.send(logoutRequestPacket, successLogoutAttendee, failLogoutAttendee);
@@ -496,7 +492,7 @@ function getNewAttendeePassword(attendeeIndex){
         if(packet.result === "Valid"){
             alert("New Attendee Password: " + packet.password);
         } else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
@@ -505,12 +501,12 @@ function getNewAttendeePassword(attendeeIndex){
             CommunicationManager.send(getPasswordRequestPacket, successGetPassword, failNewPassword);
         }
         else{
-            console.log(packet.details);
+            alert(packet.details);
         }
     }
 
     function failNewPassword(){
-        console.log("Something went wrong while trying to access the server.");
+        alert("Something went wrong while trying to access the server.");
     }
 
     CommunicationManager.send(newPasswordRequestPacket, successNewPassword, failNewPassword);
@@ -557,7 +553,7 @@ const nameRegex = /[^\$%\^\*£=~@_]/;
 function updateTips(newText){
     tipField.text(newText).addClass("ui-state-highlight");
     setTimeout(function () {
-        tipField.removeClass("ui-state-highlight", 1000)
+        tipField.removeClass("ui-state-highlight");
     }, 500);
 }
 
@@ -579,9 +575,8 @@ function checkRegex(checkedObject, regex, message){
     return true;
 }
 
-function checkValidData(nameID, mailID, groupID, residenceID, functionID, fields){
+function checkValidData(nameID, mailID, groupID, residenceID, functionID){
     var validUser = true;
-    fields.removeClass("ui-state-error");
 
     validUser = validUser && checkLength(nameID, "name", 5, 64);
     validUser = validUser && checkLength(mailID, "email", 6, 64);
@@ -639,3 +634,10 @@ function clickEditAttendee(){
     }
 }
 
+function closeCreateAttendee(){
+    createDialog.dialog("close");
+}
+
+function closeEditAttendee(){
+    editDialog.dialog("close");
+}

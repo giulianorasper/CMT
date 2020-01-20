@@ -25,15 +25,12 @@ $( document ).ready(function() {
 
     document.getElementById('upAgenda').addEventListener('change', handleAgendaUpload, false);
 
-    const packet = new GetAgendaRequestPacket();
-
-    CommunicationManager.send(packet, successAgendaReq, failAgendaReq);
 
 });
 
 function successAgendaReq(packet) {
     if(packet.result === "Valid") {
-        checkAdminStatus();
+    //    checkAdminStatus();
         renderAgenda(packet.agenda, agendaContainer);
     }
 }
@@ -331,13 +328,10 @@ function checkAdminStatus(){
         console.log(packet);
         if(packet.result === "Valid") {
 
-            if(!packet.admin){
-                $(".adminField").each(function(i, field){
-                    console.log(field)
-                    $(field).css("display", "none");
-                })
-            }
-            window.isAdmin = packet.admin;          
+            window.isAdmin = packet.admin;       
+            const packet2 = new GetAgendaRequestPacket();
+
+            CommunicationManager.send(packet2, successAgendaReq, failAgendaReq);   
             
         }
         else if(packet.result =="InvalidToken"){

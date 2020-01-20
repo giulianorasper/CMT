@@ -79,7 +79,9 @@ function getAgenda(){
 
     	function addTopic(topic, preorder){
     		requestOptions.each(function(i, option){
-	    		$("<option data-id=\""+preorder+"\" data-isTop = true>" +preorder+" "+topic.name+"</option>").appendTo(option);
+                var nameSpan = $("<span>")
+                nameSpan.text(topic.name)
+	    		$("<option data-id=\""+preorder+"\" data-isTop = true>" +preorder+" "+(nameSpan.html())+"</option>").appendTo(option);
         		for (var i = 0; i < topic.subTopics.topics.length; i++) {
                     var child = topic.subTopics.topics[i];
                     addTopic(child, preorder+"."+(i+1));

@@ -44,14 +44,14 @@ public class VotingManagementTests extends DatabaseTests {
         named.startVote();
         anon.startVote();
 
-        named.addVote(0, 0);
-        named.addVote(0, 1);
-        named.addVote(0, 2);
-        named.addVote(1, 4);
-        named.addVote(1, 7);
+        named.addVote(0, 0, "Alex");
+        named.addVote(0, 1, "Jörg");
+        named.addVote(0, 2,"simon");
+        named.addVote(1, 4,"bernd");
+        named.addVote(1, 7,"luk");
 
-        anon.addVote(0, 1);
-        anon.addVote(1, 2);
+        anon.addVote(0, 1,"Jörg");
+        anon.addVote(1, 2,"simon");
 
         named.endVote();
         anon.endVote();

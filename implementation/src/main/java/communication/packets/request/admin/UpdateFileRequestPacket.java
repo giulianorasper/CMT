@@ -2,6 +2,7 @@ package communication.packets.request.admin;
 
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.response.FailureResponsePacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import io.netty.buffer.ByteBuf;
@@ -49,12 +50,17 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
     }
 
     public void handleFileTransfer(Conference conference, Connection webSocket, File file) {
-        if(isPermitted(conference, webSocket, true)) {
-            String fileType = "";
-            String[] split = originalName.split("\\.");
-            if(split.length >= 2) fileType = "." + split[split.length-1];
-            conference.updateDocument(name, fileType, file, creation);
-            new ValidResponsePacket().send(webSocket);
+        try {
+            if(isPermitted(conference, webSocket, true)) {
+                String fileType = "";
+                String[] split = name.split("\\.");
+                if(split.length >= 2) fileType = "." + split[split.length-1];
+                if(creation) conference.updateDocument(name, fileType, file, creation);
+                else conference.updateDocument(originalName, fileType, file, creation);
+                new ValidResponsePacket().send(webSocket);
+            }
+        } catch (IllegalArgumentException e) {
+            new FailureResponsePacket(e.getMessage());
         }
     }
 

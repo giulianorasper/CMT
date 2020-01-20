@@ -31,7 +31,7 @@ public class AnonymousVotingOption extends VotingOption {
      * @param userID
      */
     @Override
-    protected void addVote(int userID) {
+    protected void addVote(int userID,String username) {
         votes++;
     }
 

@@ -7,6 +7,7 @@ import GetDocumentListRequestPacket from "../../communication/packets/GetDocumen
 var changeMessage = $("#requestMessage"); // the DOM object representing the input for requests of change
 var requestOptions = $(".requestSelect"); // the dropdown that lets the user choose which type of request they wish to submit
 
+var documents = []
 
 $( document ).ready(function() {
 	getAgenda();
@@ -31,6 +32,12 @@ function submit(isSpeechRequest){
 
 	var refersToTopic = selectedOption.attr("data-isTop");
 	var reference = selectedOption.attr("data-id");
+
+    refersToTopic = (""+refersToTopic) === "true"
+
+    if(!refersToTopic){
+        reference = documents[reference]
+    }
 
 	var packet;
 	if(isSpeechRequest){
@@ -79,7 +86,9 @@ function getAgenda(){
 
     	function addTopic(topic, preorder){
     		requestOptions.each(function(i, option){
-	    		$("<option data-id=\""+preorder+"\" data-isTop = true>" +preorder+" "+topic.name+"</option>").appendTo(option);
+                var nameSpan = $("<span>")
+                nameSpan.text(topic.name)
+	    		$("<option data-id=\""+preorder+"\" data-isTop = true>" +preorder+" "+(nameSpan.html())+"</option>").appendTo(option);
         		for (var i = 0; i < topic.subTopics.topics.length; i++) {
                     var child = topic.subTopics.topics[i];
                     addTopic(child, preorder+"."+(i+1));
@@ -100,13 +109,19 @@ Note that requestable options need to store their type and an unique id using th
 */
 function getDocuments(){
 	const packet = new GetDocumentListRequestPacket();
+    documents = []
 
     CommunicationManager.send(packet, success, fail);
     function success(packet) {
-        if(packet.result === "Valid") {          
+        if(packet.result === "Valid") {         
             for(var doc of packet.documents){
+
+                var nameSpan = $("<span>")
+                nameSpan.text(doc.name)
+
                 requestOptions.each(function(i, option){
-                    $("<option data-id=\""+doc.name+"\" data-isTop = false>" +doc.name+"</option>").appendTo(option);
+                    $("<option data-id=\""+(documents.length)+"\" data-isTop = false>" +(nameSpan.html)+"</option>").appendTo(option);
+                    documents.push(doc.name)
                 })
             }
         }

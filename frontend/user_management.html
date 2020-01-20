@@ -185,51 +185,71 @@
 
 <!-- Dialog that will be shown when trying to create a user -->
 
-<div id="creationDialog" title="Create new user">
-    <p class="validateTips">All form fields are required.</p>
+<div id="creationDialog" title="Create new user" class="ui-dialog">
+    <div id="creationTips">All form fields are required.</div>
 
     <form>
         <fieldset>
+
             <label for="createName">Name</label>
-            <input type="text" name="name" id="createName" placeholder="Enter full name" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="name" id="createName" placeholder="Enter full Name" class="text ui-widget-content ui-corner-all">
+
             <label for="createEmail">Email</label>
-            <input type="text" name="email" id="createEmail" placeholder="Enter email address" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="email" id="createEmail" placeholder="Enter Email Address" class="text ui-widget-content ui-corner-all">
+
             <label for="createGroup">Group</label>
-            <input type="text" name="group" id="createGroup" placeholder="Enter group" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="group" id="createGroup" list="existingCreateGroups" placeholder="Enter Group" class="text ui-widget-content ui-corner-all">
+            <datalist id="existingCreateGroups">
+
+            </datalist>
+
             <label for="createResidence">Residence</label>
-            <input type="text" name="residence" id="createResidence" placeholder="Enter residence" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="residence" id="createResidence" placeholder="Enter Residence" class="text ui-widget-content ui-corner-all">
+
             <label for="createFnctn">Function</label>
             <input type="text" name="fnctn" id="createFnctn" placeholder="Enter Function" class="text ui-widget-content ui-corner-all">
 
             <!-- Submit buttons of dialog fields -->
-            <div>
-                <button type="button" class="btn btn-outline-info" data-role="close" title="Close" style="width: 100px;" onclick="closeCreateAttendee()">Cancel</button>
+            <div class="ui-dialog-content">
+                <button type="button" class="btn btn-outline-info" title="Close" style="width: 100px;" onclick="closeCreateAttendee()">Cancel</button>
 
                 <!-- Gets its functionality in attendees.js -->
-                <button type="submit" class="btn btn-outline-primary" data-role="close" title="Submit" style="width: 100px;">Confirm</button>
+                <button type="submit" class="btn btn-outline-primary" title="Submit" style="width: 100px;">Confirm</button>
             </div>
         </fieldset>
     </form>
 </div>
 
-<div id="editDialog" title="Edit user">
-    <p class="validateTips">All form fields are required.</p>
+<div id="editDialog" title="Edit user" class="ui-dialog">
+    <div id="editingTips">All form fields are required.</div>
 
     <form>
         <fieldset>
             <label for="editName">Name</label>
-            <input type="text" name="name" id="editName" placeholder="Enter full name" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="name" id="editName" placeholder="Enter full Name" class="text ui-widget-content ui-corner-all">
+
             <label for="editEmail">Email</label>
-            <input type="text" name="email" id="editEmail" placeholder="Enter email address" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="email" id="editEmail" placeholder="Enter Email Address" class="text ui-widget-content ui-corner-all">
+
             <label for="editGroup">Group</label>
-            <input type="text" name="group" id="editGroup" placeholder="Enter group" class="text ui-widget-content ui-corner-all">
+            <datalist id="existingEditGroups">
+
+            </datalist>
+            <input type="text" name="group" id="editGroup" list="existingEditGroups" placeholder="Enter Group" class="text ui-widget-content ui-corner-all">
+
             <label for="editResidence">Residence</label>
-            <input type="text" name="residence" id="editResidence" placeholder="Enter residence" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="residence" id="editResidence" placeholder="Enter Residence" class="text ui-widget-content ui-corner-all">
+
             <label for="editFnctn">Function</label>
             <input type="text" name="fnctn" id="editFnctn" placeholder="Enter Function" class="text ui-widget-content ui-corner-all">
 
-            <!-- Allow form submission with keyboard without duplicating the dialog button -->
-            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+            <!-- Submit buttons of dialog fields -->
+            <div>
+                <button type="button" class="btn btn-outline-info" title="Close" style="width: 100px;" onclick="closeEditAttendee()">Cancel</button>
+
+                <!-- Gets its functionality in attendees.js -->
+                <button type="submit" class="btn btn-outline-primary" title="Submit" style="width: 100px;">Confirm</button>
+            </div>
         </fieldset>
     </form>
 </div>

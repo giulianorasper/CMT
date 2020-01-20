@@ -237,6 +237,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
      */
     private void initVotes(){
         db_votingManagement = new DB_VotingManager(databasePath);
+        db_votingManagement.getVotings().forEach(v -> votings.put(v.getID(),v));
     }
 
 
@@ -550,7 +551,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             if(!db_requestManagement.removeRequest(userID)){
                 throw new IllegalArgumentException("Attendees requests can not be removed for unknown reasons");
             }
-
+            List<Integer> toRemove = new ArrayList<>();
+            requests.forEach((i,r) -> {if(r.getRequester().getID() == userID) {toRemove.add(i);}});
+            for(Integer i: toRemove){
+                requests.remove(i);
+            }
         }
         finally {
             requestLock.unlock();
@@ -1059,6 +1064,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             documentsLock.lock();
             if(file.length() > 1024*1024 *500){
                 throw new IllegalArgumentException("The file is to large");
+            }
+            if(!name.endsWith(fileType)){
+                throw new IllegalArgumentException("File extensions differ");
             }
             String fullName = name;
             File f;

@@ -29,7 +29,6 @@ $(document).ready(getPreviousVote);
 function displayPreviousVotes(packet){
     console.log(packet);
     
-
     for(var i in packet.votings){
 
     var voteQuestion = '<div class="card" style="margin-bottom:0px;">'+
@@ -54,29 +53,38 @@ function displayPreviousVotes(packet){
         $('#accordion').append(voteQuestion);
 
         var totalAttendees = 0;
+        var percentageValue = 0;
+        var voterName = null;
+
 
         for( var k in packet.votings[i].options){
             totalAttendees =  totalAttendees + packet.votings[i].options[k].publicVotes;
+            // console.log(totalAttendees);
+            // console.log("testing");
         }
 
-        var voteOptions = '<pre>' +'Total Numbers of Voters:   ' + totalAttendees  + '</pre>';;
+        var voteOptions = '<span style="font-weight:bold;">Total Numbers of Voters:</span> ' + totalAttendees + '<br><br>';
         $('#'+packet.votings[i].ID+'prev').append(voteOptions);
-
+        
         //+ 'Vote Option ' + (packet.votings[i].options[j].optionID + 1) + ': '
         for(var j in packet.votings[i].options){
-            voteOptions =  '<pre>' + 'Vote Option ' + (packet.votings[i].options[j].optionID + 1) + ': '
-                                + packet.votings[i].options[j].name + '\nNumber of voters: '
-                                + packet.votings[i].options[j].publicVotes + '\n'
-                                + Math.round((packet.votings[i].options[j].publicVotes/totalAttendees)*100) + '% of the total voters'
-                                + '\nName of Voters: ' + packet.votings[i].options[j].voters
+            percentageValue = Math.round((packet.votings[i].options[j].publicVotes/totalAttendees)*100);
+            voterName = packet.votings[i].options[j].votersname; 
+
+            voteOptions =  'Vote Option ' + (packet.votings[i].options[j].optionID + 1) + ': '
+                                + packet.votings[i].options[j].name + '<br>Number of voters: '
+                                + packet.votings[i].options[j].publicVotes + '<br>'
+                                + '<span style="font-weight:bold;">' + (isNaN(percentageValue)? 0 : percentageValue) + '% </span>' + ' of the total voters'
+                                + '<br>Name of Voters: ' + (voterName == undefined || voterName.length == 0? 'Not Available': voterName)+ '<br><br>';
                                 // + '<br>'
-                                + '</pre>';
+                                // + '</pre>';
             // if(packet.votings[i].namedVote){
             //     for(var name in packet.votings[i].options[k].voters) {
             //         var namesOfAttendee = namesofAttendee + packet.votings[i].options[k].voters[name]  
             //     }
             // }
-
+            
+           
             $('#'+packet.votings[i].ID+'prev').append(voteOptions);
         }
 

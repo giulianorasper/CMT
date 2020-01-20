@@ -36,8 +36,9 @@ public class AddVoteRequestPacket extends AuthenticatedRequestPacket {
         if(isPermitted(conference, webSocket, false)) {
             Voting voting = conference.getVoting(voteID);
             int userID = conference.tokenToID(getToken());
+            String name = conference.getAttendeeData(userID).getName();
             Packet response;
-            if(voting.addVote(optionID, userID)) {
+            if(voting.addVote(optionID, userID, name)) {
                 response = new ResponsePacket(PacketType.ADD_VOTE_RESPONSE, RequestResult.Valid);
             } else {
                 response = new FailureResponsePacket();

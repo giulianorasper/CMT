@@ -101,8 +101,13 @@ function renderAgenda(data, parent) {
          * @param fontSize - the fontsize of the TOP. Allows nicer UIs
          */
         function generateAgendaRow(name, preorder, fontSize){
+
+            var nameSpan = $('<span>')
+            nameSpan.text(name)
+
+
             return $(
-                '<li class = "agendaRow" style="font-size: '+fontSize+'px;">'+name+(window.isAdmin?
+                '<li class = "agendaRow" style="font-size: '+fontSize+'px;">'+(nameSpan.html())+(window.isAdmin?
                 '<span style="display:inline-block; width: 60px;">'+
                 '</span><span style="font-size:32px;" class="glyphicon glyphicon-plus" onclick = "appendToAgenda(\''+preorder+'\')"></span>'+
                 '<span style="display:inline-block; width: 30px;">'+

@@ -8,7 +8,9 @@ import IsAdminRequestPacket from "../../communication/packets/IsAdminRequestPack
 
 
 var documentContainer = $('#documentsContainer');
+var editFileInput = $("#editFile")
 
+var documents
 
 $( document ).ready(function() {
 
@@ -17,18 +19,29 @@ $( document ).ready(function() {
     window.removeDocument = remove// export the function to the global scope
 
 
+ documents = []
     checkAdminStatus();
 
+    document.getElementById('editFile').addEventListener('change', function (event) {
+        uploadFile(event.target.files, editFileInput.attr("data-name"));
+    }, false);
 
-
-	let files = null;
+	let fileToUpload = null;
 	document.getElementById('uploadFile').addEventListener('change', function (event) {
-	    files = event.target.files;
+	    fileToUpload = event.target.files;
 	    console.log(files);
     }, false);
 
     document.getElementById('submitUpload').onclick = () => {
-        if(files == null) {
+        uploadFile(fileToUpload);
+    }
+
+});
+
+function uploadFile(files, originalName = "") {
+    var isCreation = false;
+    if(originalName === "") isCreation = true; 
+    if(files == null) {
             console.log("implement feedback");
             //TODO feedback
             return;
@@ -51,7 +64,7 @@ $( document ).ready(function() {
                 console.log("This method is called if something went wrong during the general communication.");
             }
             console.log(e.target)
-            const packet = new UploadFileRequestPacket(files[0].name, files[0].name , e.target.result, true);
+            const packet = new UploadFileRequestPacket(files[0].name, originalName , e.target.result, isCreation);
             console.log(files[0].name)
 
             // Send the request to the server
@@ -62,9 +75,7 @@ $( document ).ready(function() {
 
         // Read the file
         reader.readAsArrayBuffer(files[0]);
-    }
-
-});
+}
 
 function checkAdminStatus(){
     const packet = new IsAdminRequestPacket();
@@ -72,7 +83,6 @@ function checkAdminStatus(){
     CommunicationManager.send(packet, success, fail);
 
     function success(packet) {
-        console.log(packet);
         if(packet.result === "Valid") {
 
         
@@ -83,13 +93,12 @@ function checkAdminStatus(){
 
             function success2(packet) {
                 if(packet.result === "Valid") {
-                    console.log(packet.documents.length);
-                if(packet.documents.length === 0){
-                    $("<div class=\"col-lg-9\">"+"Currently no document is available"+"</div>").appendTo(documentContainer);
-                    return;
-                }          
+                    
+                    if(packet.documents.length === 0){
+                        $("<div class=\"col-lg-9\">"+"Currently no document is available"+"</div>").appendTo(documentContainer);
+                        return;
+                    }          
                     for(var doc of packet.documents){
-                        console.log(generateDocument(doc));
                         generateDocument(doc).appendTo(documentContainer);
                     }
                 }
@@ -110,12 +119,15 @@ function checkAdminStatus(){
     }
 }
 
-function edit(name){
+function edit(id){
+    var name = documents[id]
+    editFileInput.attr("data-name", name);
+    editFileInput.click()
 
 }
 
-function remove(name){
-       
+function remove(id){
+      var name = documents[id]
     const packet = new DeleteFileRequestPacket(name);
     CommunicationManager.send(packet, success, fail);
     
@@ -133,7 +145,8 @@ function remove(name){
 }
 
 
-function download(name){
+function download(id){
+    var name = documents[id]
     function success(packet) {
         if(packet.result === "Valid") {
             var bytes = new Uint8Array(packet.fileBytes);
@@ -164,26 +177,35 @@ function escapeFilename(name){
 
 
 function generateDocument(document){
-	return $("<div class=\"row\">"+
-                                            "<div class=\"col-sm-8 col-lg-8\" "+(!window.isAdmin? "onclick = \"downloadDocument(\'"+escapeFilename(document.name)+"\')\"":"")+">"+
-                                                "<li >"+(!window.isAdmin?"<a href ='#'>":"")+document.name+(!window.isAdmin?"</a>":"")+"</li>"+
+
+
+
+    var nameSpan = $("<span>")
+    nameSpan.text(document.name)
+    console.log(documents)
+	var res =  $("<div class=\"row\">"+
+                                            "<div class=\"col-sm-8 col-lg-8\" "+(!window.isAdmin? "onclick = \"downloadDocument(\'"+documents.length+"\')\"":"")+">"+
+                                                "<li >"+(!window.isAdmin?"<a href ='#'>":"")+(nameSpan.html())+(!window.isAdmin?"</a>":"")+"</li>"+
                                             "</div>"+
 
                                             (window.isAdmin?"<div class=\"col-lg\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 42px; padding-left: 24px;\">"+
-                                                      "<span onclick = \"downloadDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-download-alt \"></span>"+
+                                                      "<span onclick = \"downloadDocument(\'"+documents.length+"\')\" class=\"glyphicon glyphicon-download-alt \"></span>"+
                                                     "</a>"+
                                             
                                             // "<div class=\"col-lg-auto\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 42px;\">"+
-                                                      "<span onclick = \"editDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-edit\"></span>"+
+                                                      "<span onclick = \"editDocument(\'"+documents.length+"\')\" class=\"glyphicon glyphicon-edit\">Test</span>"+
                                                     "</a>"+
                                             // "</div>"+
                                             // "<div class=\"col-lg-auto\">"+
 											
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 20px;\">"+
-                                                      "<span onclick = \"removeDocument(\'"+document.name+"\')\" class=\"glyphicon glyphicon-trash \"></span>"+
+                                                      "<span onclick = \"removeDocument(\'"+documents.length+"\')\" class=\"glyphicon glyphicon-trash \"></span>"+
                                                     "</a>":"")+
                                             "</div>"+
                                         "</div>");
+        documents.push(document.name)
+            console.log(documents)
+        return res;
 }

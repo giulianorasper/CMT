@@ -29,7 +29,6 @@ $(document).ready(getPreviousVote);
 function displayPreviousVotes(packet){
     console.log(packet);
     
-
     for(var i in packet.votings){
 
     var voteQuestion = '<div class="card" style="margin-bottom:0px;">'+
@@ -55,6 +54,8 @@ function displayPreviousVotes(packet){
 
         var totalAttendees = 0;
         var percentageValue = 0;
+        var voterName = null;
+
 
         for( var k in packet.votings[i].options){
             totalAttendees =  totalAttendees + packet.votings[i].options[k].publicVotes;
@@ -67,13 +68,14 @@ function displayPreviousVotes(packet){
         
         //+ 'Vote Option ' + (packet.votings[i].options[j].optionID + 1) + ': '
         for(var j in packet.votings[i].options){
-            percentageValue = Math.round((packet.votings[i].options[j].publicVotes/totalAttendees)*100); 
+            percentageValue = Math.round((packet.votings[i].options[j].publicVotes/totalAttendees)*100);
+            voterName = packet.votings[i].options[j].votersname; 
 
             voteOptions =  'Vote Option ' + (packet.votings[i].options[j].optionID + 1) + ': '
                                 + packet.votings[i].options[j].name + '<br>Number of voters: '
                                 + packet.votings[i].options[j].publicVotes + '<br>'
                                 + (isNaN(percentageValue)? 0 : percentageValue) + '% of the total voters'
-                                + '<br>Name of Voters: ' + packet.votings[i].options[j].votersname + '<br><br>';
+                                + '<br>Name of Voters: ' + (voterName == undefined || voterName.length == 0? 'Not Available': voterName)+ '<br><br>';
                                 // + '<br>'
                                 // + '</pre>';
             // if(packet.votings[i].namedVote){
@@ -81,7 +83,8 @@ function displayPreviousVotes(packet){
             //         var namesOfAttendee = namesofAttendee + packet.votings[i].options[k].voters[name]  
             //     }
             // }
-
+            
+           
             $('#'+packet.votings[i].ID+'prev').append(voteOptions);
         }
 

@@ -103,7 +103,7 @@ tbc
 
 ### Voting
 
-This page is divided in three sections: "Active Voting", "Previous Votings" and "Edit/Create Votings".
+This page is divided into three sections: "Active Voting", "Previous Votings" and "Edit/Create Votings".
 
 In the "Active Voting" section, attendees can submit their vote to the **active voting** by selecting one of the radio buttons on the left and clicking the "Submit Vote" button afterwards. If there is no active voting or if the active voting message expired, an according message will show instead of the voting here.
 When there is a new active voting, all attendees will get redirected to this page once and a **timer** will appear representing the remaining time to vote. This timer will show up in the header as well and clicking it will redirect attendees to this page.

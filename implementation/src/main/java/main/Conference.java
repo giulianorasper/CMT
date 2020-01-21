@@ -255,7 +255,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     public void endConference() {
-        this.logoutNonAdmins();
+        this.logoutNonAdmins(false);
     }
 
 
@@ -738,14 +738,18 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
      * Logout All Attendees which are not Admins from Conference. Invalidate all Token and Password of these.
      * @return true iff logout was successful
      */
-    public boolean logoutNonAdmins() {
+    public boolean logoutNonAdmins(Boolean newpw) {
         try{
             attendeeLock.lock();
             boolean success = true;
             for (Attendee a : db_userManagement.getAllAttendees()) {
                 if(isAdmin(a.getID())) continue;
                 a.logout();
-                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken());
+                if (newpw) {
+                    success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken());
+                } else {
+                    success = success && db_userManagement.logoutUser(a.getID(), null, null);
+                }
             }
             return success;
         }

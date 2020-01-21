@@ -75,7 +75,7 @@ function displayPreviousVotes(packet){
                                 + packet.votings[i].options[j].name + '<br>Number of voters: '
                                 + packet.votings[i].options[j].publicVotes + '<br>'
                                 + '<span style="font-weight:bold;">' + (isNaN(percentageValue)? 0 : percentageValue) + '% </span>' + ' of the total voters'
-                                + '<br>Name of Voters: ' + (voterName == undefined || voterName.length == 0? 'Not Available': voterName)+ '<br><br>';
+                                + '<br>Name of Voters: ' + (voterName == undefined || voterName.length == 0? 'Not Available': voterName.join(', '))+ '<br><br>';
                                 // + '<br>'
                                 // + '</pre>';
             // if(packet.votings[i].namedVote){

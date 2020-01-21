@@ -417,7 +417,7 @@ function editAttendee(attendeeIndex, name, email, group, residence, fnctn, prese
     const attendeeID = localAttendeeList[attendeeIndex].ID;
 
     const editRequestPacket = new EditUserRequestPacket(attendeeID, name, email, group, residence, fnctn);
-    const editPresenceRequestPacket = new SetAttendeePresentStatusRequestPacket(attendeeIndex, present);
+    const editPresenceRequestPacket = new SetAttendeePresentStatusRequestPacket(attendeeID, present);
 
 
     console.log("When sending edit request: " + present);

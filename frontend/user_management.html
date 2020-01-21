@@ -192,22 +192,22 @@
         <fieldset>
 
             <label for="createName">Name</label>
-            <input type="text" name="name" id="createName" placeholder="Enter full Name" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="name" id="createName" placeholder="Enter full Name" class="text ui-widget-content ui-corner-all" autocomplete="new-password">
 
             <label for="createEmail">Email</label>
-            <input type="text" name="email" id="createEmail" placeholder="Enter Email Address" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="email" id="createEmail" placeholder="Enter Email Address" class="text ui-widget-content ui-corner-all" autocomplete="new-password">
 
             <label for="createGroup">Group</label>
-            <input type="text" name="group" id="createGroup" list="existingCreateGroups" placeholder="Enter Group" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="group" id="createGroup" list="existingCreateGroups" placeholder="Enter Group" class="text ui-widget-content ui-corner-all" autocomplete="new-password">
             <datalist id="existingCreateGroups">
 
             </datalist>
 
             <label for="createResidence">Residence</label>
-            <input type="text" name="residence" id="createResidence" placeholder="Enter Residence" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="residence" id="createResidence" placeholder="Enter Residence" class="text ui-widget-content ui-corner-all" autocomplete="new-password">
 
             <label for="createFnctn">Function</label>
-            <input type="text" name="fnctn" id="createFnctn" placeholder="Enter Function" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="fnctn" id="createFnctn" placeholder="Enter Function" class="text ui-widget-content ui-corner-all" autocomplete="new-password">
 
             <!-- Submit buttons of dialog fields -->
             <div class="ui-dialog-content">
@@ -226,22 +226,30 @@
     <form>
         <fieldset>
             <label for="editName">Name</label>
-            <input type="text" name="name" id="editName" placeholder="Enter full Name" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="name" id="editName" placeholder="Enter full Name" class="text ui-widget-content ui-corner-all" autocomplete="new-password">
 
             <label for="editEmail">Email</label>
-            <input type="text" name="email" id="editEmail" placeholder="Enter Email Address" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="email" id="editEmail" placeholder="Enter Email Address" class="text ui-widget-content ui-corner-all" autocomplete="new-password">
 
             <label for="editGroup">Group</label>
             <datalist id="existingEditGroups">
 
             </datalist>
-            <input type="text" name="group" id="editGroup" list="existingEditGroups" placeholder="Enter Group" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="group" id="editGroup" list="existingEditGroups" placeholder="Enter Group" class="text ui-widget-content ui-corner-all" autocomplete="new-password">
 
             <label for="editResidence">Residence</label>
-            <input type="text" name="residence" id="editResidence" placeholder="Enter Residence" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="residence" id="editResidence" placeholder="Enter Residence" class="text ui-widget-content ui-corner-all" autocomplete="new-password">
 
             <label for="editFnctn">Function</label>
-            <input type="text" name="fnctn" id="editFnctn" placeholder="Enter Function" class="text ui-widget-content ui-corner-all">
+            <input type="text" name="fnctn" id="editFnctn" placeholder="Enter Function" class="text ui-widget-content ui-corner-all" autocomplete="new-password">
+
+            <label for="presentStatus">Present</label>
+            <div class="btn-group" id="presentStatus" data-toggle="buttons">
+                <label class="btn btn-default btn-on btn-xs active">
+                    <input type="radio" value="1" name="edit-yes-no" checked="checked" style="opacity: 0; width: 0" >Yes</label>
+                <label class="btn btn-default btn-off btn-xs ">
+                    <input type="radio" value="0" name="edit-yes-no" style="opacity: 0; width: 0">No</label>
+            </div>
 
             <!-- Submit buttons of dialog fields -->
             <div>

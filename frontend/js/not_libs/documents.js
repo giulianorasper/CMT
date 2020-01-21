@@ -185,7 +185,7 @@ function generateDocument(document){
     console.log(documents)
 	var res =  $("<div class=\"row\">"+
                                             "<div class=\"col-sm-8 col-lg-8\" "+(!window.isAdmin? "onclick = \"downloadDocument(\'"+documents.length+"\')\"":"")+">"+
-                                                "<li >"+(!window.isAdmin?"<a href ='#'>":"")+(nameSpan.html())+(!window.isAdmin?"</a>":"")+"</li>"+
+                                                "<li >"+(!window.isAdmin?"<a href ='#'>":"")+(nameSpan.html() + "<span style='font-size:50%'> &emsp; &emsp; version:"+document.revisionNumber+"</span>  ")+(!window.isAdmin?"</a>":"")+"</li>"+
                                             "</div>"+
 
                                             (window.isAdmin?"<div class=\"col-lg\">"+
@@ -195,7 +195,7 @@ function generateDocument(document){
                                             
                                             // "<div class=\"col-lg-auto\">"+
                                                        "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 42px;\">"+
-                                                      "<span onclick = \"editDocument(\'"+documents.length+"\')\" class=\"glyphicon glyphicon-edit\">Test</span>"+
+                                                      "<span onclick = \"editDocument(\'"+documents.length+"\')\" class=\"glyphicon glyphicon-edit\"></span>"+
                                                     "</a>"+
                                             // "</div>"+
                                             // "<div class=\"col-lg-auto\">"+

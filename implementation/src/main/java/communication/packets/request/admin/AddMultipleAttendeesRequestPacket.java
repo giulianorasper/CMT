@@ -31,11 +31,11 @@ public class AddMultipleAttendeesRequestPacket extends AuthenticatedRequestPacke
             attendees.forEach(a -> {
                 if(a.getName() == null) throw new IllegalArgumentException();
             });
+            new ValidResponsePacket().send(webSocket);
             attendees.forEach(a -> {
                 Attendee attendee = new Attendee(a.getName(), a.getEmail(), conference.getFreeUserName(a.getName()), a.getGroup(), a.getResidence(), a.getFunction());
                 conference.addAttendee(attendee);
             });
-            new ValidResponsePacket().send(webSocket);
         }
     }
 

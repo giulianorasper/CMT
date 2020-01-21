@@ -80,11 +80,10 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                             }
                         } else {
                             //update values of the valid attendee
-                            sqlstatement = "UPDATE users SET password = ?, present = ?  WHERE username = ?";
+                            sqlstatement = "UPDATE users SET password = ?  WHERE username = ?";
                             try (PreparedStatement stmt2 = connection.prepareStatement(sqlstatement)) {
                                 stmt2.setNull(1, Types.VARCHAR);
-                                stmt2.setBoolean(2, true);
-                                stmt2.setString(3, userName);
+                                stmt2.setString(2, userName);
                                 stmt2.executeUpdate();
                             } catch (SQLException e) {
                                 System.err.println("An exception occurred while updating values of an attendee.");
@@ -140,6 +139,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public TokenResponse checkToken(String token) {
+        if (token == null) {
+            return TokenResponse.TokenDoesNotExist;
+        }
         Connection connection = this.openConnection();
         String sqlstatement = "SELECT * FROM users WHERE token = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -231,12 +233,19 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public boolean logoutUser(int userID, String pw, String token) {
         Connection connection = this.openConnection();
-        String sqlstatement = "UPDATE users SET password = ?, token = ?, present = ?  WHERE userID = ?";
+        String sqlstatement = "UPDATE users SET password = ?, token = ?  WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
-            stmt.setString(1, pw);
-            stmt.setString(2, token);
-            stmt.setBoolean(3, false);
-            stmt.setInt(4, userID);
+            if (pw == null) {
+                stmt.setNull(1, Types.VARCHAR);
+            } else {
+                stmt.setString(1, pw);
+            }
+            if (token == null) {
+                stmt.setNull(2, Types.VARCHAR);
+            } else {
+                stmt.setString(2, token);
+            }
+            stmt.setInt(3, userID);
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An exception occurred while logging out/invalidating a user.");
@@ -482,7 +491,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 }
             }
         } catch (SQLException ex) {
-            System.err.println("An exception occurred while reading all admins.");
+            System.err.println("An exception occurred while reading all attendees.");
             System.err.println(ex.getMessage());
             return null;
         } finally {

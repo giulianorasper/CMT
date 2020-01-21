@@ -35,6 +35,7 @@ public class LoginRequestPacket extends RequestPacket {
 
     @Override
     public void handle(Conference conference, Connection webSocket) {
+        if(password == null) password = "";
         Pair<LoginResponse, Pair<String,Long>> result;
         result = conference.login(username, password);
 

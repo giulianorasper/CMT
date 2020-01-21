@@ -177,6 +177,20 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
         tmpDir = new File(System.getProperty("user.dir") + "/tmp/conference");
         if(!tmpDir.exists()) tmpDir.mkdirs();
+
+        long conferenceduration = endsAt - startsAt;
+        Timer ActiveTimer = new Timer();
+        ActiveTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("CONFERENCE IS FINISHED!");
+                System.out.println("ALL NONADMINS ARE LOGGED OUT");
+                endConference();
+            }
+
+
+        }, conferenceduration);
+
     }
 
     /**
@@ -238,6 +252,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private void initVotes(){
         db_votingManagement = new DB_VotingManager(databasePath);
         db_votingManagement.getVotings().forEach(v -> votings.put(v.getID(),v));
+    }
+
+    public void endConference() {
+        this.logoutNonAdmins(false);
     }
 
 
@@ -720,14 +738,18 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
      * Logout All Attendees which are not Admins from Conference. Invalidate all Token and Password of these.
      * @return true iff logout was successful
      */
-    public boolean logoutNonAdmins() {
+    public boolean logoutNonAdmins(Boolean newpw) {
         try{
             attendeeLock.lock();
             boolean success = true;
             for (Attendee a : db_userManagement.getAllAttendees()) {
                 if(isAdmin(a.getID())) continue;
                 a.logout();
-                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken());
+                if (newpw) {
+                    success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken());
+                } else {
+                    success = success && db_userManagement.logoutUser(a.getID(), null, null);
+                }
             }
             return success;
         }

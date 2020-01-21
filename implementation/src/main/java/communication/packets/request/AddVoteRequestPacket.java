@@ -9,7 +9,9 @@ import communication.packets.response.FailureResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
+import user.Attendee;
 import voting.Voting;
+import voting.VotingStatus;
 
 /**
  * This packet can be used by an attendee to submit their vote for an ongoing voting.
@@ -36,12 +38,20 @@ public class AddVoteRequestPacket extends AuthenticatedRequestPacket {
         if(isPermitted(conference, webSocket, false)) {
             Voting voting = conference.getVoting(voteID);
             int userID = conference.tokenToID(getToken());
-            String name = conference.getAttendeeData(userID).getName();
+            Attendee attendee = conference.getAttendeeData(userID);
+            if(!attendee.isPresent()) {
+                new FailureResponsePacket("You can only vote if you are present.").send(webSocket);
+                return;
+            }
+            String name = attendee.getName();
             Packet response;
             if(voting.addVote(optionID, userID, name)) {
                 response = new ResponsePacket(PacketType.ADD_VOTE_RESPONSE, RequestResult.Valid);
             } else {
-                response = new FailureResponsePacket();
+                if(voting.getStatus() == VotingStatus.Closed)
+                    response = new FailureResponsePacket("The time for voting is up");
+                else
+                    response = new FailureResponsePacket("Your vote could not be registered. Most likely you have already submitted a vote");
             }
             response.send(webSocket);
         }

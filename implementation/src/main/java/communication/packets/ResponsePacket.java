@@ -19,4 +19,8 @@ public class ResponsePacket extends BasePacket {
 
     @Expose
     private RequestResult result;
+
+    public RequestResult getResult() {
+        return result;
+    }
 }

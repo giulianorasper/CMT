@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import user.Attendee;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,11 +17,12 @@ public class ConnectionTests {
     private CommunicationManager communicationManager;
     private Conference conference;
 
-    @Before
     public void before() {
         port = portCounter.getAndIncrement();
         conference = new Conference(true);
-        CommunicationManagerFactory factory = new CommunicationManagerFactory(conference).enableDebugging().setPort(port).ignoreSecurityAlerts();
+        Attendee attendee = new Attendee("a", "a", "a", "a", "a", "a");
+        conference.addAttendee(attendee, "login");
+        CommunicationManagerFactory factory = new CommunicationManagerFactory(conference).setPort(port).ignoreSecurityAlerts();
         communicationManager = factory.create();
         communicationManager.start();
     }
@@ -30,9 +32,9 @@ public class ConnectionTests {
         communicationManager.stop();
     }
 
-    @Test
-    public void connect() throws Exception {
-        int amount = 1;
+    @Test(timeout = 60000)
+    public void stressTest() throws Exception {
+        int amount = 500 ;
         WebSocketClient[] clients = new WebSocketClient[amount];
         for(int i = 0; i < amount; i++) {
             clients[i] = new WebSocketClient(port);
@@ -42,25 +44,25 @@ public class ConnectionTests {
         }
         for(int i = 0; i < amount; i++) {
             WebSocketClient client = clients[i];
-            LoginRequestPacket packet = new LoginRequestPacket("dummy", "dummy");
-            client.send(packet, (g) -> {
-                //client.getChannel().close();
-            });
+            LoginRequestPacket packet = new LoginRequestPacket("a", "login");
+            client.send(packet);
         }
         for(int i = 0; i < amount; i++) {
             WebSocketClient client = clients[i];
             client.getChannel().closeFuture().sync();
-            client.stop();
+            Assert.assertTrue("Client " + i + " did not reveive ananser.", client.isSuccessful());
         }
     }
 
-    public void testTimeout() throws Exception {
+    @Test(timeout = 15000)
+    public void clientTimeout() throws Exception {
         WebSocketClient client = new WebSocketClient(port);
         long start = System.currentTimeMillis();
         client.start();
         client.getChannel().closeFuture().sync();
         long end = System.currentTimeMillis();
         long time = end - start;
+        client.stop();
         Assert.assertTrue(time > 10000 && time < 12000);
     }
 }

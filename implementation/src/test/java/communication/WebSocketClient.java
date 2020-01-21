@@ -30,11 +30,13 @@ public class WebSocketClient {
     private Channel channel;
     private AtomicBoolean running;
     private AtomicBoolean connected;
+    private AtomicBoolean success;
     EventLoopGroup group = new NioEventLoopGroup();
 
     public WebSocketClient(int port) {
         running = new AtomicBoolean(false);
         connected = new AtomicBoolean(false);
+        success = new AtomicBoolean(false);
         this.uri = URI.create("ws://localhost:"+port+"/websocket");
     }
 
@@ -48,7 +50,7 @@ public class WebSocketClient {
             WebSocketClientHandler handler =
                     new WebSocketClientHandler(
                             WebSocketClientHandshakerFactory.newHandshaker(
-                                    uri, WebSocketVersion.V13, null, false, customHeaders));
+                                    uri, WebSocketVersion.V13, null, false, customHeaders), success, this);
 
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
@@ -82,15 +84,14 @@ public class WebSocketClient {
         running.set(false);
     }
 
-    public synchronized void send(String msg, ChannelFutureListener listener) {
+    public synchronized void send(String msg) {
         ChannelFuture future = channel.writeAndFlush(new TextWebSocketFrame(msg));
-        future.addListener(listener);
     }
 
-    public synchronized void send(Packet packet, ChannelFutureListener listener) {
+    public synchronized void send(Packet packet) {
         Gson gson = new Gson();
         String json = gson.toJson(packet);
-        send(json, listener);
+        send(json);
     }
 
     public synchronized boolean isRunning() {
@@ -103,5 +104,9 @@ public class WebSocketClient {
 
     public synchronized Channel getChannel() {
         return channel;
+    }
+
+    public synchronized boolean isSuccessful() {
+        return success.get();
     }
 }

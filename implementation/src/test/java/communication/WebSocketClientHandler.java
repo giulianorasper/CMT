@@ -1,5 +1,9 @@
 package communication;
 
+import com.google.gson.Gson;
+import communication.enums.RequestResult;
+import communication.packets.BasePacket;
+import communication.packets.ResponsePacket;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,13 +14,19 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     private WebSocketClientHandshaker handshaker;
     private ChannelPromise handshakeFuture;
+    private AtomicBoolean success;
+    private WebSocketClient client;
 
-    public WebSocketClientHandler(final WebSocketClientHandshaker handshaker) {
+    public WebSocketClientHandler(final WebSocketClientHandshaker handshaker, AtomicBoolean success, WebSocketClient client) {
         this.handshaker = handshaker;
+        this.success = success;
+        this.client = client;
     }
 
     public ChannelFuture handshakeFuture() {
@@ -50,7 +60,15 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
         WebSocketFrame frame = (WebSocketFrame) msg;
         if (frame instanceof TextWebSocketFrame) {
             TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
-            System.out.println(textFrame.text());
+            try {
+                Gson gson = new Gson();
+                ResponsePacket packet = gson.fromJson(textFrame.text(), ResponsePacket.class);
+                if(packet.getResult() != RequestResult.Valid) throw new Exception();
+                success.set(true);
+            } catch (Exception e) {
+                success.set(false);
+            }
+            client.stop();
         }
 
     }

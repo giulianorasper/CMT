@@ -179,8 +179,8 @@ function displayActiveVote(packet){
 				var questionOptions = '<div class="row">'+
 										'<div class="col-lg-12">'+
 										'<div class="custom-control custom-radio" style="margin-left:50px;">'+
-										'<input type="radio" class="custom-control-input d-flex p-2" id="'+packet.voting.options[i].optionID+'" checked name="radio" style="background:#2E004B;">'+
-										'<label style="word-break: break-word; margin-right: 30px;" class="custom-control-label" for="'+packet.voting.options[i].optionID+'">'+packet.voting.options[i].name+'</label>'+
+										'<input type="radio" class="custom-control-input d-flex p-2" id="'+packet.voting.options[i].optionID+"-option"+'" checked name="radio" style="background:#2E004B;">'+
+										'<label style="word-break: break-word; margin-right: 30px;" class="custom-control-label" for="'+packet.voting.options[i].optionID+"-option"+'">'+packet.voting.options[i].name+'</label>'+
 										'</div>'+
 										'</div>'+
 										'</div>';
@@ -227,8 +227,10 @@ function displayActiveVote(packet){
                 //e.preventDefault();
 				
 				
-				const selectedOptionId = $('input[name="radio"]:checked').attr('id');
+				const selectedOptionId = $('input[name="radio"]:checked').attr('id').split('-');
 				
+				console.log(selectedOptionId[0]);
+				console.log(voteID);
 
 					function success(packet){
 						if(packet.result === "Valid"){
@@ -248,7 +250,7 @@ function displayActiveVote(packet){
 						console.log("sorry! your vote is not sumbiited");
 					}
 					
-					const sendVote = new AddVoteRequestPacket(voteID, selectedOptionId);
+					const sendVote = new AddVoteRequestPacket(voteID, selectedOptionId[0]);
 
 					CommunicationManager.send(sendVote, success, fail);	
 	

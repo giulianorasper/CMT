@@ -3,6 +3,7 @@ import CommunicationManager from "../../communication/CommunicationManager.js";
 import RemoveAttendeeRequestPacket from "../../communication/packets/admin/RemoveAttendeeRequestPacket.js";
 import EditUserRequestPacket from "../../communication/packets/admin/EditUserRequestPacket.js";
 import AddAttendeeRequestPacket from "../../communication/packets/admin/AddAttendeeRequestPacket.js";
+import AddMultipleAttendeesRequestPacket from "../../communication/packets/admin/AddMultipleAttendeesRequestPacket.js";
 import LogoutAttendeeRequestPacket from "../../communication/packets/admin/LogoutAttendeeRequestPacket.js";
 import GenerateNewAttendeePasswordRequestPacket
     from "../../communication/packets/admin/GenerateNewAttendeePasswordRequestPacket.js";
@@ -352,8 +353,19 @@ function handleListUpload(event) {
     }
 
     function parseUsers(text) {
-        text.split(/\r?\n/).forEach(entry => createAttendee.apply(null, entry.split(":")));
-        refresh();
+        let packet = new AddMultipleAttendeesRequestPacket();
+        text.split(/\r?\n/).forEach(entry => packet.addAttendee.apply(packet, entry.split(":")));
+        CommunicationManager.send(packet, success, fail);
+
+        function success(packet){
+            if(packet.result === "Valid"){
+                refresh();
+            }
+        }
+
+        function fail(){
+            alert("Something went wrong while trying to access the server.");
+        }
     }
 
 }

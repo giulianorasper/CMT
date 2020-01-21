@@ -13,6 +13,8 @@ import GetAttendeePasswordRequestPacket from "../../communication/packets/admin/
 import DownloadQRRequestPacket from "../../communication/packets/admin/DownloadQRRequestPacket.js";
 import DownloadAllQRRequestPacket from "../../communication/packets/admin/DownloadAllQRRequestPacket.js";
 import GetExistingGroupsRequestPacket from "../../communication/packets/admin/GetExistingGroupsRequestPacket.js";
+import SetAttendeePresentStatusRequestPacket
+    from "../../communication/packets/admin/SetAttendeePresentStatusRequestPacket.js";
 
 //Importing JQuery and JQuery UI
 //import $ from "../../node_modules/jquery";
@@ -396,14 +398,28 @@ function deleteAttendee(attendeeIndex){
  * @param group represents the (new) group of the attendee
  * @param residence represents the (new) residence of the attendee
  * @param fnctn represents the (new) function of the attendee
+ * @param present represents the current present status of the attendee
  */
 
-function editAttendee(attendeeIndex, name, email, group, residence, fnctn){
+function editAttendee(attendeeIndex, name, email, group, residence, fnctn, present){
     const attendeeID = localAttendeeList[attendeeIndex].ID;
 
     const editRequestPacket = new EditUserRequestPacket(attendeeID, name, email, group, residence, fnctn);
+    const editPresenceRequestPacket = new SetAttendeePresentStatusRequestPacket(attendeeIndex, present);
+
+
+    console.log("When sending edit request: " + present);
 
     function successEditAttendee(packet){
+        if(packet.result === "Valid"){
+            CommunicationManager.send(editPresenceRequestPacket, successEditPresence, failEditAttendee);
+        }
+        else{
+            alert(packet.details);
+        }
+    }
+
+    function successEditPresence(packet){
         if(packet.result === "Valid"){
             refresh();
         }
@@ -670,12 +686,22 @@ function clickEditAttendee(){
     if(checkValidData(editNameID, editMailID, editGroupID, editResidenceID, editFunctionID, editTipField)){
         editDialog.dialog("close");
 
+        const editPresentID = $('input[name="edit-yes-no"]:checked');
+
+        console.log("Value of button: " + editPresentID.val());
+
+        // Has to be compared like this!! === always results in false
+        const present = editPresentID.val() == 1;
+
+        console.log("When closing editing window: " + present);
+
         editAttendee(editedAttendeeIndex,
             editNameID.val(),
             editMailID.val(),
             editGroupID.val(),
             editResidenceID.val(),
-            editFunctionID.val());
+            editFunctionID.val(),
+            present);
     }
 }
 

@@ -9,6 +9,7 @@ import communication.packets.response.FailureResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
+import user.Attendee;
 import voting.Voting;
 
 /**
@@ -36,7 +37,12 @@ public class AddVoteRequestPacket extends AuthenticatedRequestPacket {
         if(isPermitted(conference, webSocket, false)) {
             Voting voting = conference.getVoting(voteID);
             int userID = conference.tokenToID(getToken());
-            String name = conference.getAttendeeData(userID).getName();
+            Attendee attendee = conference.getAttendeeData(userID);
+            if(!attendee.isPresent()) {
+                new FailureResponsePacket("You can only vote if you are present.").send(webSocket);
+                return;
+            }
+            String name = attendee.getName();
             Packet response;
             if(voting.addVote(optionID, userID, name)) {
                 response = new ResponsePacket(PacketType.ADD_VOTE_RESPONSE, RequestResult.Valid);

@@ -385,7 +385,7 @@ function renderCreatedVote(vote){
 	var durationMinutes = (Math.floor((durationAux/60)))+":"+seconds;
 	var flag = false;
 
-	$( "<tr style ='word-break:break-all;' data-toggle=\"collapse\" data-target=\"#user_accordion"+vote.ID+"\" class=\"clickable\">"+
+	$( "<tr style ='word-break:break-all;' data-toggle=\"collapse\" data-target=\"#user_accordion"+vote.ID+"\" id='#user_accordion"+vote.ID+"' class=\"clickable\">"+
                                         "<td>"+vote.question+"</td>"+
                                         "<td>"+(vote.namedVote?"Named":"Anonymous")+"</td>"+
                                         "<td>"+durationMinutes+"</td>"+

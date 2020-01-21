@@ -130,7 +130,8 @@ tbc
 
 ### Profile
 
-tbc
+The "Profile" page displays the data of the attendee which is currently logged in. This data includes the **name**, **username**, **email**, **group**, **residence** and **function** of that attendee.
+That data cannot be interacted with and (in case it is necessary) has to be edited by admins in the "User Management" page.
 
 
 ### User Management

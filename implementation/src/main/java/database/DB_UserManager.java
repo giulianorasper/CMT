@@ -139,6 +139,9 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      */
     @Override
     public TokenResponse checkToken(String token) {
+        if (token == null) {
+            return TokenResponse.TokenDoesNotExist;
+        }
         Connection connection = this.openConnection();
         String sqlstatement = "SELECT * FROM users WHERE token = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
@@ -232,8 +235,16 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         Connection connection = this.openConnection();
         String sqlstatement = "UPDATE users SET password = ?, token = ?  WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
-            stmt.setString(1, pw);
-            stmt.setString(2, token);
+            if (pw == null) {
+                stmt.setNull(1, Types.VARCHAR);
+            } else {
+                stmt.setString(1, pw);
+            }
+            if (token == null) {
+                stmt.setNull(2, Types.VARCHAR);
+            } else {
+                stmt.setString(2, token);
+            }
             stmt.setInt(3, userID);
             stmt.executeUpdate();
         } catch (SQLException e) {

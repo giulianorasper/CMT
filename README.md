@@ -103,7 +103,7 @@ tbc
 
 ### Voting
 
-This page is divided in three sections: "Active Voting", "Previous Votings" and "Edit/Create Votings".
+This page is divided into three sections: "Active Voting", "Previous Votings" and "Edit/Create Votings".
 
 In the "Active Voting" section, attendees can submit their vote to the **active voting** by selecting one of the radio buttons on the left and clicking the "Submit Vote" button afterwards. If there is no active voting or if the active voting message expired, an according message will show instead of the voting here.
 When there is a new active voting, all attendees will get redirected to this page once and a **timer** will appear representing the remaining time to vote. This timer will show up in the header as well and clicking it will redirect attendees to this page.
@@ -130,12 +130,18 @@ tbc
 
 ### Profile
 
-tbc
+The "Profile" page displays the data of the attendee which is currently logged in. This data includes the **name**, **username**, **email**, **group**, **residence** and **function** of that attendee.
+That data cannot be interacted with and (in case it is necessary) has to be edited by admins in the "User Management" page.
 
 
 ### User Management
 
-tbc
+The "User Management" page is only accessible by admins.
+
+A list of attendees will display in a table and clicking on any attendee will make their section expand, showing the remaining data that's not displayed in the table itself as well as icons that can be clicked to interact with that attendee. The data displayed here is consistent with the data being shown in the "Profile" section of the respective attendees, giving additional information whether that attendee is currently **present** at the conference or not.
+
+Changing the sorting relation in the dropdown menu at the top will cause the page to refresh and **sort** the attendee list below by that selected category. Sorting by **group** will sort the attendees by their group, in case they have the same group by function and after that by name.
+Sorting by **function** will sort by function first, after that by group and after that by name. Sorting by name doesn't provide any secondary sorting relation.
 
 
 

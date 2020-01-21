@@ -177,6 +177,20 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
         tmpDir = new File(System.getProperty("user.dir") + "/tmp/conference");
         if(!tmpDir.exists()) tmpDir.mkdirs();
+
+        long conferenceduration = endsAt - startsAt;
+        Timer ActiveTimer = new Timer();
+        ActiveTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("CONFERENCE IS FINISHED!");
+                System.out.println("ALL NONADMINS ARE LOGGED OUT");
+                endConference();
+            }
+
+
+        }, conferenceduration);
+
     }
 
     /**
@@ -238,6 +252,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     private void initVotes(){
         db_votingManagement = new DB_VotingManager(databasePath);
         db_votingManagement.getVotings().forEach(v -> votings.put(v.getID(),v));
+    }
+
+    public void endConference() {
+        this.logoutNonAdmins();
     }
 
 

@@ -136,7 +136,12 @@ That data cannot be interacted with and (in case it is necessary) has to be edit
 
 ### User Management
 
-tbc
+The "User Management" page is only accessible by admins.
+
+A list of attendees will display in a table and clicking on any attendee will make their section expand, showing the remaining data that's not displayed in the table itself as well as icons that can be clicked to interact with that attendee. The data displayed here is consistent with the data being shown in the "Profile" section of the respective attendees, giving additional information whether that attendee is currently **present** at the conference or not.
+
+Changing the sorting relation in the dropdown menu at the top will cause the page to refresh and **sort** the attendee list below by that selected category. Sorting by **group** will sort the attendees by their group, in case they have the same group by function and after that by name.
+Sorting by **function** will sort by function first, after that by group and after that by name. Sorting by name doesn't provide any secondary sorting relation.
 
 
 

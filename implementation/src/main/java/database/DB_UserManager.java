@@ -83,7 +83,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                             sqlstatement = "UPDATE users SET password = ?  WHERE username = ?";
                             try (PreparedStatement stmt2 = connection.prepareStatement(sqlstatement)) {
                                 stmt2.setNull(1, Types.VARCHAR);
-                                stmt2.setString(3, userName);
+                                stmt2.setString(2, userName);
                                 stmt2.executeUpdate();
                             } catch (SQLException e) {
                                 System.err.println("An exception occurred while updating values of an attendee.");
@@ -480,7 +480,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                 }
             }
         } catch (SQLException ex) {
-            System.err.println("An exception occurred while reading all admins.");
+            System.err.println("An exception occurred while reading all attendees.");
             System.err.println(ex.getMessage());
             return null;
         } finally {

@@ -89,9 +89,9 @@ For ordinary **attendees**, the agenda can be accessed, but not edited or intera
 
 While the agenda is empty, **admins** can create its first topic using the "Add topic" button on the bottom left.
 
-Admins can furthermore edit the agenda, using the plus icon to **add a topic** on the same level, while the down arrow can be used to **add a subtopic** to that respective topic. The new topic will always get the smallest ID that hasn't been taken yet on the level it is appended to.
+Admins can furthermore edit the agenda, using the plus icon to **add a topic** on the same level, while the down arrow can be used to **add a subtopic** to that respective topic. The new topic will always get the next ID after the ID of the clicked topic on the level it is appended to. The topics with an equal or higher ID will just move one spot further accordingly.
 
-The **edit** and **delete** icons edit or delete their respective topic. Note that deleting a topic will also delete its subtopics automatically.
+The pencil/trash icons **edit**/**delete** their respective topic. Note that deleting a topic will also delete its subtopics automatically.
 
 Also, the file icon in the header can be clicked to upload an agenda file as specified in the "Additional File Support" section. Clicking the delete icon in the header will result in deleting the whole agenda.
 
@@ -103,7 +103,24 @@ tbc
 
 ### Voting
 
-tbc
+This page is divided in three sections: "Active Voting", "Previous Votings" and "Edit/Create Votings".
+
+In the "Active Voting" section, attendees can submit their vote to the **active voting** by selecting one of the radio buttons on the left and clicking the "Submit Vote" button afterwards. If there is no active voting or if the active voting message expired, an according message will show instead of the voting here.
+When there is a new active voting, all attendees will get redirected to this page once and a **timer** will appear representing the remaining time to vote. This timer will show up in the header as well and clicking it will redirect attendees to this page.
+Once the timer has run out, the voting counts as expired and no more votes can be submitted for it.
+
+In the "Previous Votings" section, the results of old votings will display. The clickable **show details** text next to the voting questions will make that section expand and display the amount of votes that has been submitted for each option. For named votings, the name of every person that has picked that option will display as well.
+
+In the "Edit/Create Votings" section which is only accessible for admins, new votings can be created, edited, deleted or started. Clicking on an existing voting will make that section expand and show the voting options as well as buttons to interact with that voting.
+
+When **creating** a voting by clicking the "New Voting" button, the user can decide whether it shall be a named vote, what the voting question should be and how long the voting should take by filing in the respective fields in the popup dialog.
+
+Existing votings can be **started** by clicking the "Start" button. There can only be one active voting at the same time and starting a voting will make it the active one, removing it from this section and displaying it in the first section, handling it as described above.
+
+Clicking the "Add" button will **add new voting options** to that voting, making a text field appear to input the name of the voting option. This input field can always be modified and clicking the "Save Changes" button will save these modifications.
+Starting a voting will save all changes automatically, as well. Clicking the **Remove** button next to an option will remove that option from the voting. Note that a voting can't be started unless it has two or more options.
+Furthermore, if abstentions should be displayed in the results of the "Previous Votings" section, a voting option for that has to be added manually.
+
 
 
 ### Requests

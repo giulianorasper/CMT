@@ -382,7 +382,7 @@ function renderCreatedVote(vote){
 	var durationAux = (vote.duration).toFixed(0);
 	var secondsAux = (durationAux % 60).toFixed(0);
 	var seconds = (secondsAux < 10 ? "0"+secondsAux:secondsAux);
-	var durationMinutes = (durationAux/60).toFixed(0)+":"+seconds;
+	var durationMinutes = (Math.floor((durationAux/60)))+":"+seconds;
 	var flag = false;
 
 	$( "<tr style ='word-break:break-all;' data-toggle=\"collapse\" data-target=\"#user_accordion"+vote.ID+"\" class=\"clickable\">"+

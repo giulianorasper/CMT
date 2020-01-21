@@ -33,7 +33,7 @@ public class SetAttendeePresentStatusRequestPacket extends AuthenticatedRequestP
         if(isPermitted(conference, webSocket, true)) {
             Attendee attendee = conference.getAttendeeData(id);
             attendee.setPresent(present);
-            conference.editAttendee(attendee);
+            conference.setPresentValue(attendee.getUserName(),present);
             new ValidResponsePacket().send(webSocket);
         }
     }

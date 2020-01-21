@@ -107,6 +107,7 @@ This page is divided in three sections: "Active Voting", "Previous Votings" and 
 
 In the "Active Voting" section, attendees can submit their vote to the **active voting** by selecting one of the radio buttons on the left and clicking the "Submit Vote" button afterwards. If there is no active voting or if the active voting message expired, an according message will show instead of the voting here.
 When there is a new active voting, all attendees will get redirected to this page once and a **timer** will appear representing the remaining time to vote. This timer will show up in the header as well and clicking it will redirect attendees to this page.
+Once the timer has run out, the voting counts as expired and no more votes can be submitted for it.
 
 In the "Previous Votings" section, the results of old votings will display. The clickable **show details** text next to the voting questions will make that section expand and display the amount of votes that has been submitted for each option. For named votings, the name of every person that has picked that option will display as well.
 

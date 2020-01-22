@@ -117,7 +117,7 @@ function countdown(seconds) {
  */
 function cookiesSessionHandling(packet){
 	
-		sessionStorage.setItem("redirect", true)
+		sessionStorage.setItem("redirect", true);
 		// var voteExpiryDate = new Date(packet.voting.openUntil);
 		var voteExpiryDate = new Date(packet.voting.openUntil);
 		
@@ -199,7 +199,7 @@ function displayActiveVote(packet){
 			$('#voteSubmission').hide();
 			$("#voteQuestion").empty();
 			$("#voteQuestion").addClass("row").addClass("contact-title");
-			$("#voteQuestion").append("<h2 class='contact-title' style='margin-left: 40px;'>Vote has been expired!</h2>");
+			$("#voteQuestion").append("<h2 class='contact-title' style='margin-left: 40px;'>Voting has expired!</h2>");
 
 		}
 	} else {
@@ -208,7 +208,7 @@ function displayActiveVote(packet){
 		$("#voteSubmission").hide();
 		$("#voteQuestion").empty();
 		$("#voteQuestion").addClass("row").addClass("contact-title");
-		$("#voteQuestion").append("<h2 class='contact-title' style='margin-left: 40px;'>Currently no active vote!</h2>");
+		$("#voteQuestion").append("<h2 class='contact-title' style='margin-left: 40px;'>Currently no active voting!</h2>");
 	}
 	
 }

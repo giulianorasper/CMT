@@ -130,7 +130,7 @@ function renderAgenda(data, parent) {
         if (window.isAdmin) {
             $("<div class=\"row \">" +
 
-                "<div class=\"form-group mt-3 col-lg-12\" style=\"float: left;\">" +
+                "<div class=\"form-group mt-3 col-lg-12\" style=\"float: left; margin-left: 10pt;\">" +
                 "    <button class=\"button button-contactForm boxed-btn \" onclick=\"appendToAgenda(\'0\')\">Add Topic</button>" +
                 "</div>" +
                 "</div>").appendTo(target);

@@ -6,6 +6,7 @@ import AddVotingRequestPacket from "../../communication/packets/admin/AddVotingR
 import EditVotingRequestPacket from "../../communication/packets/admin/EditVotingRequestPacket.js";
 import RemoveVotingRequestPacket from "../../communication/packets/admin/RemoveVotingRequestPacket.js";
 import StartVotingRequestPacket from "../../communication/packets/admin/StartVotingRequestPacket.js";
+import Packet from "../../communication/packets/Packet.js";
 
 
 
@@ -312,6 +313,8 @@ $("#dialogMessageForOption").dialog({
 
 });
 
+// var startVoteResult;
+
 /**
  * start function will be called if admin wants to start a vote.
  * The following paramter will be send along to specify which vote will start.
@@ -339,6 +342,8 @@ function start(voteId){
 		
 
     	if(packet.result === "Valid"){
+
+			// startVoteResult = Packet.result;
 			
 			// console.log("testing");
             // renderVotings();
@@ -363,7 +368,7 @@ function start(voteId){
 	const startVote = new StartVotingRequestPacket(voteId);
     CommunicationManager.send(startVote, success, fail);
 }
-
+// export { startVoteResult};
 /**
  * The purpose of the function is to display votes questions with the following attributes.
  * Vote ID

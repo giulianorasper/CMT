@@ -10,6 +10,9 @@ import puppeteer from 'puppeteer';
 
 describe('Vote Panel', () => {
 
+  // -----------------------------------------Create Vote----------------------------
+  // --------------------------------------------------------------------------------
+
 // test('Create Vote', async () => {
 //   jest.setTimeout(30000);
 //   const browser = await puppeteer.launch({
@@ -86,53 +89,56 @@ describe('Vote Panel', () => {
 // -------------------------------------------Start Vote Test----------------------------------------
 // --------------------------------------------------------------------------------------------------
 
-// test('Start a vote', async () => {
+test('Start a vote', async () => {
 
-//   jest.setTimeout(30000);
-//   const browser = await puppeteer.launch({
-//     // headless: false,
-//     // slowMo: 100,
-//     // args: ['--window-size=1366,768']
-//   })
-//   const page = await browser.newPage();
-//   await page.goto('http://localhost/CMT/', {waitUntil: 'domcontentloaded'});
+  jest.setTimeout(30000);
+  const browser = await puppeteer.launch({
+    // headless: false,
+    // slowMo: 100,
+    // args: ['--window-size=1366,768']
+  })
+  const page = await browser.newPage();
+  await page.goto('http://localhost/CMT/', {waitUntil: 'domcontentloaded'});
 
-//   await page.click('input#name');
-//   await page.type('input#name', 'admin');
-//   await page.click('input#password');
-//   await page.type('input#password', 'admin');
-//   await Promise.all([
-//     page.waitForNavigation(), // The promise resolves after navigation has finished
-//     page.click('button#submit-button'), // Clicking the link will indirectly cause a navigation
-//   ]);
-//   // await page.waitFor(2000);
-//   await page.goto('http://localhost/CMT/vote.html', {waitUntil: 'domcontentloaded'});
-//   await page.waitFor(2000);
-//   page.waitForXPath("//td[contains(., 'Vote Question')]").then(selector => selector.click());
-//   await page.waitFor(2000);
-
-//   const [button] = await page.$x("//button[contains(., 'Add')]");
-//   if (button) {
+  await page.click('input#name');
+  await page.type('input#name', 'admin');
+  await page.click('input#password');
+  await page.type('input#password', 'admin');
+  await Promise.all([
+    page.waitForNavigation(), // The promise resolves after navigation has finished
+    page.click('button#submit-button'), // Clicking the link will indirectly cause a navigation
+  ]);
+  // await page.waitFor(2000);
+  await page.goto('http://localhost/CMT/vote.html', {waitUntil: 'domcontentloaded'});
+  await page.waitFor(2000);
+  page.waitForXPath("//td[contains(., 'Vote Question')]").then(selector => selector.click());
+  await page.waitFor(2000);
+  await page.screenshot({path: 'Part-A.png'}); 
+  const [button] = await page.$x("//button[contains(., 'Add')]");
+  if (button) {
     
-//     for(var num = 3; num >= 1; num--){
-//       await button.click();
-//     }
-//   }
+    for(var num = 3; num >= 1; num--){
+      await button.click();
+    }
+  }
      
-//     await page.$$eval('input[type=text]', el => {
-//       var i = 0;   
-//     el.forEach(el1 => {
-//       el1.value = 'testing'+i;
-//       i++;})
-//   });
-//   await page.waitFor(3000);
-//   const [button1] = await page.$x("//button[contains(., 'Start Vote')]");
-//   if (button1) {
-//       await button1.click();
-//   }
-//   await page.waitFor(3000);
-//   console.log('Vote has been started!');
-// });
+    await page.$$eval('input[type=text]', el => {
+      var i = 0;   
+    el.forEach(el1 => {
+      el1.value = 'testing'+i;
+      i++;})
+  });
+  await page.waitFor(3000);
+  await page.screenshot({path: 'Part-B.png'}); 
+  const [button1] = await page.$x("//button[contains(., 'Start Vote')]");
+  if (button1) {
+      await button1.click();
+  }
+  await page.screenshot({path: 'Part-C.png'}); 
+  await page.waitFor(3000);
+  await page.screenshot({path: 'Part-D.png'}); 
+  console.log('Vote has been started!');
+});
 
 // -------------------------------------------------Delete Vote Test--------------------------
 // -------------------------------------------------------------------------------------------
@@ -196,7 +202,7 @@ describe('Vote Panel', () => {
 
 //   page.waitForXPath("//td[contains(., 'Vote Question')]").then(selector => selector.click());
 //   await page.waitFor(2000); 
-
+//   await page.screenshot({path: 'Part-A.png'}); 
 //   const [button] = await page.$x("//button[contains(., 'Add')]");
 //   if (button) {
     
@@ -204,7 +210,7 @@ describe('Vote Panel', () => {
 //       await button.click();
 //     }
 //   }
-     
+//   await page.screenshot({path: 'Part-B.png'}); 
 //     await page.$$eval('input[type=text]', el => {
 //       var i = 0;   
 //     el.forEach(el1 => {
@@ -212,12 +218,12 @@ describe('Vote Panel', () => {
 //       i++;})
 //   });
 //   await page.waitFor(3000);
-
+//   await page.screenshot({path: 'Part-C.png'}); 
 //   const [button1] = await page.$x("//button[contains(., 'Save Changes')]");
 //   if (button1) {
 //       await button1.click();
 //   }
-
+//   await page.screenshot({path: 'Part-D.png'}); 
 //   await page.waitFor(3000);
 //   console.log('Options saved successfully!');
 
@@ -225,75 +231,80 @@ describe('Vote Panel', () => {
 // --------------------------------------Submit answer for vote qeustion test ------------------------------
 // -------------------------------------------------------------------------------------------------
 
-// test('Vote submission', async () => {
-//   jest.setTimeout(30000);
-//   const browser = await puppeteer.launch({
-//     // headless: false,
-//     // slowMo: 100,
-//     // args: ['--window-size=1366,768']
-//   })
-//   const page = await browser.newPage();
-//   await page.goto('http://localhost/CMT/', {waitUntil: 'domcontentloaded'});
+test('Vote submission', async () => {
+  jest.setTimeout(30000);
+  const browser = await puppeteer.launch({
+    // headless: false,
+    // slowMo: 100,
+    // args: ['--window-size=1366,768']
+  })
+  const page = await browser.newPage();
+  await page.goto('http://localhost/CMT/', {waitUntil: 'domcontentloaded'});
 
-//   await page.click('input#name');
-//   await page.type('input#name', 'admin');
-//   await page.click('input#password');
-//   await page.type('input#password', 'admin');
-//   await Promise.all([
-//     page.waitForNavigation(), // The promise resolves after navigation has finished
-//     page.click('button#submit-button'), // Clicking the link will indirectly cause a navigation
-//   ]);
-//   // await page.waitFor(2000);
-//   await page.goto('http://localhost/CMT/vote.html', {waitUntil: 'domcontentloaded'});
-//   await page.waitFor(3000);
-//   let voteQuestion = await page.$eval('span.d-flex', el => el.innerText );
-//   console.log(voteQuestion);
-//   expect(voteQuestion).toBe('Vote Question New');
-//   // page.waitForXPath("//td[contains(., 'this is question 3')]").then(selector => selector.click());
-//   await page.waitFor(2000);
+  await page.click('input#name');
+  await page.type('input#name', 'admin');
+  await page.click('input#password');
+  await page.type('input#password', 'admin');
+  await Promise.all([
+    page.waitForNavigation(), // The promise resolves after navigation has finished
+    page.click('button#submit-button'), // Clicking the link will indirectly cause a navigation
+  ]);
+  // await page.waitFor(2000);
+  await page.goto('http://localhost/CMT/vote.html', {waitUntil: 'domcontentloaded'});
+  await page.waitFor(3000);
+  let voteQuestion = await page.$eval('span.d-flex', el => el.innerText );
+  await page.screenshot({path: 'Part-A-S.png'}); 
+  console.log(voteQuestion);
+  expect(voteQuestion).toBe('Vote Question');
+  // page.waitForXPath("//td[contains(., 'this is question 3')]").then(selector => selector.click());
+  await page.waitFor(2000);
 
-//   await page.$eval('input[type="radio"]', radios => {
-//     radios.click()
-//  });
-//  await page.waitFor(2000);
-//   const [button1] = await page.$x("//button[contains(., 'Submit Vote')]");
-//   if (button1) {
-//       await button1.click();
-//   } 
-//   await page.waitFor(2000);
-//   console.log("Vote submitted successfully!");
+  await page.$eval('input[type="radio"]', radios => {
+    radios.click()
+ });
+ await page.screenshot({path: 'Part-B-S.png'}); 
+ await page.waitFor(2000);
+  const [button1] = await page.$x("//button[contains(., 'Submit Vote')]");
+  if (button1) {
+      await button1.click();
+  } 
+  await page.waitFor(2000);
+  await page.screenshot({path: 'Part-C-S.png'}); 
+  console.log("Vote submitted successfully!");
 
-// });
+});
 
-// ------------------------------------ Display Vote----------------------------------------------
+// ------------------------------------ Display Active Vote-------------------------- -----------
 // ----------------------------------------------------------------------------------------------
 
-// test('Display Active Vote', async () => {
-//   jest.setTimeout(30000);
-//   const browser = await puppeteer.launch({
-//     // headless: false,
-//     // slowMo: 100,
-//     // args: ['--window-size=1366,768']
-//   })
-//   const page = await browser.newPage();
-//   await page.goto('http://localhost/CMT/', {waitUntil: 'domcontentloaded'});
+test('Display Active Vote', async () => {
+  jest.setTimeout(30000);
+  const browser = await puppeteer.launch({
+    // headless: false,
+    // slowMo: 100,
+    // args: ['--window-size=1366,768']
+  })
+  const page = await browser.newPage();
+  await page.goto('http://localhost/CMT/', {waitUntil: 'domcontentloaded'});
 
-//   await page.click('input#name');
-//   await page.type('input#name', 'admin');
-//   await page.click('input#password');
-//   await page.type('input#password', 'admin');
-//   await Promise.all([
-//     page.waitForNavigation(), // The promise resolves after navigation has finished
-//     page.click('button#submit-button'), // Clicking the link will indirectly cause a navigation
-//   ]);
-//   // await page.waitFor(2000);
-//   await page.goto('http://localhost/CMT/vote.html', {waitUntil: 'domcontentloaded'});
-//   await page.waitFor(3000);
-//   let voteQuestion = await page.$eval('span.d-flex', el => el.innerText );
-//   console.log(voteQuestion);
-//   expect(voteQuestion).toBeDefined();
+  await page.click('input#name');
+  await page.type('input#name', 'admin');
+  await page.click('input#password');
+  await page.type('input#password', 'admin');
+  await Promise.all([
+    page.waitForNavigation(), // The promise resolves after navigation has finished
+    page.click('button#submit-button'), // Clicking the link will indirectly cause a navigation
+  ]);
+  // await page.waitFor(2000);
+  await page.goto('http://localhost/CMT/vote.html', {waitUntil: 'domcontentloaded'});
+  await page.screenshot({path: 'Part-A-D.png'}); 
+  await page.waitFor(3000);
+  let voteQuestion = await page.$eval('span.d-flex', el => el.innerText );
+  console.log(voteQuestion);
+  await page.screenshot({path: 'Part-B-D.png'}); 
+  expect(voteQuestion).toBeDefined();
 
-// });
+});
 
 // ----------------------------Remove Particular vote option---------------------
 // ------------------------------------------------------------------------------
@@ -320,16 +331,18 @@ describe('Vote Panel', () => {
 //   await page.goto('http://localhost/CMT/vote.html', {waitUntil: 'domcontentloaded'});
 
 //   page.waitForXPath("//td[contains(., 'Vote Question')]").then(selector => selector.click());
-//   await page.waitFor(2000); 
+//   await page.waitFor(2000);
+//     await page.screenshot({path: 'Part-A.png'}); 
 //     const [button] = await page.$x("//button[contains(., 'Remove')]");
 //   if (button) {
 //       await button.click();
 //   }
-
+//   await page.screenshot({path: 'Part-B.png'});
 //   const [button1] = await page.$x("//button[contains(., 'Save Changes')]");
 //   if (button1) {
 //       await button1.click();
 //   }
+//   await page.screenshot({path: 'Part-C.png'});
 //   console.log('Option removed successfuly');
 
 // });
@@ -358,6 +371,7 @@ describe('Vote Panel', () => {
 //   // await page.waitFor(2000);
 //   await page.goto('http://localhost/CMT/vote.html', {waitUntil: 'domcontentloaded'});
 //   await page.waitFor(3000);
+//   await page.screenshot({path: 'Part-A.png'});
 //   let voteQuestion = await page.$eval('h5.mb-0', el => el.innerText );
   
 //   const [button1] = await page.$x("//button[contains(., 'see full details')]");
@@ -365,6 +379,7 @@ describe('Vote Panel', () => {
 //       await button1.click();
 //   }
 //   await page.waitFor(3000);
+//   await page.screenshot({path: 'Part-B.png'});
 //   expect(voteQuestion).toBeDefined();
 //   console.log(voteQuestion);
   
@@ -373,55 +388,57 @@ describe('Vote Panel', () => {
 // ------------------------------create input text field option with button test------------------------------
 // -----------------------------------------------------------------------------------------------------------
 
-test('Create input text field with button test', async () => {
-  jest.setTimeout(30000);
-  const browser = await puppeteer.launch({
-    // headless: false,
-    // slowMo: 100,
-    // args: ['--window-size=1366,768']
-  })
-  const page = await browser.newPage();
-  await page.goto('http://localhost/CMT/', {waitUntil: 'domcontentloaded'});
+// test('Create input text field with button test', async () => {
+//   jest.setTimeout(30000);
+//   const browser = await puppeteer.launch({
+//     // headless: false,
+//     // slowMo: 100,
+//     // args: ['--window-size=1366,768']
+//   })
+//   const page = await browser.newPage();
+//   await page.goto('http://localhost/CMT/', {waitUntil: 'domcontentloaded'});
 
-  await page.click('input#name');
-  await page.type('input#name', 'admin');
-  await page.click('input#password');
-  await page.type('input#password', 'admin');
-  await Promise.all([
-    page.waitForNavigation(), // The promise resolves after navigation has finished
-    page.click('button#submit-button'), // Clicking the link will indirectly cause a navigation
-  ]);
-  // await page.waitFor(2000);
-  await page.goto('http://localhost/CMT/vote.html', {waitUntil: 'domcontentloaded'});
-  await page.waitFor(3000);
+//   await page.click('input#name');
+//   await page.type('input#name', 'admin');
+//   await page.click('input#password');
+//   await page.type('input#password', 'admin');
+//   await Promise.all([
+//     page.waitForNavigation(), // The promise resolves after navigation has finished
+//     page.click('button#submit-button'), // Clicking the link will indirectly cause a navigation
+//   ]);
+//   // await page.waitFor(2000);
+//   await page.goto('http://localhost/CMT/vote.html', {waitUntil: 'domcontentloaded'});
+//   await page.waitFor(3000);
 
   
-  page.waitForXPath("//td[contains(., 'Vote Question')]").then(selector => selector.click());
-  await page.waitFor(2000); 
-
-  const [button] = await page.$x("//button[contains(., 'Add')]");
-  if (button) {
+//   page.waitForXPath("//td[contains(., 'Vote Question')]").then(selector => selector.click());
+//   await page.waitFor(2000); 
+//   await page.screenshot({path: 'Before.png'});
+//   const [button] = await page.$x("//button[contains(., 'Add')]");
+//   if (button) {
     
-    for(var num = 3; num >= 1; num--){
-      await button.click();
-    }
-  }
-     
-    await page.$$eval('input[type=text]', el => {
-      var i = 0;   
-    el.forEach(el1 => {
-      el1.value = 'testing'+i;
-      i++;})
-  });
-
-  await page.waitFor(2000); 
-  const [button1] = await page.$x("//button[contains(., 'Save Changes')]");
-  if (button1) {
-      await button1.click();
-  }
-  console.log("Input fields created successfully!");
+//     for(var num = 3; num >= 1; num--){
+//       await button.click();
+//     }
+//   }
+   
+//   await page.screenshot({path: 'middle.png'});
+//     await page.$$eval('input[type=text]', el => {
+//       var i = 0;   
+//     el.forEach(el1 => {
+//       el1.value = 'testing'+i;
+//       i++;})
+//   });
+//   await page.screenshot({path: 'middle1.png'});
+//   await page.waitFor(2000); 
+//   const [button1] = await page.$x("//button[contains(., 'Save Changes')]");
+//   if (button1) {
+//       await button1.click();
+//   }
+//   await page.screenshot({path: 'after.png'});
+//   console.log("Input fields created successfully!");
   
-});
+// });
 
 });
 

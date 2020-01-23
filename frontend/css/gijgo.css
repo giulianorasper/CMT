@@ -343,7 +343,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 .gj-picker-md [role="header"] {
     color: rgba(255, 255, 255, 0.54);
     display: flex;
-    background: #4A3600;
+    background: #2196f3;
     align-items: baseline;
     user-select: none;
     justify-content: center;
@@ -355,7 +355,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 }
 
 .gj-picker-md [role="footer"] button.gj-button-md {
-    color: #4A3600;
+    color: #2196f3;
     font-weight: bold;
     font-size: 13px;
 }
@@ -702,10 +702,10 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 
 .gj-dialog-md-title {
     margin: 0;
-    font-weight: bold;
+    font-weight: 400;
     display: inline;
     line-height: 28px;
-    font-size: 28px;
+    font-size: 20px;
 }
 
 .gj-dialog-md-close {
@@ -2069,12 +2069,12 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 }
 
 .gj-picker-md table tr td.today div {
-    color: #4A3600;
+    color: #1976D2;
 }
 
 .gj-picker-md table tr td.selected.gj-cursor-pointer div {
     color: #FFFFFF;
-    background: #4A3600; /* Blue 700 */
+    background: #1976D2; /* Blue 700 */
     border-radius: 50%;
 }
 
@@ -2384,14 +2384,14 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 }
 
 .gj-picker-md .arrow-begin {
-    background-color: #4A3600;
+    background-color: #2196f3;
 }
 .gj-picker-md .arrow-end {
-    border: 16px solid #4A3600;
+    border: 16px solid #2196f3;
 }
 
 .gj-picker-md [role="body"] [role="arrow"] {
-    background-color: #4A3600;
+    background-color: #2196f3;
 }
 
 /* Bootstrap */
@@ -2537,7 +2537,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 
 .gj-picker-md [role="switch"] {
     color: rgba(255, 255, 255, 0.54);
-    background: #4A3600;
+    background: #2196f3;
     font-size: 32px;
 }
 
@@ -2690,15 +2690,4 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     right: 0px;
     top: 0px;
     font-size: 24px;
-}
-
-/* ...........
- */
- .gj-datepicker-md [role="right-icon"] {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    font-size: 16px;
-    color: #919191;
-    margin-right: 15px;
 }

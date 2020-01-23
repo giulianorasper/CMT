@@ -2,27 +2,17 @@
 <html class="no-js" lang="zxx">
 
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>CMT</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- <link rel="manifest" href="site.webmanifest"> -->
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
-    <!-- Place favicon.ico in the root directory -->
 
-    <!-- CSS here -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-glyphicons.css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/themify-icons.css">
-    <link rel="stylesheet" href="css/nice-select.css">
-    <link rel="stylesheet" href="css/flaticon.css">
-    <link rel="stylesheet" href="css/gijgo.css">
-    <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/slicknav.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/main.css">
@@ -30,128 +20,93 @@
 </head>
 
 <body>
-    <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
+<!--[if lte IE 9]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade
+    your browser</a> to improve your experience and security.</p>
+<![endif]-->
 
-    <!-- header-start -->
-    <header>
-        <div class="header-area overlay2" style="background-color: #1F2227">
-            <div id="sticky-header" class="main-header-area">
-                <div class="container-fluid p-0">
-                    <div class="row align-items-center no-gutters">
-                        <div class="col-xl-1 col-lg-1">
-                            <div class="logo-img">
-                                <a href="index.html">
-                                    <img src="img/vote-logo.png" alt="">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-lg-2">
-                            <div class="header-timer" id="hdtimer"></div>
-                        </div>
-                        <div class="col-xl-7 col-lg-7">
-                            <div class="main-menu  d-none d-lg-block">
-                                <nav>
-                                    <ul id="navigation">
-                                        <li><a class="active" href="home.html">Agenda</a></li>
-                                        <li><a href="documents.html">Documents</a></li>
-                                        <li><a href="vote.html" id="testing">Voting</a></li>
-                                        <li><a href="#">Requests <i class="ti-angle-down"></i></a>
-                                            <ul class="submenu">
-                                                <li><a href="change_request.html">Request of Change</a></li>
-                                                <li><a href="speech_request.html">Request of Speech</a></li>
-                                                 <li class="adminField"><a href="request_management.html">Manage Requests</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="profile.html">Profile</a></li>
-                                        <li class="adminField"><a href="user_management.html">User Management</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="mobile_menu d-block d-lg-none"></div>
+<header>
+    <div class="header-area overlay2" style="background-color: #1F2227">
+        <div id="sticky-header" class="main-header-area">
+            <div class="container-fluid p-0">
+                <div class="row align-items-center no-gutters">
+                    <div class="col-xl-1 col-lg-1">
+                        <div class="logo-img">
+                            <a href="index.html">
+                                <img src="img/vote-logo.png" alt="">
+                            </a>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- header-end -->
-
-    <!-- prising_area_start -->
-<div class="package_prsing_area">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12 col-md-12 col-lg-12">
-                    <div class="single_prising">
-                        <div class="prising_header">
-                                <h3>Agenda Items
-                                    <span class = "adminField">(
-                                        <span class = "glyphicon glyphicon-file" onclick="uploadAgenda()"></span>
-                                        <input type="file" class="form-control-file" id="upAgenda" style="display:none"/>
-                                        /
-                                        <span class = "glyphicon glyphicon-trash" onclick="deleteAgenda()"></span>
-                                        )
-                                    </span>
-                                </h3>
-                        </div>
-
-
-                        <!--Testing-->
-                        <div class="middle_content">
-                            <div class="list" >
-                                <ul id="agendaContainer">
-                                   
+                    <div class="col-xl-2 col-lg-2">
+                        <div class="header-timer" id="hdtimer"></div>
+                    </div>
+                    <div class="col-xl-7 col-lg-7">
+                        <div class="main-menu  d-none d-lg-block">
+                            <nav>
+                                <ul id="navigation">
+                                    <li><a class="active" href="home.html">Agenda</a></li>
+                                    <li><a href="documents.html">Documents</a></li>
+                                    <li><a href="vote.html" id="testing">Voting</a></li>
+                                    <li><a href="#">Requests <i class="ti-angle-down"></i></a>
+                                        <ul class="submenu">
+                                            <li><a href="change_request.html">Request of Change</a></li>
+                                            <li><a href="speech_request.html">Request of Speech</a></li>
+                                            <li class="adminField"><a href="request_management.html">Manage Requests</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="profile.html">Profile</a></li>
+                                    <li class="adminField"><a href="user_management.html">User Management</a></li>
                                 </ul>
-                            </div>
+                            </nav>
                         </div>
-                        <!--end-->
-
+                    </div>
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</header>
+
+<div class="package_prsing_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 col-md-12 col-lg-12">
+                <div class="single_prising">
+                    <div class="prising_header">
+                        <h3>Agenda Items
+                            <span class="adminField">(
+                                            <span class="glyphicon glyphicon-file" onclick="uploadAgenda()"></span>
+                                            <input type="file" class="form-control-file" id="upAgenda"
+                                                   style="display:none"/>
+                                            /
+                                            <span class="glyphicon glyphicon-trash" onclick="deleteAgenda()"></span>
+                                            )
+                                        </span>
+                        </h3>
+                    </div>
+                    <div class="middle_content">
+                        <div class="list">
+                            <ul id="agendaContainer"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
- 
-    <!-- JS here -->
-    <script src="js/vendor/modernizr-3.5.0.min.js"></script>
-    <script src="js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/isotope.pkgd.min.js"></script>
-    <script src="js/ajax-form.js"></script>
-    <script src="js/waypoints.min.js"></script>
-    <script src="js/jquery.counterup.min.js"></script>
-    <script src="js/imagesloaded.pkgd.min.js"></script>
-    <script src="js/scrollIt.js"></script>
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/nice-select.min.js"></script>
-    <script src="js/jquery.slicknav.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/plugins.js"></script>
-    <script src="js/gijgo.min.js"></script>
 
-    <!--contact js-->
-    <script src="js/contact.js"></script>
-    <script src="js/jquery.ajaxchimp.min.js"></script>
-    <script src="js/jquery.form.js"></script>
-    <script src="js/jquery.validate.min.js"></script>
-    <script src="js/mail-script.js"></script>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.slicknav.min.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/main.js"></script>
 
-    <script src="js/main.js"></script>
-
-    <script type="module" src="js/not_libs/agenda.js"></script>
-    <script type="module" src="js/not_libs/general.js"></script>
-    <script type="module" src="js/not_libs/displayActiveVote.js"></script>
-
-
-
-
+<script type="module" src="js/not_libs/agenda.js"></script>
+<script type="module" src="js/not_libs/general.js"></script>
+<script type="module" src="js/not_libs/displayActiveVote.js"></script>
 
 </body>
-
 </html>

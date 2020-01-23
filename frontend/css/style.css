@@ -3592,77 +3592,6 @@ hr {
   width: 100%;
 }
 
-/* line 151, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
-.popup_box .nice-select {
-  -webkit-tap-highlight-color: transparent;
-  background-color: #fff;
-  /* border-radius: 5px; */
-  border: solid 1px #E2E2E2;
-  box-sizing: border-box;
-  clear: both;
-  cursor: pointer;
-  display: block;
-  float: left;
-  font-family: "Roboto", sans-serif;
-  font-weight: normal;
-  width: 100% !important;
-  /* height: 42px; */
-  line-height: 50px;
-  outline: none;
-  padding-left: 18px;
-  padding-right: 30px;
-  position: relative;
-  text-align: left !important;
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  white-space: nowrap;
-  width: auto;
-  border-radius: 0;
-  margin-bottom: 30px;
-  height: 50px !important;
-  font-size: 16px;
-  font-weight: 400;
-  color: #919191;
-}
-
-/* line 185, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
-.popup_box .nice-select::after {
-  content: "\f0d7";
-  display: block;
-  height: 5px;
-  margin-top: -5px;
-  pointer-events: none;
-  position: absolute;
-  right: 17px;
-  top: 3px;
-  transition: all 0.15s ease-in-out;
-  width: 5px;
-  font-family: fontawesome;
-  color: #919191;
-  font-size: 15px;
-}
-
-/* line 200, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
-.popup_box .nice-select.open .list {
-  opacity: 1;
-  pointer-events: auto;
-  -webkit-transform: scale(1) translateY(0);
-  -ms-transform: scale(1) translateY(0);
-  transform: scale(1) translateY(0);
-  height: 200px;
-  overflow-y: scroll;
-}
-
-/* line 209, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
-.popup_box .nice-select.list {
-  height: 200px;
-  overflow-y: scroll;
-}
-
 /* line 214, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
 .popup_box .doen_have_acc {
   font-size: 16px;
@@ -5115,60 +5044,10 @@ h6 {
   height: 40px;
 }
 
-/* line 1001, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
-.default-select .nice-select {
-  border: none;
-  border-radius: 0px;
-  height: 40px;
-  background: #f9f9ff;
-  padding-left: 20px;
-  padding-right: 40px;
-}
-
-/* line 1008, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
-.default-select .nice-select .list {
-  margin-top: 0;
-  border: none;
-  border-radius: 0px;
-  box-shadow: none;
-  width: 100%;
-  padding: 10px 0 10px 0px;
-}
-
-/* line 1015, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
-.default-select .nice-select .list .option {
-  font-weight: 300;
-  -webkit-transition: all 0.3s ease 0s;
-  -moz-transition: all 0.3s ease 0s;
-  -o-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
-  line-height: 28px;
-  min-height: 28px;
-  font-size: 12px;
-  padding-left: 20px;
-}
-
-/* line 1022, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
-.default-select .nice-select .list .option.selected {
-  color: #ff5e13;
-  background: transparent;
-}
-
-/* line 1026, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
-.default-select .nice-select .list .option:hover {
-  color: #ff5e13;
-  background: transparent;
-}
-
 /* line 1033, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
 .default-select .current {
   margin-right: 50px;
   font-weight: 300;
-}
-
-/* line 1037, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
-.default-select .nice-select::after {
-  right: 20px;
 }
 
 /* line 1042, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
@@ -5177,61 +5056,10 @@ h6 {
   width: 100%;
 }
 
-/* line 1045, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
-.form-select .nice-select {
-  border: none;
-  border-radius: 0px;
-  height: 40px;
-  background: #f9f9ff;
-  padding-left: 45px;
-  padding-right: 40px;
-  width: 100%;
-}
-
-/* line 1053, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
-.form-select .nice-select .list {
-  margin-top: 0;
-  border: none;
-  border-radius: 0px;
-  box-shadow: none;
-  width: 100%;
-  padding: 10px 0 10px 0px;
-}
-
-/* line 1060, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
-.form-select .nice-select .list .option {
-  font-weight: 300;
-  -webkit-transition: all 0.3s ease 0s;
-  -moz-transition: all 0.3s ease 0s;
-  -o-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
-  line-height: 28px;
-  min-height: 28px;
-  font-size: 12px;
-  padding-left: 45px;
-}
-
-/* line 1067, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
-.form-select .nice-select .list .option.selected {
-  color: #ff5e13;
-  background: transparent;
-}
-
-/* line 1071, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
-.form-select .nice-select .list .option:hover {
-  color: #ff5e13;
-  background: transparent;
-}
-
 /* line 1078, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
 .form-select .current {
   margin-right: 50px;
   font-weight: 300;
-}
-
-/* line 1082, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
-.form-select .nice-select::after {
-  right: 20px;
 }
 
 /* line 1086, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */

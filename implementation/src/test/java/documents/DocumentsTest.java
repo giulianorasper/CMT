@@ -121,6 +121,26 @@ public class DocumentsTest {
     public void deletedDocumentRecreate(){
         conf.updateDocument("test.txt", "txt", f, true);
         conf.deleteDocument("test.txt");
+
+        String pathString = "src/test/resources/test.txt";
+        f = new File(pathString);
+        System.out.println(f.getAbsoluteFile());
+        if(f.exists()){
+            f.delete();
+        }
+
+        try {
+            if(!f.getParentFile().exists()) f.getParentFile().mkdir();
+            f.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(pathString));
+            writer.write("Test data\n");
+
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail("Could not initialize test environment");
+        }
+
         conf.updateDocument("test.txt", "txt", f, true);
 
         Document doc = conf.getDocument("test.txt");

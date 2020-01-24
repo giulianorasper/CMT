@@ -46,12 +46,28 @@ public class RequestTests {
             conf.addRequest(req);
         }
 
+        int id =conf.getAllRequests().get(0).ID;
+        ChangeRequest clone = (ChangeRequest) conf.getRequest(id).shallowClone();
+        Assert.assertEquals(clone.getTimeStamp(), conf.getRequest(id).getTimeStamp());
+        clone.approve();
+        Assert.assertTrue(clone.isApproved());
+        clone.reopen();
+        Assert.assertTrue(clone.isOpen());
+        clone.disapprove();
+        Assert.assertFalse(clone.isOpen() && clone.isApproved());
+
         Assert.assertEquals("Not all requests got logged", requestCount, conf.getAllRequests().size());
     }
 
     @Test
     public void deleteTop(){
             Request req = new SpeechRequest(testAttendee, conf.getAgenda().getTopic(0), System.currentTimeMillis());
+            SpeechRequest speech = (SpeechRequest) req.shallowClone();
+            Assert.assertEquals(speech.getTimeStamp(), req.getTimeStamp());
+            speech.close();
+            Assert.assertFalse(speech.isOpen());
+            speech.reopen();
+            Assert.assertTrue(speech.isOpen());
             conf.addRequest(req);
             Agenda agenda = new Agenda();
             conf.updateAgenda(agenda);

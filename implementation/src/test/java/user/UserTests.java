@@ -16,6 +16,7 @@ public class UserTests {
     Conference conf;
     @Before
     public void createConference(){
+
         conf = new Conference(true);
     }
 
@@ -113,7 +114,7 @@ public class UserTests {
         int[] attendeeIds = new int[threadCount];
 
         for(int  i = 0; i < threadCount; i++){
-            Attendee a = new Attendee("Mike", "Mike@Gebirge"+i+".tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+            Attendee a = new Attendee("Mike", "Miketest@Gebirge"+i+".tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
             conf.addAttendee(a);
             attendeeIds[i] = a.getID();
         }
@@ -177,7 +178,7 @@ public class UserTests {
         String[] attendeeNames = new String[threadCount];
 
         for(int  i = 0; i < threadCount; i++){
-            Attendee a = new Attendee("Mike", "Mike@Gebirge"+i+".tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+            Attendee a = new Attendee("Mike", "Mike2@Gebirge"+i+".tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
             conf.addAttendee(a);
             attendeeIds[i] = a.getID();
             attendeeNames[i] = a.getUserName();
@@ -248,7 +249,7 @@ public class UserTests {
 
     @Test
     public void invalidLogin(){
-        Attendee a = new Attendee("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        Attendee a = new Attendee("Mike", "Mikes@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
         conf.addAttendee(a);
         String password = conf.getUserPassword(a.getID()).second();
         conf.logoutUser(a.getID());

@@ -113,7 +113,7 @@ public class UserTests {
         int[] attendeeIds = new int[threadCount];
 
         for(int  i = 0; i < threadCount; i++){
-            Attendee a = new Attendee("Mike", "Mike@Gebirge"+i+".tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+            Attendee a = new Attendee("Mike", "Miketest@Gebirge"+i+".tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
             conf.addAttendee(a);
             attendeeIds[i] = a.getID();
         }
@@ -177,7 +177,7 @@ public class UserTests {
         String[] attendeeNames = new String[threadCount];
 
         for(int  i = 0; i < threadCount; i++){
-            Attendee a = new Attendee("Mike", "Mike@Gebirge"+i+".tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+            Attendee a = new Attendee("Mike", "Mike2@Gebirge"+i+".tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
             conf.addAttendee(a);
             attendeeIds[i] = a.getID();
             attendeeNames[i] = a.getUserName();
@@ -200,7 +200,8 @@ public class UserTests {
                             if(response.first() != LoginResponse.Valid){
                                 fail("Failed to perform a valid login");
                             }
-                                assertEquals("Got a wrong id for attendee ", attendeeIds[aux.get()], conf.tokenToID(response.second().first()));
+                            conf.setPresentValue(attendeeNames[aux.get()],true);
+                            assertEquals("Got a wrong id for attendee ", attendeeIds[aux.get()], conf.tokenToID(response.second().first()));
                         }
                         else {
                             response = conf.login("Mike" + aux.get(), password + "a");
@@ -239,7 +240,7 @@ public class UserTests {
 
         assertEquals("Expected half of the attendees to be logged in", threadCount/2 , loginCount);
 
-        conf.logoutNonAdmins(true);
+        conf.logoutNonAdmins(false);
         loginCount = (int) conf.getAllAttendees().stream().filter(Attendee::isPresent).count();
         assertEquals("Expected aa attendees to be logged out", 0 , loginCount);
 
@@ -247,7 +248,7 @@ public class UserTests {
 
     @Test
     public void invalidLogin(){
-        Attendee a = new Attendee("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        Attendee a = new Attendee("Mike", "Mikes@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
         conf.addAttendee(a);
         String password = conf.getUserPassword(a.getID()).second();
         conf.logoutUser(a.getID());
@@ -276,7 +277,7 @@ public class UserTests {
         Attendee a = new Attendee("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
         conf.addAttendee(a);
         String password = conf.getUserPassword(a.getID()).second();
-        conf.logoutNonAdmins(true);
+        conf.logoutNonAdmins(false);
         Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
         if(response.first() == LoginResponse.Valid){
             fail("Managed to log in a user which should not be loged in");
@@ -343,7 +344,7 @@ public class UserTests {
         Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
         conf.addAdmin(a);
         String password = conf.getUserPassword(a.getID()).second();
-        conf.logoutNonAdmins(true);
+        conf.logoutNonAdmins(false);
         Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
         if(response.first() != LoginResponse.Valid){
             fail("Admins should not get logged out");
@@ -382,8 +383,8 @@ public class UserTests {
         }
 
         response = conf.login(a.userName, password);
-        if(response.first() == LoginResponse.Valid){
-            fail("Second login should not have succeed");
+        if(response.first() != LoginResponse.Valid){
+            fail("Second login should have succeed");
         }
 
     }
@@ -418,13 +419,14 @@ public class UserTests {
         groups.add("JUSO");
         groups.add("AI");
 
+        conf.addAdmin(a);
+        conf.addAttendee(b);
+        conf.addAttendee(c);
+
         if(!groups.containsAll(conf.getExistingGroups()) || !conf.getExistingGroups().containsAll(groups)){
             fail("Groups do not match");
         }
 
-        conf.addAdmin(a);
-        conf.addAttendee(b);
-        conf.addAttendee(c);
         String passwordA = conf.getUserPassword(a.getID()).second();
 
         Pair<LoginResponse, Pair<String, Long>> responseA = conf.login(a.userName, passwordA);

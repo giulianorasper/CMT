@@ -223,7 +223,10 @@ public class UserManagementTests extends DatabaseTests {
         assertEquals(LoginResponse.UserDoesNotExist, dbGen.checkLogin("Stephan", "rue1831978").first());
         //assertEquals(TokenResponse., dbGen.checkToken("token"));;
         assertEquals(LoginResponse.Valid, dbGen.checkLogin("AlmightyStephan", "1111").first());
-        assertEquals(LoginResponse.AccountAlreadyInUse, dbGen.checkLogin("AlmightyStephan", "1111").first());
+        assertEquals(LoginResponse.Valid, dbGen.checkLogin("AlmightyStephan", "1111").first());
+
+        assertEquals(LoginResponse.Valid, dbGen.checkLogin("Max.Mustermann", "1234").first());
+        assertEquals(LoginResponse.AccountAlreadyInUse, dbGen.checkLogin("Max.Mustermann", "1234").first());
     }
 
     @Test
@@ -265,7 +268,7 @@ public class UserManagementTests extends DatabaseTests {
         dbGen.checkLogin(alex.getUserName(), "1653");
         dbGen.checkLogin(stephan.getUserName(), "1234");
 
-        assertTrue(dbGen.getAttendeeData(max.getID()).isPresent());
+        assertFalse(dbGen.getAttendeeData(max.getID()).isPresent());
         assertFalse(dbGen.getAllAttendees().get(1).isPresent());
         assertTrue(dbGen.getAdminData(alex.getID()).isPresent());
         assertFalse(dbGen.getAllAdmins().get(0).isPresent());

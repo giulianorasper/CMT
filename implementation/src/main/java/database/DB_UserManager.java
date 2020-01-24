@@ -233,7 +233,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     @Override
     public boolean logoutUser(int userID, String pw, String token) {
         Connection connection = this.openConnection();
-        String sqlstatement = "UPDATE users SET password = ?, token = ?  WHERE userID = ?";
+        String sqlstatement = "UPDATE users SET password = ?, token = ?, present = ? WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             if (pw == null) {
                 stmt.setNull(1, Types.VARCHAR);
@@ -245,7 +245,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
             } else {
                 stmt.setString(2, token);
             }
-            stmt.setInt(3, userID);
+            stmt.setBoolean(3, false);
+            stmt.setInt(4, userID);
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("An exception occurred while logging out/invalidating a user.");

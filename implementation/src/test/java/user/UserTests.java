@@ -239,7 +239,7 @@ public class UserTests {
 
         assertEquals("Expected half of the attendees to be logged in", threadCount/2 , loginCount);
 
-        conf.logoutNonAdmins();
+        conf.logoutNonAdmins(true);
         loginCount = (int) conf.getAllAttendees().stream().filter(Attendee::isPresent).count();
         assertEquals("Expected aa attendees to be logged out", 0 , loginCount);
 
@@ -276,7 +276,7 @@ public class UserTests {
         Attendee a = new Attendee("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
         conf.addAttendee(a);
         String password = conf.getUserPassword(a.getID()).second();
-        conf.logoutNonAdmins();
+        conf.logoutNonAdmins(true);
         Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
         if(response.first() == LoginResponse.Valid){
             fail("Managed to log in a user which should not be loged in");
@@ -343,7 +343,7 @@ public class UserTests {
         Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
         conf.addAdmin(a);
         String password = conf.getUserPassword(a.getID()).second();
-        conf.logoutNonAdmins();
+        conf.logoutNonAdmins(true);
         Pair<LoginResponse, Pair<String, Long>> response = conf.login(a.userName, password);
         if(response.first() != LoginResponse.Valid){
             fail("Admins should not get logged out");

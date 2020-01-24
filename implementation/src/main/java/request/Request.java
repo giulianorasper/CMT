@@ -134,6 +134,10 @@ public abstract class Request implements RequestObservable {
         }
     }
 
+    public int getID() {
+        return ID;
+    }
+
     public abstract Request shallowClone();
 
     @Override

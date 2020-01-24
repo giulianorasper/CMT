@@ -1,8 +1,7 @@
-package communication;
+package communication.connctiontests;
 
 import com.google.gson.Gson;
 import communication.enums.RequestResult;
-import communication.packets.BasePacket;
 import communication.packets.ResponsePacket;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -68,7 +67,6 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
             } catch (Exception e) {
                 success.set(false);
             }
-            client.stop();
         }
 
     }

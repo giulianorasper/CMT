@@ -30,10 +30,11 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
     private String originalName;
     private boolean creation;
 
-    public UpdateFileRequestPacket(String name, String originalName) {
+    public UpdateFileRequestPacket(String name, String originalName, boolean creation) {
         super(PacketType.UPDATE_FILE_REQUEST);
         this.name = name;
         this.originalName = originalName;
+        this.creation = creation;
     }
 
     @Override

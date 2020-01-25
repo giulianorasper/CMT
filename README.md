@@ -83,13 +83,16 @@ test:test:test:test:test
 
 ## Usage
 
+Note that in the following usage specifications of the application, the term "attendees" includes admins by default, which means admins are attendees that are granted additional rights.
+Every time only attendees without administrative rights are considered, the description will specify them as such.
+
 ### Agenda
 
-For ordinary **attendees**, the agenda can be accessed, but not edited or interacted with in any way.
+For ordinary **attendees** without administrative power, the agenda can be accessed, but not edited or interacted with in any way.
 
 While the agenda is empty, **admins** can create its first topic using the "Add topic" button on the bottom left.
 
-Admins can furthermore edit the agenda, using the plus icon to **add a topic** on the same level, while the down arrow can be used to **add a subtopic** to that respective topic. The new topic will always get the next ID after the ID of the clicked topic on the level it is appended to. The topics with an equal or higher ID will just move one spot further accordingly.
+Admins can furthermore expand the agenda, using the plus icon to **add a topic** on the same level, while the down arrow can be used to **add a subtopic** to that respective topic. The new topic will always get the next ID after the ID of the clicked topic on the level it is appended to. The topics with an equal or higher ID will just move one spot further accordingly.
 
 The pencil/trash icons **edit**/**delete** their respective topic. Note that deleting a topic will also delete its subtopics automatically.
 
@@ -98,7 +101,16 @@ Also, the file icon in the header can be clicked to upload an agenda file as spe
 
 ### Documents
 
-tbc
+This page displays a list of documents uploaded to the server. All attendees are allowed to **download** them by either clicking on the name of the document or on the download icon next to it.
+Furthermore, a **revision number** labeled with "version:" next to each document will tell the attendees how often the respective document has been edited. Documents will be sorted by upload time and uploading new documents to the server will result in them being the last item on the document list.
+
+Admins will be granted the right to **upload** documents to the server. To do that, they can click on the "File select" button on the bottom left, which will open the system's file browser and let them choose the file they wish to upload.
+To confirm the selection and thus upload the file, the "Submit" button right next to the file selection can be clicked.
+
+Furthermore, admins can **edit** documents by clicking the pencil icon next to the document they wish to edit. Again, this option will open the system's file browser and let them select a file that shall replace the old file.
+Note that only files with the same file extension will be accepted, e.g. editing a ".pdf" document will only allow admins to replace it with another ".pdf" document. Editing a document will increment its revision number by 1.
+
+Admins can also **delete** documents by clicking the trash icon next to the document they wish to delete. This document will then be removed from the server for all attendees.
 
 
 ### Voting
@@ -120,6 +132,8 @@ Existing votings can be **started** by clicking the "Start" button. There can on
 Clicking the "Add" button will **add new voting options** to that voting, making a text field appear to input the name of the voting option. This input field can always be modified and clicking the "Save Changes" button will save these modifications.
 Starting a voting will save all changes automatically, as well. Clicking the **Remove** button next to an option will remove that option from the voting. Note that a voting can't be started unless it has two or more options.
 Furthermore, if abstentions should be displayed in the results of the "Previous Votings" section, a voting option for that has to be added manually.
+
+**Important:** Note that only finished votings will be stored into the database persistently. If the server backend gets shut down in between, all created votings without final results will be lost.
 
 
 

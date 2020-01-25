@@ -7,11 +7,14 @@ import communication.wrapper.Connection;
 import main.Conference;
 import org.java_websocket.WebSocket;
 import user.Attendee;
+import user.SimpleAttendee;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This packet can be used by an admin to add multiple attendee's to the conference at once. Responds with a {@link communication.packets.BasePacket}.
+ * If an attendee can't be added, the valid ones are still added to the conference.
  */
 public class AddMultipleAttendeesRequestPacket extends AuthenticatedRequestPacket {
 
@@ -33,37 +36,13 @@ public class AddMultipleAttendeesRequestPacket extends AuthenticatedRequestPacke
             });
             new ValidResponsePacket().send(webSocket);
             attendees.forEach(a -> {
-                Attendee attendee = new Attendee(a.getName(), a.getEmail(), conference.getFreeUserName(a.getName()), a.getGroup(), a.getResidence(), a.getFunction());
-                conference.addAttendee(attendee);
+                try {
+                    Attendee attendee = new Attendee(a.getName(), a.getEmail(), conference.getFreeUserName(a.getName()), a.getGroup(), a.getResidence(), a.getFunction());
+                    conference.addAttendee(attendee);
+                } catch (Exception e) {
+
+                }
             });
-        }
-    }
-
-    class SimpleAttendee {
-        private String name;
-        private String email;
-        private String group;
-        private String residence;
-        private String function;
-
-        public String getName() {
-            return name;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public String getGroup() {
-            return group;
-        }
-
-        public String getResidence() {
-            return residence;
-        }
-
-        public String getFunction() {
-            return function;
         }
     }
 }

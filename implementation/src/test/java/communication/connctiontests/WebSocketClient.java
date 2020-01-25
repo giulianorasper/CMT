@@ -1,11 +1,10 @@
-package communication;
+package communication.connctiontests;
 
 import com.google.gson.Gson;
 import communication.packets.Packet;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
@@ -19,7 +18,6 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
-import org.java_websocket.framing.CloseFrame;
 
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,7 +38,7 @@ public class WebSocketClient {
         this.uri = URI.create("ws://localhost:"+port+"/websocket");
     }
 
-    public void start() throws Exception {
+    public synchronized void start() throws Exception {
         if(running.get()) throw new IllegalStateException();
         try {
             Bootstrap bootstrap = new Bootstrap();

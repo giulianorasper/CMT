@@ -261,7 +261,7 @@ public class CommunicationHandler {
         } catch (Exception e) {
             if(e instanceof IllegalArgumentException) {
                 new FailureResponsePacket(e.getMessage()).send(conn);
-            } else if(e instanceof JsonSyntaxException || e instanceof NullPointerException)  {
+            } else if(e instanceof JsonSyntaxException)  {
                 if(debugging) {
                     e.printStackTrace();
                 } else {
@@ -270,6 +270,7 @@ public class CommunicationHandler {
                 }
             }
             else {
+                new FailureResponsePacket().send(conn);
                 e.printStackTrace();
             }
         }

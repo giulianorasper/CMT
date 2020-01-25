@@ -1352,6 +1352,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
         try {
             adminLock.lock();
             attendeeLock.lock();
+            purgeDirectory(new File(tmpDir.getAbsolutePath() +"/qr/"));
             for (Attendee a : getAllAttendees()) {
                 generateQRCode(a.getID());
             }

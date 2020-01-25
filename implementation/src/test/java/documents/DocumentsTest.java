@@ -43,27 +43,27 @@ public class DocumentsTest {
 
     @Test
     public void singleDocumentUpload(){
-       conf.updateDocument("test", "txt", f, true);
-       Document doc = conf.getDocument("test");
+       conf.updateDocument("test.txt", "txt", f, true);
+       Document doc = conf.getDocument("test.txt");
        if(doc.getRevisionNumber() != 1){
            fail("New documents should have revision number 1");
        }
-      assertArrayEquals("Document content does not fit",conf.getDocumentContent("test"), "Test data\n".getBytes());
+      assertArrayEquals("Document content does not fit",conf.getDocumentContent("test.txt"), "Test data\n".getBytes());
     }
 
     @Test
     public void doubleDocumentUpload(){
-        conf.updateDocument("test", "txt", f, true);
+        conf.updateDocument("test.txt", "txt", f, true);
         try{
-            conf.updateDocument("test", "txt", f, true);
+            conf.updateDocument("test.txt", "txt", f, true);
             fail("Double document creation is illegal");
         }
         catch (IllegalArgumentException e){
-            Document doc = conf.getDocument("test");
+            Document doc = conf.getDocument("test.txt");
             if(doc.getRevisionNumber() != 1){
                 fail("New documents should have revision number 1");
             }
-            assertArrayEquals("Document content does not fit",conf.getDocumentContent("test"), "Test data\n".getBytes());
+            assertArrayEquals("Document content does not fit",conf.getDocumentContent("test.txt"), "Test data\n".getBytes());
         }
     }
 
@@ -94,40 +94,60 @@ public class DocumentsTest {
 
     @Test
     public void documentMultiUpdate(){
-        conf.updateDocument("test", "txt", f, true);
+        conf.updateDocument("test.txt", "txt", f, true);
         int updateCount = 100;
         try {
             for(int i = 0; i < updateCount; i++){
                     FileWriter fw = new FileWriter(f);
                     fw.write("Adding "+i);
                     fw.close();
-                    conf.updateDocument("test", "txt", f, false);
+                    conf.updateDocument("test.txt", "txt", f, false);
             }
         }
         catch (IOException e){
             fail("This test seems to be broken. Sorry");
         }
 
-        Document doc = conf.getDocument("test");
+        Document doc = conf.getDocument("test.txt");
         if(doc.getRevisionNumber() != 101){
             fail("Document should have revision number 101");
         }
-        assertArrayEquals("Document content does not fit",conf.getDocumentContent("test"), "Adding 99".getBytes());
+        assertArrayEquals("Document content does not fit",conf.getDocumentContent("test.txt"), "Adding 99".getBytes());
 
 
     }
 
     @Test
     public void deletedDocumentRecreate(){
-        conf.updateDocument("test", "txt", f, true);
-        conf.deleteDocument("test");
-        conf.updateDocument("test", "txt", f, true);
+        conf.updateDocument("test.txt", "txt", f, true);
+        conf.deleteDocument("test.txt");
 
-        Document doc = conf.getDocument("test");
+        String pathString = "src/test/resources/test.txt";
+        f = new File(pathString);
+        System.out.println(f.getAbsoluteFile());
+        if(f.exists()){
+            f.delete();
+        }
+
+        try {
+            if(!f.getParentFile().exists()) f.getParentFile().mkdir();
+            f.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(pathString));
+            writer.write("Test data\n");
+
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail("Could not initialize test environment");
+        }
+
+        conf.updateDocument("test.txt", "txt", f, true);
+
+        Document doc = conf.getDocument("test.txt");
         if(doc.getRevisionNumber() != 1){
             fail("New documents should have revision number 1");
         }
-        assertArrayEquals("Document content does not fit",conf.getDocumentContent("test"), "Test data\n".getBytes());
+        assertArrayEquals("Document content does not fit",conf.getDocumentContent("test.txt"), "Test data\n".getBytes());
     }
 
     @Test

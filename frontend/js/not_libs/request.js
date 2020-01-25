@@ -118,9 +118,10 @@ function getDocuments(){
 
                 var nameSpan = $("<span>")
                 nameSpan.text(doc.name)
+                alert(nameSpan.html())
 
                 requestOptions.each(function(i, option){
-                    $("<option data-id=\""+(documents.length)+"\" data-isTop = false>" +(nameSpan.html)+"</option>").appendTo(option);
+                    $("<option data-id=\""+(documents.length)+"\" data-isTop = false>" +(nameSpan.html())+"</option>").appendTo(option);
                     documents.push(doc.name)
                 })
             }

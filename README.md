@@ -98,7 +98,7 @@ Also, the file icon in the header can be clicked to upload an agenda file as spe
 
 ### Documents
 
-tbc
+This page displays a list
 
 
 ### Voting
@@ -120,6 +120,8 @@ Existing votings can be **started** by clicking the "Start" button. There can on
 Clicking the "Add" button will **add new voting options** to that voting, making a text field appear to input the name of the voting option. This input field can always be modified and clicking the "Save Changes" button will save these modifications.
 Starting a voting will save all changes automatically, as well. Clicking the **Remove** button next to an option will remove that option from the voting. Note that a voting can't be started unless it has two or more options.
 Furthermore, if abstentions should be displayed in the results of the "Previous Votings" section, a voting option for that has to be added manually.
+
+Also: Note that only finished votings will be stored into the database persistently. If the server backend gets shut down in between, all created votings without final results will be lost.
 
 
 

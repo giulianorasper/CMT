@@ -42,7 +42,7 @@ public class ConfigParser {
         Conference conf =   new Conference
                 (  map.get("name"),
                 map.get("organizer"),
-                Long.parseLong(map.getOrDefault("starttime", ""+System.currentTimeMillis())),
+                Long.parseLong(map.getOrDefault("starttime", ""+(System.currentTimeMillis() /1000))),
                         Long.parseLong(map.get("endtime")),
                 new HashMap<Integer, Admin>(),
                 new HashMap<Integer, Voting>(),
@@ -155,7 +155,7 @@ public class ConfigParser {
             }
             else if(s.charAt(i.get()) == endAt){
                 i.getAndIncrement();
-                return sb.toString().toLowerCase();
+                return sb.toString();
             }
             else if(s.charAt(i.get()) == '#'){
                 parseComment(s,i);

@@ -193,6 +193,10 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
 
     }
 
+    public String getName (){
+        return name;
+    }
+
     /**
      * Initialize Documents for Conference
      */

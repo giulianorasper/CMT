@@ -139,7 +139,27 @@ Furthermore, if abstentions should be displayed in the results of the "Previous 
 
 ### Requests
 
-tbc
+When hovering over the "Requests" tab in the header, attendees can choose two different options: "Request of Change" or "Request of Speech". Admins can also choose the option "Manage Requests".
+Note that the **topic** of a request can not only be a topic of the current agenda, but also a document that has been uploaded.
+
+At the **"Request of Change"** page, attendees can select the topic they want to request a change for by selecting it in the dropdown menu at the top.
+Additionally, a request text can be written in the input field beneath before clicking the "Request" button at the bottom to submit the request.
+
+The **"Request of Speech"** page works completely analogous to the "Request of Change" page apart from the missing input field for a request text. Here, attendees can request to talk about a certain request topic.
+
+All requests done by attendees will get displayed in the "Manage Requests" page that only admins have access to. The table will display the request topic in the "Requests" column, the exact time when it was submitted in the "Time Stamp" column, the request type (request of change or of speech) in the "Request Type" column and the current status ("open", "closed", "approved", "disapproved") in the "Status" column. Requests will be considered "open" by default.
+Clicking on a request will cause its section to expand and tell the admin who sent the request and, in case it is a request of change, display its request text.
+
+In case of a request of change, when the section of a request is expanded, a tick icon and an "x" icon can be found to the right. Clicking the tick icon will mark the request as **approved**, clicking the "x" icon will mark it as **disapproved**.
+In both cases, the request will count as **closed**, but the "Status" section will give further information about its approval status.
+
+In case of a request of speech, there is just a tick icon to the right giving the ability to mark them as **closed**.
+Requests of speech cannot be given any approval or disapproval, which means their "Status" will only be considered "closed" without further information.
+
+Note that open requests will always be displayed at the top and closed requests at the bottom. After that, requests get sorted by time stamp, showing the earliest requests first.
+
+Also, the two dropdown menus at the top of this page can be used to only display requests of a certain type (requests of speech or of change) or only display requests to a certain request topic, which is called "Request Target" here.
+
 
 
 ### Profile
@@ -155,7 +175,7 @@ The "User Management" page is only accessible by admins.
 A list of attendees will display in a table and clicking on any attendee will make their section expand, showing the remaining data that's not displayed in the table itself as well as icons that can be clicked to interact with that attendee. The data displayed here is consistent with the data being shown in the "Profile" section of the respective attendees, giving additional information whether that attendee is currently **present** at the conference or not.
 
 Changing the sorting relation in the dropdown menu at the top will cause the page to refresh and **sort** the attendee list below by that selected category. Sorting by **group** will sort the attendees by their group, in case they have the same group by function and after that by name.
-Sorting by **function** will sort by function first, after that by group and after that by name. Sorting by name doesn't provide any secondary sorting relation.
+Sorting by **function** will sort by function first, after that by group and after that by name. Sorting by **name** doesn't provide any secondary sorting relation.
 
 
 

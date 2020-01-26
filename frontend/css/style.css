@@ -1046,7 +1046,7 @@ body {
   }
   
   /* line 19, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
-  .image-section-class .support_info h3 {
+  .image-section-class h3 {
     font-size: 42px;
     font-weight: 500;
     color: #fff;
@@ -1054,33 +1054,33 @@ body {
   
   @media (max-width: 767px) {
     /* line 19, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
-    .image-section-class .support_info h3 {
+    .image-section-class h3 {
       font-size: 27px;
     }
   }
   
   /* line 27, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
-  .image-section-class .support_info P {
+  .image-section-class P {
     font-size: 16px;
     color: #fff;
     margin: 25px 0;
   }
   
   /* line 33, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
-  .image-section-class .support_info .get_started .btn-color-green {
+  .image-section-class .btn-color-green {
     margin-right: 20px;
     padding: 12px 45px;
   }
   
   /* line 37, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
-  .image-section-class .support_info .get_started .phone_num {
+  .image-section-class  {
     color: #00D363;
     font-size: 16px;
   }
   
   @media (max-width: 767px) {
     /* line 37, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
-    .image-section-class .support_info .get_started .phone_num {
+    .image-section-class {
       display: block;
       margin-top: 20px;
     }
@@ -1101,7 +1101,7 @@ body {
   }
 
   /* line 184, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_gallery.scss */
-#test-form .popup-class .inside-popup .gj-datepicker span {
+.popup-class .inside-popup span {
     color: red;
   }
   
@@ -1176,7 +1176,7 @@ body {
   }
   
   /* line 214, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
-  .popup-class-show .doen_have_acc {
+  .popup-class-show {
     font-size: 16px;
     color: #727272;
     margin-top: 33px;
@@ -1184,7 +1184,7 @@ body {
   }
   
   /* line 219, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
-  .popup-class-show .doen_have_acc a {
+  .popup-class-show  a {
     color: #0181F5;
   }
 
@@ -1264,25 +1264,25 @@ body {
   }
 
   /* line 176, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
-.have_question .chat .btn-color-green {
+.btn-color-green {
     margin-right: 10px;
   }
   
   @media (max-width: 767px) {
     /* line 176, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
-    .have_question .chat .btn-color-green {
+    .btn-color-green {
       padding: 11px 50px;
       margin-right: 0;
     }
   }
 
   /* line 189, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
-.have_question .btn-color-green2 {
+.btn-color-green2 {
     padding: 11px 45px 14px 45px;
   }
 
   /* line 194, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_gallery.scss */
-#test-form .btn-color-green {
+.btn-color-green {
     width: 100%;
     height: 60px;
     -webkit-border-radius: 30px;
@@ -1291,30 +1291,30 @@ body {
   }
 
   /* line 71, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_search_result.scss */
-.search_area .single_search .prising_content a.premium.disable {
+/* .search_area .single_search .prising_content a.premium.disable {
     background: #F6F0F8;
     color: #919191;
-  }
+  } */
   
   /* line 76, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_search_result.scss */
-  .search_area .single_search .prising_content a.btn-color-green {
+  a.btn-color-green {
     padding: 7px 36px;
     color: #fff;
   }
   
   /* line 79, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_search_result.scss */
-  .search_area .single_search .prising_content a.btn-color-green.disable {
+  a.btn-color-green.disable {
     background: #C7C7C7;
   }
   
   /* line 81, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_search_result.scss */
-  .search_area .single_search .prising_content a.btn-color-green.disable:hover {
+ a.btn-color-green.disable:hover {
     border: 1px solid transparent;
     color: #fff !important;
   }
 
   /* line 43, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_launch.scss */
-.lets_launch .launch_text .chat .btn-color-green2 {
+.btn-color-green2 {
     color: #fff !important;
     border-color: #fff !important;
     text-transform: capitalize;
@@ -1323,7 +1323,7 @@ body {
   }
   
   /* line 49, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_launch.scss */
-  .lets_launch .launch_text .chat .btn-color-green2:hover {
+  .btn-color-green2:hover {
     border-color: #00D363 !important;
   }
 
@@ -1416,28 +1416,6 @@ del {
   opacity: 1;
 }
 
-/* line 121, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_contact.scss */
-.modal-message .modal-dialog .modal-content .modal-header h2 {
-    display: block;
-    text-align: center;
-    padding-bottom: 10px;
-  }
-
-/* line 549, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_blog.scss */
-.blog_details h2 {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-
-  @media (min-width: 768px) {
-    /* line 549, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_blog.scss */
-    .blog_details h2 {
-      font-size: 24px;
-      margin-bottom: 15px;
-    }
-  }
-
   a,
 button {
   color: #1F1F1F;
@@ -1471,101 +1449,3 @@ p {
   margin-bottom: 13px;
   font-family: "Roboto", sans-serif;
 } 
-
-/* line 69, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_footer.scss */
-.footer .footer_top .footer_widget ul li a {
-  font-size: 16px;
-  color: #BABABA;
-  line-height: 42px;
-}
-
-/* line 73, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_footer.scss */
-.footer .footer_top .footer_widget ul li a:hover {
-  color: #00D363;
-}
-
-/* line 139, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_footer.scss */
-.footer .socail_links ul li {
-  display: inline-block;
-}
-
-/* line 142, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_footer.scss */
-.footer .socail_links ul li a {
-  color: #A8A7A0;
-  margin: 0 10px;
-  font-size: 15px;
-}
-
-/* line 146, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_footer.scss */
-.footer .socail_links ul li a:hover {
-  color: #fff;
-}
-
-/* line 828, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_blog.scss */
-.blog_right_sidebar .tag_cloud_widget ul li {
-  display: inline-block;
-}
-
-/* line 831, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_blog.scss */
-.blog_right_sidebar .tag_cloud_widget ul li a {
-  display: inline-block;
-  border: 1px solid #eeeeee;
-  background: #fff;
-  padding: 4px 20px;
-  margin-bottom: 8px;
-  margin-right: 3px;
-  transition: all 0.3s ease 0s;
-  color: #888888;
-  font-size: 13px;
-}
-
-/* line 842, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_blog.scss */
-.blog_right_sidebar .tag_cloud_widget ul li a:hover {
-  background: #2E004B;
-  color: #fff !important;
-  -webkit-text-fill-color: #fff;
-  text-decoration: none;
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
-}
-
-/* line 150, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_blog_part.scss */
-.blog_part .single-home-blog .card ul li {
-  display: inline-block;
-  color: #8a8a8a;
-  margin-right: 14px;
-}
-
-@media (max-width: 576px) {
-  /* line 150, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_blog_part.scss */
-  .blog_part .single-home-blog .card ul li {
-    margin-right: 10px;
-  }
-}
-
-@media only screen and (min-width: 576px) and (max-width: 767px) {
-  /* line 150, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_blog_part.scss */
-  .blog_part .single-home-blog .card ul li {
-    margin-right: 10px;
-  }
-}
-
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-  /* line 150, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_blog_part.scss */
-  .blog_part .single-home-blog .card ul li {
-    margin-right: 10px;
-  }
-}
-
-@media only screen and (min-width: 992px) and (max-width: 1200px) {
-  /* line 150, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_blog_part.scss */
-  .blog_part .single-home-blog .card ul li {
-    margin-right: 10px;
-  }
-}
-
-/* line 166, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_blog_part.scss */
-.blog_part .single-home-blog .card ul li span {
-  margin-right: 10px;
-  font-size: 12px;
-}

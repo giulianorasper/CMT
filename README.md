@@ -86,6 +86,10 @@ test:test:test:test:test
 Note that in the following usage specifications of the application, the term "attendees" includes admins by default, which means admins are attendees that are granted additional rights.
 Every time only attendees without administrative rights are considered, the description will specify them as such.
 
+**Important Note for Admins:** Keep in mind that for most of the requests sent to the server, IDs are being used that can change if anything of the same type gets deleted,
+e.g. deleteing an agenda topic will result in the topic IDs changing. Because of that, keeping an old version of the page and trying to edit/delete something can result in editing/deleteing something you did not want to, since IDs were changing in between.
+Thus, try to keep a recent version of the page if you wish to do something while multiple admins are working on the page simultaneously.
+
 ### Agenda
 
 For ordinary **attendees** without administrative power, the agenda can be accessed, but not edited or interacted with in any way.
@@ -134,7 +138,7 @@ Starting a voting will save all changes automatically, as well. Clicking the **R
 Furthermore, if abstentions should be displayed in the results of the "Previous Votings" section, a voting option for that has to be added manually.
 
 **Important:** Note that only finished votings will be stored into the database persistently. If the server backend gets shut down in between, all created votings without final results will be lost.
-
+Furthermore, always keep in mind that **only** attendees marked as **present** will be granted the right to vote.
 
 
 ### Requests
@@ -172,10 +176,34 @@ That data cannot be interacted with and (in case it is necessary) has to be edit
 
 The "User Management" page is only accessible by admins.
 
-A list of attendees will display in a table and clicking on any attendee will make their section expand, showing the remaining data that's not displayed in the table itself as well as icons that can be clicked to interact with that attendee. The data displayed here is consistent with the data being shown in the "Profile" section of the respective attendees, giving additional information whether that attendee is currently **present** at the conference or not.
+A list of attendees will display in a table and clicking on any attendee will make their section expand, showing the remaining data that's not displayed in the table itself yet as well as icons that can be clicked to interact with that attendee. The data displayed here is consistent with the data being shown in the "Profile" section of the respective attendees, giving additional information whether that attendee is currently **present** at the conference or not.
 
 Changing the sorting relation in the dropdown menu at the top will cause the page to refresh and **sort** the attendee list below by that selected category. Sorting by **group** will sort the attendees by their group, in case they have the same group by function and after that by name.
 Sorting by **function** will sort by function first, after that by group and after that by name. Sorting by **name** doesn't provide any secondary sorting relation.
+
+When clicking the "Add Attenddee" button on the bottom left to **create a new attendee**, a popup window will show in which almost all data for the new attendee can be given using text input fields.
+The only exceptions are the username, which will be generated automatically using the name of the Attendee, and the present status as all attendees will be given the present value "false" by default.
+Passwords also will have to be generated seperately after the creation of the attendee. Clicking the "Confirm" button will try to create an attendee with the given data in case the data sticks to the requested format
+(format violations will display at the top of the popup window). Clicking the "X" at the top or the "Cancel" button will close the popup window.
+
+Clicking the pencil icon in the section of an attendee will also open a popup window and grant the possibility to **edit** the respective attendee. All data of the attendee can be changed again,
+giving admins the additional possibility to change the present status of the attendee. Setting "Yes" means setting the present status to "true" while setting "No" means setting it to false. Again, the
+"Confirm" button will save the changes after applying the same format control that is applied when adding new attendees. 
+Note that admins always count as present as soon as they logged in for the first time.
+
+Clicking the lock icon will generate a **new password** for the attendee, invalidating their old one. The new password will be shown to the admin in a popup window.
+
+Clicking the logout icon will **log the attendee out** and leave them unable to do anything until logging in again, but their current password will stay safe (in case it didn't get destroyed by them logging in using that password).
+
+The trash icon of an attendee can be clicked to **delete** them. Note that deleteing an attendee does also mean removing all their requests, but their votes will be kept.
+
+Clicking the QR code icon will also generate a **new password** for the attendee, but provide it using a QR code that will download automatically.
+Scanning this QR code will redirect the attendee to the hosted URL and log them in at once.
+
+Clicking the file icon in the header of the User Management section will open the admin's file browser and give them the possibility to upload a CSV attendee file as specified in the "Additional File Support" section.
+Attendees being added using a CSV file will be scanned for the same format as if they would have been added using the "Add Attendee" button each.
+
+Clicking the download icon in the header of the User Management section will generate new passwords for all attendees and store their data into a ".zip" file including their passwords stored as QR codes.
 
 
 

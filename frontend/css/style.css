@@ -249,7 +249,7 @@ body {
     font-family: "Roboto", sans-serif;
     position: relative;
     text-transform: capitalize;
-    //text-decoration-line: none;
+    /* //text-decoration-line: none; */
     text-decoration: none;
   }
   
@@ -555,18 +555,18 @@ body {
   
 
   /* line 68, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
-.main-section {
+/* .main-section {
     padding-top: 200px;
     padding-bottom: 170px;
-  }
+  } */
   
-  @media (max-width: 767px) {
+  /* @media (max-width: 767px) { */
     /* line 68, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
-    .main-section {
+    /* .main-section {
       padding-top: 60px;
       padding-bottom: 30px;
     }
-  }
+  } */
   
   @media (min-width: 768px) and (max-width: 991px) {
     /* line 68, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
@@ -628,17 +628,17 @@ body {
   .main-section .small-section .item-list ul li::before {
     position: absolute;
     left: 0;
-    //top: 50%;
+    /* //top: 50%;
     //width: 10px;
     //height: 10px;
-    //margin-bottom: 20px;
+    //margin-bottom: 20px; */
     position: relative;
   
     content: "";
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    // background: #00C95E;
+    /* // background: #00C95E; */
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
@@ -672,7 +672,7 @@ body {
   
   /* line 138, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
   .main-section .btn-color-green {
-   // padding: 12px 49px;
+   /* // padding: 12px 49px; */
     padding: 10px 14px;
   }
 
@@ -712,9 +712,9 @@ body {
   }
 
   /* line 1, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
-.sub-section-class {
+/* .sub-section-class {
     padding-top: 190px;
-  }
+  } */
   
   @media (max-width: 767px) {
     /* line 1, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
@@ -937,7 +937,7 @@ body {
     border: 1px solid #E9E5EC;
     border: 5px;
     margin-bottom: 30px;
-   // border: 1px solid #E9E5EC;
+   /* // border: 1px solid #E9E5EC; */
   }
   
   /* line 68, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
@@ -945,7 +945,7 @@ body {
     margin-bottom: 0;
     background-color: #fff;
     border-bottom: none;
-   // padding: 14px 0 16px 14px;
+   /* // padding: 14px 0 16px 14px; */
   
      padding: 0px 0 16px 14px;
   }
@@ -1431,14 +1431,6 @@ ul {
 
 }
 
-/* line 56, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_reset.scss */
-li {
-  /*  list-style: none; */
-  //list-style-type: decimal;
-  
-     // font-size: 30px;
-  
-  }
 
  /* line 59, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_reset.scss */
 p {

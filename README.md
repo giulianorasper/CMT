@@ -147,7 +147,7 @@ Additionally, a request text can be written in the input field beneath before cl
 
 The **"Request of Speech"** page works completely analogous to the "Request of Change" page apart from the missing input field for a request text. Here, attendees can request to talk about a certain request topic.
 
-All requests done by attendees will get displayed in the "Manage Requests" page that only admins have access to. The table will display the request topic in the "Requests" column, the exact time when it was submitted in the "Time Stamp" column, the request type (request of change or of speech) in the "Request Type" column and the current status ("open", "closed", "approved", "disapproved") in the "Status" column. Requests will be considered "open" by default.
+All requests done by attendees will get displayed in the **"Manage Requests"** page that only admins have access to. The table will display the request topic in the "Requests" column, the exact time when it was submitted in the "Time Stamp" column, the request type (request of change or of speech) in the "Request Type" column and the current status ("open", "closed", "approved", "disapproved") in the "Status" column. Requests will be considered "open" by default.
 Clicking on a request will cause its section to expand and tell the admin who sent the request and, in case it is a request of change, display its request text.
 
 In case of a request of change, when the section of a request is expanded, a tick icon and an "x" icon can be found to the right. Clicking the tick icon will mark the request as **approved**, clicking the "x" icon will mark it as **disapproved**.

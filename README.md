@@ -46,7 +46,7 @@ The connection must be encrypted using SSL. The SSL certificate must be placed i
 Start the backend using the command `java -jar fullCMS-1.0.jar start ./config.txt`. If everything was set up properly the application should print the data and the passwords of all admins in a format similar to:
 ```
 Name : Test
-Email : test@test.test 
+Email : test@test.com
 Residence : test
 Group : test
 Function : test
@@ -76,8 +76,8 @@ The application supports two types of files that are meant to ease conference ma
 - Attendee files: attendee files end with ".csv" and contain attendee data. They can be used to add large number of attendees. The format is the same as the admin format in the config files. The example provided looks as follows:
 
 ```
-name:email:group:residence:function
-test:test:test:test:test
+name:email@mail.com:group:residence:function
+test:test@test.com:test:test:test
 ```
 
 

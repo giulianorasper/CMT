@@ -226,8 +226,16 @@ function displayActiveVote(packet){
 			
                 //e.preventDefault();
 				
+				const checkOption = $('input[name="radio"]:checked').attr('id');
+				// const selectedOptionId = $('input[name="radio"]:checked').attr('id').split('-');
+				console.log(checkOption);
+				if(checkOption == null){
+					$("#failure").html("<h4 style='float: right; margin-top:30px;'>Please select an option!</h4>");
+					return;	
+				} 
 				
-				const selectedOptionId = $('input[name="radio"]:checked').attr('id').split('-');
+				$("#failure").empty();	
+				const selectedOptionId = checkOption.split('-');
 				
 				console.log(selectedOptionId[0]);
 				console.log(voteID);

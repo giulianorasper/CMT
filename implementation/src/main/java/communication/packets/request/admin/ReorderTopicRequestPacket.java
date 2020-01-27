@@ -2,13 +2,12 @@ package communication.packets.request.admin;
 
 import agenda.Agenda;
 import agenda.Topic;
-import communication.packets.BasePacket;
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.BasePacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 /**
  * This packet can be used by an admin to reorder a topic of the agenda i.e. giving it a new position.
@@ -21,7 +20,6 @@ public class ReorderTopicRequestPacket extends AuthenticatedRequestPacket {
     private int newPosition;
 
     /**
-     *
      * @param oldPosition the old position of the topic as string (e.g. "1.4.3")
      * @param newPosition the new position of the topic in the (sub-)agenda
      */

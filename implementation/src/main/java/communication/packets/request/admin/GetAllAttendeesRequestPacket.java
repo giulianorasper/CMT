@@ -6,7 +6,6 @@ import communication.packets.Packet;
 import communication.packets.response.admin.GetAllAttendeesResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 /**
  * This packet can be used by an admin to retrieve the personal data of all attendees at once.

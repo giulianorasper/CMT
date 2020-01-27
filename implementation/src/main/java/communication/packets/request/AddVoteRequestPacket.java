@@ -1,14 +1,13 @@
 package communication.packets.request;
 
-import communication.enums.RequestResult;
-import communication.packets.Packet;
 import communication.enums.PacketType;
-import communication.packets.ResponsePacket;
+import communication.enums.RequestResult;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.Packet;
+import communication.packets.ResponsePacket;
 import communication.packets.response.FailureResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import user.Attendee;
 import voting.Voting;
 import voting.VotingStatus;
@@ -23,8 +22,7 @@ public class AddVoteRequestPacket extends AuthenticatedRequestPacket {
     private int optionID;
 
     /**
-     *
-     * @param voteID the ID of the voting the attendee wants to submit a vote for
+     * @param voteID   the ID of the voting the attendee wants to submit a vote for
      * @param optionID the ID of the choice the attendee wants to vote for
      */
     public AddVoteRequestPacket(int voteID, int optionID) {
@@ -48,10 +46,11 @@ public class AddVoteRequestPacket extends AuthenticatedRequestPacket {
             if(voting.addVote(optionID, userID, name)) {
                 response = new ResponsePacket(PacketType.ADD_VOTE_RESPONSE, RequestResult.Valid);
             } else {
-                if(voting.getStatus() == VotingStatus.Closed)
+                if(voting.getStatus() == VotingStatus.Closed) {
                     response = new FailureResponsePacket("The time for voting is up");
-                else
+                } else {
                     response = new FailureResponsePacket("Your vote could not be registered. Most likely you have already submitted a vote");
+                }
             }
             response.send(connection);
         }

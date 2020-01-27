@@ -25,9 +25,8 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
     private CommunicationHandler handler;
 
     /**
-     *
      * @param sslContext the sslContext to be used for secure communication
-     * @param handler the handler processing incoming messages
+     * @param handler    the handler processing incoming messages
      */
     public WebSocketServerInitializer(SslContext sslContext, CommunicationHandler handler) {
         this.sslContext = sslContext;
@@ -54,6 +53,6 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         //one Gibibyte
         pipeline.addLast(new WebSocketServerProtocolHandler(WEBSOCKET_PATH, null, true, 1073741824));
         pipeline.addLast(new WebSocketFrameHandler(handler, tempPath));
-        pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(60*60));
+        pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(60 * 60));
     }
 }

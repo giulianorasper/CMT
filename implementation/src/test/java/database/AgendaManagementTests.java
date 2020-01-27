@@ -3,7 +3,8 @@ package database;
 import agenda.Agenda;
 import agenda.DB_AgendaManagement;
 import agenda.Topic;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 
@@ -17,13 +18,13 @@ public class AgendaManagementTests extends DatabaseTests {
     }
 
     @Test
-    public void updateValidAgendaWithoutPrematureReconstruction(){
+    public void updateValidAgendaWithoutPrematureReconstruction() {
         Agenda agenda = new Agenda();
         Topic firstTopic = new Topic("Käsebrot", agenda);
         Topic subTopic11 = new Topic("Käse", firstTopic.getSubTopics());
         Topic subTopic12 = new Topic("Brot", firstTopic.getSubTopics());
 
-        agenda.addTopic(firstTopic,0);
+        agenda.addTopic(firstTopic, 0);
         firstTopic.getSubTopics().addTopic(subTopic11, 0);
         firstTopic.getSubTopics().addTopic(subTopic12, 1);
 
@@ -37,7 +38,7 @@ public class AgendaManagementTests extends DatabaseTests {
 
         assertEquals("Topic does not match", firstTopic.getName(), refFirstTopic.getName());
         assertEquals("Topic does not match", subTopic11.getName(), refFirstSubTopic.getName());
-        assertEquals("Topic does not match", subTopic12.getName(),refSecondSubTopic.getName());
+        assertEquals("Topic does not match", subTopic12.getName(), refSecondSubTopic.getName());
 
         assertEquals("toString() of reconstruction differs:", agenda.toString(), reconstructed.toString());
 
@@ -57,7 +58,7 @@ public class AgendaManagementTests extends DatabaseTests {
 
         assertEquals("Topic does not match", firstTopic.getName(), refFirstTopicUA.getName());
         assertEquals("Topic does not match", subTopic11.getName(), refFirstSubTopicUA.getName());
-        assertEquals("Topic does not match", subTopic12.getName(),refSecondSubTopicUA.getName());
+        assertEquals("Topic does not match", subTopic12.getName(), refSecondSubTopicUA.getName());
 
         try {
             reconstructed.getTopic(1);

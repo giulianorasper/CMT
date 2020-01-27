@@ -16,7 +16,6 @@ public class LogoutAttendeeRequestPacket extends AuthenticatedRequestPacket {
     private int id;
 
     /**
-     *
      * @param id of the attendee to be logged out
      */
     public LogoutAttendeeRequestPacket(int id) {

@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import communication.enums.PacketType;
 import communication.enums.RequestResult;
 import communication.packets.ResponsePacket;
-import request.ChangeRequest;
 import request.Request;
 
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ public class GetAllRequestsResponsePacket extends ResponsePacket {
     List<Request> requests;
 
     /**
-     *
      * @param requests a list of all requests i.e. request of speech and request of change
      */
     public GetAllRequestsResponsePacket(List<Request> requests) {

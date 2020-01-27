@@ -17,7 +17,6 @@ public class GenerateNewAttendeePasswordRequestPacket extends AuthenticatedReque
     int id;
 
     /**
-     *
      * @param id the id of the attendee for which a new password should be generated
      */
     public GenerateNewAttendeePasswordRequestPacket(int id) {

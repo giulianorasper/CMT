@@ -5,12 +5,10 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import user.Attendee;
 import user.SimpleAttendee;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This packet can be used by an admin to add multiple attendee's to the conference at once. Responds with a {@link communication.packets.BasePacket}.
@@ -32,7 +30,9 @@ public class AddMultipleAttendeesRequestPacket extends AuthenticatedRequestPacke
     public void handle(Conference conference, Connection connection) {
         if(isPermitted(conference, connection, true)) {
             attendees.forEach(a -> {
-                if(a.getName() == null) throw new IllegalArgumentException();
+                if(a.getName() == null) {
+                    throw new IllegalArgumentException();
+                }
             });
             new ValidResponsePacket().send(connection);
             attendees.forEach(a -> {

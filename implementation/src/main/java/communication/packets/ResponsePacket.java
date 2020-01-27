@@ -12,13 +12,13 @@ import communication.enums.RequestResult;
  */
 public class ResponsePacket extends BasePacket {
 
+    @Expose
+    private RequestResult result;
+
     public ResponsePacket(PacketType packetType, RequestResult result) {
         super(packetType);
         this.result = result;
     }
-
-    @Expose
-    private RequestResult result;
 
     public RequestResult getResult() {
         return result;

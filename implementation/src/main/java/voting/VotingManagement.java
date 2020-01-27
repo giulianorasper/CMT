@@ -1,8 +1,5 @@
 package voting;
 
-import utils.OperationResponse;
-import utils.Pair;
-
 import java.util.List;
 
 public interface VotingManagement {

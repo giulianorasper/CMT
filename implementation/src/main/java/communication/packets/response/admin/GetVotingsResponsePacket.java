@@ -14,7 +14,6 @@ public class GetVotingsResponsePacket extends ResponsePacket {
     private List<Voting> votings;
 
     /**
-     *
      * @param votings a list of all votings (see {@link communication.packets.response.GetActiveVotingResponsePacket}) for exposed properties of the {@link Voting} objects
      */
     public GetVotingsResponsePacket(List<Voting> votings) {

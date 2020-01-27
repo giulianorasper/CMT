@@ -1,8 +1,5 @@
 package agenda;
 
-import agenda.Agenda;
-import agenda.Topic;
-
 import main.Conference;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +29,7 @@ public class AgendaTests {
         agenda.addTopic(t3, 2);
         agenda.addTopic(t4, 3);
         Topic t2_1 = new Topic("Subtopic of 2", t2.getSubTopics());
-        t2.getSubTopics().addTopic(t2_1,0);
+        t2.getSubTopics().addTopic(t2_1, 0);
         Topic t3_1 = new Topic("First Subtopic of 3", t3.getSubTopics());
         Topic t3_2 = new Topic("Second Subtopic of 3", t3.getSubTopics());
         Topic t3_3 = new Topic("Third Subtopic of 3", t3.getSubTopics());
@@ -49,7 +46,7 @@ public class AgendaTests {
         Topic firstTopic = new Topic("Käsebrot", agenda);
         Topic subTopic11 = new Topic("Käse", firstTopic.getSubTopics());
         Topic subTopic12 = new Topic("Brot", firstTopic.getSubTopics());
-        agenda.addTopic(firstTopic,0);
+        agenda.addTopic(firstTopic, 0);
         firstTopic.getSubTopics().addTopic(subTopic11, 0);
         firstTopic.getSubTopics().addTopic(subTopic12, 1);
 
@@ -120,9 +117,9 @@ public class AgendaTests {
         Agenda ag = new Agenda(tops);
 
         assertEquals("Preorder String invalid.",
-                Arrays.asList("1", "2", "3", "3.1", "3.1.1", "4"),ag.preOrder());
+                Arrays.asList("1", "2", "3", "3.1", "3.1.1", "4"), ag.preOrder());
         assertEquals("toString returning invalid results",
-                "{Top 1 {}, Top 2 {}, Top 3 {Top 3.1 {Top 3.1.1 {}}}, Top 4 {}}",ag.toString());
+                "{Top 1 {}, Top 2 {}, Top 3 {Top 3.1 {Top 3.1.1 {}}}, Top 4 {}}", ag.toString());
     }
 
     @Test
@@ -131,17 +128,17 @@ public class AgendaTests {
                 " 1.1 Kä se\n" +
                 "\t 1.2\t\t Brot\n\n";
         Agenda agenda = new Agenda(agendaString);
-        assertEquals("Agenda differs from original", "{Käsebrot {Kä se {}, Brot {}}}" , agenda.toString());
+        assertEquals("Agenda differs from original", "{Käsebrot {Kä se {}, Brot {}}}", agenda.toString());
     }
 
     @Test
-    public void testPreorder(){
+    public void testPreorder() {
         Agenda agenda = new Agenda();
         Topic firstTopic = new Topic("Käsebrot", agenda);
         Topic firstSubTopic = new Topic("Käse", firstTopic.getSubTopics());
         Topic secondSubTopic = new Topic("Brot", firstTopic.getSubTopics());
 
-        agenda.addTopic(firstTopic,0);
+        agenda.addTopic(firstTopic, 0);
         firstTopic.getSubTopics().addTopic(firstSubTopic, 0);
         firstTopic.getSubTopics().addTopic(secondSubTopic, 1);
 
@@ -189,7 +186,7 @@ public class AgendaTests {
     }
 
     @Test
-    public void observerMigration(){
+    public void observerMigration() {
         Agenda a = new Agenda();
         final int[] updateCount = {0};
         AgendaObserver o = new AgendaObserver() {
@@ -208,10 +205,9 @@ public class AgendaTests {
         conf.getAgenda().addTopic(new Topic("Test", conf.getAgenda()), 1);
         conf.getAgenda().addTopic(new Topic("Test", conf.getAgenda()), 2);
 
-        if(updateCount[0] != 5){
+        if(updateCount[0] != 5) {
             fail("The observer did not get registered to the new agenda");
         }
-
 
 
     }

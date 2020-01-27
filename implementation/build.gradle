@@ -48,27 +48,24 @@ dependencies {
     testImplementation 'junit:junit:4.9'
 
     /**
-     * Library used for basic WebSocket communication
-     * Licensed under Apache-2.0 license
-     * https://tootallnate.github.io/Java-WebSocket/
-     */
-    compile("org.java-websocket:Java-WebSocket:1.4.0")
-
-    /**
      * Library used for converting objects to JSON and viceversa
-     * Licensed under the MIT license
-     * https://github.com/google/gson
      */
     compile("com.google.code.gson:gson:2.8.6")
 
+
+    /**
+     * Library used for managing .db files
+     */
     compile("org.xerial:sqlite-jdbc:3.27.2.1")
 
-    implementation("org.slf4j:slf4j-simple:1.6.1")
-
-    implementation(group: 'commons-codec', name: 'commons-codec', version: '1.5')
-
+    /**
+     * Library used for generating QR-Codes
+     */
     compile 'io.nayuki:qrcodegen:1.5.0'
 
+    /**
+     * Library used for communication
+     */
     compile group: 'io.netty', name: 'netty-all', version: '4.1.43.Final'
 }
 

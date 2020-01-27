@@ -5,7 +5,6 @@ import communication.packets.response.FailureResponsePacket;
 import communication.packets.response.InvalidTokenResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import user.TokenResponse;
 
 /**
@@ -20,24 +19,13 @@ public abstract class AuthenticatedRequestPacket extends RequestPacket {
     }
 
     /**
-     *
-     * @return An authentication token provided by the sender.
-     */
-    public String getToken() {
-        return token;
-    }
-
-    public AuthenticatedRequestPacket setToken(String token) {
-        this.token = token;
-        return this;
-    }
-
-    /**
      * This method has the side effects, that it sends a {@link FailureResponsePacket} or {@link FailureResponsePacket}
      * if the request was not successful.
-     * @param conference the conference to check permissions for
-     * @param socket the socket to cause side effects on
+     *
+     * @param conference     the conference to check permissions for
+     * @param socket         the socket to cause side effects on
      * @param adminOperation weather to check if the token provides {@link TokenResponse#ValidAdmin}
+     *
      * @return true iff the requesting client has the necessary permissions for the desired request
      */
     public boolean isPermitted(Conference conference, Connection socket, boolean adminOperation) {
@@ -48,5 +36,17 @@ public abstract class AuthenticatedRequestPacket extends RequestPacket {
             new InvalidTokenResponsePacket().send(socket);
             return false;
         }
+    }
+
+    /**
+     * @return An authentication token provided by the sender.
+     */
+    public String getToken() {
+        return token;
+    }
+
+    public AuthenticatedRequestPacket setToken(String token) {
+        this.token = token;
+        return this;
     }
 }

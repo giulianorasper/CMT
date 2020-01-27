@@ -11,7 +11,6 @@ public class IsAdminResponsePacket extends ResponsePacket {
     private boolean admin;
 
     /**
-     *
      * @param admin true iff the requester is an admin
      */
     public IsAdminResponsePacket(boolean admin) {

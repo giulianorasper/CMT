@@ -15,9 +15,8 @@ public class GetAllAttendeePasswordsResponsePacket extends ResponsePacket {
     private List<Pair<User, String>> passwords;
 
     /**
-     *
      * @param passwords a pair of all users and their passwords
-     * The exposed attributes of users are the same as of attendees in {@link communication.packets.response.PersonalDataResponsePacket}.
+     *                  The exposed attributes of users are the same as of attendees in {@link communication.packets.response.PersonalDataResponsePacket}.
      */
     public GetAllAttendeePasswordsResponsePacket(List<Pair<User, String>> passwords) {
         super(PacketType.GET_ALL_ATTENDEE_PASSWORDS_RESPONSE, RequestResult.Valid);

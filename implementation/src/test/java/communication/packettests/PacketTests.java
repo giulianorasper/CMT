@@ -1,6 +1,5 @@
 package communication.packettests;
 
-import agenda.Topic;
 import com.google.gson.Gson;
 import communication.CommunicationHandler;
 import communication.packets.Packet;
@@ -22,7 +21,6 @@ import request.Requestable;
 import request.SpeechRequest;
 import user.Admin;
 import user.Attendee;
-import user.GeneralUserManagement;
 import user.SimpleAttendee;
 import user.User;
 import voting.AnonymousVotingOption;
@@ -47,11 +45,14 @@ public class PacketTests {
     public void before() {
         conference = new Conference(true);
         for(User user : conference.getAllAttendees()) {
-            if(conference.isAdmin(user.getID())) conference.removeAdmin(user.getID());
-            else conference.removeAttendee(user.getID());
+            if(conference.isAdmin(user.getID())) {
+                conference.removeAdmin(user.getID());
+            } else {
+                conference.removeAttendee(user.getID());
+            }
         }
-        Admin admin = new Admin("admin","admin","admin","admin","admin","admin");
-        Attendee attendee = new Attendee("attendee","attendee","attendee","attendee","attendee","attendee");
+        Admin admin = new Admin("admin", "admin", "admin", "admin", "admin", "admin");
+        Attendee attendee = new Attendee("attendee", "attendee", "attendee", "attendee", "attendee", "attendee");
         conference.addAdmin(admin, "admin");
         conference.addAttendee(attendee, "attendee");
         adminToken = conference.login(admin.getUserName(), "admin").second().first();
@@ -68,21 +69,32 @@ public class PacketTests {
         handle(new GetAllRequestsRequestPacket(), connection);
     }
 
+    public void handle(Packet packet, Connection connection) {
+        handler.onMessage(connection, new Gson().toJson(packet));
+    }
+
     @Test
     public void testAddMultipleAttendeesRequestPacket() {
         int amount = 100;
         List<SimpleAttendee> attendees = new ArrayList<>();
         List<Attendee> expectedResult = new ArrayList<>();
         for(int i = 1; i <= amount; i++) {
-            SimpleAttendee simpleAttendee = new SimpleAttendee("n"+(i%3),"e"+((i%10 == 0) ? 10 : i),"g"+(i%3),"r"+(i%3),"f"+i);
+            SimpleAttendee simpleAttendee = new SimpleAttendee("n" + (i % 3), "e" + ((i % 10 == 0) ? 10 : i), "g" + (i % 3), "r" + (i % 3), "f" + i);
             attendees.add(simpleAttendee);
-            Attendee attendee = new Attendee("n"+(i%3),"e"+ ((i%10 == 0) ? 10 : i), "XXXXXXXXX"+i, "g"+(i%3),"r"+(i%3),"f"+i);
-            if(i % 10 != 0 || i == 10) expectedResult.add(attendee);
+            Attendee attendee = new Attendee("n" + (i % 3), "e" + ((i % 10 == 0) ? 10 : i), "XXXXXXXXX" + i, "g" + (i % 3), "r" + (i % 3), "f" + i);
+            if(i % 10 != 0 || i == 10) {
+                expectedResult.add(attendee);
+            }
         }
         Connection connection = MoreAsserts.assertValidResult();
         handle(new AddMultipleAttendeesRequestPacket(attendees).setToken(adminToken), connection);
         removeBeforeUsers();
         MoreAsserts.assertUserListEquals(new ArrayList<>(expectedResult), new ArrayList<>(conference.getAllAttendees()));
+    }
+
+    public void removeBeforeUsers() {
+        conference.removeAttendee(attendeeID);
+        conference.removeAdmin(adminID);
     }
 
     @Test
@@ -93,30 +105,11 @@ public class PacketTests {
         handle(new AddTopicRequestPacket("1.1.", "1.1.").setToken(adminToken), connection);
         handle(new AddTopicRequestPacket("1.1.1.", "1.1.1.").setToken(adminToken), connection);
         handle(new AddTopicRequestPacket("3.", "4.").setToken(adminToken), connection);
-        handle(new AddTopicRequestPacket("3.", "3.").setToken(adminToken),connection);
+        handle(new AddTopicRequestPacket("3.", "3.").setToken(adminToken), connection);
         String[] pos = {"1.", "2.", "1.1.", "1.1.1.", "3.", "4."};
         for(String s : pos) {
             Assert.assertEquals(s, conference.getAgenda().getTopicFromPreorderString(s).getName());
         }
-    }
-
-    @Test
-    public void testAddTopicRequestPacketInvalidID(){
-        Connection connection = MoreAsserts.assertFailureResult();
-        handle(new AddTopicRequestPacket("3.", "3.").setToken(adminToken), connection);
-        Assert.assertEquals(0, conference.getAgenda().getNumberOfTopics());
-    }
-
-    @Test
-    public void testEditUserRequestPacket() {
-        Connection connection = MoreAsserts.assertValidResult();
-        handle(new EditUserRequestPacket(attendeeID, "yes1","yes2","yes3","yes4","yes5").setToken(adminToken), connection);
-        Attendee attendee = conference.getAttendeeData(attendeeID);
-        Assert.assertEquals("yes1", attendee.getName());
-        Assert.assertEquals("yes2", attendee.getEmail());
-        Assert.assertEquals("yes3", attendee.getGroup());
-        Assert.assertEquals("yes4", attendee.getResidence());
-        Assert.assertEquals("yes5", attendee.getFunction());
     }
 
     /*
@@ -129,10 +122,29 @@ public class PacketTests {
     */
 
     @Test
+    public void testAddTopicRequestPacketInvalidID() {
+        Connection connection = MoreAsserts.assertFailureResult();
+        handle(new AddTopicRequestPacket("3.", "3.").setToken(adminToken), connection);
+        Assert.assertEquals(0, conference.getAgenda().getNumberOfTopics());
+    }
+
+    @Test
+    public void testEditUserRequestPacket() {
+        Connection connection = MoreAsserts.assertValidResult();
+        handle(new EditUserRequestPacket(attendeeID, "yes1", "yes2", "yes3", "yes4", "yes5").setToken(adminToken), connection);
+        Attendee attendee = conference.getAttendeeData(attendeeID);
+        Assert.assertEquals("yes1", attendee.getName());
+        Assert.assertEquals("yes2", attendee.getEmail());
+        Assert.assertEquals("yes3", attendee.getGroup());
+        Assert.assertEquals("yes4", attendee.getResidence());
+        Assert.assertEquals("yes5", attendee.getFunction());
+    }
+
+    @Test
     public void testEditUserRequestPacket_invalidID() {
         Connection connection = MoreAsserts.assertFailureResult();
-        handle(new EditUserRequestPacket(Integer.MAX_VALUE, "yes1","yes2","yes3","yes4","yes5").setToken(adminToken), connection);
-        handle(new EditUserRequestPacket(42, "yes1","yes2","yes3","yes4","yes5").setToken(adminToken), connection);
+        handle(new EditUserRequestPacket(Integer.MAX_VALUE, "yes1", "yes2", "yes3", "yes4", "yes5").setToken(adminToken), connection);
+        handle(new EditUserRequestPacket(42, "yes1", "yes2", "yes3", "yes4", "yes5").setToken(adminToken), connection);
     }
 
     @Test
@@ -161,7 +173,7 @@ public class PacketTests {
         handle(new AddTopicRequestPacket("1.", "1.").setToken(adminToken), connection);
         Requestable requestable = conference.getAgenda().getTopicFromPreorderString("1.");
         User requester = conference.getAttendeeData(attendeeID);
-        ChangeRequest changeRequest = new ChangeRequest(requester,requestable,0, "test");
+        ChangeRequest changeRequest = new ChangeRequest(requester, requestable, 0, "test");
         SpeechRequest speechRequest = new SpeechRequest(requester, requestable, 0);
         conference.addRequest(changeRequest);
         conference.addRequest(speechRequest);
@@ -241,21 +253,12 @@ public class PacketTests {
         int i = 0;
         for(Request request : conference.getAllRequests()) {
             i++;
-            if(request instanceof  SpeechRequest) {
+            if(request instanceof SpeechRequest) {
                 Assert.assertEquals("attendee", ((SpeechRequest) request).getRequester().getName());
             } else {
                 Assert.assertEquals("baguette", ((ChangeRequest) request).getMessage());
             }
         }
         Assert.assertEquals(2, i);
-    }
-
-    public void removeBeforeUsers() {
-        conference.removeAttendee(attendeeID);
-        conference.removeAdmin(adminID);
-    }
-
-    public void handle(Packet packet, Connection connection) {
-        handler.onMessage(connection, new Gson().toJson(packet));
     }
 }

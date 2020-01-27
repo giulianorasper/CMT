@@ -1,6 +1,6 @@
 package utils;
 
-public enum OperationResponse {//TODO: Implement this
+public enum OperationResponse {
     AttendeeSuccess(""),
     AdminSuccess(""),
     InvalidToken(""),
@@ -12,11 +12,13 @@ public enum OperationResponse {//TODO: Implement this
         this.setMessage(message);
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    };
-
     public String getMessage() {
         return this.message;
+    }
+
+    ;
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

@@ -19,48 +19,46 @@ import static org.junit.Assert.*;
 public class ConfigParserTests {
 
     @Test
-    public void defaultValues(){
+    public void defaultValues() {
         String config = "name : 'SE Presentation\\#3' # mandatory field. Presents a possible escape sequence\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
                 "url : 'http://localhost' # the url at which the conference is hosted \n" +
-                "admin : 'name:email:group:residence:function' " ;
+                "admin : 'name:email:group:residence:function' ";
 
         Conference c = ConfigParser.parseConfigFile(config);
 
     }
 
     @Test
-    public void multiKey(){
+    public void multiKey() {
         String config = "name : 'SE Presentation\\#3'\n" +
                 "name : 'Test'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
                 "url : 'http://localhost' # the url at which the conference is hosted \n" +
-                "admin : 'name:email:group:residence:function' " ;
+                "admin : 'name:email:group:residence:function' ";
 
         try {
             Conference c = ConfigParser.parseConfigFile(config);
             fail("Duplicated field name");
-        }
-        catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
 
         }
 
     }
 
     @Test
-    public void noAdmins(){
+    public void noAdmins() {
         String config = "name : 'SE Presentation\\#3'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
-                "url : 'http://localhost' # the url at which the conference is hosted \n" ;
+                "url : 'http://localhost' # the url at which the conference is hosted \n";
 
         try {
             Conference c = ConfigParser.parseConfigFile(config);
             fail("Admins missing");
-        }
-        catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
 
         }
 
@@ -68,17 +66,16 @@ public class ConfigParserTests {
 
 
     @Test
-    public void missingMandatory(){
+    public void missingMandatory() {
         String config = "name : 'SE Presentation\\#3'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
-                "admin : 'name:email:group:residence:function' " ;
+                "admin : 'name:email:group:residence:function' ";
 
         try {
             Conference c = ConfigParser.parseConfigFile(config);
             fail("Admins missing");
-        }
-        catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
 
         }
 
@@ -86,50 +83,47 @@ public class ConfigParserTests {
 
 
     @Test
-    public void missingValue(){
+    public void missingValue() {
         String config = "name : 'SE Presentation\\#3'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '' # A unix timestamp. This field is mandatory\n" +
                 "url : 'http://localhost' # the url at which the conference is hosted \n" +
-                "admin : 'name:email:group:residence:function' " ;
+                "admin : 'name:email:group:residence:function' ";
 
         try {
             Conference c = ConfigParser.parseConfigFile(config);
             fail("Admins missing");
-        }
-        catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
 
         }
 
     }
 
     @Test
-    public void pastTime(){
+    public void pastTime() {
         String config = "name : 'SE Presentation\\#3'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
-                "endTime : '"+((System.currentTimeMillis()/1000)-1000)+"' # A unix timestamp. This field is mandatory\n" +
+                "endTime : '" + ((System.currentTimeMillis() / 1000) - 1000) + "' # A unix timestamp. This field is mandatory\n" +
                 "url : 'http://localhost' # the url at which the conference is hosted \n" +
-                "admin : 'name:email:group:residence:function' " ;
+                "admin : 'name:email:group:residence:function' ";
 
         try {
             Conference c = ConfigParser.parseConfigFile(config);
             fail("Admins missing");
-        }
-        catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
 
         }
 
     }
 
     @Test
-    public void persistency(){
+    public void persistency() {
         File f = new File("./test.txt");
         try {
             FileWriter fw = new FileWriter(f);
             fw.write("Test");
             fw.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
 
             fail("Broken test");
         }
@@ -139,12 +133,12 @@ public class ConfigParserTests {
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
                 "url : 'http://localhost' # the url at which the conference is hosted \n" +
-                "admin : 'name:email:group:residence:function' " ;
+                "admin : 'name:email:group:residence:function' ";
 
-            Conference c = ConfigParser.parseConfigFile(config);
+        Conference c = ConfigParser.parseConfigFile(config);
         Conference finalC = c;
         c.getAllDocuments().forEach(d -> finalC.deleteDocument(d.getName()));
-            c.updateDocument("test.txt", "txt", f, true);
+        c.updateDocument("test.txt", "txt", f, true);
 
 
         List<VotingOption> standardAnonymousOptions = new ArrayList<>();
@@ -156,20 +150,20 @@ public class ConfigParserTests {
         c.addVoting(annon);
 
         c = ConfigParser.parseConfigFile(config);
-        assertArrayEquals("Wrong document content", "Test".getBytes() , c.getDocumentContent("test.txt")); ;
+        assertArrayEquals("Wrong document content", "Test".getBytes(), c.getDocumentContent("test.txt"));
+        ;
         assertEquals("Missing vote", 0, c.getVotings().size());
 
     }
 
     @Test
-    public void persistency2(){
+    public void persistency2() {
         File f = new File("./root");
         try {
             FileWriter fw = new FileWriter(f);
             fw.write("Test");
             fw.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
 
             fail("Broken test");
         }
@@ -179,7 +173,7 @@ public class ConfigParserTests {
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
                 "url : 'http://localhost' # the url at which the conference is hosted \n" +
-                "admin : 'name:email:group:residence:function' " ;
+                "admin : 'name:email:group:residence:function' ";
 
         Conference c = ConfigParser.parseConfigFile(config);
         Conference finalC = c;
@@ -196,60 +190,61 @@ public class ConfigParserTests {
 
         c.addVoting(annon);
 
-         config = "name : 'New name'\n" +
+        config = "name : 'New name'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
                 "url : 'http://localhost' # the url at which the conference is hosted \n" +
-                "admin : 'name:email:group:residence:function' " ;
+                "admin : 'name:email:group:residence:function' ";
 
 
         c = ConfigParser.parseConfigFile(config);
-        assertArrayEquals("Wrong document content", "Test".getBytes() , c.getDocumentContent("test.txt")); ;
+        assertArrayEquals("Wrong document content", "Test".getBytes(), c.getDocumentContent("test.txt"));
+        ;
         assertEquals("Missing vote", 0, c.getVotings().size());
         assertEquals("Wrong name", "New name", c.getName());
 
     }
 
     @Test
-    public void adminChange(){
+    public void adminChange() {
         String config = "name : 'SE Presentation\\#3' # mandatory field. Presents a possible escape sequence\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
                 "url : 'http://localhost' # the url at which the conference is hosted \n" +
-                "admin : 'name1:email1:group:residence:function' \n"+
-                "admin : 'name2:email2:group:residence:function' \n"+
+                "admin : 'name1:email1:group:residence:function' \n" +
+                "admin : 'name2:email2:group:residence:function' \n" +
                 "admin : 'name3:email3:group:residence:function' ";
 
         Conference c = ConfigParser.parseConfigFile(config);
 
-         config = "name : 'SE Presentation\\#3' # mandatory field. Presents a possible escape sequence\n" +
+        config = "name : 'SE Presentation\\#3' # mandatory field. Presents a possible escape sequence\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
                 "url : 'http://localhost' # the url at which the conference is hosted \n" +
-                "admin : 'name1:email1:group:residence:function' \n"+
-                "admin : 'name4:email2:group:residence:function' \n"+
+                "admin : 'name1:email1:group:residence:function' \n" +
+                "admin : 'name4:email2:group:residence:function' \n" +
                 "admin : 'name5:email3:group:residence:function' ";
 
-         c = ConfigParser.parseConfigFile(config);
+        c = ConfigParser.parseConfigFile(config);
 
-         c.getAllAdmins().forEach(a ->{
-             if(a.getName().equals("name2") || a.getName().equals("name2")){
-                 fail("found admin which should have been deleted");
-             }
-         });
-
-         AtomicBoolean found1  = new AtomicBoolean(false);
-        AtomicBoolean found2  = new AtomicBoolean(false);
-        AtomicBoolean found3  = new AtomicBoolean(false);
-
-        c.getAllAdmins().forEach(a ->{
-            if(a.getName().equals("name1")){
-               found1.set(true);
+        c.getAllAdmins().forEach(a -> {
+            if(a.getName().equals("name2") || a.getName().equals("name2")) {
+                fail("found admin which should have been deleted");
             }
-            if(a.getName().equals("name4")){
+        });
+
+        AtomicBoolean found1 = new AtomicBoolean(false);
+        AtomicBoolean found2 = new AtomicBoolean(false);
+        AtomicBoolean found3 = new AtomicBoolean(false);
+
+        c.getAllAdmins().forEach(a -> {
+            if(a.getName().equals("name1")) {
+                found1.set(true);
+            }
+            if(a.getName().equals("name4")) {
                 found2.set(true);
             }
-            if(a.getName().equals("name5")){
+            if(a.getName().equals("name5")) {
                 found3.set(true);
             }
 
@@ -258,16 +253,15 @@ public class ConfigParserTests {
         assertTrue("Admins missing", found1.get() && found2.get() && found3.get());
 
 
-
     }
 
     @Test
-    public void escape(){
+    public void escape() {
         String config = "name : 'e\\\\s\\\\\\'cap\\#e' # mandatory field. Presents a possible escape sequence\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
                 "url : 'http://localhost' # the url at which the conference is hosted \n" +
-                "admin : 'name:email:group:residence:function' " ;
+                "admin : 'name:email:group:residence:function' ";
 
         Conference c = ConfigParser.parseConfigFile(config);
         assertEquals("Wrong name", "e\\s\\'cap#e", c.getName());

@@ -51,8 +51,8 @@ public class CommunicationManagerFactory {
     }
 
     /**
-     *
      * @param maxUserConnections the number of connections per user account which are allowed at the same time
+     *
      * @return this
      */
     public CommunicationManagerFactory setMaxUserConnections(int maxUserConnections) {

@@ -7,8 +7,10 @@ public class Utils {
 
     /**
      * Compares two expected equals another one just regarding their data.
+     *
      * @param expected expected to compare to
-     * @param actual the actual user
+     * @param actual   the actual user
+     *
      * @return true iff the expected and actual user have the same data
      */
     public static boolean equalsUser(User expected, User actual) {

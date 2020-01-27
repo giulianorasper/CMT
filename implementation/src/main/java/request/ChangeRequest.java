@@ -12,12 +12,13 @@ public class ChangeRequest extends Request {
 
     /**
      * Construct a ChangeRequest Object with the following Parameters, especially without fixed id (next free Id is used):
+     *
      * @param requester
      * @param topic
      * @param timestamp
      * @param message
      */
-    public ChangeRequest(User requester, Requestable topic, long timestamp, String message){
+    public ChangeRequest(User requester, Requestable topic, long timestamp, String message) {
         super(topic, requester, timestamp);
         this.message = message;
 
@@ -26,6 +27,7 @@ public class ChangeRequest extends Request {
 
     /**
      * Construct a ChangeRequest Object with the following Parameters, especially with fixed id:
+     *
      * @param id
      * @param requester
      * @param topic
@@ -36,37 +38,6 @@ public class ChangeRequest extends Request {
         super(id, topic, requester, timestamp);
         this.message = message;
         this.approved = false;
-    }
-
-    /**
-     * Checks if a ChangeRequest is approved.
-     * @return true iff CR is approved
-     */
-    public boolean isApproved() {
-        try {
-            lock.getReadAccess();
-            return this.approved;
-        } catch (InterruptedException e) {
-            return this.approved;                           //TODO: Well, ...
-        } finally {
-            lock.finishRead();
-        }
-    }
-
-    /**
-     * Approve a ChangeRequest
-     */
-    public void approve(){
-        try {
-            lock.getWriteAccess();
-            this.approved = true;
-            this.open = false;
-        } catch (InterruptedException e) {
-            //do nothing
-        } finally {
-            notifyObservers();
-            lock.finishWrite();
-        }
     }
 
     /**
@@ -91,24 +62,56 @@ public class ChangeRequest extends Request {
         ChangeRequest res = new ChangeRequest(ID, getRequester(), new SimpleRequestable(requestable.getRequestableName()),
                 getTimeStamp(),
                 getMessage());
-        if(!isOpen()){
-           if(isApproved()){
-               res.approve();
-           }
-           else{
-               res.disapprove();
-           }
+        if(!isOpen()) {
+            if(isApproved()) {
+                res.approve();
+            } else {
+                res.disapprove();
+            }
         }
         return res;
     }
 
     /**
-     * Disapprove a ChangeRequest
+     * Get the Reuqest Message
+     *
+     * @return Message
      */
-    public void disapprove(){
+    public String getMessage() {
+
+        try {
+            lock.getReadAccess();
+            return this.message;
+        } catch (InterruptedException e) {
+            return "";
+        } finally {
+            lock.finishRead();
+        }
+    }
+
+    /**
+     * Checks if a ChangeRequest is approved.
+     *
+     * @return true iff CR is approved
+     */
+    public boolean isApproved() {
+        try {
+            lock.getReadAccess();
+            return this.approved;
+        } catch (InterruptedException e) {
+            return this.approved;
+        } finally {
+            lock.finishRead();
+        }
+    }
+
+    /**
+     * Approve a ChangeRequest
+     */
+    public void approve() {
         try {
             lock.getWriteAccess();
-            this.approved = false;
+            this.approved = true;
             this.open = false;
         } catch (InterruptedException e) {
             //do nothing
@@ -119,20 +122,18 @@ public class ChangeRequest extends Request {
     }
 
     /**
-     * Get the Reuqest Message
-     * @return Message
+     * Disapprove a ChangeRequest
      */
-    public String getMessage(){
-
-        try{
-            lock.getReadAccess();
-            return this.message;
-        }
-        catch (InterruptedException e){
-            return "";
-        }
-        finally {
-            lock.finishRead();
+    public void disapprove() {
+        try {
+            lock.getWriteAccess();
+            this.approved = false;
+            this.open = false;
+        } catch (InterruptedException e) {
+            //do nothing
+        } finally {
+            notifyObservers();
+            lock.finishWrite();
         }
     }
 

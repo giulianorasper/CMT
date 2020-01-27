@@ -5,7 +5,6 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import request.ChangeRequest;
 import request.Request;
 import request.SpeechRequest;
@@ -20,10 +19,9 @@ public class SetRequestStatusRequestPacket extends AuthenticatedRequestPacket {
     private boolean open;
 
     /**
-     *
-     * @param id the id of the request which status should be set
+     * @param id       the id of the request which status should be set
      * @param approved set's the approval status of the request, ignored in case if a SpeechRequest or if open = true
-     * @param open set's if the request is still open
+     * @param open     set's if the request is still open
      */
     public SetRequestStatusRequestPacket(int id, boolean approved, boolean open) {
         super(PacketType.SET_REQUEST_STATUS_REQUEST);

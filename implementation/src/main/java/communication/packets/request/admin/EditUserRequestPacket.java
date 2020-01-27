@@ -5,7 +5,6 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import user.Attendee;
 
 /**
@@ -22,12 +21,12 @@ public class EditUserRequestPacket extends AuthenticatedRequestPacket {
     private String function;
 
     /**
-     * @param id the id of the user
-     * @param name the new name of the user
-     * @param email the new email of the user
-     * @param group the new group of the user
+     * @param id        the id of the user
+     * @param name      the new name of the user
+     * @param email     the new email of the user
+     * @param group     the new group of the user
      * @param residence the new residence of the uer
-     * @param function the new function of the user
+     * @param function  the new function of the user
      */
     public EditUserRequestPacket(int id, String name, String email, String group, String residence, String function) {
         super(PacketType.EDIT_USER_REQUEST);
@@ -43,11 +42,21 @@ public class EditUserRequestPacket extends AuthenticatedRequestPacket {
     public void handle(Conference conference, Connection connection) {
         if(isPermitted(conference, connection, true)) {
             Attendee attendee = conference.getAttendeeData(id);
-            if(name != null) attendee.setName(name);
-            if(email != null) attendee.setEmail(email);
-            if(group != null) attendee.setGroup(group);
-            if(residence != null) attendee.setResidence(residence);
-            if(function != null) attendee.setFunction(function);
+            if(name != null) {
+                attendee.setName(name);
+            }
+            if(email != null) {
+                attendee.setEmail(email);
+            }
+            if(group != null) {
+                attendee.setGroup(group);
+            }
+            if(residence != null) {
+                attendee.setResidence(residence);
+            }
+            if(function != null) {
+                attendee.setFunction(function);
+            }
             conference.editAttendee(attendee);
             new ValidResponsePacket().send(connection);
         }

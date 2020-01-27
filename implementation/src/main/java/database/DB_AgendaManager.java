@@ -43,7 +43,9 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
 
     /**
      * Observer for the Agenda. Updates the Agenda when the {@link AgendaObservable} changes.
+     *
      * @param a The new {@link Agenda}.
+     *
      * @return True, iff the agenda was updates properly.
      */
     @Override
@@ -63,7 +65,7 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
         List<String> preOrder = a.preOrder();
         sqlstatement = "INSERT INTO agenda(topicPosition, topicName) VALUES(?,?)";
         try {
-            for (String s : preOrder) {
+            for(String s : preOrder) {
                 try (PreparedStatement stmt = connection2.prepareStatement(sqlstatement)) {
                     String name = a.getTopicFromPreorderString(s).getName();
                     stmt.setString(1, s);
@@ -82,7 +84,6 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
     }
 
     /**
-     *
      * @return the {@link Agenda} object reconstructed from the database.
      */
     @Override
@@ -90,9 +91,9 @@ public class DB_AgendaManager extends DB_Controller implements DB_AgendaManageme
         Connection connection = this.openConnection();
         String sqlstatement = "SELECT * FROM agenda";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-            ResultSet agenda = stmt.executeQuery()) {
+             ResultSet agenda = stmt.executeQuery()) {
             List<Pair<List<Integer>, String>> tops = new LinkedList<>();
-            while (agenda.next()) {
+            while(agenda.next()) {
                 String ord = agenda.getString("topicPosition");
                 List<Integer> order = new LinkedList<Integer>();
                 Arrays.asList(ord.split("\\.")).forEach(s -> order.add(Integer.parseInt(s)));

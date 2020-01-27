@@ -16,7 +16,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * Please note that as of now this is a rudimentary implementation. For example it does not support the creation of a {@link java.util.concurrent.locks.Condition}. As such it does also not fully implement the interface {@link ReadWriteLock}.
  * Please be aware of this limitations when using the lock.
  * Is reentrant
- *
  */
 public class WriterBiasedRWLock {
 
@@ -33,15 +32,16 @@ public class WriterBiasedRWLock {
     /**
      * Constructor for the class. Creates an unfair, reentrant RWLock
      */
-    public WriterBiasedRWLock(){
+    public WriterBiasedRWLock() {
         this(false);
     }
 
     /**
      * Constructor for the class.
+     *
      * @param fair - specifies whether or not the lock should be fair (among threads of the same priority)
      */
-    public WriterBiasedRWLock(boolean fair){
+    public WriterBiasedRWLock(boolean fair) {
         data = new ReentrantLock(fair);
         readerSema = new Semaphore(0, fair);
         writerSema = new Semaphore(0, fair);
@@ -50,19 +50,19 @@ public class WriterBiasedRWLock {
 
     /**
      * Tries to acquire access for a low priority task
+     *
      * @throws InterruptedException - if the thread gets interrupted while waiting for access
      */
     public void getReadAccess() throws InterruptedException {
         data.lock();
-        if(holderId != null && holderId.equals(Thread.currentThread().getId())){
+        if(holderId != null && holderId.equals(Thread.currentThread().getId())) {
             data.unlock();
             return; // if a thread has write access it does not care about reads
         }
-        if(activeWriters + waitingWriters == 0){
+        if(activeWriters + waitingWriters == 0) {
             readerSema.release();
             activeReaders++;
-        }
-        else {
+        } else {
             waitingReaders++;
         }
         data.unlock();
@@ -73,36 +73,37 @@ public class WriterBiasedRWLock {
      * Signals that the low priority task has been completed.
      * Can not be interrupted in order to avoid deadlocks on the mutex
      */
-    public void finishRead(){
+    public void finishRead() {
         data.lock();
-        if(holderId != null && holderId.equals(Thread.currentThread().getId())){
+        if(holderId != null && holderId.equals(Thread.currentThread().getId())) {
             data.unlock();
             return; // if a thread has write access it does not care about reads
         }
         activeReaders--;
-        if(activeReaders == 0 && waitingWriters > 0){
+        if(activeReaders == 0 && waitingWriters > 0) {
             writerSema.release();
             activeWriters++;
             waitingWriters--;
         }
         data.unlock();
     }
+
     /**
      * Tries to acquire access for a high priority task
+     *
      * @throws InterruptedException - if the thread gets interrupted while waiting for access
      */
-    public void getWriteAccess() throws InterruptedException{
+    public void getWriteAccess() throws InterruptedException {
         data.lock();
-        if(holderId != null && holderId.equals(Thread.currentThread().getId())){
+        if(holderId != null && holderId.equals(Thread.currentThread().getId())) {
             data.unlock();
             holderCount++;
             return;
         }
-        if(activeWriters + activeReaders + waitingWriters == 0){
+        if(activeWriters + activeReaders + waitingWriters == 0) {
             writerSema.release();
             activeWriters++;
-        }
-        else{
+        } else {
             waitingWriters++;
         }
         data.unlock();
@@ -118,25 +119,26 @@ public class WriterBiasedRWLock {
      * Signals that the low priority task has been completed.
      * Can not be interrupted in order to avoid deadlocks on the mutex
      */
-    public void finishWrite(){
+    public void finishWrite() {
         data.lock();
-        if(holderId != null && holderId.equals(Thread.currentThread().getId())){
-            if(holderCount != 0){
+        if(holderId != null && holderId.equals(Thread.currentThread().getId())) {
+            if(holderCount != 0) {
                 holderCount--;
                 data.unlock();
                 return;
             }
         }
         activeWriters--;
-        if(waitingWriters > 0){
+        if(waitingWriters > 0) {
             writerSema.release();
             activeWriters++;
             waitingWriters--;
-        }
-        else while(waitingReaders > 0){
-            readerSema.release();
-            activeReaders++;
-            waitingReaders--;
+        } else {
+            while(waitingReaders > 0) {
+                readerSema.release();
+                activeReaders++;
+                waitingReaders--;
+            }
         }
 
         data.unlock();

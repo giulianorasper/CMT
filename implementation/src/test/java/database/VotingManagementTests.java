@@ -2,7 +2,12 @@ package database;
 
 import org.junit.Before;
 import org.junit.Test;
-import voting.*;
+import voting.AnonymousVotingOption;
+import voting.DB_VotingManagement;
+import voting.NamedVotingOption;
+import voting.Voting;
+import voting.VotingOption;
+import voting.VotingStatus;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,31 +36,38 @@ public class VotingManagementTests extends DatabaseTests {
         AnonymousVotingOption av2 = new AnonymousVotingOption(1, "Anonymous bar");
         AnonymousVotingOption av3 = new AnonymousVotingOption(2, "Anonymous foobar");
 
-        nl.add(nv1); nl.add(nv2); nl.add(nv3);
-        al.add(av1); al.add(av2); al.add(av3);
+        nl.add(nv1);
+        nl.add(nv2);
+        nl.add(nv3);
+        al.add(av1);
+        al.add(av2);
+        al.add(av3);
 
         Voting named = new Voting(nl, "Should we have a named voting?", true, 30);
 
         Voting anon = new Voting(al, "Should we keep it anonymous?", false, 30);
 
-        nv1.setParent(named); nv2.setParent(named); nv3.setParent(named);
-        av1.setParent(anon);av2.setParent(anon);av2.setParent(anon);
+        nv1.setParent(named);
+        nv2.setParent(named);
+        nv3.setParent(named);
+        av1.setParent(anon);
+        av2.setParent(anon);
+        av2.setParent(anon);
 
         named.startVote();
         anon.startVote();
 
         named.addVote(0, 0, "Alex");
         named.addVote(0, 1, "Jörg");
-        named.addVote(0, 2,"simon");
-        named.addVote(1, 4,"bernd");
-        named.addVote(1, 7,"luk");
+        named.addVote(0, 2, "simon");
+        named.addVote(1, 4, "bernd");
+        named.addVote(1, 7, "luk");
 
-        anon.addVote(0, 1,"Jörg");
-        anon.addVote(1, 2,"simon");
+        anon.addVote(0, 1, "Jörg");
+        anon.addVote(1, 2, "simon");
 
         named.endVote();
         anon.endVote();
-
 
 
         votM.addVoting(named);
@@ -64,11 +76,11 @@ public class VotingManagementTests extends DatabaseTests {
         Voting resn = votM.getVoting(named.getID());
         Voting resa = votM.getVoting(anon.getID());
 
-        assertEquals("Different question than before.", named.getQuestion(),  resn.getQuestion());
-        assertEquals("Different question than before.", anon.getQuestion(),  resa.getQuestion());
+        assertEquals("Different question than before.", named.getQuestion(), resn.getQuestion());
+        assertEquals("Different question than before.", anon.getQuestion(), resa.getQuestion());
 
-        assertEquals("Different amount of options than before.", 3,  resn.getOptions().size());
-        assertEquals("Different amount of options than before.", 3,  resa.getOptions().size());
+        assertEquals("Different amount of options than before.", 3, resn.getOptions().size());
+        assertEquals("Different amount of options than before.", 3, resa.getOptions().size());
 
         assertEquals("Different name for VotingOptions than before",
                 resn.getOptions().get(0).getName(), nv1.getName());
@@ -118,7 +130,7 @@ public class VotingManagementTests extends DatabaseTests {
         assertEquals("Voting has incorrect status after creation.", VotingStatus.Created, vot.getStatus());
         votM.update(vot);
         assertEquals("Update method should do nothing because the voting has not yet started.",
-                0,  votM.getVotings().size());
+                0, votM.getVotings().size());
 
         vot.startVote();
         assertEquals("Voting has incorrect status after start.", VotingStatus.Running, vot.getStatus());
@@ -136,7 +148,7 @@ public class VotingManagementTests extends DatabaseTests {
         assertEquals("Reconstructed voting has a different ID.", vot.getID(), res.getID());
         assertEquals("Reconstructed voting has a different question.", vot.getQuestion(), res.getQuestion());
         assertEquals("Reconstructed voting has a different amount of options.",
-                vot.getOptions().size() , vot.getOptions().size());
+                vot.getOptions().size(), vot.getOptions().size());
         assertEquals("Reconstructed Voting Status should be closed.", VotingStatus.Closed, res.getStatus());
 
         assertFalse("A voting with this ID already exists. ", votM.addVoting(res));

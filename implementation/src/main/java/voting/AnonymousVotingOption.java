@@ -7,6 +7,18 @@ public class AnonymousVotingOption extends VotingOption {
     private int votes;
 
     /**
+     * Database reconstructor to remove the need to add the votes all the time.
+     *
+     * @param ID    The ID of this option.
+     * @param name  The name of this option.
+     * @param votes The amount of votes this option has got.
+     */
+    public AnonymousVotingOption(int ID, String name, int votes) {
+        this(ID, name);
+        this.votes = votes;
+    }
+
+    /**
      * Standard constructor.
      */
     public AnonymousVotingOption(int ID, String name) {
@@ -15,28 +27,17 @@ public class AnonymousVotingOption extends VotingOption {
     }
 
     /**
-     * Database reconstructor to remove the need to add the votes all the time.
-     * @param ID The ID of this option.
-     * @param name The name of this option.
-     * @param votes The amount of votes this option has got.
-     */
-    public AnonymousVotingOption(int ID, String name, int votes) {
-        this(ID, name);
-        this.votes = votes;
-    }
-
-
-    /**
      * increase Number of user that vote for the NamedVotingOption.
+     *
      * @param userID
      */
     @Override
-    protected void addVote(int userID,String username) {
+    protected void addVote(int userID, String username) {
         votes++;
     }
 
     @Override
-    public int getCurrentResult(){
+    public int getCurrentResult() {
         return publicVotes;
         /*try {
             lock.getReadAccess();

@@ -4,10 +4,8 @@ import agenda.DB_AgendaManagement;
 import document.DB_DocumentManagement;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import request.DB_RequestManagement;
 import user.DB_UserManagement;
-import user.GeneralUserManagement;
 import voting.DB_VotingManagement;
 
 import java.io.File;
@@ -42,24 +40,24 @@ public abstract class DatabaseTests {
         new File(path).delete();
     }
 
-    protected DB_UserManagement getGeneralUserDB(){
+    protected DB_UserManagement getGeneralUserDB() {
         return this.generalUserDB;
     }
 
 
-    protected DB_AgendaManagement getAgendaDB(){
+    protected DB_AgendaManagement getAgendaDB() {
         return this.agendaDB;
     }
 
-    protected DB_DocumentManagement getDocumentDB(){
+    protected DB_DocumentManagement getDocumentDB() {
         return this.documentDB;
     }
 
-    protected DB_RequestManagement getRequestDB(){
+    protected DB_RequestManagement getRequestDB() {
         return this.requestDB;
     }
 
-    protected DB_VotingManagement getVotingDB(){
+    protected DB_VotingManagement getVotingDB() {
         return this.votingDB;
     }
 

@@ -57,6 +57,13 @@ $(function(){
     });
 
 
+    fileDialog = $('#fileErrorDialog').dialog({
+        title: "Error in Attendee File",
+        autoOpen: false,
+        modal: true,
+        draggable: false
+    });
+
     //Editing dialog mostly similar to creation dialog
     editDialog = $('#editDialog').dialog({
         title: "Edit Attendee",
@@ -94,6 +101,7 @@ $(document).ready( function() {
     window.clickEditAttendee = clickEditAttendee;
     window.closeCreateAttendee = closeCreateAttendee;
     window.closeEditAttendee = closeEditAttendee;
+    window.closeErrorDialog = closeErrorDialog;
 
     //Add listeners to buttons/dropdown menus that don't need to be generated dynamically
     document.getElementById("sortingOptions").addEventListener("change", changeSort, false);
@@ -130,7 +138,6 @@ const attendeeContainer = $('#attendeeList');
 function updateAttendeeList(){
     function success(packet){
         if(packet.result === "Valid"){
-            console.log(packet);
             sortAttendeeList(packet.attendees);
         }
         else{
@@ -157,7 +164,6 @@ function sortAttendeeList(attendeeList){
 
     //Calls getSortedList from attendeeSorting.js
     const sortedList = getSortedList(attendeeList, sortingRelation);
-    console.log(sortedList);
 
     //Update local list right before rendering
     localAttendeeList = sortedList;
@@ -197,8 +203,6 @@ function refresh(){
  * @param attendeeList - Current list of attendees that shall be pasted inside the table
  */
 function generateAttendeeList(attendeeList){
-
-    //console.log(attendeeList);
 
     //Replaces old list content with empty HTML
     $('#attendeeList').empty();
@@ -352,10 +356,39 @@ function handleListUpload(event) {
         alert("Wrong File Extension. Only .csv files allowed.")
     }
 
+
     function parseUsers(text) {
         let packet = new AddMultipleAttendeesRequestPacket();
-        text.split(/\r?\n/).forEach(entry => packet.addAttendee.apply(packet, entry.split(":")));
-        CommunicationManager.send(packet, success, fail);
+        const attendeeField = text.split(/\r?\n/);
+
+
+        //Empty error handling dialog
+        $('#fileErrorDialogContent').empty();
+
+        var correctData = true;
+
+        for(var i = 0; i < attendeeField.length; i++){
+            //skip empty lines!
+            if(attendeeField[i] === ""){
+                continue;
+            }
+            var currAttendeeData = attendeeField[i].split(":");
+
+            //adding line count to the data
+            currAttendeeData.push(i);
+            correctData = correctData && checkValidFileData.apply(this, currAttendeeData);
+
+            //line count will get cut off after to send the request without
+            currAttendeeData.pop();
+            packet.addAttendee.apply(packet, currAttendeeData);
+        }
+
+        //attendeeField.forEach(entry => packet.addAttendee.apply(packet, entry.split(":")));
+
+        if(correctData){
+            CommunicationManager.send(packet, success, fail);
+        }
+
 
         function success(packet){
             if(packet.result === "Valid"){
@@ -419,9 +452,6 @@ function editAttendee(attendeeIndex, name, email, group, residence, fnctn, prese
     const editRequestPacket = new EditUserRequestPacket(attendeeID, name, email, group, residence, fnctn);
     const editPresenceRequestPacket = new SetAttendeePresentStatusRequestPacket(attendeeID, present);
 
-
-    console.log("When sending edit request: " + present);
-
     function successEditAttendee(packet){
         if(packet.result === "Valid"){
             CommunicationManager.send(editPresenceRequestPacket, successEditPresence, failEditAttendee);
@@ -460,7 +490,6 @@ function editAttendee(attendeeIndex, name, email, group, residence, fnctn, prese
  */
 function createAttendee(name, email, group, residence, fnctn){
     const createRequestPacket = new AddAttendeeRequestPacket(name, email, group, residence, fnctn);
-    console.log("Data: " + name + " " + email + " " + group + " " + residence + " " + fnctn);
 
     function successCreateAttendee(packet) {
         if (packet.result === "Valid"){
@@ -563,7 +592,6 @@ function getExistingGroups(editing){
     const requestPacket = new GetExistingGroupsRequestPacket();
 
     function successGetGroups(packet){
-        console.log("Got to the actual request");
 
         if(packet.result === "Valid"){
             if(editing){
@@ -572,8 +600,6 @@ function getExistingGroups(editing){
                 updateCreateGroupList(packet.groups);
             }
         } else{
-            console.log("Doesn't work, dumbass");
-            console.log(packet.packetType);
             alert(packet.details);
         }
     }
@@ -607,6 +633,9 @@ var createDialog;
 // Variable specifying the submit form
 var createForm;
 
+//Variable specifying the uploading dialog
+var fileDialog;
+
 
 // Variables needed for the creation of a new attendee
 var newNameID = $('#createName'),
@@ -628,6 +657,13 @@ function updateTips(tipID, newText){
     tipID.text(newText);
 }
 
+function alertTips(line, newText){
+    //Line index in file beginning from 1!
+    line++;
+
+    $('#fileErrorDialogContent').append("Error in line " + line + ": " + newText).append("<br>");
+}
+
 function checkLength(checkedObject, fieldName, min, max, tipID){
     if(checkedObject.val().length > max || checkedObject.val().length < min){
         updateTips(tipID, "Length of " + fieldName + " must be between " + min + " and " + max + " characters.");
@@ -636,9 +672,26 @@ function checkLength(checkedObject, fieldName, min, max, tipID){
     return true;
 }
 
+
+function checkLengthString(checkedString, fieldName, min, max, line){
+    if(checkedString.length > max || checkedString.length < min){
+        alertTips(line, "Length of " + fieldName + " must be between " + min + " and " + max + " characters.");
+        return false;
+    }
+    return true;
+}
+
 function checkRegex(checkedObject, regex, message, tipID){
     if( !( regex.test(checkedObject.val()) ) ){
         updateTips(tipID, message);
+        return false;
+    }
+    return true;
+}
+
+function checkRegexString(checkedString, regex, message, line){
+    if( !( regex.test(checkedString) ) ){
+        alertTips(line, message);
         return false;
     }
     return true;
@@ -658,6 +711,29 @@ function checkValidData(nameID, mailID, groupID, residenceID, functionID, tipID)
     validUser = validUser && checkRegex(groupID, nameRegex, "Group mustn't contain $%^*£=~@_", tipID);
     validUser = validUser && checkRegex(residenceID, nameRegex, "Residence mustn't contain $%^*£=~@_", tipID);
     validUser = validUser && checkRegex(functionID, nameRegex, "Function mustn't contain $%^*£=~@_", tipID);
+
+    return validUser;
+}
+
+//TODO
+function checkValidFileData(name, mail, group, residence, fun, line){
+    var validUser = true;
+
+    validUser = validUser && checkLengthString(name, "name", 1, 64, line);
+    validUser = validUser && checkLengthString(mail, "email", 5, 64, line);
+    validUser = validUser && checkLengthString(group, "group", 1, 64, line);
+    validUser = validUser && checkLengthString(residence, "residence", 1, 256, line);
+    validUser = validUser && checkLengthString(fun, "function", 1, 64, line);
+
+    validUser = validUser && checkRegexString(name, nameRegex, "Name mustn't contain $%^*£=~@_", line);
+    validUser = validUser && checkRegexString(mail, mailRegex, "Invalid mail. Example for a valid mail: user@domain.com", line);
+    validUser = validUser && checkRegexString(group, nameRegex, "Group mustn't contain $%^*£=~@_", line);
+    validUser = validUser && checkRegexString(residence, nameRegex, "Residence mustn't contain $%^*£=~@_", line);
+    validUser = validUser && checkRegexString(fun, nameRegex, "Function mustn't contain $%^*£=~@_", line);
+
+    if(!validUser){
+        fileDialog.open();
+    }
 
     return validUser;
 }
@@ -700,12 +776,8 @@ function clickEditAttendee(){
 
         const editPresentID = $('input[name="edit-yes-no"]:checked');
 
-        console.log("Value of button: " + editPresentID.val());
-
         // Has to be compared like this!! === always results in false
         const present = editPresentID.val() == 1;
-
-        console.log("When closing editing window: " + present);
 
         editAttendee(editedAttendeeIndex,
             editNameID.val(),
@@ -723,6 +795,10 @@ function closeCreateAttendee(){
 
 function closeEditAttendee(){
     editDialog.dialog("close");
+}
+
+function closeErrorDialog(){
+    fileDialog.dialog("close");
 }
 
 

@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="css/bootstrap-glyphicons.css">
     <link rel="stylesheet" href="css/gijgo.css">
     <link rel="stylesheet" href="css/slicknav.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.min.css">
     <link rel="stylesheet" href="css/main.css">
 
     <!-- Additional style choices for popup window when creating/editing users-->
@@ -213,6 +213,16 @@
             </div>
         </fieldset>
     </form>
+</div>
+
+<div id="fileErrorDialog" title="Error in Attendee File" class="ui-dialog" style="text-align: center;">
+
+    <div id = "fileErrorDialogContent">
+
+    </div>
+    <button type="button" class="btn btn-outline-info" title="Close" style="width: 50px; margin-top: 10px;"
+            onclick="closeErrorDialog()">OK
+    </button>
 </div>
 
 <div id="editDialog" title="Edit user" class="ui-dialog">

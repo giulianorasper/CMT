@@ -218,9 +218,9 @@ public class UserManagementTests extends DatabaseTests {
         dbGen.addAdmin(stephan, "1111", "9999");
 
         // CHeck if the right LoginResponse / TokenResponse Value
-        assertEquals(LoginResponse.WrongPassword, dbGen.checkLogin("AlmightyStephan", "rue1831978").first());
+        assertEquals(LoginResponse.WrongPassword, dbGen.checkLogin("AlmightyStephan", "rue1831ffsfdd978").first());
         assertEquals(TokenResponse.TokenDoesNotExist, dbGen.checkToken("token"));
-        assertEquals(LoginResponse.UserDoesNotExist, dbGen.checkLogin("Stephan", "rue1831978").first());
+        assertEquals(LoginResponse.UserDoesNotExist, dbGen.checkLogin("Stephan", "rue18dseggh31978").first());
         //assertEquals(TokenResponse., dbGen.checkToken("token"));;
         assertEquals(LoginResponse.Valid, dbGen.checkLogin("AlmightyStephan", "1111").first());
         assertEquals(LoginResponse.Valid, dbGen.checkLogin("AlmightyStephan", "1111").first());
@@ -255,7 +255,7 @@ public class UserManagementTests extends DatabaseTests {
         Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
         Attendee herbert = new Attendee("herbert Mustermann", "herbert@email.muster", "herbert.Mustermann", "RCDS", "Differten2", "Straßenkehrer2", 2);
         Admin alex = new Admin("alex Mustermann", "alex@email.muster", "alex.Mustermann", "Groupe23", "Differten43", "Tester", 3);
-        Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
+        Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
         dbGen.addAttendee(max, "1234", "42");

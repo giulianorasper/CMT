@@ -12,7 +12,7 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void validAttendeeCredentials(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
         dbGen.checkLogin("MaxMustermann", "123");
@@ -53,7 +53,7 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void removeUser(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         Admin stephan2 = new Admin("Stephan2 Mustermann", "enmail2@email.muster", "Almi2ghtyStephan", "project23", "Winterwunderland", "group member", 2);
         DB_UserManagement dbGen = this.getGeneralUserDB();
@@ -81,7 +81,7 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void logoutUser(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -96,7 +96,7 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void getCorrectPasswords(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -112,7 +112,7 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void newTokenToUser(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -134,7 +134,7 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void newPasswordToUser(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -150,7 +150,7 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void existUserName(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -164,7 +164,7 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void severalAttendeesAndAdmins(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         Attendee stephan = new Attendee("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -175,7 +175,7 @@ public class UserManagementTests extends DatabaseTests {
         assertEquals(attendees.get(0).getID(),max.getID());
         assertEquals(attendees.get(1).getID(), stephan.getID());
 
-        Admin Alex = new Admin("Alex Mustermann", "almail@email.muster", "Alex.Mustermann", "RCDS", "Diffeasarten", "Straßenkehrer", 2);
+        Admin Alex = new Admin("Alex Mustermann", "almail@email.muster", "Alex.Mustermann", "LOL", "Place",  "Straßenkehrer", 2);
         Admin Kamran = new Admin("Kamran Mustermann", "kamnmail@email.muster", "Kamran", "project23", "Winterwdfgunderland", "group member", 3);
         dbGen.addAdmin(Alex, "345", "3456");
         dbGen.addAdmin(Kamran, "2345", "3245");
@@ -192,7 +192,7 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void editUser(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -210,7 +210,7 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void diffrentCheckLoginAndTokenCases(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -231,9 +231,9 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void getallGroupsFromDb(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
-        Attendee herbert = new Attendee("herbert Mustermann", "herbert@email.muster", "herbert.Mustermann", "RCDS", "Differten2", "Straßenkehrer2", 2);
-        Attendee alex = new Attendee("alex Mustermann", "alex@email.muster", "alex.Mustermann", "Groupe23", "Differten43", "Tester", 3);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
+        Attendee herbert = new Attendee("herbert Mustermann", "herbert@email.muster", "herbert.Mustermann", "LOL", "Place2",  "Straßenkehrer2", 2);
+        Attendee alex = new Attendee("alex Mustermann", "alex@email.muster", "alex.Mustermann", "Groupe23", "Place43", "Tester", 3);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -252,8 +252,8 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void getRightPresentValue() {
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
-        Attendee herbert = new Attendee("herbert Mustermann", "herbert@email.muster", "herbert.Mustermann", "RCDS", "Differten2", "Straßenkehrer2", 2);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
+        Attendee herbert = new Attendee("herbert Mustermann", "herbert@email.muster", "herbert.Mustermann", "LOL", "Place2",  "Straßenkehrer2", 2);
         Admin alex = new Admin("alex Mustermann", "alex@email.muster", "alex.Mustermann", "Groupe23", "Differten43", "Tester", 3);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();

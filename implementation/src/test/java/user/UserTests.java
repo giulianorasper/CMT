@@ -33,7 +33,7 @@ public class UserTests {
             (new Thread(){
                 @Override
                 public void run(){
-                    Attendee a = new Attendee("Mikel", "email@haus", conf.getFreeUserName("mikel"), "RCDS", "MP", "SysAdmin");
+                    Attendee a = new Attendee("Mikel", "email@haus", conf.getFreeUserName("mikel"), "Group", "MP", "SysAdmin");
                     while (!go.compareAndSet(true, true)){/*wait*/}
                     boolean successfull;
                     try {
@@ -77,7 +77,7 @@ public class UserTests {
             (new Thread(){
                 @Override
                 public void run(){
-                    Attendee a = new Attendee("Milo", "Milo@wood"+aux.get()+".moodle", conf.getFreeUserName("Milo"), "RCDS", "MLI", "SysAdmin");
+                    Attendee a = new Attendee("Milo", "Milo@wood"+aux.get()+".moodle", conf.getFreeUserName("Milo"), "Group", "MLI", "SysAdmin");
                     while (!go.compareAndSet(true, true)){/*wait*/}
                     try {
                         conf.addAttendee(a);
@@ -113,7 +113,7 @@ public class UserTests {
         int[] attendeeIds = new int[threadCount];
 
         for(int  i = 0; i < threadCount; i++){
-            Attendee a = new Attendee("Miske", "Misketest@haus"+i+".ttt", conf.getFreeUserName("Miske"), "RCDS", "MPI", "SysAdmin");
+            Attendee a = new Attendee("Miske", "Misketest@haus"+i+".ttt", conf.getFreeUserName("Miske"), "Group", "MPI", "SysAdmin");
             conf.addAttendee(a);
             attendeeIds[i] = a.getID();
         }
@@ -126,7 +126,7 @@ public class UserTests {
                 public void run(){
                     while (!go.compareAndSet(true, true)){/*wait*/}
                     boolean successfull;
-                    Attendee a = new Attendee("Miske"+ aux.get(), "Misketest@haus"+aux.get()+".ttt", conf.getFreeUserName("Miske"), "RCDS", "MPI" + aux.get(), "SysAdmin", attendeeIds[aux.get()]);
+                    Attendee a = new Attendee("Miske"+ aux.get(), "Misketest@haus"+aux.get()+".ttt", conf.getFreeUserName("Miske"), "Group", "MI" + aux.get(), "SysAdmin", attendeeIds[aux.get()]);
 
                     try {
                         conf.editAttendee(a);
@@ -149,7 +149,7 @@ public class UserTests {
                     }
 
                     assertEquals("Attendee has different name despite successful edit " + a,  "Miske" + aux.get(), conf.getAttendeeData(a.getID()).name);
-                    assertEquals("Attendee has different residence despite successful edit " + a, "MPI" + aux.get(), conf.getAttendeeData(a.getID()).residence);
+                    assertEquals("Attendee has different residence despite successful edit " + a, "MI" + aux.get(), conf.getAttendeeData(a.getID()).residence);
 
 
 
@@ -248,7 +248,7 @@ public class UserTests {
 
     @Test
     public void invalidLogin(){
-        Attendee a = new Attendee("Milke", "Milkes@hoddie", conf.getFreeUserName("Mlike"), "RCDS", "MOMO", "SysAdmin");
+        Attendee a = new Attendee("Milke", "Milkes@hoddie", conf.getFreeUserName("Mlike"), "Group", "MOMO", "SysAdmin");
         conf.addAttendee(a);
         String password = conf.getUserPassword(a.getID()).second();
         conf.logoutUser(a.getID());
@@ -261,7 +261,7 @@ public class UserTests {
 
     @Test
     public void invalidLogin2(){
-        Attendee a = new Attendee("Minus", "Minus@plus", conf.getFreeUserName("Minus"), "RCDS", "UNI", "SysAdmin");
+        Attendee a = new Attendee("Minus", "Minus@plus", conf.getFreeUserName("Minus"), "Group", "UNI", "SysAdmin");
         conf.addAttendee(a);
         String password = conf.getUserPassword(a.getID()).second();
         conf.logoutAllUsers();
@@ -274,7 +274,7 @@ public class UserTests {
 
     @Test
     public void invalidLogin3(){
-        Attendee a = new Attendee("Jordon", "Jordnon@Gsl", conf.getFreeUserName("Jordon"), "RCDS", "Uni", "SysAdmin");
+        Attendee a = new Attendee("Jordon", "Jordnon@Gsl", conf.getFreeUserName("Jordon"), "Group", "Uni", "SysAdmin");
         conf.addAttendee(a);
         String password = conf.getUserPassword(a.getID()).second();
         conf.logoutNonAdmins(false);
@@ -287,7 +287,7 @@ public class UserTests {
 
     @Test
     public void invalidLogin4(){
-        Attendee a = new Attendee("Mika", "Mika@lulu", conf.getFreeUserName("Mika"), "RCDS", "Kindrgarten", "SysAdmin");
+        Attendee a = new Attendee("Mika", "Mika@lulu", conf.getFreeUserName("Mika"), "Group", "Kindrgarten", "SysAdmin");
         conf.addAttendee(a);
         String password = conf.getUserPassword(a.getID()).second();
         conf.removeAttendee(a.getID());
@@ -300,7 +300,7 @@ public class UserTests {
 
     @Test
     public void invalidLogin5(){
-        Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "RCDS", "MPI", "SysAdmin");
+        Admin a = new Admin("Mike", "Mike@Gebirge.tods", conf.getFreeUserName("Mike"), "Group", "MPI", "SysAdmin");
         conf.addAdmin(a);
         String password = conf.getUserPassword(a.getID()).second();
         conf.removeAdmin(a.getID());
@@ -313,7 +313,7 @@ public class UserTests {
 
     @Test
     public void invalidLogin6(){
-        Admin a = new Admin("Mix", "Mix@twitch", conf.getFreeUserName("Mix"), "RCDS", "Landhaus", "SysAdmin");
+        Admin a = new Admin("Mix", "Mix@twitch", conf.getFreeUserName("Mix"), "Group", "Landhaus", "SysAdmin");
         conf.addAdmin(a);
         String password = conf.getUserPassword(a.getID()).second();
         conf.logoutAdmin(a.getID());
@@ -327,7 +327,7 @@ public class UserTests {
 
     @Test
     public void invalidLogin7(){
-        Attendee a = new Attendee("Bulldog", "Bull@dog", conf.getFreeUserName("Bulldog"), "RCDS", "MPI", "SysAdmin");
+        Attendee a = new Attendee("Bulldog", "Bull@dog", conf.getFreeUserName("Bulldog"), "Group", "LAND", "SysAdmin");
         conf.addAttendee(a);
         String password = conf.getUserPassword(a.getID()).second();
         conf.generateNewUserPassword(a.getID());
@@ -341,7 +341,7 @@ public class UserTests {
 
     @Test
     public void validLogin(){
-        Admin a = new Admin("Tree", "Tree@pic", conf.getFreeUserName("Tree"), "RCDS", "MPPI", "SysAdmin");
+        Admin a = new Admin("Tree", "Tree@pic", conf.getFreeUserName("Tree"), "Group", "MPP", "SysAdmin");
         conf.addAdmin(a);
         String password = conf.getUserPassword(a.getID()).second();
         conf.logoutNonAdmins(false);
@@ -354,7 +354,7 @@ public class UserTests {
 
     @Test
     public void loginTwice(){
-        Attendee a = new Attendee("MOM", "MOM@DAD", conf.getFreeUserName("MOM"), "RCDS", "home", "SysAdmin");
+        Attendee a = new Attendee("MOM", "MOM@DAD", conf.getFreeUserName("MOM"), "Group", "home", "SysAdmin");
         conf.addAttendee(a);
         String password = conf.getUserPassword(a.getID()).second();
 
@@ -373,7 +373,7 @@ public class UserTests {
 
     @Test
     public void loginTwice2(){
-        Admin a = new Admin("Max", "Max@little", conf.getFreeUserName("Max"), "RCDS", "MPI", "SysAdmin");
+        Admin a = new Admin("Max", "Max@little", conf.getFreeUserName("Max"), "Group", "Berlin", "SysAdmin");
         conf.addAdmin(a);
         String password = conf.getUserPassword(a.getID()).second();
 
@@ -392,7 +392,7 @@ public class UserTests {
 
     @Test
     public void loginTwice3(){
-        Admin a = new Admin("Mulan", "Mulan@disnay", conf.getFreeUserName("Mulan"), "RCDS", "hollywood", "SysAdmin");
+        Admin a = new Admin("Mulan", "Mulan@disnay", conf.getFreeUserName("Mulan"), "Group", "hollywood", "SysAdmin");
         conf.addAdmin(a);
         String password = conf.getUserPassword(a.getID()).second();
 
@@ -410,13 +410,13 @@ public class UserTests {
 
     @Test
     public void testTokens(){
-        Admin a = new Admin("Test", "test@Gtest", conf.getFreeUserName("test"), "RCDS", "MPI", "SysAdmin");
-        Attendee b = new Attendee("Test1", "test@test2", conf.getFreeUserName("test2"), "JUSO", "MPI", "SysAdmin");
-        Attendee c = new Attendee("test2", "test@test3", conf.getFreeUserName("test11"), "AI", "MPI", "SysAdmin");
+        Admin a = new Admin("Test", "test@Gtest", conf.getFreeUserName("test"), "Group", "Land", "SysAdmin");
+        Attendee b = new Attendee("Test1", "test@test2", conf.getFreeUserName("test2"), "NoGroup", "Land", "SysAdmin");
+        Attendee c = new Attendee("test2", "test@test3", conf.getFreeUserName("test11"), "AI", "Land", "SysAdmin");
 
         ArrayList<String> groups = new ArrayList<>();
-        groups.add("RCDS");
-        groups.add("JUSO");
+        groups.add("Group");
+        groups.add("NoGroup");
         groups.add("AI");
 
         conf.addAdmin(a);
@@ -457,7 +457,7 @@ public class UserTests {
 
     @Test
     public void tokenReset(){
-        Attendee a = new Attendee("Mullen", "Mu@llen", conf.getFreeUserName("Mullen"), "RCDS", "MPI", "SysAdmin");
+        Attendee a = new Attendee("Mullen", "Mu@llen", conf.getFreeUserName("Mullen"), "Group", "Land", "SysAdmin");
 
         conf.addAttendee(a);
         String passwordA = conf.getUserPassword(a.getID()).second();

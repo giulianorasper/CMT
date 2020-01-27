@@ -33,8 +33,8 @@ public class SetRequestStatusRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             Request request = conference.getRequest(id);
             if(open) {
                 request.reopen();
@@ -49,6 +49,6 @@ public class SetRequestStatusRequestPacket extends AuthenticatedRequestPacket {
                 }
             }
         }
-        new ValidResponsePacket().send(webSocket);
+        new ValidResponsePacket().send(connection);
     }
 }

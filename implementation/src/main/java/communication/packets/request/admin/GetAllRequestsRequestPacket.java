@@ -21,10 +21,10 @@ public class GetAllRequestsRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             List<Request> requests = conference.getAllRequests();
-            new GetAllRequestsResponsePacket(requests).send(webSocket);
+            new GetAllRequestsResponsePacket(requests).send(connection);
         }
     }
 }

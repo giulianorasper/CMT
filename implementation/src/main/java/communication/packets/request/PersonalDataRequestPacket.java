@@ -20,11 +20,11 @@ public class PersonalDataRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, false)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, false)) {
             Attendee attendee = conference.getAttendeeData(conference.tokenToID(getToken()));
             Packet response = new PersonalDataResponsePacket(attendee);
-            response.send(webSocket);
+            response.send(connection);
         }
     }
 }

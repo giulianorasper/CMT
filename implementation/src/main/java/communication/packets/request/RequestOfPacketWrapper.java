@@ -37,8 +37,8 @@ public class RequestOfPacketWrapper extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, false)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, false)) {
             Requestable requestable;
             if(refersToTopic) {
                 requestable = conference.getAgenda().getTopicFromPreorderString(reference);
@@ -52,7 +52,7 @@ public class RequestOfPacketWrapper extends AuthenticatedRequestPacket {
             } else {
                 conference.addRequest(new ChangeRequest(requester, requestable, System.currentTimeMillis() / 1000, request));
             }
-            new ValidResponsePacket().send(webSocket);
+            new ValidResponsePacket().send(connection);
         }
     }
 }

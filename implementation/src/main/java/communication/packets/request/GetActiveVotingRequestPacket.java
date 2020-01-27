@@ -20,8 +20,8 @@ public class GetActiveVotingRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, false)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, false)) {
             Voting voting = conference.getActiveVoting();
             Packet response;
             if(voting != null) {
@@ -29,7 +29,7 @@ public class GetActiveVotingRequestPacket extends AuthenticatedRequestPacket {
             } else {
                 response = new GetActiveVotingResponsePacket();
             }
-            response.send(webSocket);
+            response.send(connection);
         }
     }
 }

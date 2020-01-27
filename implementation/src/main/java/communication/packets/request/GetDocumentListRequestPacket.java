@@ -19,10 +19,10 @@ public class GetDocumentListRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, false)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, false)) {
             Packet response = new GetDocumentListResponsePacket(conference.getAllDocuments());
-            response.send(webSocket);
+            response.send(connection);
         }
     }
 }

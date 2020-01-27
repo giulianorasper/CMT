@@ -29,12 +29,12 @@ public class AddMultipleAttendeesRequestPacket extends AuthenticatedRequestPacke
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             attendees.forEach(a -> {
                 if(a.getName() == null) throw new IllegalArgumentException();
             });
-            new ValidResponsePacket().send(webSocket);
+            new ValidResponsePacket().send(connection);
             attendees.forEach(a -> {
                 try {
                     Attendee attendee = new Attendee(a.getName(), a.getEmail(), conference.getFreeUserName(a.getName()), a.getGroup(), a.getResidence(), a.getFunction());

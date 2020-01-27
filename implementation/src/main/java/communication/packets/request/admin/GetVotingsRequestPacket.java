@@ -19,10 +19,10 @@ public class GetVotingsRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             Packet response = new GetVotingsResponsePacket(conference.getVotings());
-            response.send(webSocket);
+            response.send(connection);
         }
     }
 }

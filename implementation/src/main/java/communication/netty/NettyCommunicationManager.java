@@ -7,8 +7,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 
 /**
@@ -59,7 +57,9 @@ public class NettyCommunicationManager implements CommunicationManager {
 
     @Override
     public synchronized void stop() {
-        if(!started) throw new IllegalStateException("Server is already shut down");
+        if(!started) {
+            throw new IllegalStateException("Server is already shut down");
+        }
         handler.stop();
         channel.close();
         bossGroup.shutdownGracefully();

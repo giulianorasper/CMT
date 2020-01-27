@@ -5,17 +5,15 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 /**
- *  This packet can be used by an admin to delete a file (document) which was priory uploaded. Responds with a {@link communication.packets.BasePacket}.
+ * This packet can be used by an admin to delete a file (document) which was priory uploaded. Responds with a {@link communication.packets.BasePacket}.
  */
 public class DeleteFileRequestPacket extends AuthenticatedRequestPacket {
 
     private String name;
 
     /**
-     *
      * @param name the name of the file (document) to be deleted
      */
     public DeleteFileRequestPacket(String name) {

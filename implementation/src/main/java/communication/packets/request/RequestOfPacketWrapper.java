@@ -5,7 +5,6 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import request.ChangeRequest;
 import request.Requestable;
 import request.SpeechRequest;

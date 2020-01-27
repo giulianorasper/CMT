@@ -25,21 +25,23 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class WebSocketClient {
 
     private final URI uri;
+    EventLoopGroup group = new NioEventLoopGroup();
     private Channel channel;
     private AtomicBoolean running;
     private AtomicBoolean connected;
     private AtomicBoolean success;
-    EventLoopGroup group = new NioEventLoopGroup();
 
     public WebSocketClient(int port) {
         running = new AtomicBoolean(false);
         connected = new AtomicBoolean(false);
         success = new AtomicBoolean(false);
-        this.uri = URI.create("ws://localhost:"+port+"/websocket");
+        this.uri = URI.create("ws://localhost:" + port + "/websocket");
     }
 
     public synchronized void start() throws Exception {
-        if(running.get()) throw new IllegalStateException();
+        if(running.get()) {
+            throw new IllegalStateException();
+        }
         try {
             Bootstrap bootstrap = new Bootstrap();
 
@@ -67,7 +69,7 @@ public class WebSocketClient {
             handler.handshakeFuture().sync();
             connected.set(true);
             channel.closeFuture().addListener((g) -> {
-               connected.set(false);
+                connected.set(false);
             });
         } catch (Exception e) {
             running.set(false);
@@ -76,20 +78,22 @@ public class WebSocketClient {
     }
 
     public synchronized void stop() {
-        if(!running.get()) throw new IllegalStateException();
+        if(!running.get()) {
+            throw new IllegalStateException();
+        }
         channel.close();
         group.shutdownGracefully();
         running.set(false);
-    }
-
-    public synchronized void send(String msg) {
-        ChannelFuture future = channel.writeAndFlush(new TextWebSocketFrame(msg));
     }
 
     public synchronized void send(Packet packet) {
         Gson gson = new Gson();
         String json = gson.toJson(packet);
         send(json);
+    }
+
+    public synchronized void send(String msg) {
+        ChannelFuture future = channel.writeAndFlush(new TextWebSocketFrame(msg));
     }
 
     public synchronized boolean isRunning() {

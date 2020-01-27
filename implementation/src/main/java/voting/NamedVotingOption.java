@@ -16,17 +16,10 @@ public class NamedVotingOption extends VotingOption {
     private List<Integer> privateVoters = new ArrayList<>();
 
     /**
-     * Standard constructor.
-     */
-    public NamedVotingOption(int ID, String name) {
-        this.optionID = ID;
-        this.name = name;
-    }
-
-    /**
      * Database reconstructor to remove the need to iterate again.
-     * @param ID The ID of this option.
-     * @param name The name of this option.
+     *
+     * @param ID     The ID of this option.
+     * @param name   The name of this option.
      * @param voters The userIDs of the users who voted for this option.
      */
     public NamedVotingOption(int ID, String name, List<Integer> voters, List<String> votersname) {
@@ -36,7 +29,16 @@ public class NamedVotingOption extends VotingOption {
     }
 
     /**
+     * Standard constructor.
+     */
+    public NamedVotingOption(int ID, String name) {
+        this.optionID = ID;
+        this.name = name;
+    }
+
+    /**
      * Add user with userID and name to the list of user that vote for the NamedVotingOption.
+     *
      * @param userID
      * @param name
      */
@@ -69,6 +71,7 @@ public class NamedVotingOption extends VotingOption {
 
     /**
      * Get UserIDs of User that vote for the NamedVotingOption.
+     *
      * @return a list of the user ids of the voters
      */
     @Override
@@ -95,11 +98,9 @@ public class NamedVotingOption extends VotingOption {
             setPublicVotes(privateVoters.size());
             voters.addAll(privateVoters);
             votersname.addAll(privatevotersname);
-        }
-        catch (InterruptedException e){
+        } catch (InterruptedException e) {
             System.out.println(e);
-        }
-        finally {
+        } finally {
             lock.finishWrite();
         }
     }

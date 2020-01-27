@@ -27,10 +27,6 @@ public class NettyConnectionWrapper implements Connection {
         context.writeAndFlush(new TextWebSocketFrame(message));
     }
 
-    private void sendBytes(ByteBuf byteBuf) {
-        context.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
-    }
-
     @Override
     public void sendBytes(byte[] bytes) {
         ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
@@ -43,6 +39,10 @@ public class NettyConnectionWrapper implements Connection {
         sendFile(file, file.getName());
     }
 
+    private void sendBytes(ByteBuf byteBuf) {
+        context.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
+    }
+
     @Override
     public void sendFile(File file, String name) {
         try {
@@ -53,7 +53,9 @@ public class NettyConnectionWrapper implements Connection {
             DownloadFileResponsePacket packet = new DownloadFileResponsePacket(null, name);
             ChannelFuture future = context.writeAndFlush(new TextWebSocketFrame(packet.toJson()));
             future.addListener((future1 -> {
-                if(future.isDone() && future.isSuccess()) sendBytes(byteBuf);
+                if(future.isDone() && future.isSuccess()) {
+                    sendBytes(byteBuf);
+                }
             }));
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,7 +68,9 @@ public class NettyConnectionWrapper implements Connection {
             DownloadFileResponsePacket packet = new DownloadFileResponsePacket(null, name);
             ChannelFuture future = context.writeAndFlush(new TextWebSocketFrame(packet.toJson()));
             future.addListener((future1 -> {
-                if(future.isDone() && future.isSuccess()) sendBytes(file);
+                if(future.isDone() && future.isSuccess()) {
+                    sendBytes(file);
+                }
             }));
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,16 +83,16 @@ public class NettyConnectionWrapper implements Connection {
     }
 
     @Override
+    public int hashCode() {
+        return context.channel().hashCode();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if(obj instanceof NettyConnectionWrapper) {
             NettyConnectionWrapper o = (NettyConnectionWrapper) obj;
             return o.context.channel().equals(context.channel());
         }
         return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return context.channel().hashCode();
     }
 }

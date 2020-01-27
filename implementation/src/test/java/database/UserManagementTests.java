@@ -1,7 +1,12 @@
 package database;
 
-import org.junit.*;
-import user.*;
+import org.junit.Test;
+import user.Admin;
+import user.Attendee;
+import user.DB_UserManagement;
+import user.LoginResponse;
+import user.TokenResponse;
+import user.User;
 import utils.Pair;
 
 import java.util.List;
@@ -11,8 +16,8 @@ import static org.junit.Assert.*;
 public class UserManagementTests extends DatabaseTests {
 
     @Test
-    public void validAttendeeCredentials(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
+    public void validAttendeeCredentials() {
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
         dbGen.checkLogin("MaxMustermann", "123");
@@ -32,7 +37,7 @@ public class UserManagementTests extends DatabaseTests {
     }
 
     @Test
-    public void validAdminCredentials(){
+    public void validAdminCredentials() {
         Admin stephan = new Admin("Stephan Mustermann", "email@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -52,8 +57,8 @@ public class UserManagementTests extends DatabaseTests {
     }
 
     @Test
-    public void removeUser(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
+    public void removeUser() {
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         Admin stephan2 = new Admin("Stephan2 Mustermann", "enmail2@email.muster", "Almi2ghtyStephan", "project23", "Winterwunderland", "group member", 2);
         DB_UserManagement dbGen = this.getGeneralUserDB();
@@ -80,8 +85,8 @@ public class UserManagementTests extends DatabaseTests {
     }
 
     @Test
-    public void logoutUser(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
+    public void logoutUser() {
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -95,8 +100,8 @@ public class UserManagementTests extends DatabaseTests {
     }
 
     @Test
-    public void getCorrectPasswords(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
+    public void getCorrectPasswords() {
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -105,14 +110,14 @@ public class UserManagementTests extends DatabaseTests {
         List<Pair<User, String>> pw = dbGen.getAllPasswords();
         // Check Correctness of Passwords
         assertEquals(pw.get(0).second(), "1234");
-        assertEquals(pw.get(0).first().getID(),max.getID());
+        assertEquals(pw.get(0).first().getID(), max.getID());
         assertEquals(pw.get(1).second(), "1111");
         assertEquals(pw.get(1).first().getID(), stephan.getID());
     }
 
     @Test
-    public void newTokenToUser(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
+    public void newTokenToUser() {
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -125,7 +130,7 @@ public class UserManagementTests extends DatabaseTests {
         assertEquals(dbGen.tokenToID("11"), 0);
         assertEquals(dbGen.tokenToID("22"), 1);
         try {
-            int i =dbGen.tokenToID("42");
+            int i = dbGen.tokenToID("42");
             assertTrue(false);
         } catch (IllegalArgumentException e) {
             assertTrue(true);
@@ -133,7 +138,7 @@ public class UserManagementTests extends DatabaseTests {
     }
 
     @Test
-    public void newPasswordToUser(){
+    public void newPasswordToUser() {
         Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
@@ -145,12 +150,12 @@ public class UserManagementTests extends DatabaseTests {
         assertTrue(dbGen.storeNewPassword(0, "121"));
         assertTrue(dbGen.storeNewPassword(1, "2222"));
         assertEquals(dbGen.getAllPasswords().get(0).second(), "121");
-        assertEquals(dbGen.getAllPasswords().get(1).second(),"2222");
+        assertEquals(dbGen.getAllPasswords().get(1).second(), "2222");
     }
 
     @Test
-    public void existUserName(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
+    public void existUserName() {
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -163,7 +168,7 @@ public class UserManagementTests extends DatabaseTests {
     }
 
     @Test
-    public void severalAttendeesAndAdmins(){
+    public void severalAttendeesAndAdmins() {
         Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         Attendee stephan = new Attendee("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
@@ -172,10 +177,10 @@ public class UserManagementTests extends DatabaseTests {
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAttendee(stephan, "1111", "9999");
         List<Attendee> attendees = dbGen.getAllAttendees();
-        assertEquals(attendees.get(0).getID(),max.getID());
+        assertEquals(attendees.get(0).getID(), max.getID());
         assertEquals(attendees.get(1).getID(), stephan.getID());
 
-        Admin Alex = new Admin("Alex Mustermann", "almail@email.muster", "Alex.Mustermann", "LOL", "Place",  "Straßenkehrer", 2);
+        Admin Alex = new Admin("Alex Mustermann", "almail@email.muster", "Alex.Mustermann", "LOL", "Place", "Straßenkehrer", 2);
         Admin Kamran = new Admin("Kamran Mustermann", "kamnmail@email.muster", "Kamran", "project23", "Winterwdfgunderland", "group member", 3);
         dbGen.addAdmin(Alex, "345", "3456");
         dbGen.addAdmin(Kamran, "2345", "3245");
@@ -191,8 +196,8 @@ public class UserManagementTests extends DatabaseTests {
     }
 
     @Test
-    public void editUser(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
+    public void editUser() {
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -209,8 +214,8 @@ public class UserManagementTests extends DatabaseTests {
     }
 
     @Test
-    public void diffrentCheckLoginAndTokenCases(){
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
+    public void diffrentCheckLoginAndTokenCases() {
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
 
@@ -230,9 +235,9 @@ public class UserManagementTests extends DatabaseTests {
     }
 
     @Test
-    public void getallGroupsFromDb(){
+    public void getallGroupsFromDb() {
         Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
-        Attendee herbert = new Attendee("herbert Mustermann", "herbert@email.muster", "herbert.Mustermann", "LOL", "Place2",  "Straßenkehrer2", 2);
+        Attendee herbert = new Attendee("herbert Mustermann", "herbert@email.muster", "herbert.Mustermann", "LOL", "Place2", "Straßenkehrer2", 2);
         Attendee alex = new Attendee("alex Mustermann", "alex@email.muster", "alex.Mustermann", "Groupe23", "Place43", "Tester", 3);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "group member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
@@ -252,8 +257,8 @@ public class UserManagementTests extends DatabaseTests {
 
     @Test
     public void getRightPresentValue() {
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place",  "Straßenkehrer", 0);
-        Attendee herbert = new Attendee("herbert Mustermann", "herbert@email.muster", "herbert.Mustermann", "LOL", "Place2",  "Straßenkehrer2", 2);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
+        Attendee herbert = new Attendee("herbert Mustermann", "herbert@email.muster", "herbert.Mustermann", "LOL", "Place2", "Straßenkehrer2", 2);
         Admin alex = new Admin("alex Mustermann", "alex@email.muster", "alex.Mustermann", "Groupe23", "Differten43", "Tester", 3);
         Admin stephan = new Admin("Stephan Mustermann", "enmail@email.muster", "AlmightyStephan", "project23", "Winterwunderland", "member", 1);
         DB_UserManagement dbGen = this.getGeneralUserDB();
@@ -279,4 +284,4 @@ public class UserManagementTests extends DatabaseTests {
         assertTrue(dbGen.getAttendeeData(herbert.getID()).isPresent());
     }
 
-    }
+}

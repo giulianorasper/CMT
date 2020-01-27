@@ -2,37 +2,24 @@ package communication;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import communication.packets.AuthenticatedRequestPacket;
-import communication.packets.BasePacket;
 import communication.enums.PacketType;
+import communication.packets.BasePacket;
 import communication.packets.RequestPacket;
 import communication.packets.request.*;
 import communication.packets.request.admin.*;
 import communication.packets.response.FailureResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
-import org.java_websocket.drafts.Draft;
-import org.java_websocket.exceptions.InvalidDataException;
-import org.java_websocket.handshake.ClientHandshake;
-import org.java_websocket.handshake.ServerHandshakeBuilder;
-import org.java_websocket.server.WebSocketServer;
-import request.Request;
 import user.TokenResponse;
-import utils.Pair;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.Reader;
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -48,17 +35,18 @@ public class CommunicationHandler {
     /**
      * A service which disconnects connections which exceeded the timeout.
      */
-    private  ScheduledExecutorService connectionLimitationService;
+    private ScheduledExecutorService connectionLimitationService;
     private ReentrantLock tokenConnectionMappingLock = new ReentrantLock();
     private HashMap<String, List<Connection>> tokenConnectionsMap = new HashMap<>();
-    private HashMap<Connection, String>  connectionTokenMap = new HashMap<>();
+    private HashMap<Connection, String> connectionTokenMap = new HashMap<>();
+    private ReentrantLock timeoutLock = new ReentrantLock();
+    private HashMap<Connection, Long> timeout = new HashMap<>();
 
     /**
-     *
-     * @param conference the conference the handler operates on
-     * @param timeoutAfter the timout until unauthorized connections should be closed
+     * @param conference         the conference the handler operates on
+     * @param timeoutAfter       the timout until unauthorized connections should be closed
      * @param maxUserConnections the maximum amount of connections per user
-     * @param debugging if this is a debugging instance
+     * @param debugging          if this is a debugging instance
      */
     public CommunicationHandler(Conference conference, int timeoutAfter, int maxUserConnections, boolean debugging) {
         this.conference = conference;
@@ -79,12 +67,13 @@ public class CommunicationHandler {
             } finally {
                 timeoutLock.unlock();
             }
-        }, 1,1, TimeUnit.SECONDS);
+        }, 1, 1, TimeUnit.SECONDS);
     }
 
     /**
      * Handles incoming messages of the type (JSON-)String
-     * @param conn the connections from which the message was received
+     *
+     * @param conn    the connections from which the message was received
      * @param message the (JSON-)String
      */
     public void onMessage(Connection conn, String message) {
@@ -93,7 +82,9 @@ public class CommunicationHandler {
             RequestPacket pack;
             PacketType packetType = gson.fromJson(message, BasePacket.class).getPacketType();
 
-            if(debugging && packetType != PacketType.GET_ACTIVE_VOTING_REQUEST && packetType != PacketType.IS_ADMIN_REQUEST) System.out.println(message);
+            if(debugging && packetType != PacketType.GET_ACTIVE_VOTING_REQUEST && packetType != PacketType.IS_ADMIN_REQUEST) {
+                System.out.println(message);
+            }
 
             String token = gson.fromJson(message, SimpleAuthenticatedRequestPacket.class).getToken();
 
@@ -103,7 +94,9 @@ public class CommunicationHandler {
                     //removes the timeout since the connection is now authenticated
                     try {
                         tokenConnectionMappingLock.lock();
-                        if(!tokenConnectionsMap.containsKey(token)) tokenConnectionsMap.put(token, new LinkedList<>());
+                        if(!tokenConnectionsMap.containsKey(token)) {
+                            tokenConnectionsMap.put(token, new LinkedList<>());
+                        }
                         tokenConnectionsMap.get(token).add(conn);
                         connectionTokenMap.put(conn, token);
                         if(tokenConnectionsMap.get(token).size() > maxUserConnections) {
@@ -217,7 +210,7 @@ public class CommunicationHandler {
                 case UPDATE_FILE_REQUEST:
                     pack = gson.fromJson(message, UpdateFileRequestPacket.class);
                     break;
-                    /* USER PACKETS */
+                /* USER PACKETS */
                 case ADD_VOTE_REQUEST:
                     pack = gson.fromJson(message, AddVoteRequestPacket.class);
                     break;
@@ -261,15 +254,14 @@ public class CommunicationHandler {
         } catch (Exception e) {
             if(e instanceof IllegalArgumentException) {
                 new FailureResponsePacket(e.getMessage()).send(conn);
-            } else if(e instanceof JsonSyntaxException)  {
+            } else if(e instanceof JsonSyntaxException) {
                 if(debugging) {
                     e.printStackTrace();
                 } else {
                     //If this is no debugging instance, this is most likely a malicious request, therefore close the connection
                     conn.close();
                 }
-            }
-            else {
+            } else {
                 new FailureResponsePacket().send(conn);
                 e.printStackTrace();
             }
@@ -278,6 +270,7 @@ public class CommunicationHandler {
 
     /**
      * Handles incoming messages of binary type
+     *
      * @param conn the connections from which the message was received
      * @param file containing the binary data
      */
@@ -294,24 +287,24 @@ public class CommunicationHandler {
     /**
      * A method indicating weather a connection may transfer binary data. This can be used to interrupt a connection
      * before binary data is even received and therefore avoid traffic.
+     *
      * @param conn the connection from which the binary data is received
+     *
      * @return if the connection is allowed to send binary data
      */
     public boolean mayTransferBinary(Connection conn) {
         return UpdateFileRequestPacket.existingRequest(conn);
     }
 
-    private ReentrantLock timeoutLock = new ReentrantLock();
-    private HashMap<Connection, Long> timeout = new HashMap<>();
-
     /**
      * A method registering a connection being established causing the side effect of adding a timeout timestamp.
+     *
      * @param conn the connection
      */
     public void onRegistered(Connection conn) {
         try {
             timeoutLock.lock();
-            timeout.put(conn, System.currentTimeMillis() + timeoutAfter*1000);
+            timeout.put(conn, System.currentTimeMillis() + timeoutAfter * 1000);
         } finally {
             timeoutLock.unlock();
         }
@@ -319,6 +312,7 @@ public class CommunicationHandler {
 
     /**
      * A method unregistering a connection being disconnected causing the timeout timestamp to be removed.
+     *
      * @param conn the connection
      */
     public void onUnregistered(Connection conn) {
@@ -334,7 +328,9 @@ public class CommunicationHandler {
                 String token = connectionTokenMap.get(conn);
                 connectionTokenMap.remove(conn);
                 tokenConnectionsMap.get(token).remove(conn);
-                if(tokenConnectionsMap.get(token).isEmpty()) tokenConnectionsMap.remove(token);
+                if(tokenConnectionsMap.get(token).isEmpty()) {
+                    tokenConnectionsMap.remove(token);
+                }
             }
         } finally {
             tokenConnectionMappingLock.unlock();
@@ -347,4 +343,4 @@ public class CommunicationHandler {
     public void stop() {
         connectionLimitationService.shutdown();
     }
- }
+}

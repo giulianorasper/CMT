@@ -19,7 +19,7 @@ public class ConnectionTests {
     private static AtomicInteger portCounter = new AtomicInteger(10000);
     private static int port = 17699;
     private static int maxClientConnections = 10;
-    private static int stessTestAmount = 1000 ;
+    private static int stessTestAmount = 1000;
     private static CommunicationManager communicationManager;
     private static Conference conference;
 
@@ -28,8 +28,8 @@ public class ConnectionTests {
         port = portCounter.getAndIncrement();
         conference = new Conference(true);
         for(int i = 0; i < stessTestAmount; i++) {
-            Attendee attendee = new Attendee("user", "user"+i, "user" + i,"user", "user", "");
-            conference.addAttendee(attendee, "login"+i);
+            Attendee attendee = new Attendee("user", "user" + i, "user" + i, "user", "user", "");
+            conference.addAttendee(attendee, "login" + i);
         }
         CommunicationManagerFactory factory = new CommunicationManagerFactory(conference).setPort(port).ignoreSecurityAlerts().setMaxUserConnections(maxClientConnections);
         communicationManager = factory.create();
@@ -82,7 +82,7 @@ public class ConnectionTests {
             client.start();
             Assert.assertTrue(client.isRunning());
             Assert.assertTrue(client.isConnected());
-            LoginRequestPacket packet = new LoginRequestPacket("user" + i, "login"+i);
+            LoginRequestPacket packet = new LoginRequestPacket("user" + i, "login" + i);
             client.send(packet);
             new Thread(() -> {
                 try {

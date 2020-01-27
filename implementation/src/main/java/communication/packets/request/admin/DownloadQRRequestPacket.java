@@ -17,7 +17,6 @@ public class DownloadQRRequestPacket extends AuthenticatedRequestPacket {
     private int id;
 
     /**
-     *
      * @param id the id of the attendee to download a qr file for
      */
     public DownloadQRRequestPacket(int id) {

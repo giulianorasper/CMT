@@ -2,13 +2,12 @@ package communication.packets.request.admin;
 
 import agenda.Agenda;
 import agenda.Topic;
-import communication.packets.BasePacket;
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.BasePacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 /**
  * This packet can be used by an admin to rename a topic of the agenda. Responds with a {@link BasePacket}.
@@ -19,9 +18,8 @@ public class RenameTopicRequestPacket extends AuthenticatedRequestPacket {
     private String name;
 
     /**
-     *
      * @param position the position of the topic as string (e.g. "1.4.3")
-     * @param name the new name for the topic
+     * @param name     the new name for the topic
      */
     public RenameTopicRequestPacket(String position, String name) {
         super(PacketType.RENAME_TOPIC_REQUEST);

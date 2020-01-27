@@ -5,7 +5,6 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import voting.Voting;
 import voting.VotingStatus;
 
@@ -18,7 +17,6 @@ public class RemoveVotingRequestPacket extends AuthenticatedRequestPacket {
     private int id;
 
     /**
-     *
      * @param id the id of the voting to be removed
      */
     public RemoveVotingRequestPacket(int id) {
@@ -30,7 +28,9 @@ public class RemoveVotingRequestPacket extends AuthenticatedRequestPacket {
     public void handle(Conference conference, Connection connection) {
         if(isPermitted(conference, connection, true)) {
             Voting voting = conference.getVoting(id);
-            if(voting.getStatus() != VotingStatus.Created) throw new IllegalArgumentException();
+            if(voting.getStatus() != VotingStatus.Created) {
+                throw new IllegalArgumentException();
+            }
             conference.removeVoting(voting);
             new ValidResponsePacket().send(connection);
         }

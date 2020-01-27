@@ -1,11 +1,9 @@
 package communication.packettests;
 
-import communication.packets.Packet;
 import communication.wrapper.Connection;
 
 import java.io.File;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class TestConnectionWrapper implements Connection {
 

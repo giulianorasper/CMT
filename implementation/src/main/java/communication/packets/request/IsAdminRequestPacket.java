@@ -6,7 +6,6 @@ import communication.packets.Packet;
 import communication.packets.response.IsAdminResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 /**
  * This packet can be used by an user to request if their account is an admin.

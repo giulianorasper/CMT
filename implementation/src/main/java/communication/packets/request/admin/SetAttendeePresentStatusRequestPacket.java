@@ -5,7 +5,6 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import user.Attendee;
 
 /**
@@ -18,8 +17,7 @@ public class SetAttendeePresentStatusRequestPacket extends AuthenticatedRequestP
     boolean present;
 
     /**
-     *
-     * @param id the id of the attendee for which the present status should be updated
+     * @param id      the id of the attendee for which the present status should be updated
      * @param present if the attendee is present
      */
     public SetAttendeePresentStatusRequestPacket(int id, boolean present) {
@@ -33,7 +31,7 @@ public class SetAttendeePresentStatusRequestPacket extends AuthenticatedRequestP
         if(isPermitted(conference, connection, true)) {
             Attendee attendee = conference.getAttendeeData(id);
             attendee.setPresent(present);
-            conference.setPresentValue(attendee.getUserName(),present);
+            conference.setPresentValue(attendee.getUserName(), present);
             new ValidResponsePacket().send(connection);
         }
     }

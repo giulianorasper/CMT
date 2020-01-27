@@ -17,7 +17,6 @@ public class GenerateNewAttendeeTokenRequestPacket extends AuthenticatedRequestP
     int id;
 
     /**
-     *
      * @param id the id for the attendee for which a new token should be generated
      */
     public GenerateNewAttendeeTokenRequestPacket(int id) {

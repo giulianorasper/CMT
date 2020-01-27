@@ -1,12 +1,11 @@
 package communication.packets.request;
 
-import communication.packets.Packet;
 import communication.enums.PacketType;
 import communication.packets.AuthenticatedRequestPacket;
+import communication.packets.Packet;
+import communication.packets.response.PersonalDataResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
-import communication.packets.response.PersonalDataResponsePacket;
 import user.Attendee;
 
 /**

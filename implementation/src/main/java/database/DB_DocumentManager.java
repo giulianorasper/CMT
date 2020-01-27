@@ -42,14 +42,15 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
      * Look if a Documentname is already used inside the DocumentDatabase.
      *
      * @param name The Documentname to search into the DocumentDatabase.
+     *
      * @return True, iff the Documentname is already used in DocumentDatabase.
      */
     @Override
     public boolean isNameAlreadyUsed(String name) {
         List<Document> documentList = this.getAllDocuments();
-        for (int i = 0; i < documentList.size(); i++) {
-            String docname =documentList.get(i).getName();
-            if (docname.equals(name)) {
+        for(int i = 0; i < documentList.size(); i++) {
+            String docname = documentList.get(i).getName();
+            if(docname.equals(name)) {
                 return true;
             }
         }
@@ -60,6 +61,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
      * Add a new {@link Document} to the database.
      *
      * @param document The new {@link Document}.
+     *
      * @return True, iff it was successfully added.
      */
     @Override
@@ -85,11 +87,12 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
      * Delete a {@link Document} with the given name.
      *
      * @param name The name of the document.
+     *
      * @return True, iff it was successfully deleted.
      */
     @Override
     public boolean deleteDocument(String name) {
-        if (!this.isNameAlreadyUsed(name)) {
+        if(!this.isNameAlreadyUsed(name)) {
             return false;
         }
         Connection connection = this.openConnection();
@@ -112,11 +115,12 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
      *
      * @param oldName The old name of the the {@link Document}.
      * @param newName The new name of the {@link Document}.
+     *
      * @return True, iff it was successfully updated.
      */
     @Override
     public boolean updateDocument(String oldName, String newName) {
-        if (!this.isNameAlreadyUsed(oldName)) {
+        if(!this.isNameAlreadyUsed(oldName)) {
             return false;
         }
         Connection connection = this.openConnection();
@@ -147,6 +151,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
      * Reconstructs a {@link Document} object with the given name from the database.
      *
      * @param name The name of the {@link Document}.
+     *
      * @return the reconstructed {@link Document}.
      */
     @Override
@@ -156,7 +161,7 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         Document document = null;
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, name);
-            try (ResultSet doc  = stmt.executeQuery()) {
+            try (ResultSet doc = stmt.executeQuery()) {
                 document = new Document(doc.getString("path"),
                         doc.getString("documentName"),
                         doc.getInt("revision"));
@@ -171,7 +176,6 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
     }
 
     /**
-     *
      * @return a list of all reconstructed {@link Document}s in the database.
      */
     @Override
@@ -180,10 +184,10 @@ public class DB_DocumentManager extends DB_Controller implements DB_DocumentMana
         List<Document> documents = new LinkedList<>();
         String sqlstatement = "SELECT * FROM documents";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet table  = stmt.executeQuery()) {
-            while (table.next()) {
+             ResultSet table = stmt.executeQuery()) {
+            while(table.next()) {
                 String name = table.getString("documentName");
-                String url  = table.getString("path");
+                String url = table.getString("path");
                 int revision = table.getInt("revision");
                 documents.add(new Document(url, name, revision));
             }

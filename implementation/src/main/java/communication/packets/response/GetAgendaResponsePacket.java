@@ -5,7 +5,6 @@ import com.google.gson.annotations.Expose;
 import communication.enums.PacketType;
 import communication.enums.RequestResult;
 import communication.packets.ResponsePacket;
-import communication.packets.request.GetAgendaRequestPacket;
 
 public class GetAgendaResponsePacket extends ResponsePacket {
 
@@ -13,7 +12,6 @@ public class GetAgendaResponsePacket extends ResponsePacket {
     private Agenda agenda;
 
     /**
-     *
      * @param agenda the object of the current agenda
      */
     public GetAgendaResponsePacket(Agenda agenda) {

@@ -16,7 +16,6 @@ public class GetAttendeePasswordRequestPacket extends AuthenticatedRequestPacket
     int id;
 
     /**
-     *
      * @param id the attendee to retrieve the password for
      */
     public GetAttendeePasswordRequestPacket(int id) {

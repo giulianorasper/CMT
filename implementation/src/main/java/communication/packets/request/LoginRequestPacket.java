@@ -1,14 +1,13 @@
 package communication.packets.request;
 
+import communication.enums.PacketType;
 import communication.enums.RequestResult;
 import communication.packets.Packet;
-import communication.enums.PacketType;
 import communication.packets.RequestPacket;
 import communication.packets.ResponsePacket;
 import communication.packets.response.LoginResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import user.LoginResponse;
 import utils.Pair;
 
@@ -18,12 +17,10 @@ import utils.Pair;
 public class LoginRequestPacket extends RequestPacket {
 
 
-
     private String username;
     private String password;
 
     /**
-     *
      * @param username the username to login with
      * @param password the password to use for login
      */
@@ -35,8 +32,10 @@ public class LoginRequestPacket extends RequestPacket {
 
     @Override
     public void handle(Conference conference, Connection connection) {
-        if(password == null) password = "";
-        Pair<LoginResponse, Pair<String,Long>> result;
+        if(password == null) {
+            password = "";
+        }
+        Pair<LoginResponse, Pair<String, Long>> result;
         result = conference.login(username, password);
 
         Packet response;

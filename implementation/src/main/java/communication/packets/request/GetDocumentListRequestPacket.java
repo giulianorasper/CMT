@@ -6,7 +6,6 @@ import communication.packets.Packet;
 import communication.packets.response.GetDocumentListResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 /**
  * This packet can be used by an attendee to retrieve a list of available files (documents).

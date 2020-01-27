@@ -5,7 +5,6 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.FailureResponsePacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
-import io.netty.buffer.ByteBuf;
 import main.Conference;
 import utils.Pair;
 
@@ -37,34 +36,6 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
         this.creation = creation;
     }
 
-    @Override
-    public void handle(Conference conference, Connection connection) {
-        if(isPermitted(conference, connection, true)) {
-            try {
-                lock.lock();
-                allowedRequests.put(connection, new Pair<>(this, System.currentTimeMillis() + 1000*60*60*24));
-            } finally {
-                lock.unlock();
-            }
-            new ValidResponsePacket(PacketType.UPDATE_FILE_RESPONSE).send(connection);
-        }
-    }
-
-    public void handleFileTransfer(Conference conference, Connection connection, File file) {
-        try {
-            if(isPermitted(conference, connection, true)) {
-                String fileType = "";
-                String[] split = name.split("\\.");
-                if(split.length >= 2) fileType = "." + split[split.length-1];
-                if(creation) conference.updateDocument(name, fileType, file, creation);
-                else conference.updateDocument(originalName, fileType, file, creation);
-                new ValidResponsePacket().send(connection);
-            }
-        } catch (IllegalArgumentException e) {
-            new FailureResponsePacket(e.getMessage());
-        }
-    }
-
     public static UpdateFileRequestPacket getRequestFromConnectionIfExists(Connection connection) {
         try {
             lock.lock();
@@ -80,15 +51,6 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
         }
     }
 
-    public static boolean existingRequest(Connection connection) {
-        try {
-            lock.lock();
-            return allowedRequests.containsKey(connection);
-        } finally {
-            lock.unlock();
-        }
-    }
-
     private static void removeInvalidRequests() {
         try {
             lock.lock();
@@ -99,6 +61,48 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
             });
         } finally {
             lock.unlock();
+        }
+    }
+
+    public static boolean existingRequest(Connection connection) {
+        try {
+            lock.lock();
+            return allowedRequests.containsKey(connection);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @Override
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
+            try {
+                lock.lock();
+                allowedRequests.put(connection, new Pair<>(this, System.currentTimeMillis() + 1000 * 60 * 60 * 24));
+            } finally {
+                lock.unlock();
+            }
+            new ValidResponsePacket(PacketType.UPDATE_FILE_RESPONSE).send(connection);
+        }
+    }
+
+    public void handleFileTransfer(Conference conference, Connection connection, File file) {
+        try {
+            if(isPermitted(conference, connection, true)) {
+                String fileType = "";
+                String[] split = name.split("\\.");
+                if(split.length >= 2) {
+                    fileType = "." + split[split.length - 1];
+                }
+                if(creation) {
+                    conference.updateDocument(name, fileType, file, creation);
+                } else {
+                    conference.updateDocument(originalName, fileType, file, creation);
+                }
+                new ValidResponsePacket().send(connection);
+            }
+        } catch (IllegalArgumentException e) {
+            new FailureResponsePacket(e.getMessage());
         }
     }
 }

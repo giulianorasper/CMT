@@ -13,7 +13,6 @@ public class GetExistingGroupsResponsePacket extends ResponsePacket {
     private List<String> groups;
 
     /**
-     *
      * @param groups the list of unique groups i.e. groups that are assigned to some attendee
      */
     public GetExistingGroupsResponsePacket(List<String> groups) {

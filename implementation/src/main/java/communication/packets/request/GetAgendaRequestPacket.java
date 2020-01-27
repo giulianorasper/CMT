@@ -5,7 +5,6 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.GetAgendaResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 /**
  * This packet can be used by an attendee to retrieve the agenda.

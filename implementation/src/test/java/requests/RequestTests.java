@@ -21,10 +21,11 @@ import static org.junit.Assert.fail;
 public class RequestTests {
 
     Conference conf;
-    Attendee  testAttendee;
+    Attendee testAttendee;
     Attendee testAttendee2;
+
     @Before
-    public void createConference(){
+    public void createConference() {
         Agenda agenda = new Agenda();
         Topic t = new Topic("Topic 1", agenda);
         agenda.addTopic(t, 0);
@@ -37,16 +38,16 @@ public class RequestTests {
     }
 
     @Test
-    public void multipleRequests(){
-        int requestCount =  20;
+    public void multipleRequests() {
+        int requestCount = 20;
 
-        for(int i = 0; i<requestCount; i++){
-            Request req = new ChangeRequest(testAttendee, conf.getAgenda().getTopic(0), System.currentTimeMillis(),"more " +
+        for(int i = 0; i < requestCount; i++) {
+            Request req = new ChangeRequest(testAttendee, conf.getAgenda().getTopic(0), System.currentTimeMillis(), "more " +
                     "tests");
             conf.addRequest(req);
         }
 
-        int id =conf.getAllRequests().get(0).ID;
+        int id = conf.getAllRequests().get(0).ID;
         ChangeRequest clone = (ChangeRequest) conf.getRequest(id).shallowClone();
         Assert.assertEquals(clone.getTimeStamp(), conf.getRequest(id).getTimeStamp());
         clone.approve();
@@ -60,28 +61,28 @@ public class RequestTests {
     }
 
     @Test
-    public void deleteTop(){
-            Request req = new SpeechRequest(testAttendee, conf.getAgenda().getTopic(0), System.currentTimeMillis());
-            SpeechRequest speech = (SpeechRequest) req.shallowClone();
-            Assert.assertEquals(speech.getTimeStamp(), req.getTimeStamp());
-            speech.close();
-            Assert.assertFalse(speech.isOpen());
-            speech.reopen();
-            Assert.assertTrue(speech.isOpen());
-            conf.addRequest(req);
-            Agenda agenda = new Agenda();
-            conf.updateAgenda(agenda);
-            Assert.assertEquals("The request got removed", 1, conf.getAllRequests().size());
-            Assert.assertEquals("Wrong request name","1 Topic 1", conf.getAllRequests().get(0).getRequestable().getRequestableName());
+    public void deleteTop() {
+        Request req = new SpeechRequest(testAttendee, conf.getAgenda().getTopic(0), System.currentTimeMillis());
+        SpeechRequest speech = (SpeechRequest) req.shallowClone();
+        Assert.assertEquals(speech.getTimeStamp(), req.getTimeStamp());
+        speech.close();
+        Assert.assertFalse(speech.isOpen());
+        speech.reopen();
+        Assert.assertTrue(speech.isOpen());
+        conf.addRequest(req);
+        Agenda agenda = new Agenda();
+        conf.updateAgenda(agenda);
+        Assert.assertEquals("The request got removed", 1, conf.getAllRequests().size());
+        Assert.assertEquals("Wrong request name", "1 Topic 1", conf.getAllRequests().get(0).getRequestable().getRequestableName());
     }
 
     @Test
-    public void deleteDocument(){
+    public void deleteDocument() {
 
         String pathString = "src/test/resources/test.txt";
         File f = new File(pathString);
         System.out.println(f.getAbsoluteFile());
-        if(f.exists()){
+        if(f.exists()) {
             f.delete();
         }
 
@@ -101,11 +102,11 @@ public class RequestTests {
         Agenda agenda = new Agenda();
         conf.deleteDocument("test.txt");
         Assert.assertEquals("The request got removed", 1, conf.getAllRequests().size());
-        Assert.assertEquals("Wrong request name","test.txt", conf.getAllRequests().get(0).getRequestable().getRequestableName());
+        Assert.assertEquals("Wrong request name", "test.txt", conf.getAllRequests().get(0).getRequestable().getRequestableName());
     }
 
     @Test
-    public void deleteUser(){
+    public void deleteUser() {
         Request req = new SpeechRequest(testAttendee, conf.getAgenda().getTopic(0), System.currentTimeMillis());
         Request req2 = new SpeechRequest(testAttendee2, conf.getAgenda().getTopic(0), System.currentTimeMillis());
         conf.addRequest(req);
@@ -113,7 +114,7 @@ public class RequestTests {
         Agenda agenda = new Agenda();
         conf.removeAttendee(testAttendee.getID());
         Assert.assertEquals("The request got not removed", 1, conf.getAllRequests().size());
-        Assert.assertEquals("Wrong user name","1 Topic 1", conf.getAllRequests().get(0).getRequestable().getRequestableName());
+        Assert.assertEquals("Wrong user name", "1 Topic 1", conf.getAllRequests().get(0).getRequestable().getRequestableName());
     }
 
 }

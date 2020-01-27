@@ -6,8 +6,11 @@ import communication.packets.response.FailureResponsePacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
-import voting.*;
+import voting.AnonymousVotingOption;
+import voting.NamedVotingOption;
+import voting.Voting;
+import voting.VotingOption;
+import voting.VotingStatus;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,9 +27,8 @@ public class EditVotingRequestPacket extends AuthenticatedRequestPacket {
     private int duration;
 
     /**
-     *
      * @param question the new question
-     * @param options the new options
+     * @param options  the new options
      * @param duration the new duration in seconds
      */
     public EditVotingRequestPacket(String question, List<String> options, int duration) {
@@ -40,8 +42,12 @@ public class EditVotingRequestPacket extends AuthenticatedRequestPacket {
     public void handle(Conference conference, Connection connection) {
         if(isPermitted(conference, connection, true)) {
             Voting voting = conference.getVoting(id);
-            if(voting.getStatus() != VotingStatus.Created) throw new IllegalArgumentException();
-            if(question == null) question = voting.getQuestion();
+            if(voting.getStatus() != VotingStatus.Created) {
+                throw new IllegalArgumentException();
+            }
+            if(question == null) {
+                question = voting.getQuestion();
+            }
             if(options == null) {
                 options = new LinkedList<>();
                 voting.getOptions().forEach(o -> {
@@ -65,7 +71,7 @@ public class EditVotingRequestPacket extends AuthenticatedRequestPacket {
 
             Boolean result = voting.updateVoteArguments(optionsObjectList, question, namedVote, duration);
             //AddVotingRequestPacket add = new AddVotingRequestPacket(question, options, namedVote, duration);
-            if (result) {
+            if(result) {
                 new ValidResponsePacket().send(connection);
             } else {
                 new FailureResponsePacket().send(connection);

@@ -16,7 +16,6 @@ public class AddFullAgendaRequestPacket extends AuthenticatedRequestPacket {
     private String content;
 
     /**
-     *
      * @param content A String containing the topics in the correct order, split by newlines.
      *                Each topic consists of the dot-separated preOrder of that topic and its name, split by any other
      *                whitespace in  between.

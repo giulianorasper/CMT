@@ -2,17 +2,13 @@ package communication.utils;
 
 import com.google.gson.Gson;
 import communication.enums.RequestResult;
-import communication.packets.BasePacket;
-import communication.packets.Packet;
 import communication.packets.ResponsePacket;
 import communication.packettests.TestConnectionWrapper;
 import communication.wrapper.Connection;
 import org.junit.Assert;
 import user.User;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 public class MoreAsserts {
 
@@ -51,20 +47,22 @@ public class MoreAsserts {
         Assert.assertEquals(0, actual.size());
     }
 
+    public static Connection assertValidResult() {
+        return assertRequestResult(RequestResult.Valid);
+    }
+
     /**
      * Returns a connection which asserts an result as soon as an answer has been received.
+     *
      * @param expectedResult
+     *
      * @return
      */
     public static Connection assertRequestResult(RequestResult expectedResult) {
         return new TestConnectionWrapper((answer) -> {
             ResponsePacket response = new Gson().fromJson(answer, ResponsePacket.class);
-            Assert.assertSame(expectedResult ,response.getResult());
+            Assert.assertSame(expectedResult, response.getResult());
         });
-    }
-
-    public static Connection assertValidResult() {
-        return assertRequestResult(RequestResult.Valid);
     }
 
     public static Connection assertFailureResult() {

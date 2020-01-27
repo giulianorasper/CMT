@@ -14,6 +14,7 @@ import main.Conference;
 public class DeleteAgendaRequestPacket extends AuthenticatedRequestPacket {
 
     /**
+     *
      */
     public DeleteAgendaRequestPacket(String content) {
         super(PacketType.DELETE_AGENDA_REQUEST);
@@ -21,7 +22,7 @@ public class DeleteAgendaRequestPacket extends AuthenticatedRequestPacket {
 
     @Override
     public void handle(Conference conference, Connection connection) {
-        if (isPermitted(conference, connection, true)) {
+        if(isPermitted(conference, connection, true)) {
             conference.updateAgenda(new Agenda());
             new ValidResponsePacket().send(connection);
         }

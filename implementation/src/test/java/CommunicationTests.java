@@ -8,7 +8,7 @@ import org.junit.Test;
 public class CommunicationTests {
 
     @Test
-    public void justASample(){
+    public void justASample() {
         //LoginRequestPacket l = new LoginRequestPacket("theAnswer", "42");
         String s = "{\n" +
                 "  \"username\": \"theAnswer\",\n" +
@@ -30,7 +30,7 @@ public class CommunicationTests {
         agenda.addTopic(t2, 1);
         agenda.addTopic(t3, 2);
         Topic subTopic = new Topic("Subtopic of 2", t2.getSubTopics());
-        t2.getSubTopics().addTopic(subTopic,0);
+        t2.getSubTopics().addTopic(subTopic, 0);
         GetAgendaResponsePacket packet = new GetAgendaResponsePacket(agenda);
         System.out.println(packet.toJson());
     }

@@ -1,11 +1,19 @@
 package database;
 
-import document.Document;
-import request.*;
+import request.ChangeRequest;
+import request.DB_RequestManagement;
+import request.Request;
+import request.RequestObservable;
+import request.Requestable;
+import request.SpeechRequest;
 import user.Attendee;
 import user.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -61,6 +69,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
      * Adds a new {@link Request} to the database.
      *
      * @param req The {@link Request} to be added.
+     *
      * @return True, iff the {@link Request} was successfully added.
      */
     @Override
@@ -71,11 +80,11 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, req.ID);
             stmt.setInt(2, req.getRequester().getID());
-            if (req instanceof ChangeRequest) {
+            if(req instanceof ChangeRequest) {
                 stmt.setInt(3, 0);
                 stmt.setString(6, ((ChangeRequest) req).getMessage());
                 stmt.setBoolean(7, ((ChangeRequest) req).isApproved());
-            } else if (req instanceof SpeechRequest) {
+            } else if(req instanceof SpeechRequest) {
                 stmt.setInt(3, 1);
                 stmt.setNull(6, Types.VARCHAR);
                 stmt.setNull(7, java.sql.Types.BOOLEAN);
@@ -100,6 +109,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
      * Reconstructs a given {@link Request} from the database.
      *
      * @param ID The ID of the {@link Request}.
+     *
      * @return the reconstructed {@link Request}.
      */
     @Override
@@ -109,7 +119,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         String sqlstatement = "SELECT * FROM requests WHERE requestID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, ID);
-            ResultSet table  = stmt.executeQuery();
+            ResultSet table = stmt.executeQuery();
             int requestID = table.getInt("requestID");
             int userID = table.getInt("userID");
             int requestType = table.getInt("requestType");
@@ -128,7 +138,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
             String userstmt = "SELECT * FROM users WHERE userID = ?";
             try (PreparedStatement user = connection.prepareStatement(userstmt)) {
                 user.setInt(1, userID);
-                ResultSet att  = user.executeQuery();
+                ResultSet att = user.executeQuery();
                 attendee = new Attendee(att.getString("fullname"),
                         att.getString("email"),
                         att.getString("username"),
@@ -137,10 +147,10 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                         att.getString("function"),
                         att.getInt("userID"));
             }
-            switch (requestType) {
+            switch(requestType) {
                 case 0: //Is ChangeRequest
                     ChangeRequest req = new ChangeRequest(requestID, attendee, requestable, timestamp, text);
-                    if (approved) {
+                    if(approved) {
                         req.approve();
                     }
                     request = req;
@@ -164,9 +174,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
     }
 
 
-
     /**
-     *
      * @return a list of all reconstructed {@link Request}s from the database.
      */
     @Override
@@ -175,8 +183,8 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         List<Request> requests = new LinkedList<>();
         String sqlstatement = "SELECT * FROM requests";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet table  = stmt.executeQuery()) {
-            while (table.next()) {
+             ResultSet table = stmt.executeQuery()) {
+            while(table.next()) {
                 int requestID = table.getInt("requestID");
                 int userID = table.getInt("userID");
                 int requestType = table.getInt("requestType");
@@ -194,7 +202,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                 User attendee = null;
                 try (PreparedStatement user = connection.prepareStatement(userstmt)) {
                     user.setInt(1, userID);
-                    ResultSet att  = user.executeQuery();
+                    ResultSet att = user.executeQuery();
                     attendee = new Attendee(att.getString("fullname"),
                             att.getString("email"),
                             att.getString("username"),
@@ -203,10 +211,10 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
                             att.getString("function"),
                             att.getInt("userID"));
                 }
-                switch (requestType) {
+                switch(requestType) {
                     case 0: //Is ChangeRequest
                         ChangeRequest req = new ChangeRequest(requestID, attendee, requestable, timestamp, text);
-                        if (approved) {
+                        if(approved) {
                             req.approve();
                         }
                         requests.add(req);
@@ -234,6 +242,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
      * Updates the {@link Request} after the {@link RequestObservable} was changed.
      *
      * @param r The updates {@link Request}.
+     *
      * @return True, iff the updates was successful.
      */
     @Override
@@ -242,10 +251,10 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         String sqlstatement = "UPDATE requests SET approved = ?, requestableName = ?, timestamps = ?, userID = ?, content = ?"
                 + " WHERE requestID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
-            if (r instanceof ChangeRequest) {
+            if(r instanceof ChangeRequest) {
                 stmt.setBoolean(1, ((ChangeRequest) r).isApproved());
                 stmt.setString(5, ((ChangeRequest) r).getMessage());
-            } else if (r instanceof SpeechRequest) {
+            } else if(r instanceof SpeechRequest) {
                 stmt.setNull(1, Types.BOOLEAN);
                 stmt.setNull(5, Types.VARCHAR);
             } else {
@@ -272,6 +281,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
      * This methods deletes all request entry from a specific user in the database.
      *
      * @param userID The ID of the user.
+     *
      * @return True, iff the requests was successfully removed.
      */
     @Override

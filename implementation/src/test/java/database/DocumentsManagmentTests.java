@@ -3,11 +3,7 @@ package database;
 import document.DB_DocumentManagement;
 import document.Document;
 import org.junit.Test;
-import user.Attendee;
-import user.DB_UserManagement;
-import user.TokenResponse;
 
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,8 +12,8 @@ import static org.junit.Assert.*;
 public class DocumentsManagmentTests extends DatabaseTests {
 
     @Test
-    public void addAndGetDocuments(){
-        Document testdoc = new Document("/db/test/documentsfolder","TestDocument");
+    public void addAndGetDocuments() {
+        Document testdoc = new Document("/db/test/documentsfolder", "TestDocument");
         DB_DocumentManagement docDb = this.getDocumentDB();
 
         assertTrue(docDb.addDocument(testdoc));
@@ -31,8 +27,8 @@ public class DocumentsManagmentTests extends DatabaseTests {
     }
 
     @Test
-    public void deleteDocuments(){
-        Document testdoc = new Document("/db/test/documentsfolder","TestDocument");
+    public void deleteDocuments() {
+        Document testdoc = new Document("/db/test/documentsfolder", "TestDocument");
         DB_DocumentManagement docDb = this.getDocumentDB();
 
         assertTrue(docDb.addDocument(testdoc));
@@ -43,8 +39,8 @@ public class DocumentsManagmentTests extends DatabaseTests {
     }
 
     @Test
-    public void deleteWrongDocuments(){
-        Document testdoc = new Document("/db/test/documentsfolder","TestDocument");
+    public void deleteWrongDocuments() {
+        Document testdoc = new Document("/db/test/documentsfolder", "TestDocument");
         DB_DocumentManagement docDb = this.getDocumentDB();
 
         assertTrue(docDb.addDocument(testdoc));
@@ -53,9 +49,9 @@ public class DocumentsManagmentTests extends DatabaseTests {
     }
 
     @Test
-    public void updateDocuments(){
-        Document testdoc = new Document("/db/test/documentsfolder","TestDocument");
-        Document testdoc2 = new Document("/db/test/documentsfolder2","TestDocument2");
+    public void updateDocuments() {
+        Document testdoc = new Document("/db/test/documentsfolder", "TestDocument");
+        Document testdoc2 = new Document("/db/test/documentsfolder2", "TestDocument2");
         DB_DocumentManagement docDb = this.getDocumentDB();
 
         assertTrue(docDb.addDocument(testdoc));
@@ -68,8 +64,8 @@ public class DocumentsManagmentTests extends DatabaseTests {
     }
 
     @Test
-    public void documentnameIsAlreadyUsed(){
-        Document testdoc = new Document("/db/test/documentsfolder","TestDocument");
+    public void documentnameIsAlreadyUsed() {
+        Document testdoc = new Document("/db/test/documentsfolder", "TestDocument");
         DB_DocumentManagement docDb = this.getDocumentDB();
 
         assertTrue(docDb.addDocument(testdoc));
@@ -78,8 +74,8 @@ public class DocumentsManagmentTests extends DatabaseTests {
     }
 
     @Test
-    public void addSameDocumenttwice(){
-        Document testdoc = new Document("/db/test/documentsfolder","TestDocument");
+    public void addSameDocumenttwice() {
+        Document testdoc = new Document("/db/test/documentsfolder", "TestDocument");
         DB_DocumentManagement docDb = this.getDocumentDB();
 
         assertTrue(docDb.addDocument(testdoc));

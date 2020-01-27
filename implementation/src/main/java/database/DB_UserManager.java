@@ -1,9 +1,18 @@
 package database;
 
-import user.*;
+import user.Admin;
+import user.Attendee;
+import user.DB_UserManagement;
+import user.LoginResponse;
+import user.TokenResponse;
+import user.User;
 import utils.Pair;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,6 +57,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      *
      * @param userName The unique userName of the given User.
      * @param password The password to be checked.
+     *
      * @return A {@link LoginResponse} indicating the result and a token, in case the login was valid.
      */
     @Override
@@ -56,17 +66,17 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         String sqlstatement = "SELECT * FROM users WHERE username = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, userName);
-            ResultSet table  = stmt.executeQuery();
-            if (!table.next()) {
+            ResultSet table = stmt.executeQuery();
+            if(!table.next()) {
                 return new Pair<>(LoginResponse.UserDoesNotExist, null);
             } else {
-                if (table.getString("password") == null) {
+                if(table.getString("password") == null) {
                     return new Pair<>(LoginResponse.AccountAlreadyInUse, null);
                 } else {
-                    if (!table.getString("password").equals(password)) {
+                    if(!table.getString("password").equals(password)) {
                         return new Pair<>(LoginResponse.WrongPassword, null);
                     } else {
-                        if (table.getBoolean("isAdmin")) {
+                        if(table.getBoolean("isAdmin")) {
                             //update values of the valid admin
                             sqlstatement = "UPDATE users SET present = ?  WHERE username = ?";
                             try (PreparedStatement stmt2 = connection.prepareStatement(sqlstatement)) {
@@ -107,9 +117,48 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     }
 
     /**
+     * This method checks whether a given token is a valid token.
+     *
+     * @param token The token to be checked.
+     *
+     * @return A {@link TokenResponse} indicating whether the token is valid, was already blocked or whether the token
+     * corresponds to an admin or not.
+     */
+    @Override
+    public TokenResponse checkToken(String token) {
+        if(token == null) {
+            return TokenResponse.TokenDoesNotExist;
+        }
+        Connection connection = this.openConnection();
+        String sqlstatement = "SELECT * FROM users WHERE token = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setString(1, token);
+            ResultSet table = stmt.executeQuery();
+            if(!table.next()) {
+                return TokenResponse.TokenDoesNotExist;
+            } else {
+                if(table.getBoolean("isAdmin")) {
+                    return TokenResponse.ValidAdmin;
+                } else {
+                    return TokenResponse.ValidAttendee;
+                }
+
+            }
+        } catch (SQLException ex) {
+            System.err.println("An exception occurred during a token check.");
+            System.err.println(ex.getMessage());
+            return null;
+        } finally {
+            this.closeConnection(connection);
+        }
+    }
+
+    /**
      * Edit present value of a user.
+     *
      * @param userName userName of the user
-     * @param present new present value
+     * @param present  new present value
+     *
      * @return true, iff the db stored the new present value correctly
      */
     @Override
@@ -131,45 +180,10 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     }
 
     /**
-     * This method checks whether a given token is a valid token.
-     *
-     * @param token The token to be checked.
-     * @return A {@link TokenResponse} indicating whether the token is valid, was already blocked or whether the token
-     * corresponds to an admin or not.
-     */
-    @Override
-    public TokenResponse checkToken(String token) {
-        if (token == null) {
-            return TokenResponse.TokenDoesNotExist;
-        }
-        Connection connection = this.openConnection();
-        String sqlstatement = "SELECT * FROM users WHERE token = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
-            stmt.setString(1, token);
-            ResultSet table  = stmt.executeQuery();
-            if (!table.next()) {
-                return TokenResponse.TokenDoesNotExist;
-            } else {
-                if (table.getBoolean("isAdmin")) {
-                    return TokenResponse.ValidAdmin;
-                } else {
-                    return TokenResponse.ValidAttendee;
-                }
-
-            }
-        } catch (SQLException ex) {
-            System.err.println("An exception occurred during a token check.");
-            System.err.println(ex.getMessage());
-            return null;
-        } finally {
-            this.closeConnection(connection);
-        }
-    }
-
-    /**
      * Converts a token to a user ID.
      *
      * @param token The token of the user.
+     *
      * @return the ID of the user with the given token.
      *
      * @throws IllegalArgumentException if the token does not exist.
@@ -181,8 +195,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         int ID = -1;
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, token);
-            ResultSet doc  = stmt.executeQuery();
-            if (doc.next()) {
+            ResultSet doc = stmt.executeQuery();
+            if(doc.next()) {
                 return doc.getInt("userID");
             } else {
                 throw new IllegalArgumentException("Token not found in database");
@@ -200,11 +214,12 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * This methods deletes a user entry in the database.
      *
      * @param userID The ID of the user to be deleted.
+     *
      * @return True, iff the user was successfully removed.
      */
     @Override
     public boolean removeUser(int userID) {
-        if (!this.userIDAlreadyUsed(userID)) {
+        if(!this.userIDAlreadyUsed(userID)) {
             return false;
         }
         Connection connection = this.openConnection();
@@ -228,6 +243,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * user cannot log in again.
      *
      * @param userID The ID of the user to be deleted.
+     *
      * @return True, iff the operation was successful.
      */
     @Override
@@ -235,12 +251,12 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         Connection connection = this.openConnection();
         String sqlstatement = "UPDATE users SET password = ?, token = ?, present = ? WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
-            if (pw == null) {
+            if(pw == null) {
                 stmt.setNull(1, Types.VARCHAR);
             } else {
                 stmt.setString(1, pw);
             }
-            if (token == null) {
+            if(token == null) {
                 stmt.setNull(2, Types.VARCHAR);
             } else {
                 stmt.setString(2, token);
@@ -269,8 +285,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         List<Pair<User, String>> pass = new LinkedList<>();
         String sqlstatement = "SELECT * FROM users";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet att  = stmt.executeQuery()) {
-            while (att.next()) {
+             ResultSet att = stmt.executeQuery()) {
+            while(att.next()) {
                 User user = new Attendee(att.getString("fullname"),
                         att.getString("email"),
                         att.getString("username"),
@@ -295,6 +311,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      *
      * @param userID The ID of the user.
      * @param token  The new token.
+     *
      * @return True, iff the new token was successfully added to the database.
      */
     @Override
@@ -320,6 +337,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      *
      * @param userID   The ID of the user.
      * @param password The new password.
+     *
      * @return True, iff the new password was successfully added to the database.
      */
     @Override
@@ -344,6 +362,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * This methods checks whether a username was already used to enable unique username creation.
      *
      * @param userName The username that should be checked.
+     *
      * @return True, iff the username was already in the database.
      */
     @Override
@@ -352,7 +371,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         String sqlstatement = "SELECT * FROM users WHERE username = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setString(1, userName);
-            try (ResultSet table  = stmt.executeQuery()) {
+            try (ResultSet table = stmt.executeQuery()) {
                 return !table.isAfterLast();
             }
 
@@ -369,12 +388,13 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * This methods checks whether a userid was already used to enable unique ids creation.
      *
      * @param id The username that should be checked.
+     *
      * @return True, iff the username was already in the database.
      */
     @Override
     public boolean userIDAlreadyUsed(int id) {
         List<Integer> ids = this.getIDs();
-        if (ids.contains(id)) {
+        if(ids.contains(id)) {
             return true;
         }
         return false;
@@ -389,8 +409,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         List<Integer> IDs = new LinkedList<>();
         String sqlstatement = "SELECT userID FROM users";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet table  = stmt.executeQuery()) {
-            while (table.next()) {
+             ResultSet table = stmt.executeQuery()) {
+            while(table.next()) {
                 IDs.add(table.getInt("userID"));
             }
         } catch (SQLException ex) {
@@ -405,6 +425,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
 
     /**
      * Reads all different groups types of all users and return the groups as a list.
+     *
      * @return a list of all existing groups.
      */
     @Override
@@ -413,8 +434,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         List<String> groups = new LinkedList<>();
         String sqlstatement = "SELECT Distinct groups FROM users";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement);
-             ResultSet table  = stmt.executeQuery()) {
-            while (table.next()) {
+             ResultSet table = stmt.executeQuery()) {
+            while(table.next()) {
                 groups.add(table.getString("groups"));
             }
         } catch (SQLException ex) {
@@ -436,6 +457,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * @param a        The new {@link Attendee}.
      * @param password The password of the attendee.
      * @param token    The token of the attendee.
+     *
      * @return True, iff the attendee was added correctly.
      */
     @Override
@@ -476,8 +498,8 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         List<Attendee> users = new LinkedList<>();
         String sqlstatement = "SELECT * FROM users";
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
-            try (ResultSet table  = stmt.executeQuery()) {
-                while (table.next()) {
+            try (ResultSet table = stmt.executeQuery()) {
+                while(table.next()) {
                     Attendee attendee = new Attendee(table.getString("fullname"),
                             table.getString("email"),
                             table.getString("username"),
@@ -485,7 +507,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                             table.getString("residence"),
                             table.getString("function"),
                             table.getInt("userID"));
-                    if (table.getBoolean("present")) {
+                    if(table.getBoolean("present")) {
                         attendee.attendedConference();
                     }
                     users.add(attendee);
@@ -505,6 +527,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * Returns the {@link Attendee} with the given userID.
      *
      * @param userID The ID of the user.
+     *
      * @return the {@link Attendee} object.
      */
     @Override
@@ -514,7 +537,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         Attendee attendee = null;
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, userID);
-            ResultSet att  = stmt.executeQuery();
+            ResultSet att = stmt.executeQuery();
             attendee = new Attendee(att.getString("fullname"),
                     att.getString("email"),
                     att.getString("username"),
@@ -522,7 +545,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                     att.getString("residence"),
                     att.getString("function"),
                     att.getInt("userID"));
-            if (att.getBoolean("present")) {
+            if(att.getBoolean("present")) {
                 attendee.attendedConference();
             }
         } catch (SQLException ex) {
@@ -538,6 +561,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * Overwrite the {@link Attendee} in the database.
      *
      * @param a The new {@link Attendee} object.
+     *
      * @return True, iff the Attendee was overwritten properly
      */
     @Override
@@ -578,6 +602,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * @param a        The new {@link Admin}.
      * @param password The password of the admin.
      * @param token    The token of the admin.
+     *
      * @return True, iff the admin was added correctly.
      */
     @Override
@@ -610,7 +635,43 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     }
 
     /**
+     * @return a list of all {@link Admin}s in the database.
+     */
+    @Override
+    public List<Admin> getAllAdmins() {
+        Connection connection = this.openConnection();
+        List<Admin> admins = new LinkedList<>();
+        String sqlstatement = "SELECT * FROM users WHERE isAdmin = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
+            stmt.setBoolean(1, true);
+            try (ResultSet table = stmt.executeQuery()) {
+                while(table.next()) {
+                    Admin admin = new Admin(table.getString("fullname"),
+                            table.getString("email"),
+                            table.getString("username"),
+                            table.getString("groups"),
+                            table.getString("residence"),
+                            table.getString("function"),
+                            table.getInt("userID"));
+                    if(table.getBoolean("present")) {
+                        admin.attendedConference();
+                    }
+                    admins.add(admin);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("An exception occurred while reading all admins.");
+            System.err.println(ex.getMessage());
+            return null;
+        } finally {
+            this.closeConnection(connection);
+        }
+        return admins;
+    }
+
+    /**
      * This methods deletes all admins in the database.
+     *
      * @return True, iff the user was successfully removed.
      */
     @Override
@@ -631,44 +692,10 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
     }
 
     /**
-     * @return a list of all {@link Admin}s in the database.
-     */
-    @Override
-    public List<Admin> getAllAdmins() {
-        Connection connection = this.openConnection();
-        List<Admin> admins = new LinkedList<>();
-        String sqlstatement = "SELECT * FROM users WHERE isAdmin = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
-            stmt.setBoolean(1, true);
-            try (ResultSet table  = stmt.executeQuery()) {
-                while (table.next()) {
-                    Admin admin = new Admin(table.getString("fullname"),
-                            table.getString("email"),
-                            table.getString("username"),
-                            table.getString("groups"),
-                            table.getString("residence"),
-                            table.getString("function"),
-                            table.getInt("userID"));
-                    if (table.getBoolean("present")) {
-                        admin.attendedConference();
-                    }
-                    admins.add(admin);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("An exception occurred while reading all admins.");
-            System.err.println(ex.getMessage());
-            return null;
-        } finally {
-            this.closeConnection(connection);
-        }
-        return admins;
-    }
-
-    /**
      * Returns the {@link Admin} with the given userID.
      *
      * @param userID The ID of the admin.
+     *
      * @return the {@link Admin} object.
      */
     @Override
@@ -679,7 +706,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, userID);
             stmt.setBoolean(2, true);
-            try (ResultSet adm  = stmt.executeQuery()) {
+            try (ResultSet adm = stmt.executeQuery()) {
                 admin = new Admin(adm.getString("fullname"),
                         adm.getString("email"),
                         adm.getString("username"),
@@ -687,7 +714,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
                         adm.getString("residence"),
                         adm.getString("function"),
                         adm.getInt("userID"));
-                if (adm.getBoolean("present")) {
+                if(adm.getBoolean("present")) {
                     admin.attendedConference();
                 }
             }
@@ -704,6 +731,7 @@ public class DB_UserManager extends DB_Controller implements DB_UserManagement {
      * Overwrite the {@link Admin} in the database.
      *
      * @param a The new {@link Admin} object.
+     *
      * @return True, iff the Admin was overwritten properly
      */
     @Override

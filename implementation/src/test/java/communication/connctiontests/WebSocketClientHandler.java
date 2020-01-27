@@ -47,9 +47,19 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
     }
 
     @Override
+    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
+        cause.printStackTrace();
+
+        if(!handshakeFuture.isDone()) {
+            handshakeFuture.setFailure(cause);
+        }
+        ctx.close();
+    }
+
+    @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         Channel ch = ctx.channel();
-        if (!handshaker.isHandshakeComplete()) {
+        if(!handshaker.isHandshakeComplete()) {
             handshaker.finishHandshake(ch, (FullHttpResponse) msg);
             handshakeFuture.setSuccess();
             return;
@@ -57,27 +67,19 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
 
 
         WebSocketFrame frame = (WebSocketFrame) msg;
-        if (frame instanceof TextWebSocketFrame) {
+        if(frame instanceof TextWebSocketFrame) {
             TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
             try {
                 Gson gson = new Gson();
                 ResponsePacket packet = gson.fromJson(textFrame.text(), ResponsePacket.class);
-                if(packet.getResult() != RequestResult.Valid) throw new Exception();
+                if(packet.getResult() != RequestResult.Valid) {
+                    throw new Exception();
+                }
                 success.set(true);
             } catch (Exception e) {
                 success.set(false);
             }
         }
 
-    }
-
-    @Override
-    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
-        cause.printStackTrace();
-
-        if (!handshakeFuture.isDone()) {
-            handshakeFuture.setFailure(cause);
-        }
-        ctx.close();
     }
 }

@@ -2,7 +2,7 @@ package request;
 
 import com.google.gson.annotations.Expose;
 
-public class SimpleRequestable implements Requestable{ // used for frontend communication
+public class SimpleRequestable implements Requestable { // used for frontend communication
 
     @Expose
     private String name;

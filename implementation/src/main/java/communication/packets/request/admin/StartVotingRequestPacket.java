@@ -20,7 +20,6 @@ public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
     private int id;
 
     /**
-     *
      * @param id the id of the voting to be started
      */
     public StartVotingRequestPacket(int id) {
@@ -35,32 +34,32 @@ public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
             Voting votingToStart = conference.getVoting(id);
             if(votingToStart == null) {
                 response = new FailureResponsePacket("The voting with the id " + id + " does not exist.");
-            } else if (votingToStart.getStatus() != VotingStatus.Created){
+            } else if(votingToStart.getStatus() != VotingStatus.Created) {
                 response = new FailureResponsePacket("Voting could not be started since it's status is " + votingToStart.getStatus());
             } else {
-                if (votingToStart.getOptions().size() >= 2) {
-                    if (conference.getActiveVoting() != null) {
-                        response = new FailureResponsePacket( "Can´t start a voting because a vote is already running");
+                if(votingToStart.getOptions().size() >= 2) {
+                    if(conference.getActiveVoting() != null) {
+                        response = new FailureResponsePacket("Can´t start a voting because a vote is already running");
                     } else {
                         Boolean acept = true;
-                        for (VotingOption vo: votingToStart.getOptions()) {
-                            if (vo.getName() == "") {
+                        for(VotingOption vo : votingToStart.getOptions()) {
+                            if(vo.getName() == "") {
                                 acept = false;
                             }
                         }
-                        if (!acept) {
-                            response = new FailureResponsePacket( "Can´t start a voting because a vote option is empty");
+                        if(!acept) {
+                            response = new FailureResponsePacket("Can´t start a voting because a vote option is empty");
                         } else {
-                            if (conference.startVoting(votingToStart)) {
+                            if(conference.startVoting(votingToStart)) {
                                 response = new ValidResponsePacket();
                             } else {
-                                response = new FailureResponsePacket( "Can´t start a voting because some problem occure in Backend");
+                                response = new FailureResponsePacket("Can´t start a voting because some problem occure in Backend");
                             }
                         }
 
                     }
                 } else {
-                    response = new FailureResponsePacket( "Can´t start a voting with less than 2 options");
+                    response = new FailureResponsePacket("Can´t start a voting with less than 2 options");
                 }
             }
             response.send(connection);

@@ -1,8 +1,6 @@
 package voting;
 
 import com.google.gson.annotations.Expose;
-import agenda.AgendaObserver;
-import utils.OperationResponse;
 import utils.WriterBiasedRWLock;
 
 import java.util.ArrayList;
@@ -13,8 +11,12 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Voting implements VotingObservable {
 
+    private static int lastUsedID = 0;
+    private static Lock idLock = new ReentrantLock();
     @Expose
     private final int ID;
+    public List<Integer> voters = new ArrayList<>();
+    protected WriterBiasedRWLock lock = new WriterBiasedRWLock();
     @Expose
     private boolean namedVote;
     @Expose
@@ -28,11 +30,7 @@ public class Voting implements VotingObservable {
     //the duration of the voting in seconds
     @Expose
     private int duration;
-    private static int lastUsedID = 0;
-    private static Lock idLock = new ReentrantLock();
-    protected WriterBiasedRWLock lock = new WriterBiasedRWLock();
     private ConcurrentHashMap<VotingObserver, Boolean> observers = new ConcurrentHashMap<>(); // a map backed hashset
-    public List<Integer> voters = new ArrayList<>();
 
     /**
      * Constructor Voting before the voting started
@@ -42,10 +40,10 @@ public class Voting implements VotingObservable {
      */
     public Voting(List<VotingOption> options, String question, boolean namedVote, int duration) {
         options.forEach(o -> {
-            if(namedVote && !(o instanceof NamedVotingOption)){
+            if(namedVote && !(o instanceof NamedVotingOption)) {
                 throw new IllegalArgumentException("Invalid option type in list");
             }
-            if(!namedVote && !(o instanceof AnonymousVotingOption)){
+            if(!namedVote && !(o instanceof AnonymousVotingOption)) {
                 throw new IllegalArgumentException("Invalid option type in list");
             }
         });
@@ -59,6 +57,21 @@ public class Voting implements VotingObservable {
     }
 
     /**
+     * Calculate next free ID
+     *
+     * @return ID
+     */
+    private static int getNextId() {
+        try {
+            idLock.lock();
+            lastUsedID++;
+            return lastUsedID;
+        } finally {
+            idLock.unlock();
+        }
+    }
+
+    /**
      * Constructor for the Database to easily reconstruct Voting Results in case the voting has ended.
      *
      * @param options  A list of VotingOptions with their results.
@@ -67,10 +80,10 @@ public class Voting implements VotingObservable {
      */
     public Voting(List<VotingOption> options, String question, int ID, boolean namedVote) {
         options.forEach(o -> {
-            if(namedVote && !(o instanceof NamedVotingOption)){
+            if(namedVote && !(o instanceof NamedVotingOption)) {
                 throw new IllegalArgumentException("Invalid option type in list");
             }
-            if(!namedVote && !(o instanceof AnonymousVotingOption)){
+            if(!namedVote && !(o instanceof AnonymousVotingOption)) {
                 throw new IllegalArgumentException("Invalid option type in list");
             }
         });
@@ -85,7 +98,7 @@ public class Voting implements VotingObservable {
     public boolean updateVoteArguments(List<VotingOption> options, String question, boolean namedVote, int duration) {
         try {
             lock.getReadAccess();
-            if (status != VotingStatus.Created) {
+            if(status != VotingStatus.Created) {
                 return false;
             }
             this.options = options;
@@ -104,6 +117,7 @@ public class Voting implements VotingObservable {
 
     /**
      * Check if the current voting is a NamedVoting
+     *
      * @return true iff the voting is a NamedVoting
      */
     public boolean isNamedVote() {
@@ -112,6 +126,7 @@ public class Voting implements VotingObservable {
 
     /**
      * Get the ID of the voting
+     *
      * @return ID
      */
     public int getID() {
@@ -120,6 +135,7 @@ public class Voting implements VotingObservable {
 
     /**
      * Get the Question of the voting
+     *
      * @return Question
      */
     public String getQuestion() {
@@ -135,6 +151,7 @@ public class Voting implements VotingObservable {
 
     /**
      * Get Value how long the user can vote
+     *
      * @return OpenUntil
      */
     public long getOpenUntil() {
@@ -150,6 +167,7 @@ public class Voting implements VotingObservable {
 
     /**
      * Get Status of the voting. For example: Created, Running, Close...
+     *
      * @return status
      */
     public VotingStatus getStatus() {
@@ -165,6 +183,7 @@ public class Voting implements VotingObservable {
 
     /**
      * Get all Voting Options.
+     *
      * @return List of VotingOptions
      */
     public List<VotingOption> getOptions() {
@@ -180,18 +199,20 @@ public class Voting implements VotingObservable {
 
     /**
      * Add to the VotingOption the userID from User that vote for the VotingOption
+     *
      * @param optionID VotingOption
-     * @param userID from User
-     * @param name from user
+     * @param userID   from User
+     * @param name     from user
+     *
      * @return true iff voting was accepted
      */
     public boolean addVote(int optionID, int userID, String name) {
         try {
             lock.getWriteAccess();
-            if(status != VotingStatus.Running){
+            if(status != VotingStatus.Running) {
                 return false;
             }
-            if (voters.contains(userID)  || options.size() <= optionID || optionID < 0) {
+            if(voters.contains(userID) || options.size() <= optionID || optionID < 0) {
                 return false;
             }
             voters.add(userID);
@@ -199,21 +220,6 @@ public class Voting implements VotingObservable {
             return true;
         } catch (InterruptedException e) {
             return false;
-        } finally {
-            lock.finishWrite();
-        }
-    }
-
-    /**
-     * Set Duration how long user can vote.
-     * @param seconds duration
-     */
-    public void setDuration(int seconds) {
-        try {
-            lock.getWriteAccess();
-            this.duration = seconds;
-        } catch (InterruptedException e) {
-
         } finally {
             lock.finishWrite();
         }
@@ -234,14 +240,32 @@ public class Voting implements VotingObservable {
     }
 
     /**
+     * Set Duration how long user can vote.
+     *
+     * @param seconds duration
+     */
+    public void setDuration(int seconds) {
+        try {
+            lock.getWriteAccess();
+            this.duration = seconds;
+        } catch (InterruptedException e) {
+
+        } finally {
+            lock.finishWrite();
+        }
+    }
+
+    /**
      * Start an created Vote. So the User can vote for a specific duration for this vote.
+     *
      * @return true iff the vote has started
      */
     public boolean startVote() {
         try {
             lock.getWriteAccess();
-            if (status != VotingStatus.Created)
+            if(status != VotingStatus.Created) {
                 throw new IllegalArgumentException("Votes which are already running or ended can not be started.");
+            }
             openUntil = System.currentTimeMillis() + duration * 1000;
             status = VotingStatus.Running;
             notifyObservers();
@@ -255,13 +279,14 @@ public class Voting implements VotingObservable {
 
     /**
      * End a running Vote. So the user can´t vote anymore.
+     *
      * @return
      */
     public boolean endVote() {
         try {
             lock.getWriteAccess();
             status = VotingStatus.Closed;
-            for (VotingOption votingOption : options) {
+            for(VotingOption votingOption : options) {
                 votingOption.publishVotes();
             }
             notifyObservers();
@@ -270,20 +295,6 @@ public class Voting implements VotingObservable {
             return false;
         } finally {
             lock.finishWrite();
-        }
-    }
-
-    /**
-     * Calculate next free ID
-     * @return ID
-     */
-    private static int getNextId() {
-        try {
-            idLock.lock();
-            lastUsedID++;
-            return lastUsedID;
-        } finally {
-            idLock.unlock();
         }
     }
 
@@ -299,7 +310,7 @@ public class Voting implements VotingObservable {
 
     @Override
     public void notifyObservers() {
-        for (VotingObserver vo : observers.keySet()) {
+        for(VotingObserver vo : observers.keySet()) {
             vo.update(this);
         }
     }

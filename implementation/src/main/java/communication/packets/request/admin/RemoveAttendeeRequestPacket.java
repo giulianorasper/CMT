@@ -6,7 +6,6 @@ import communication.packets.response.FailureResponsePacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 /**
  * This packet can be used by an admin to remove an attendee which is not an admin from the conference.
@@ -16,7 +15,6 @@ public class RemoveAttendeeRequestPacket extends AuthenticatedRequestPacket {
     private int id;
 
     /**
-     *
      * @param id the id of the attendee to be removed
      */
     public RemoveAttendeeRequestPacket(int id) {

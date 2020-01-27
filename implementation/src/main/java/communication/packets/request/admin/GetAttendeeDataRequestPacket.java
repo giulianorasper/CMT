@@ -6,7 +6,6 @@ import communication.packets.Packet;
 import communication.packets.response.PersonalDataResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 /**
  * This packet can be used by an admin to retrieve the personal data of a single attendee.
@@ -17,7 +16,6 @@ public class GetAttendeeDataRequestPacket extends AuthenticatedRequestPacket {
     int id;
 
     /**
-     *
      * @param id the id of the attendee to retrieve the personal for
      */
     public GetAttendeeDataRequestPacket(int id) {

@@ -1,7 +1,5 @@
 package communication.wrapper;
 
-import io.netty.buffer.ByteBuf;
-
 import java.io.File;
 
 public interface Connection {

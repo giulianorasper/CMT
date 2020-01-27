@@ -5,7 +5,6 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import user.Attendee;
 
 /**
@@ -22,11 +21,12 @@ public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
     /**
      * The only compulsory parameter is name. If any other parameter is null
      * it is treated as if it was an empty string.
-     * @param name the attendee's full name
-     * @param email the attendee's email
-     * @param group the attendee's group
+     *
+     * @param name      the attendee's full name
+     * @param email     the attendee's email
+     * @param group     the attendee's group
      * @param residence the attendee's residence
-     * @param function the attendee's function
+     * @param function  the attendee's function
      */
     public AddAttendeeRequestPacket(String name, String email, String group, String residence, String function) {
         super(PacketType.ADD_ATTENDEE_REQUEST);
@@ -40,11 +40,21 @@ public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
     @Override
     public void handle(Conference conference, Connection connection) {
         if(isPermitted(conference, connection, true)) {
-            if(name == null) throw new IllegalArgumentException();
-            if(email == null) email = "";
-            if(group == null) group = "";
-            if(residence == null) residence = "";
-            if(function == null) function = "";
+            if(name == null) {
+                throw new IllegalArgumentException();
+            }
+            if(email == null) {
+                email = "";
+            }
+            if(group == null) {
+                group = "";
+            }
+            if(residence == null) {
+                residence = "";
+            }
+            if(function == null) {
+                function = "";
+            }
             Attendee attendee = new Attendee(name, email, conference.getFreeUserName(name), group, residence, function);
             conference.addAttendee(attendee);
             new ValidResponsePacket().send(connection);

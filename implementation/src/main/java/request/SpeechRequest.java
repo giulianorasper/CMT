@@ -1,12 +1,12 @@
 package request;
 
-import com.google.gson.annotations.Expose;
 import user.User;
 
 public class SpeechRequest extends Request {
 
     /**
      * Construct a SpeechRequest with the following Parameter, especially without fixed id (next free Id is used):
+     *
      * @param requester
      * @param topic
      * @param timestamp
@@ -17,6 +17,7 @@ public class SpeechRequest extends Request {
 
     /**
      * Construct a ChangeRequest Object with the following Parameters, especially with fixed id:
+     *
      * @param id
      * @param requester
      * @param topic
@@ -39,6 +40,16 @@ public class SpeechRequest extends Request {
         }
     }
 
+    @Override
+    public Request shallowClone() {
+        SpeechRequest req = new SpeechRequest(ID, getRequester(), new SimpleRequestable(requestable.getRequestableName()),
+                getTimeStamp());
+        if(!isOpen()) {
+            req.close();
+        }
+        return req;
+    }
+
     /**
      * Close SpeechRequest, if a user spoke to a topic.
      */
@@ -52,15 +63,5 @@ public class SpeechRequest extends Request {
             notifyObservers();
             lock.finishWrite();
         }
-    }
-
-    @Override
-    public Request shallowClone() {
-        SpeechRequest req = new SpeechRequest(ID, getRequester(), new SimpleRequestable(requestable.getRequestableName()),
-            getTimeStamp());
-        if(!isOpen()){
-            req.close();
-        }
-        return req;
     }
 }

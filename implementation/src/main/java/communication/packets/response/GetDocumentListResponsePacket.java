@@ -14,10 +14,9 @@ public class GetDocumentListResponsePacket extends ResponsePacket {
     private List<Document> documents;
 
     /**
-     *
      * @param documents a list of documents object containing following exposed attributes
-     * name: String - the name of the document
-     * revisionNumber: int - the revision number of the document
+     *                  name: String - the name of the document
+     *                  revisionNumber: int - the revision number of the document
      */
     public GetDocumentListResponsePacket(List<Document> documents) {
         super(PacketType.GET_DOCUMENT_LIST_RESPONSE, RequestResult.Valid);

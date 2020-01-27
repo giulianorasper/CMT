@@ -8,7 +8,6 @@ import communication.packets.BasePacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 
 import java.util.List;
 
@@ -21,9 +20,8 @@ public class AddTopicRequestPacket extends AuthenticatedRequestPacket {
     private String name;
 
     /**
-     *
      * @param position the position of the topic as string (e.g. "1.4.3")
-     * @param name the name of the topic
+     * @param name     the name of the topic
      */
     public AddTopicRequestPacket(String position, String name) {
         super(PacketType.ADD_TOPIC_REQUEST);
@@ -39,8 +37,10 @@ public class AddTopicRequestPacket extends AuthenticatedRequestPacket {
             Topic topic = new Topic(name, agenda);
             List<Integer> preorderList = agenda.getPreorderListFromPreorderString(position);
             //we assert the size of the preorderList to be at least one, otherwise a IllegalArgumenException would be thrown earlier
-            int pos = preorderList.get(preorderList.size()-1);
-            if(!agenda.addTopic(topic, pos)) throw new IllegalArgumentException();
+            int pos = preorderList.get(preorderList.size() - 1);
+            if(!agenda.addTopic(topic, pos)) {
+                throw new IllegalArgumentException();
+            }
             new ValidResponsePacket().send(connection);
         }
     }

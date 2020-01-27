@@ -5,10 +5,6 @@ import communication.enums.PacketType;
 import communication.enums.RequestResult;
 import communication.packets.ResponsePacket;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
 public class DownloadFileResponsePacket extends ResponsePacket {
 
     @Expose
@@ -17,9 +13,8 @@ public class DownloadFileResponsePacket extends ResponsePacket {
     private String fileName;
 
     /**
-     *
      * @param fileBytes the file bytes of the file (document)
-     * @param fileName the name of the file (document)
+     * @param fileName  the name of the file (document)
      */
     public DownloadFileResponsePacket(byte[] fileBytes, String fileName) {
         super(PacketType.DOWNLOAD_FILE_RESPONSE, RequestResult.Valid);

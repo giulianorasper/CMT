@@ -5,7 +5,6 @@ import communication.packets.AuthenticatedRequestPacket;
 import communication.packets.response.ValidResponsePacket;
 import communication.wrapper.Connection;
 import main.Conference;
-import org.java_websocket.WebSocket;
 import voting.AnonymousVotingOption;
 import voting.NamedVotingOption;
 import voting.Voting;
@@ -26,10 +25,10 @@ public class AddVotingRequestPacket extends AuthenticatedRequestPacket {
     private int duration;
 
     /**
-     *  @param question the question which should be decided by the voting
-     * @param options the possible voting options as a list of strings
+     * @param question  the question which should be decided by the voting
+     * @param options   the possible voting options as a list of strings
      * @param namedVote if the vote is named i.e. if it is public who voted for which option
-     * @param duration the duration of the voting after it started in seconds
+     * @param duration  the duration of the voting after it started in seconds
      */
     public AddVotingRequestPacket(String question, List<String> options, boolean namedVote, int duration) {
         super(PacketType.ADD_VOTING_REQUEST_PACKET);

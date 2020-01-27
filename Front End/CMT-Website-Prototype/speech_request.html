@@ -50,12 +50,12 @@
                                         <ul class="submenu">
                                             <li><a href="change_request.html">Request of Change</a></li>
                                             <li><a href="speech_request.html">Request of Speech</a></li>
-                                            <li><a href="request_management.html">Manage Requests</a>
+                                            <li class=""><a href="request_management.html">Manage Requests</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li><a href="profile.html">Profile</a></li>
-                                    <li><a href="user_management.html">User Management</a></li>
+                                    <li class=""><a href="user_management.html">User Management</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -79,38 +79,26 @@
             <div class="col-xl-12 col-md-12 col-lg-12">
                 <div class="small-section" id="submit-message">
                     <div class="row">
-                        <div class="col-lg-3" style="float:left;">
-                        </div>
+                        <div class="col-lg-3"></div>
                         <div class="col-lg-9" style="float:left; margin-top: 26px;">
-                            <h2 class="text-title-class pull-left">Request of Change</h2>
+                            <h2 class="text-title-class pull-left">Request of Speech</h2>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-3" style="float:left;"></div>
+                        <div class="col-lg-3"></div>
                         <div class="col-lg-6">
                             <div class="form-group controls">
-                                <select class="form-control requestSelect" id="changeRequestOption">
-                                    <option disabled selected hidden>Select topic</option>
+                                <select class="form-control requestSelect" id="speachRequestOption">
+                                    <option disabled selected hidden>Select a topic</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-3" style="float:left;"></div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <textarea class="form-control w-100" id="requestMessage" cols="30" rows="9"
-                                          onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Message'"
-                                          placeholder="Message"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                  
-                    <div class="row">
-                        <div class="col-lg-3" style="float:left;"></div>
+                        <div class="col-lg-3"></div>
                         <div class="form-group mt-3 col-lg-6" style="float: right;">
                             <button class="button button-contactForm btn-class-box pull-right"
-                                    onclick="submitRequest(false)">Request
+                                    onclick="submitRequest(true)">Submit
                             </button>
                         </div>
                     </div>
@@ -129,5 +117,6 @@
 <script type="module" src="js/not_libs/request.js"></script>
 <script type="module" src="js/not_libs/general.js"></script>
 <script type="module" src="js/not_libs/displayActiveVote.js"></script>
+
 </body>
 </html>

@@ -58,12 +58,10 @@ public class Agenda implements AgendaObservable {
                         auxDepth.set(1);
                         ref.aux = ag;
                         p.first().forEach(i -> {
-                            //   System.out.println("At position " + i + " maxDepth "+depth.get() + " depth" + auxDepth.get());
                             i--;
                             if(auxDepth.get() < depth.get()) {
                                 ref.aux = ref.aux.getTopic(i).getSubTopics();
                             } else {
-                                //   System.out.println("Added " + p.second() +" at position " + i+ "in" +ref.aux);
                                 ref.aux.addTopic(new Topic(p.second(), ref.aux), i);
                             }
                             auxDepth.getAndIncrement();

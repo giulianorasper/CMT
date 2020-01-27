@@ -69,8 +69,7 @@ public class EditVotingRequestPacket extends AuthenticatedRequestPacket {
                 id++;
             }
 
-            Boolean result = voting.updateVoteArguments(optionsObjectList, question, namedVote, duration);
-            //AddVotingRequestPacket add = new AddVotingRequestPacket(question, options, namedVote, duration);
+            boolean result = voting.updateVoteArguments(optionsObjectList, question, namedVote, duration);
             if(result) {
                 new ValidResponsePacket().send(connection);
             } else {

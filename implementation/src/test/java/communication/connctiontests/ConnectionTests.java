@@ -73,7 +73,7 @@ public class ConnectionTests {
         }
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = 120000)
     public void stressTest() throws Exception {
         int amount = stessTestAmount;
         CountDownLatch latch = new CountDownLatch(amount);

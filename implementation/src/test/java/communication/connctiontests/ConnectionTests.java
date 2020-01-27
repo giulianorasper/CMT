@@ -41,7 +41,7 @@ public class ConnectionTests {
         communicationManager.stop();
     }
 
-    @Test(timeout = 1000)
+    @Test(timeout = 10000)
     public void clientMaxConnectionLimitation() throws Exception {
         Attendee attendee = new Attendee("connectsALot", "connectsALot", "connectsALot", "connectsALot", "connectsALot", "connectsALot");
         conference.addAttendee(attendee);

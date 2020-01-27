@@ -189,18 +189,18 @@ function generateDocument(document){
                                             "</div>"+
 
                                             (window.isAdmin?"<div class=\"col-lg\">"+
-                                                       "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 42px; padding-left: 24px;\">"+
+                                                       "<a href=\"#\" style=\"font-size: 25px; margin-right: 42px; padding-left: 24px;\">"+
                                                       "<span onclick = \"downloadDocument(\'"+documents.length+"\')\" class=\"glyphicon glyphicon-download-alt \"></span>"+
                                                     "</a>"+
-                                            
+                                            //former color: #00D363;
                                             // "<div class=\"col-lg-auto\">"+
-                                                       "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 42px;\">"+
+                                                       "<a href=\"#\" style=\"font-size: 25px; margin-right: 42px;\">"+
                                                       "<span onclick = \"editDocument(\'"+documents.length+"\')\" class=\"glyphicon glyphicon-edit\"></span>"+
                                                     "</a>"+
                                             // "</div>"+
                                             // "<div class=\"col-lg-auto\">"+
 											
-                                                       "<a href=\"#\" style=\"color: #00D363; font-size: 25px; margin-right: 20px;\">"+
+                                                       "<a href=\"#\" style=\"font-size: 25px; margin-right: 20px;\">"+
                                                       "<span onclick = \"removeDocument(\'"+documents.length+"\')\" class=\"glyphicon glyphicon-trash \"></span>"+
                                                     "</a>":"")+
                                             "</div>"+

@@ -18,10 +18,10 @@ public class GetAllAttendeePasswordsRequestPacket extends AuthenticatedRequestPa
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             Packet response = new GetAllAttendeePasswordsResponsePacket(conference.getAllUsersPasswords());
-            response.send(webSocket);
+            response.send(connection);
         }
     }
 }

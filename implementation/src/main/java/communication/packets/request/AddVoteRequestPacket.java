@@ -34,13 +34,13 @@ public class AddVoteRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, false)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, false)) {
             Voting voting = conference.getVoting(voteID);
             int userID = conference.tokenToID(getToken());
             Attendee attendee = conference.getAttendeeData(userID);
             if(!attendee.isPresent()) {
-                new FailureResponsePacket("You can only vote if you are present.").send(webSocket);
+                new FailureResponsePacket("You can only vote if you are present.").send(connection);
                 return;
             }
             String name = attendee.getName();
@@ -53,7 +53,7 @@ public class AddVoteRequestPacket extends AuthenticatedRequestPacket {
                 else
                     response = new FailureResponsePacket("Your vote could not be registered. Most likely you have already submitted a vote");
             }
-            response.send(webSocket);
+            response.send(connection);
         }
     }
 }

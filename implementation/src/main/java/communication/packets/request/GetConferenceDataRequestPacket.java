@@ -20,8 +20,8 @@ public class GetConferenceDataRequestPacket extends RequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
+    public void handle(Conference conference, Connection connection) {
         Packet response = new GetConferenceDataResponsePacket(conference);
-        response.send(webSocket);
+        response.send(connection);
     }
 }

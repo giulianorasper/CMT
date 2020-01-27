@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import communication.CommunicationHandler;
 import communication.packets.Packet;
 import communication.packets.request.GetAgendaRequestPacket;
+import communication.packets.request.LoginRequestPacket;
 import communication.packets.request.PersonalDataRequestPacket;
 import communication.packets.request.RequestOfChangeRequestPacket;
 import communication.packets.request.RequestOfSpeechRequestPacket;
@@ -141,7 +142,8 @@ public class PacketTests {
         handle(new LogoutAttendeeRequestPacket(attendeeID).setToken(adminToken), connection);
         Connection connection2 = MoreAsserts.assertInvalidToken();
         handle(new GetAgendaRequestPacket().setToken(attendeeToken), connection2);
-        Assert.assertFalse(password.equals(conference.getUserPassword(attendeeID)));
+        Connection connection3 = MoreAsserts.assertFailureResult();
+        handle(new LoginRequestPacket("attendee", password), connection3);
     }
 
     @Test
@@ -209,8 +211,14 @@ public class PacketTests {
         options2.add(new AnonymousVotingOption(0, "1"));
         Voting v3 = new Voting(options, "?", false, 0);
         Voting v4 = new Voting(options2, "?", false, 1);
+        List<VotingOption> options3 = new LinkedList<>();
+        options3.add(new AnonymousVotingOption(0, ""));
+        options3.add(new AnonymousVotingOption(0, "12345"));
+        Voting v5 = new Voting(options3, "?", false, 1);
         conference.addVoting(v3);
         conference.addVoting(v4);
+        conference.addVoting(v5);
+        handle(new StartVotingRequestPacket(v5.getID()).setToken(adminToken), connection);
         handle(new StartVotingRequestPacket(v3.getID()).setToken(adminToken), connection2);
         handle(new StartVotingRequestPacket(v4.getID()).setToken(adminToken), connection);
         handle(new StartVotingRequestPacket(42).setToken(adminToken), connection);

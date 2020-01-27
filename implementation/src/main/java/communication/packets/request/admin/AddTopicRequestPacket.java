@@ -32,8 +32,8 @@ public class AddTopicRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             Agenda mainAgenda = conference.getAgenda();
             Agenda agenda = mainAgenda.getAgendaFromPreorderString(position);
             Topic topic = new Topic(name, agenda);
@@ -41,7 +41,7 @@ public class AddTopicRequestPacket extends AuthenticatedRequestPacket {
             //we assert the size of the preorderList to be at least one, otherwise a IllegalArgumenException would be thrown earlier
             int pos = preorderList.get(preorderList.size()-1);
             if(!agenda.addTopic(topic, pos)) throw new IllegalArgumentException();
-            new ValidResponsePacket().send(webSocket);
+            new ValidResponsePacket().send(connection);
         }
     }
 }

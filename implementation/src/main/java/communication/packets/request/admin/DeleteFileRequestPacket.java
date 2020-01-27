@@ -24,10 +24,10 @@ public class DeleteFileRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             conference.deleteDocument(name);
-            new ValidResponsePacket().send(webSocket);
+            new ValidResponsePacket().send(connection);
         }
     }
 }

@@ -40,8 +40,8 @@ public class EditUserRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             Attendee attendee = conference.getAttendeeData(id);
             if(name != null) attendee.setName(name);
             if(email != null) attendee.setEmail(email);
@@ -49,7 +49,7 @@ public class EditUserRequestPacket extends AuthenticatedRequestPacket {
             if(residence != null) attendee.setResidence(residence);
             if(function != null) attendee.setFunction(function);
             conference.editAttendee(attendee);
-            new ValidResponsePacket().send(webSocket);
+            new ValidResponsePacket().send(connection);
         }
     }
 }

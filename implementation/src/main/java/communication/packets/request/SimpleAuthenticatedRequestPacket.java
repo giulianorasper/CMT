@@ -16,7 +16,7 @@ public class SimpleAuthenticatedRequestPacket extends AuthenticatedRequestPacket
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
+    public void handle(Conference conference, Connection connection) {
         return;
     }
 }

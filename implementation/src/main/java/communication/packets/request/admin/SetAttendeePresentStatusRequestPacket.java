@@ -29,12 +29,12 @@ public class SetAttendeePresentStatusRequestPacket extends AuthenticatedRequestP
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             Attendee attendee = conference.getAttendeeData(id);
             attendee.setPresent(present);
             conference.setPresentValue(attendee.getUserName(),present);
-            new ValidResponsePacket().send(webSocket);
+            new ValidResponsePacket().send(connection);
         }
     }
 }

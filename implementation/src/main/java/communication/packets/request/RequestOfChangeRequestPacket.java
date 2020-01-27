@@ -30,7 +30,7 @@ public class RequestOfChangeRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        new RequestOfPacketWrapper(getPacketType(), refersToTopic, reference, request).setToken(getToken()).handle(conference, webSocket);
+    public void handle(Conference conference, Connection connection) {
+        new RequestOfPacketWrapper(getPacketType(), refersToTopic, reference, request).setToken(getToken()).handle(conference, connection);
     }
 }

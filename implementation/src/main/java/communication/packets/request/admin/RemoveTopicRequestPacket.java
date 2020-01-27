@@ -27,12 +27,12 @@ public class RemoveTopicRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             Agenda agenda = conference.getAgenda();
             Topic topic = agenda.getTopicFromPreorderString(position);
             topic.remove();
-            new ValidResponsePacket().send(webSocket);
+            new ValidResponsePacket().send(connection);
         }
     }
 }

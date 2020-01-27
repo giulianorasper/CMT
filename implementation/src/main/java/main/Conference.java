@@ -1393,7 +1393,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
     }
 
     void purgeDirectory(File dir) {
-
+        if(!dir.exists()) return;
         for(File file : dir.listFiles()) {
             if(file.isDirectory()) {
                 purgeDirectory(file);

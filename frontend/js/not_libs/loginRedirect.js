@@ -75,7 +75,7 @@ function login(name, password){
                         window.location.href = "./home.html";
                     } else {
                         $("#name").focus();
-                        $('#message').html('Incorrect password').css({'color':'red', 'text-align': 'center'});
+                        $('#message').html('Invalid username or password').css({'color':'red', 'text-align': 'center'});
                         return false;
                     }
                 }

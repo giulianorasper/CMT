@@ -561,14 +561,14 @@ body {
 
 
   @media only screen and (max-width: 767px) {
-    /* line 12, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_slick-nav.scss */
+    
     .slicknav_menu {
       margin-right: 0px;
     }
   }
   
 
-  /* line 32, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_slick-nav.scss */
+ 
 .slicknav_menu .slicknav_nav a.active {
     color: #4A3600;
   }
@@ -577,7 +577,7 @@ body {
   .btn-default.btn-on.active{background-color: #5BB75B;color: white;}
   .btn-default.btn-off.active{background-color: #DA4F49;color: white;}
   
-  /* line 48, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+  
   .sub-section-class #accordion .card {
     position: relative;
     display: -webkit-box;
@@ -600,7 +600,7 @@ body {
    /* // border: 1px solid #E9E5EC; */
   }
   
-  /* line 68, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
   .sub-section-class #accordion .card .card-header {
     margin-bottom: 0;
     background-color: #fff;
@@ -611,20 +611,20 @@ body {
   }
   
   @media only screen and (max-width: 767px) {
-    /* line 74, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
     .sub-section-class #accordion .card .card-header span {
       display: none;
     }
   }
   
-  /* line 82, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
   .sub-section-class .btn-link.focus, .sub-section-class .btn-link:focus {
     text-decoration: none;
     border-color: transparent;
     box-shadow: none;
   }
   
-  /* line 87, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+  
   .sub-section-class .btn-link:hover {
     color: #0056b3;
     text-decoration: none;
@@ -632,26 +632,26 @@ body {
     border-color: transparent;
   }
   
-  /* line 133, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_contact.scss */
+
 .main-text {
     padding: 130px 0 100px;
   }
   
   @media only screen and (max-width: 991px) {
-    /* line 133, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_contact.scss */
+  
     .main-text {
       padding: 70px 0 40px;
     }
   }
   
   @media only screen and (min-width: 992px) and (max-width: 1200px) {
-    /* line 133, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_contact.scss */
+  
     .main-text {
       padding: 80px 0 50px;
     }
   }
   
-  /* line 141, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_contact.scss */
+
   .main-text .btn_2 {
     background-color: #191d34;
     padding: 18px 60px;
@@ -659,12 +659,12 @@ body {
     margin-top: 0;
   }
   
-  /* line 146, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_contact.scss */
+
   .main-text .btn_2:hover {
     background-color: #ff5e13;
   }
 
-  /* line 45, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_contact.scss */
+ 
 .text-title-class {
     font-size: 27px;
     font-weight: 600;
@@ -672,7 +672,7 @@ body {
   }
 
   
-/* line 4, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
+
 .image-section-class {
     min-height: 100%;
   
@@ -690,7 +690,7 @@ body {
   }
   
   @media only screen and (max-width: 767px) {
-    /* line 4, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
+  
     .image-section-class {
       padding-top: 60px;
       padding-bottom: 60px;
@@ -698,14 +698,14 @@ body {
   }
   
   @media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* line 4, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
+ 
     .image-section-class {
       padding-top: 100px;
       padding-bottom: 100px;
     }
   }
   
-  /* line 19, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
+
   .image-section-class h3 {
     font-size: 42px;
     font-weight: 500;
@@ -713,40 +713,40 @@ body {
   }
   
   @media (max-width: 767px) {
-    /* line 19, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
+  
     .image-section-class h3 {
       font-size: 27px;
     }
   }
   
-  /* line 27, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
+
   .image-section-class P {
     font-size: 16px;
     color: #fff;
     margin: 25px 0;
   }
   
-  /* line 33, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
+ 
   .image-section-class .btn-blue {
     margin-right: 20px;
     padding: 12px 45px;
   }
   
-  /* line 37, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
+ 
   .image-section-class  {
     color: #00D363;
     font-size: 16px;
   }
   
   @media only screen and (max-width: 767px) {
-    /* line 37, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
+   
     .image-section-class {
       display: block;
       margin-top: 20px;
     }
   }
   
-  /* line 47, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
+ 
   .image-section-class .row {
     -webkit-justify-content: flex-end;
     -moz-justify-content: flex-end;
@@ -755,23 +755,23 @@ body {
     -ms-flex-pack: flex-end;
   }
 
-  /* line 1, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_support.scss */
+ 
 .image-display-class {
     background-image: url(../img/support/2.jpg);
   }
 
-  /* line 184, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_gallery.scss */
+
 .popup-class .inside-popup span {
     color: red;
   }
   
-  /* line 189, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_gallery.scss */
+
   #test-form .popup-class input {
     width: 100%;
     height: 50px;
   }
 
-  /* line 110, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
+ 
 .popup-class-show {
     background: transparent;
     display: inline-block;
@@ -782,7 +782,7 @@ body {
   }
   
   @media only screen and (max-width: 767px) {
-    /* line 110, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
+   
     .popup-class-show {
       width: 320px;
       padding: 45px 30px;
@@ -790,26 +790,26 @@ body {
   }
   
   @media only screen and (min-width: 576px) and (max-width: 767px) {
-    /* line 110, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
+    
     .popup-class-show {
       width: 420px !important;
       padding: 45px 30px;
     }
   }
   
-  /* line 129, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
+ 
   .popup-class-show .logo-class {
     margin-bottom: 25px;
   }
   
   @media (max-width: 767px) {
-    /* line 129, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
+    
     .popup-class-show .logo-class {
       margin-bottom: 30px;
     }
   }
   
-  /* line 135, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
+  
   .popup-class-show h3 {
     font-size: 24px;
     color: #1F1F1F;
@@ -818,24 +818,24 @@ body {
   }
   
   @media (max-width: 767px) {
-    /* line 135, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
+    
     .popup-class-show h3 {
       margin-bottom: 15px;
     }
   }
   
-  /* line 144, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
+ 
   .popup-class-show .boxed-btn3 {
     width: 100%;
     text-transform: capitalize;
   }
   
-  /* line 148, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
+
   .popup-class-show .btn-blue {
     width: 100%;
   }
   
-  /* line 214, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
+
   .popup-class-show {
     font-size: 16px;
     color: #727272;
@@ -843,12 +843,12 @@ body {
     font-weight: 400;
   }
   
-  /* line 219, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_bradcam.scss */
+ 
   .popup-class-show  a {
     color: #0181F5;
   }
 
-  /* line 244, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_gallery.scss */
+
 .inside-popup input {
     width: 100%;
     margin-bottom: 30px;
@@ -860,18 +860,18 @@ body {
     padding-left: 30px;
   }
   
-  /* line 253, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_gallery.scss */
+ 
   .inside-popup input:focus {
     outline: none;
   }
   
-  /* line 256, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_gallery.scss */
+
   .inside-popup input::placeholder {
     color: #919191;
     font-size: 16px;
   }
   
-  /* line 114, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_btn.scss */
+
 .btn-blue {
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
@@ -889,7 +889,7 @@ body {
   display: inline-block;
 }
 
-  /* line 124, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_btn.scss */
+
   .btn-blue:hover {
     background: transparent;
     border: 1px solid #828bb2;
@@ -897,20 +897,20 @@ body {
   }
 
 
-  /* line 176, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
+
 .btn-blue {
     margin-right: 10px;
   }
   
   @media (max-width: 767px) {
-    /* line 176, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
+
     .btn-blue {
       padding: 11px 50px;
       margin-right: 0;
     }
   }
 
-  /* line 194, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_gallery.scss */
+
 .btn-blue {
     width: 100%;
     height: 60px;
@@ -919,24 +919,18 @@ body {
     border-radius: 30px;
   }
 
-  /* line 71, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_search_result.scss */
-/* .search_area .single_search .prising_content a.premium.disable {
-    background: #F6F0F8;
-    color: #919191;
-  } */
-  
-  /* line 76, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_search_result.scss */
+
   a.btn-blue {
     padding: 7px 36px;
     color: #fff;
   }
   
-  /* line 79, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_search_result.scss */
+
   a.btn-blue.disable {
     background: #C7C7C7;
   }
   
-  /* line 81, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_search_result.scss */
+
  a.btn-blue.disable:hover {
     border: 1px solid transparent;
     color: #fff !important;
@@ -946,7 +940,7 @@ h1, h2, h3, h4, h5 {
     font-family: "Roboto", sans-serif;
   }
   
-  /* line 43, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_reset.scss */
+
   h1 a,
   h2 a,
   h3 a,
@@ -956,37 +950,37 @@ h1, h2, h3, h4, h5 {
     color: inherit;
   }
 
-  /* line 93, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
+
 h1 {
     font-size: 36px;
   }
   
-  /* line 97, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
+
   h2 {
     font-size: 30px;
   }
   
-  /* line 101, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
+
   h3 {
     font-size: 24px;
   }
   
-  /* line 105, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
+
   h4 {
     font-size: 18px;
   }
   
-  /* line 109, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
+
   h5 {
     font-size: 16px;
   }
   
-  /* line 113, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
+ 
   h6 {
     font-size: 14px;
   }
   
-  /* line 117, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
+
   h1,
   h2,
   h3,
@@ -997,7 +991,6 @@ h1 {
     color: #828bb2;
   }
 
-  /* line 85, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_elements.scss */
 b,
 sup,
 sub,
@@ -1006,14 +999,14 @@ del {
   color: #ff5e13;
 }
 
-/* line 89, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_reset.scss */
+
 *::-webkit-input-placeholder {
   color: #cccccc;
   font-size: 14px;
   opacity: 1;
 }
 
-/* line 104, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_reset.scss */
+
 *::placeholder {
   color: #cccccc;
   font-size: 14px;
@@ -1034,7 +1027,6 @@ ul {
   list-style-type: none;
 
 }
-
 
 
 p {

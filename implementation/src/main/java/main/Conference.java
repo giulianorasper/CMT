@@ -95,7 +95,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                 new HashMap<Integer, Request>(),
                 null,
                 "./testdb/testdb.db",
-                "https://math-edu.eu/conference",
+                "https://example.eu/conference",
                 true,
                 cleanStart
         );

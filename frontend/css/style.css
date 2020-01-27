@@ -1,26 +1,21 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400,500,700,900&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400,500,700,900&display=swap");
 
-/* Normal desktop :1200px. */
-/* Normal desktop :992px. */
-/* Tablet desktop :768px. */
-/* small mobile :320px. */
-/* Large Mobile :480px. */
-/* 1. Theme default css */
-/* line 4, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_reset.scss */
+
+
 body {
   font-family: "Roboto", sans-serif;
   font-weight: normal;
   font-style: normal;
 }
 
-/* line 157, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_reset.scss */
+
 .layer {
     position: relative;
     z-index: 0;
   }
   
-  /* line 161, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_reset.scss */
+
   .layer::before {
     position: absolute;
     content: "";
@@ -33,7 +28,7 @@ body {
     opacity: 0.6;
   }
 
-  /* line 1, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
 .main-header {
     position: absolute;
     left: 0;
@@ -46,59 +41,57 @@ body {
 
   
   @media only screen and (max-width: 991px) {
-    /* line 1, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
     .main-header {
       padding-top: 0;
     }
   }
 
-/* line 15, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
 .main-header .main-class {
   padding: 0 150px;
 }
-  
+
+
+  .main-header .main-class {
+    padding: 0 150px;
+  }
+
   @media only screen and (max-width: 991px) {
-    /* line 15, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
     .main-header .main-class {
       padding: 10px 10px;
     }
   }
   
   @media only screen and (min-width: 992px) and (max-width: 1200px) {
-    /* line 15, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
     .main-header .main-class {
       padding: 0 20px;
     }
   }
   
   @media only screen and (min-width: 1200px) and (max-width: 1500px) {
-    /* line 15, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
     .main-header .main-class {
       padding: 0 10px;
     }
   }
   
-  /* line 29, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class .image-logo {
     text-align: center;
   }
-  
+
   @media only screen and (max-width: 991px) {
-    /* line 29, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
     .main-header .main-class .image-logo {
       text-align: left;
     }
   }
   
   @media only screen and (min-width: 992px) and (max-width: 1200px) {
-    /* line 29, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
     .main-header .main-class .image-logo {
       text-align: center;
     }
   }
   
   @media only screen and (min-width: 992px) and (max-width: 1200px) {
-    /* line 29, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
     .main-header .main-class .header-timer {
       text-align: center;
       font-family: "Roboto", sans-serif;
@@ -109,13 +102,11 @@ body {
   }
   
   @media only screen and (max-width: 991px) {
-    /* line 43, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
     .main-header .main-class .image-logo img {
       width: 70px;
     }
   }
-  
-  /* line 55, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class {
     display: -webkit-box;
     display: -moz-box;
@@ -132,25 +123,21 @@ body {
     justify-content: flex-end;
     -ms-flex-pack: flex-end;
   }
-  
-  /* line 61, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class ul li {
     display: inline-block;
   }
   
-  /* line 64, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
-  .main-header .main-class  ul li a {
+  .main-header .main-class ul li a {
     color: #A8A7A0;
     margin: 0 10px;
     font-size: 15px;
   }
-  
-  /* line 68, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class ul li a:hover {
     color: #fff;
   }
-  
-  /* line 77, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class a {
     background: transparent;
     font-size: 16px;
@@ -158,21 +145,12 @@ body {
     color: #fff;
     padding: 14px 20px;
   }
-  
-  /* line 84, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss
-  .main-header .main-class a:hover {
-    background: #fff;
-    color: #000 !important;
-    border: 1px solid #fff;
-  }*/
-  
-  /* line 92, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class .menu-class {
     text-align: center;
     padding: 12px 0;
   }
-  
-  /* line 96, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class .menu-class ul li {
     display: inline-block;
     position: relative;
@@ -180,20 +158,17 @@ body {
   }
   
   @media (min-width: 992px) and (max-width: 1200px) {
-    /* line 96, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
     .main-header .main-class .menu-class ul li {
       margin-right: 20px;
     }
   }
   
   @media (min-width: 1200px) and (max-width: 1500px) {
-    /* line 96, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
     .main-header .main-class .menu-class ul li {
       margin-right: 15px;
     }
   }
-  
-  /* line 106, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class .menu-class ul li a {
     color: #fff;
     font-size: 16px;
@@ -203,30 +178,25 @@ body {
     padding: 0px 0px 10px 0px;
     font-family: "Roboto", sans-serif;
     position: relative;
-    /* //text-decoration-line: none; */
     text-decoration: none;
   }
   
   @media only screen and (min-width: 992px) and (max-width: 1500px) {
-    /* line 106, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
     .main-header .main-class .menu-class ul li a {
       font-size: 15px;
     }
   }
-  
-  /* line 125, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class .menu-class ul li a i {
     font-size: 9px;
   }
   
   @media only screen and (max-width: 991px) {
-    /* line 125, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
     .main-header .main-class .menu-class ul li a i {
       display: none !important;
     }
   }
-  
-  /* line 134, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class .menu-class ul li a::before {
     position: absolute;
     content: "";
@@ -242,25 +212,21 @@ body {
     -o-transition: 0.3s;
     transition: 0.3s;
   }
-  
-  /* line 146, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class .menu-class ul li a:hover::before {
     opacity: 1;
     transform: scaleX(1);
   }
-  
-  /* line 151, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class .menu-class ul li a.active::before {
     opacity: 1;
     transform: scaleX(1);
   }
-  
-  /* line 156, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class .menu-class ul li a:hover {
     color: #fff;
   }
-  
-  /* line 160, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
   .main-header .main-class .menu-class ul li .submenu {
     position: absolute;
     left: 0;
@@ -277,13 +243,13 @@ body {
     -o-transition: 0.6s;
     transition: 0.6s;
   }
-  
-  /* line 172, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
+
   .main-header .main-class .menu-class ul li .submenu li {
     display: block;
   }
-  
-  /* line 174, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
+
   .main-header .main-class .menu-class ul li .submenu li a {
     padding: 10px 15px;
     position: inherit;
@@ -294,36 +260,36 @@ body {
     display: block;
     color: #000;
   }
-  
-  /* line 180, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
+
   .main-header .main-class .menu-class ul li .submenu li a::before {
     display: none;
   }
-  
-  /* line 184, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
+
   .main-header .main-class .menu-class ul li .submenu li:hover a {
     color: #000;
   }
-  
-  /* line 189, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
+
   .main-header .main-class .menu-class ul li:hover > .submenu {
     opacity: 1;
     visibility: visible;
     top: 100%;
   }
-  
-  /* line 194, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
+
   .main-header .main-class .menu-class ul li:hover > a::before {
     opacity: 1;
     transform: scaleX(1);
   }
-  
-  /* line 198, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
+
   .main-header .main-class .menu-class ul li:first-child a {
     padding-left: 0;
   }
-  
-  /* line 204, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
+
   .main-header .main-class.sticky {
     box-shadow: 0px 3px 16px 0px rgba(0, 0, 0, 0.1);
     position: fixed;
@@ -340,26 +306,26 @@ body {
   }
   
   @media only screen and (max-width: 991px) {
-    /* line 204, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
     .main-header .main-class.sticky {
       padding: 10px 10px;
     }
   }
   
   @media only screen and (min-width: 992px) and (max-width: 1500px) {
-    /* line 204, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
     .main-header .main-class.sticky {
       padding: 10px 20px;
     }
   }
-  
-  /* line 230, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_header.scss */
+
+
   .main-header .main-class.sticky .menu-class {
     padding: 0;
   }
 
   @media (max-width: 767px) {
-    /* line 4, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_slick-nav.scss */
+
     .mobile_menu {
       position: absolute;
       right: 0px;
@@ -369,52 +335,52 @@ body {
   }
   
   @media (min-width: 768px) and (max-width: 991px) {
-    /* line 68, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
+
     .main-section {
       padding-top: 100px;
       padding-bottom: 70px;
     }
   }
-  
-  /* line 79, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
+
+
   .main-section .small-section {
     margin-bottom: 30px;
     -webkit-box-shadow: 0 16px 15px rgba(0, 0, 0, 0.06);
     -moz-box-shadow: 0 16px 15px rgba(0, 0, 0, 0.06);
     box-shadow: 0 16px 15px rgba(0, 0, 0, 0.06);
   }
-  
-  /* line 82, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
+
+
   .main-section .small-section .small-header {
     background: #706257;
     padding: 26px 0;
     text-align: center;
   }
-  
-  /* line 86, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
+
+
   .main-section .small-section .small-header h3 {
     font-size: 24px;
     font-weight: 400;
     color: #fff;
     text-transform: capitalize;
   }
-  
-  /* line 92, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
+
+
   .main-section .small-section .small-header.deep {
     background: #886CFE;
   }
-  
-  /* line 95, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
+
+
   .main-section .small-section .small-header.yellow {
     background: #F3C306;
   }
-  
-  /* line 99, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
+
+
   .main-section .small-section .item-list {
     padding-left: 0px;
   }
-  
-  /* line 102, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
+
+
   .main-section .small-section .item-list ul li {
     font-size: 26px;
     margin-bottom: 20px;
@@ -422,44 +388,18 @@ body {
     z-index: 0;
     padding-left: 24px;
   }
-  
-  
-  /* line 108, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
-  .main-section .small-section .item-list ul li::before {
-    left: 0;
-    /* //top: 50%;
-    //width: 10px;
-    //height: 10px;
-    //margin-bottom: 20px; */
-    position: relative;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-    /* // background: #00C95E; */
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-  
-    counter-increment: section;
-    content: counters(section, ".") " ";
-  
-  
-  }
-  
-  /* line 123, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
+
   .main-section .text-class {
     padding-bottom: 50px;
     padding-top: 50px;
   }
-  
-  /* line 138, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_prising.scss */
+
+
   .main-section .btn-blue {
-   /* // padding: 12px 49px; */
     padding: 10px 14px;
   }
 
-  /* line 1, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_btn.scss */
+
 .btn-class-box {
     background: #fff;
     display: inline-block;
@@ -474,56 +414,51 @@ body {
     text-transform: uppercase;
     cursor: pointer;
   }
-  
-  /* line 17, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_btn.scss */
+
+
   .btn-class-box:hover {
     background: #2E004B;
     color: #fff !important;
     border: 1px solid #2E004B;
   }
-  
-  /* line 22, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_btn.scss */
+
+
   .btn-class-box:focus {
     outline: none;
   }
-  
-  /* line 25, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_btn.scss */
+
+
   .btn-class-box.large-width {
     width: 220px;
   }
-
-  /* line 1, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
-/* .sub-section-class {
-    padding-top: 190px;
-  } */
   
   @media (max-width: 767px) {
-    /* line 1, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
     .sub-section-class {
       padding-top: 60px;
     }
   }
-  
-  /* line 6, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
+
   .sub-section-class .accordion_heading {
     margin-bottom: 100px;
   }
   
   @media (max-width: 767px) {
-    /* line 6, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
     .sub-section-class .accordion_heading {
       margin-bottom: 30px;
     }
   }
   
   @media (min-width: 768px) and (max-width: 991px) {
-    /* line 6, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
     .sub-section-class .accordion_heading {
       margin-bottom: 30px;
     }
   }
-  
-  /* line 14, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
+
   .sub-section-class .accordion_heading h3 {
     font-size: 42px;
     font-weight: 400;
@@ -531,13 +466,13 @@ body {
   }
   
   @media (max-width: 767px) {
-    /* line 14, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
     .sub-section-class .accordion_heading h3 {
       font-size: 28px;
     }
   }
-  
-  /* line 27, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
+
   .sub-section-class #accordion .card h5 button {
     font-size: 24px;
     font-weight: 400;
@@ -545,26 +480,26 @@ body {
   }
   
   @media (max-width: 767px) {
-    /* line 27, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
     .sub-section-class #accordion .card h5 button {
       font-size: 13px;
     }
   }
   
   @media (min-width: 768px) and (max-width: 991px) {
-    /* line 27, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
     .sub-section-class #accordion .card h5 button {
       font-size: 18px;
     }
   }
-  
-  /* line 37, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
+
   .sub-section-class #accordion .card h5 button i {
     color: #828bb2;
     padding-right: 15px;
   }
-  
-  /* line 44, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_faq.scss */
+
+
   .sub-section-class #accordion .card .card-body {
     padding: 0 0 40px 76px;
   }
@@ -578,7 +513,7 @@ body {
     padding: 0;
   }
 
-  /* line 1017, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_blog.scss */
+
 .blog-pagination .page-item.active .page-link {
     background-color: #fbf9ff;
     border-color: #f0e9ff;
@@ -586,7 +521,7 @@ body {
   }
 
   @media (max-width: 767px) {
-    /* line 4, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_slick-nav.scss */
+
     .mobile_menu {
       position: absolute;
       right: 0px;
@@ -594,8 +529,8 @@ body {
       z-index: 9;
     }
   }
-  
-  /* line 13, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_slick-nav.scss */
+
+
   .slicknav_menu .slicknav_nav {
     background: #fff;
     float: right;
@@ -609,8 +544,8 @@ body {
     top: 11px;
   }
 
-  /* line 78, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_slick-nav.scss */
-.slicknav_btn {
+
+/*.slicknav_btn {
   background-color: transparent;
   cursor: pointer;
   margin-bottom: 10px;
@@ -622,22 +557,7 @@ body {
   right: 5px;
   margin-top: -5px;
   top: -31px;
-}
-
-/* line 92, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_slick-nav.scss */
-.slicknav_btn {
-  background-color: transparent;
-  cursor: pointer;
-  margin-bottom: 10px;
-  position: relative;
-  z-index: 99;
-  border: none;
-  border-radius: 3px;
-  padding: 5px;
-  right: 0;
-  margin-top: -5px;
-  top: -26px;
-}
+}*/
 
 
   @media only screen and (max-width: 767px) {
@@ -652,8 +572,8 @@ body {
 .slicknav_menu .slicknav_nav a.active {
     color: #4A3600;
   }
-  
-  
+
+
   .btn-default.btn-on.active{background-color: #5BB75B;color: white;}
   .btn-default.btn-off.active{background-color: #DA4F49;color: white;}
   
@@ -968,7 +888,7 @@ body {
   border: 1px solid transparent;
   display: inline-block;
 }
-  
+
   /* line 124, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_btn.scss */
   .btn-blue:hover {
     background: transparent;
@@ -1116,7 +1036,7 @@ ul {
 }
 
 
- /* line 59, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_reset.scss */
+
 p {
   font-size: 16px;
   font-weight: 300;

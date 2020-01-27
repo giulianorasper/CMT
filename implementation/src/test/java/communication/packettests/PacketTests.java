@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import communication.CommunicationHandler;
 import communication.packets.Packet;
 import communication.packets.request.GetAgendaRequestPacket;
+import communication.packets.request.PersonalDataRequestPacket;
 import communication.packets.request.RequestOfChangeRequestPacket;
 import communication.packets.request.RequestOfSpeechRequestPacket;
 import communication.packets.request.admin.*;
@@ -57,6 +58,13 @@ public class PacketTests {
         adminID = conference.tokenToID(adminToken);
         attendeeID = conference.tokenToID(attendeeToken);
         handler = new CommunicationHandler(conference, 10, 10, false);
+    }
+
+    @Test
+    public void testInvalidToken() {
+        Connection connection = MoreAsserts.assertInvalidToken();
+        handle(new PersonalDataRequestPacket(), connection);
+        handle(new GetAllRequestsRequestPacket(), connection);
     }
 
     @Test
@@ -129,15 +137,20 @@ public class PacketTests {
     @Test
     public void testLogoutAttendeeRequestPacket() {
         Connection connection = MoreAsserts.assertValidResult();
+        String password = conference.getUserPassword(attendeeID).second();
         handle(new LogoutAttendeeRequestPacket(attendeeID).setToken(adminToken), connection);
         Connection connection2 = MoreAsserts.assertInvalidToken();
         handle(new GetAgendaRequestPacket().setToken(attendeeToken), connection2);
+        Assert.assertFalse(password.equals(conference.getUserPassword(attendeeID)));
     }
 
     @Test
     public void testLogoutAttendeeRequestPacketInvalid() {
         Connection connection = MoreAsserts.assertFailureResult();
+        String password = conference.getUserPassword(adminID).second();
         handle(new LogoutAttendeeRequestPacket(adminID).setToken(adminToken), connection);
+        handle(new GetAllRequestsRequestPacket().setToken(adminToken), MoreAsserts.assertValidResult());
+        Assert.assertEquals(password, conference.getUserPassword(adminID).second());
     }
 
     @Test
@@ -212,7 +225,7 @@ public class PacketTests {
     }
 
     @Test
-    public void testRequestOfSpeechRequestPacket() {
+    public void testRequestOfSpeechAndChange() {
         Connection connection = MoreAsserts.assertValidResult();
         handle(new AddTopicRequestPacket("1.", "1.").setToken(adminToken), connection);
         handle(new RequestOfSpeechRequestPacket(true, "1.").setToken(attendeeToken), connection);

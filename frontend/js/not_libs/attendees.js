@@ -356,7 +356,6 @@ function handleListUpload(event) {
         alert("Wrong File Extension. Only .csv files allowed.")
     }
 
-    var correctData;
 
     function parseUsers(text) {
         let packet = new AddMultipleAttendeesRequestPacket();
@@ -365,6 +364,8 @@ function handleListUpload(event) {
 
         //Empty error handling dialog
         $('#fileErrorDialogContent').empty();
+
+        var correctData = true;
 
         for(var i = 0; i < attendeeField.length; i++){
             //skip empty lines!
@@ -375,7 +376,7 @@ function handleListUpload(event) {
 
             //adding line count to the data
             currAttendeeData.push(i);
-            correctData = checkValidFileData.apply(this, currAttendeeData);
+            correctData = correctData && checkValidFileData.apply(this, currAttendeeData);
 
             //line count will get cut off after to send the request without
             currAttendeeData.pop();

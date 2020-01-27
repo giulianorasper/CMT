@@ -17,7 +17,7 @@ public class RequestManagerTests  extends DatabaseTests  {
     public void addRequestTest() {
         DB_RequestManagement reqDb = this.getRequestDB();
         DB_UserManagement dbGen = this.getGeneralUserDB();
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         dbGen.addAttendee(max, "1234", "42");
 
         assertTrue(reqDb.addRequest(new ChangeRequest(1,max, new Requestable() {
@@ -41,7 +41,7 @@ public class RequestManagerTests  extends DatabaseTests  {
     public void getvalidRequestTest() {
         DB_RequestManagement reqDb = this.getRequestDB();
         DB_UserManagement dbGen = this.getGeneralUserDB();
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         dbGen.addAttendee(max, "1234", "42");
         Request changerequest =new ChangeRequest(1, max, new Requestable() {
             @Override
@@ -71,8 +71,8 @@ public class RequestManagerTests  extends DatabaseTests  {
     public void updateRequestTest() {
         DB_RequestManagement reqDb = this.getRequestDB();
         DB_UserManagement dbGen = this.getGeneralUserDB();
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
-        Attendee klaus = new Attendee("klaus Mustermann", "eail@email.muster", "Klaus.Mustermann", "RCDS", "differten12", "Straßenkehrer", 1);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
+        Attendee klaus = new Attendee("klaus Mustermann", "eail@email.muster", "Klaus.Mustermann", "LOL", "Place2",  "Straßenkehrer", 1);
         dbGen.addAttendee(max, "1234", "42");
         dbGen.addAttendee(klaus, "1111", "9876");
         Request changerequest =new ChangeRequest(1, max, new Requestable() {
@@ -111,7 +111,7 @@ public class RequestManagerTests  extends DatabaseTests  {
     public void DeleteRequestTest() {
         DB_RequestManagement reqDb = this.getRequestDB();
         DB_UserManagement dbGen = this.getGeneralUserDB();
-        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "RCDS", "Differten", "Straßenkehrer", 0);
+        Attendee max = new Attendee("Max Mustermann", "email@email.muster", "Max.Mustermann", "LOL", "Place", "Straßenkehrer", 0);
         dbGen.addAttendee(max, "1234", "42");
 
         reqDb.addRequest(new ChangeRequest(1,max, new Requestable() {

@@ -23,7 +23,7 @@ public class ConfigParserTests {
         String config = "name : 'SE Presentation\\#3' # mandatory field. Presents a possible escape sequence\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
-                "url : 'http://localhost' # the url at which the conference is hosted 'https://math-edu.eu/conference/home.html'\n" +
+                "url : 'http://localhost' # the url at which the conference is hosted \n" +
                 "admin : 'name:email:group:residence:function' " ;
 
         Conference c = ConfigParser.parseConfigFile(config);
@@ -36,7 +36,7 @@ public class ConfigParserTests {
                 "name : 'Test'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
-                "url : 'http://localhost' # the url at which the conference is hosted 'https://math-edu.eu/conference/home.html'\n" +
+                "url : 'http://localhost' # the url at which the conference is hosted \n" +
                 "admin : 'name:email:group:residence:function' " ;
 
         try {
@@ -54,7 +54,7 @@ public class ConfigParserTests {
         String config = "name : 'SE Presentation\\#3'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
-                "url : 'http://localhost' # the url at which the conference is hosted 'https://math-edu.eu/conference/home.html'\n" ;
+                "url : 'http://localhost' # the url at which the conference is hosted \n" ;
 
         try {
             Conference c = ConfigParser.parseConfigFile(config);
@@ -90,8 +90,7 @@ public class ConfigParserTests {
         String config = "name : 'SE Presentation\\#3'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '' # A unix timestamp. This field is mandatory\n" +
-                "url : 'http://localhost' # the url at which the conference is hosted 'https://math-edu" +
-                ".eu/conference/home.html'\n" +
+                "url : 'http://localhost' # the url at which the conference is hosted \n" +
                 "admin : 'name:email:group:residence:function' " ;
 
         try {
@@ -109,8 +108,7 @@ public class ConfigParserTests {
         String config = "name : 'SE Presentation\\#3'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '"+((System.currentTimeMillis()/1000)-1000)+"' # A unix timestamp. This field is mandatory\n" +
-                "url : 'http://localhost' # the url at which the conference is hosted 'https://math-edu" +
-                ".eu/conference/home.html'\n" +
+                "url : 'http://localhost' # the url at which the conference is hosted \n" +
                 "admin : 'name:email:group:residence:function' " ;
 
         try {
@@ -140,8 +138,7 @@ public class ConfigParserTests {
         String config = "name : 'SE Presentation\\#3'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
-                "url : 'http://localhost' # the url at which the conference is hosted 'https://math-edu" +
-                ".eu/conference/home.html'\n" +
+                "url : 'http://localhost' # the url at which the conference is hosted \n" +
                 "admin : 'name:email:group:residence:function' " ;
 
             Conference c = ConfigParser.parseConfigFile(config);
@@ -181,8 +178,7 @@ public class ConfigParserTests {
         String config = "name : 'SE Presentation\\#3'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
-                "url : 'http://localhost' # the url at which the conference is hosted 'https://math-edu" +
-                ".eu/conference/home.html'\n" +
+                "url : 'http://localhost' # the url at which the conference is hosted \n" +
                 "admin : 'name:email:group:residence:function' " ;
 
         Conference c = ConfigParser.parseConfigFile(config);
@@ -203,8 +199,7 @@ public class ConfigParserTests {
          config = "name : 'New name'\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
-                "url : 'http://localhost' # the url at which the conference is hosted 'https://math-edu" +
-                ".eu/conference/home.html'\n" +
+                "url : 'http://localhost' # the url at which the conference is hosted \n" +
                 "admin : 'name:email:group:residence:function' " ;
 
 
@@ -220,7 +215,7 @@ public class ConfigParserTests {
         String config = "name : 'SE Presentation\\#3' # mandatory field. Presents a possible escape sequence\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
-                "url : 'http://localhost' # the url at which the conference is hosted 'https://math-edu.eu/conference/home.html'\n" +
+                "url : 'http://localhost' # the url at which the conference is hosted \n" +
                 "admin : 'name1:email1:group:residence:function' \n"+
                 "admin : 'name2:email2:group:residence:function' \n"+
                 "admin : 'name3:email3:group:residence:function' ";
@@ -230,7 +225,7 @@ public class ConfigParserTests {
          config = "name : 'SE Presentation\\#3' # mandatory field. Presents a possible escape sequence\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
-                "url : 'http://localhost' # the url at which the conference is hosted 'https://math-edu.eu/conference/home.html'\n" +
+                "url : 'http://localhost' # the url at which the conference is hosted \n" +
                 "admin : 'name1:email1:group:residence:function' \n"+
                 "admin : 'name4:email2:group:residence:function' \n"+
                 "admin : 'name5:email3:group:residence:function' ";
@@ -271,7 +266,7 @@ public class ConfigParserTests {
         String config = "name : 'e\\\\s\\\\\\'cap\\#e' # mandatory field. Presents a possible escape sequence\n" +
                 "organizer : 'Group 17' # mandatory field\n" +
                 "endTime : '1607731200' # A unix timestamp. This field is mandatory\n" +
-                "url : 'http://localhost' # the url at which the conference is hosted 'https://math-edu.eu/conference/home.html'\n" +
+                "url : 'http://localhost' # the url at which the conference is hosted \n" +
                 "admin : 'name:email:group:residence:function' " ;
 
         Conference c = ConfigParser.parseConfigFile(config);

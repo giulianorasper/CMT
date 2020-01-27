@@ -13,8 +13,7 @@ endTime : '1579996799' # A unix timestamp. This field is mandatory
 databasePath : './db/conference.db' # Optional field. Defaults to  './testdb/testdb.db'
 documentsPath : './docs' # Optional field. Defaults to './docs'
 url : 'http://localhost' # the url at which the conference is hosted 'https://math-edu.eu/conference/home.html'
-admin : 'name:email:group:residence:function' # A generic admin. This is the only key that can be duplicated
+admin : 'name:email@email.de:group:residence:function' # A generic admin. This is the only key that can be duplicated
 admin : 'georg best:best@best.best:the best:the best house:being the best' # An other generic admin
-admin : 'escape:es\:cape:es\'cape:es\\\\\#cape:esc\#ape'
 
 

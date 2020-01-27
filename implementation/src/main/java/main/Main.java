@@ -70,15 +70,14 @@ public class Main {
         }
     }
 
-    /** Starts a conference with a single admin (username and password 'test') **/
+    /** Starts a conference with a single admin (username and password 'admin')
+     *  and a single user (username and password 'user')
+     * **/
     private static void startNormalConference(boolean clean){
         conf = new Conference(clean);
         if(conf.getAllAdmins().isEmpty()) {
-            conf.addAdmin(new Admin("Johannes Dieters", "johannesdieters@web.de", "admin", "RCDS", "66111 Saarbrücken, Mainzerstaße 45", "Admin", 0), "admin");
-            conf.addAdmin(new Admin("Franz Mayer", "franzl@gmx.de", "FrMa", "RCDS", "66111 Saarbrücken, Donaustaße 45", "Admin", 1), "franz");
-            conf.addAttendee(new Attendee("Peter Schmidt",  "peterschidt@t-online.de", "user", "Unicorn", "66271 Kleinblittersdorf, am Tälchen 12", "User", 2), "user");
-            conf.addAttendee(new Attendee("Sabine Hein", "sahe@stud.uni-saarland.de", "SaHe", "Flower", "66181 Ensheim, Hauptstraße 12", "User", 3), "user2");
-            conf.addAttendee(new Attendee("Gio", "gio@math.edu", "Gio", "Developers", "???", "User", 4), "SuperSecretPassword");
+            conf.addAdmin(new Admin("Admin Administrator", "admin@administrator", "admin", "NoGroup", "AdminAllee", "onlyAdmin"), "admin");
+            conf.addAttendee(new Attendee("Test User",  "user@test.de", "user", "Tester", "Testerhood", "TestUser"), "user");
         }
 
         conf.generateAllQRCodes();

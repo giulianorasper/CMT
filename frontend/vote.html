@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/gijgo.css">
     <link rel="stylesheet" href="css/slicknav.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.min.css">
     <link rel="stylesheet" href="css/main.css">
 
 </head>
@@ -92,9 +92,12 @@
                         <div class="custom-control col-lg-7" style="margin-left: 30px;" id="failure"></div>
                         <div class="form-group mt-3 col-lg-4" style="float: right; padding-bottom: 25px;"
                              id="voteSubmission">
-                            <button type="submit" class="button button-contactForm btn-class-box pull-right"
+                            <!--<button type="submit" class="button button-contactForm btn-class-box pull-right"
                                     style="border: 1px solid #00D363; color:#00D363!important; margin-right: 20px; margin-left: 50px;"
                                     id="submitButton">Submit Vote
+                            </button>-->
+                            <button type="submit" class="button btn-class-box" id="submitButton" style="margin-right: 20px; margin-left: 50px;">
+                                Submit Vote
                             </button>
                         </div>
                     </div>
@@ -146,8 +149,11 @@
                             <tbody id="createdVotesList"></tbody>
                         </table>
                     </div>
-                    <button style="margin-right: 20px; margin-left: 26px; margin-top: 20px;border: 1px solid #00D363; color:#00D363!important; float: right;"
+                    <!--<button style="margin-right: 20px; margin-left: 26px; margin-top: 20px;border: 1px solid #00D363; color:#00D363!important; float: right;"
                             class="button btn-class-box" id="createVote">New Voting
+                    </button>-->
+                    <button type="button" class="button btn-class-box" id="createVote" style="float: right; margin-right: 20px;">
+                        New Voting
                     </button>
                 </div>
             </div>

@@ -25,8 +25,8 @@ public class GetAttendeePasswordRequestPacket extends AuthenticatedRequestPacket
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
+    public void handle(Conference conference, Connection connection) {
         Packet response = new GetAttendeePasswordResponsePacket(conference.getUserPassword(id).second());
-        response.send(webSocket);
+        response.send(connection);
     }
 }

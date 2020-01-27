@@ -26,10 +26,10 @@ public class GenerateNewAttendeePasswordRequestPacket extends AuthenticatedReque
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             conference.generateNewUserPassword(id);
-            new ValidResponsePacket().send(webSocket);
+            new ValidResponsePacket().send(connection);
         }
     }
 }

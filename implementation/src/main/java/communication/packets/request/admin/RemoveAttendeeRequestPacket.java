@@ -25,13 +25,13 @@ public class RemoveAttendeeRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             if(!conference.isAdmin(id)) {
                 conference.removeAttendee(id);
-                new ValidResponsePacket().send(webSocket);
+                new ValidResponsePacket().send(connection);
             } else {
-                new FailureResponsePacket("Admin accounts cant be removed").send(webSocket);
+                new FailureResponsePacket("Admin accounts cant be removed").send(connection);
             }
         }
     }

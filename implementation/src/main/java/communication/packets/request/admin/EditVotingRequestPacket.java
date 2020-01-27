@@ -37,8 +37,8 @@ public class EditVotingRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             Voting voting = conference.getVoting(id);
             if(voting.getStatus() != VotingStatus.Created) throw new IllegalArgumentException();
             if(question == null) question = voting.getQuestion();
@@ -66,9 +66,9 @@ public class EditVotingRequestPacket extends AuthenticatedRequestPacket {
             Boolean result = voting.updateVoteArguments(optionsObjectList, question, namedVote, duration);
             //AddVotingRequestPacket add = new AddVotingRequestPacket(question, options, namedVote, duration);
             if (result) {
-                new ValidResponsePacket().send(webSocket);
+                new ValidResponsePacket().send(connection);
             } else {
-                new FailureResponsePacket().send(webSocket);
+                new FailureResponsePacket().send(connection);
             }
 
 

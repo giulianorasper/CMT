@@ -40,8 +40,8 @@ public class AddVotingRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             VotingOption votingOptionObject;
             List<VotingOption> optionsObjectList = new LinkedList<>();
             int id = 0;
@@ -56,7 +56,7 @@ public class AddVotingRequestPacket extends AuthenticatedRequestPacket {
             }
             Voting voting = new Voting(optionsObjectList, question, namedVote, duration);
             conference.addVoting(voting);
-            new ValidResponsePacket().send(webSocket);
+            new ValidResponsePacket().send(connection);
         }
     }
 }

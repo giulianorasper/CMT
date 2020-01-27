@@ -38,8 +38,8 @@ public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             if(name == null) throw new IllegalArgumentException();
             if(email == null) email = "";
             if(group == null) group = "";
@@ -47,7 +47,7 @@ public class AddAttendeeRequestPacket extends AuthenticatedRequestPacket {
             if(function == null) function = "";
             Attendee attendee = new Attendee(name, email, conference.getFreeUserName(name), group, residence, function);
             conference.addAttendee(attendee);
-            new ValidResponsePacket().send(webSocket);
+            new ValidResponsePacket().send(connection);
         }
     }
 }

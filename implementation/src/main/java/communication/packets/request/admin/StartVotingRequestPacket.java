@@ -29,8 +29,8 @@ public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             Packet response;
             Voting votingToStart = conference.getVoting(id);
             if(votingToStart == null) {
@@ -63,7 +63,7 @@ public class StartVotingRequestPacket extends AuthenticatedRequestPacket {
                     response = new FailureResponsePacket( "Can´t start a voting with less than 2 options");
                 }
             }
-            response.send(webSocket);
+            response.send(connection);
         }
     }
 }

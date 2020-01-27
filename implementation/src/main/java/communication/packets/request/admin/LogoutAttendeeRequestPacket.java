@@ -25,13 +25,13 @@ public class LogoutAttendeeRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             if(!conference.isAdmin(id)) {
                 conference.logoutUser(id);
-                new ValidResponsePacket().send(webSocket);
+                new ValidResponsePacket().send(connection);
             } else {
-                new FailureResponsePacket("Admins can't be logged out").send(webSocket);
+                new FailureResponsePacket("Admins can't be logged out").send(connection);
             }
         }
     }

@@ -38,40 +38,40 @@ public class UpdateFileRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             try {
                 lock.lock();
-                allowedRequests.put(webSocket, new Pair<>(this, System.currentTimeMillis() + 1000*60*60*24));
+                allowedRequests.put(connection, new Pair<>(this, System.currentTimeMillis() + 1000*60*60*24));
             } finally {
                 lock.unlock();
             }
-            new ValidResponsePacket(PacketType.UPDATE_FILE_RESPONSE).send(webSocket);
+            new ValidResponsePacket(PacketType.UPDATE_FILE_RESPONSE).send(connection);
         }
     }
 
-    public void handleFileTransfer(Conference conference, Connection webSocket, File file) {
+    public void handleFileTransfer(Conference conference, Connection connection, File file) {
         try {
-            if(isPermitted(conference, webSocket, true)) {
+            if(isPermitted(conference, connection, true)) {
                 String fileType = "";
                 String[] split = name.split("\\.");
                 if(split.length >= 2) fileType = "." + split[split.length-1];
                 if(creation) conference.updateDocument(name, fileType, file, creation);
                 else conference.updateDocument(originalName, fileType, file, creation);
-                new ValidResponsePacket().send(webSocket);
+                new ValidResponsePacket().send(connection);
             }
         } catch (IllegalArgumentException e) {
             new FailureResponsePacket(e.getMessage());
         }
     }
 
-    public static UpdateFileRequestPacket getRequestFromConnectionIfExists(Connection webSocket) {
+    public static UpdateFileRequestPacket getRequestFromConnectionIfExists(Connection connection) {
         try {
             lock.lock();
             removeInvalidRequests();
-            if(allowedRequests.containsKey(webSocket)) {
-                UpdateFileRequestPacket packet = allowedRequests.get(webSocket).first();
-                allowedRequests.remove(webSocket);
+            if(allowedRequests.containsKey(connection)) {
+                UpdateFileRequestPacket packet = allowedRequests.get(connection).first();
+                allowedRequests.remove(connection);
                 return packet;
             }
             return null;

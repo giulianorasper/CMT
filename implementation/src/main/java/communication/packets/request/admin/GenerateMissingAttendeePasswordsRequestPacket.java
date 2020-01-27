@@ -17,10 +17,10 @@ public class GenerateMissingAttendeePasswordsRequestPacket extends Authenticated
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, true)) {
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, true)) {
             conference.generateAllMissingUserPasswords();
-            new ValidResponsePacket().send(webSocket);
+            new ValidResponsePacket().send(connection);
         }
     }
 }

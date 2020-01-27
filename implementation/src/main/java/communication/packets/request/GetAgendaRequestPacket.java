@@ -18,9 +18,9 @@ public class GetAgendaRequestPacket extends AuthenticatedRequestPacket {
     }
 
     @Override
-    public void handle(Conference conference, Connection webSocket) {
-        if(isPermitted(conference, webSocket, false)) {
-            new GetAgendaResponsePacket(conference.getAgenda()).send(webSocket);
+    public void handle(Conference conference, Connection connection) {
+        if(isPermitted(conference, connection, false)) {
+            new GetAgendaResponsePacket(conference.getAgenda()).send(connection);
         }
     }
 }

@@ -145,7 +145,7 @@ javadoc {
 task fatJar(type: Jar) {
     archiveName = "fullCMS-${version}.jar"
     manifest {
-        attributes 'Implementation-Title': 'Confernece Managemend Tool Backend',
+        attributes 'Implementation-Title': 'Conference Management Tool',
                 'Implementation-Version': version,
                 'Main-Class': 'main.Main'
     }

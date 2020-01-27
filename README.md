@@ -23,7 +23,7 @@ Timo P. Gros, timopgros@cs.uni-saarland.de
 
 ### Building the Backend
 Building the project requires gradle. For this please refer to: [https://gradle.org/install/](https://gradle.org/install/)
-Inside the 'implementation' folder type in the command `gradle :fatJar`
+Inside the 'Backend' folder type in the command `gradle :fatJar`
 This will produce a jar under `./build/libs/fullCMS-1.0.jar
 
 ### Building the Frontend

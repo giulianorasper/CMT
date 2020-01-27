@@ -796,7 +796,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
      * @return UserId
      */
     @Override
-    public int tokenToID(String token) {//todo check if keeping track of the tokens and ids is more performant
+    public int tokenToID(String token) {
         try {
             adminLock.lock();
             attendeeLock.lock();

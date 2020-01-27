@@ -1,6 +1,6 @@
 package utils;
 
-public enum OperationResponse {//TODO: Implement this
+public enum OperationResponse {
     AttendeeSuccess(""),
     AdminSuccess(""),
     InvalidToken(""),

@@ -47,7 +47,7 @@ public class ChangeRequest extends Request {
             lock.getReadAccess();
             return this.approved;
         } catch (InterruptedException e) {
-            return this.approved;                           //TODO: Well, ...
+            return this.approved;
         } finally {
             lock.finishRead();
         }

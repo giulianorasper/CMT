@@ -236,7 +236,6 @@ public class Agenda implements AgendaObservable{
         }
     }
 
-    //TODO @Stephan It would be great if you would look into weather / how these methods should be locked. I think you are more proficient with that.
 
     /**
      * Creates an Agenda from a PreOrder list.

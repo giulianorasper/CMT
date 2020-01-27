@@ -40,7 +40,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         String requestTable = "CREATE TABLE IF NOT EXISTS requests (\n"
                 + "     requestID INTEGER PRIMARY KEY,\n"
                 + "     userID INTEGER NOT NULL,\n"
-                + "     requestType INTEGER NOT NULL,\n"//0 for Change, 1 for Speech//TODO: Make this enum
+                + "     requestType INTEGER NOT NULL,\n"//0 for Change, 1 for Speech
                 + "     requestableName TEXT NOT NULL,\n"
                 + "     timestamps BIGINT NOT NULL,\n"
                 + "     content TEXT,\n"
@@ -71,7 +71,7 @@ public class DB_RequestManager extends DB_Controller implements DB_RequestManage
         try (PreparedStatement stmt = connection.prepareStatement(sqlstatement)) {
             stmt.setInt(1, req.ID);
             stmt.setInt(2, req.getRequester().getID());
-            if (req instanceof ChangeRequest) { //TODO: Enum for type
+            if (req instanceof ChangeRequest) {
                 stmt.setInt(3, 0);
                 stmt.setString(6, ((ChangeRequest) req).getMessage());
                 stmt.setBoolean(7, ((ChangeRequest) req).isApproved());

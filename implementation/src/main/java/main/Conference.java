@@ -284,9 +284,9 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
                 }
                 a.logout();
                 if(newpw) {
-                    success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken());
+                    success = db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken()) && success;
                 } else {
-                    success = success && db_userManagement.logoutUser(a.getID(), null, null);
+                    success = db_userManagement.logoutUser(a.getID(), null, null) && success;
                 }
             }
             return success;
@@ -702,7 +702,7 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             boolean success = true;
             for(Pair<User, String> p : db_userManagement.getAllPasswords()) {
                 if(p.second() == null) {
-                    success = success && db_userManagement.storeNewPassword(p.first().getID(), gen.generatePassword());
+                    success = db_userManagement.storeNewPassword(p.first().getID(), gen.generatePassword()) && success;
                 }
             }
 
@@ -763,11 +763,11 @@ public class Conference implements UserManagement, VotingManagement, RequestMana
             boolean success = true;
             for(Attendee a : db_userManagement.getAllAttendees()) {
                 a.logout();
-                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken());
+                success =  db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken()) && success;
             }
             for(Attendee a : db_userManagement.getAllAdmins()) {
                 a.logout();
-                success = success && db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken());
+                success =  db_userManagement.logoutUser(a.getID(), gen.generatePassword(), generateToken()) && success;
             }
             return success;
         } finally {

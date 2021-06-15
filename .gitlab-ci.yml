@@ -15,10 +15,10 @@ before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
 build:
-  stage: build
+  stage: test
   script: 
     - cd Backend
-    - gradle fatJar
+    - gradle test
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push

@@ -50,23 +50,23 @@ dependencies {
     /**
      * Library used for converting objects to JSON and viceversa
      */
-    compile("com.google.code.gson:gson:2.8.6")
+    Implementation("com.google.code.gson:gson:2.8.6")
 
 
     /**
      * Library used for managing .db files
      */
-    compile("org.xerial:sqlite-jdbc:3.27.2.1")
+    Implementation("org.xerial:sqlite-jdbc:3.27.2.1")
 
     /**
      * Library used for generating QR-Codes
      */
-    compile 'io.nayuki:qrcodegen:1.5.0'
+    Implementation 'io.nayuki:qrcodegen:1.5.0'
 
     /**
      * Library used for communication
      */
-    compile group: 'io.netty', name: 'netty-all', version: '4.1.43.Final'
+    Implementation group: 'io.netty', name: 'netty-all', version: '4.1.43.Final'
 }
 
 tasks.withType(JavaCompile) {

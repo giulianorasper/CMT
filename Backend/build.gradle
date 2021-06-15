@@ -16,7 +16,7 @@ if (!JavaVersion.current().isJava11Compatible())
     throw new GradleException("REQUIRES AT LEAST JAVA 11")
 
 wrapper {
-    gradleVersion = "6.0.1"
+    gradleVersion = "7.1"
 }
 
 sourceSets {

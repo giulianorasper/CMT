@@ -45,6 +45,8 @@ repositories {
 }
 
 dependencies {
+    classpath 'com.android.tools.build:gradle:7.1'  
+
     testImplementation 'junit:junit:4.9'
 
     /**

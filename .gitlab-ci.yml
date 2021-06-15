@@ -16,7 +16,9 @@ before_script:
 
 build:
   stage: build
-  script: gradle farJar
+  script: 
+    - cd Backend
+    - gradle fatJar
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
